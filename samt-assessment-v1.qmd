@@ -1,0 +1,42 @@
+---
+format:
+  html:
+    toc: true
+    standalone: false
+    title-block-style: none
+  pdf: default
+  docx: default
+engine: knitr
+---
+
+```{r}
+#| label: setup
+#| echo: false
+#| output: false
+
+library(tidyverse)
+library(here)
+```
+
+## PRELIMINARY DATA: Assessment for Delta Operations on ESA and CESA-listed Salmonids
+
+*BDO Science Division*
+
+*`r format(Sys.Date(), "%B %d, %Y")`*
+
+### Executive Summary
+
+### Operational and Regulatory Conditions
+
+### Evaluation
+
+#### Natural Winter-run Chinook
+
+#### Hatchery Winter-run Chinook
+
+#### Central Valley Steelhead
+
+### References
+
+
+
