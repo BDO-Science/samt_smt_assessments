@@ -37,8 +37,8 @@ Last updated: *`r format(Sys.Date(), "%B %d, %Y")`*
 
 Section 3.13.3.4.1 of the Proposed Action and Section 8.1.4. of the Incidental Take Permit provide that during Old and Middle River (OMR) Management, the California Department of Water Resources, in coordination with Reclamation, shall provide State Water Project (SWP) and Central Valley Project (CVP) operational outlooks and assessments on a weekly basis to Water Operations Management Team (WOMT).
 
-```{r}
-narrative_text
+```{r, results = 'asis', echo= FALSE}
+cat(narrative_text)
 ```
 
 
@@ -58,8 +58,8 @@ narrative_text
 
 - The **abundance estimate** as of the week of `r abundance_date` was: `r paste0(abundance, " (95% CL: ", abundance_lcl, " to ", abundance_ucl, ")")`
 - Detections: 
-  - A total of `r adults_placeholder` (`r marked` marked and `r unmarked` unmarked) adult Delta Smelt have been detected this water year. 
-  - The most recent detection(s) of `r last_catch_count` Delta Smelt occurred on `r format(last_catch_date, "%b %d, %Y")` in `r last_catch_location`
+  - A total of `r adults_count` (`r marked` marked and `r unmarked` unmarked) adult Delta Smelt have been detected this water year. 
+  - The most recent detection(s) of `r last_catch_count` Delta Smelt occurred on `r format(last_catch_date, "%b %d, %Y")` in the `r last_catch_location` region
   - Delta Smelt Salvage totals `r ds_salvage_count` Delta Smelt, and the cumulative seasonal salvage is `r ds_cumsalvage`
   
 ###### Context
@@ -79,11 +79,13 @@ We might have a switch between when it's adult vs juvenile season
 ```{r, echo = FALSE}
 #| fig-width: 8
 #| fig-height: 7
+#| label: "fig-ds-map"
+#| fig-cap: "Delta Smelt Distribution"
 (map_detections_lj <- ggplot() + 
     geom_sf(data = WW_Delta, color = "darkslategray3") +
     geom_sf(data = R_EDSM_Strata_1718P1, aes(fill = Stratum), alpha = 0.4,inherit.aes = FALSE)+
     # geom_sf(data = releases_sf, shape = 23, size =3,  fill = "red", color = "black", inherit.aes = FALSE) + 
-    geom_sf(data = larjuv_dataset, aes(shape = source, size = total_catch),   inherit.aes = FALSE) + 
+    geom_sf(data = ds_latlon, aes(shape = source, size = total_catch),   inherit.aes = FALSE) + 
     # geom_sf_text(data = sls_sf, mapping = aes(label = Station), size = 3, nudge_x = -0.012, nudge_y = 0.016) +
     annotation_north_arrow(location = "tl", which_north = "true",
                            pad_x = unit(.1, "in"), pad_y = unit(0.2, "in"),
@@ -107,27 +109,29 @@ We might have a switch between when it's adult vs juvenile season
 ```
 
 ###### Table 2. Total Catch by survey
-```{r, echo = FALSE}
+```{r, echo = FALSE, message = FALSE}
+#| label: "table-catch-all"
+#| tab-cap: "Delta Smelt Water Year Totals by Life Stage"
 kable(
-  larjuv_detail %>%
+  ds_detail %>%
   group_by(source, region, life_stage) %>%
     summarize(total = sum(catch)) %>%
     ungroup()
 )
 ```
 
-###### Figure 2. Plot of catch over time? 
+
+###### Figure 2. Plot of catch over time
 ```{r, echo = FALSE}
-ggplot(larjuv_dataset) +
+#| label: "fig-ds-catch"
+#| fig-cap: "Delta Smelt Catch Over Time"
+ggplot(ds_latlon) +
   geom_col(aes(date, total_catch, fill = source)) +
   scale_fill_viridis(option = "turbo", discrete = TRUE) +
-  theme_bw() +
-  scale_x_date()
+  theme_bw()
 ```
 
 ##### Environmental Surrogates
-
-- Relevant environmental conditions:
 
 ###### First Flush
 ```{r, echo = FALSE, results='asis'}
@@ -135,15 +139,13 @@ if (first_flush_status != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-- FPT Flow (3-day average): {FPT_flow_avg} cfs as of {format(env_last_date, '%b %d, %Y')}
-- FPT Turbidity (3-day average): {FPT_turb_avg} FNU as of {format(env_last_date, '%b %d, %Y')}
+- **FPT Flow (3-day average)**: {FPT_flow_avg} cfs as of {format(env_last_date, '%b %d, %Y')}
+- **FPT Turbidity (3-day average)**: {FPT_turb_avg} FNU as of {format(env_last_date, '%b %d, %Y')}
 "))
 }
 ```
 
-
 ###### Adult Entrainment (Turbidity Bridge) 
-
 ```{r, echo = FALSE, results='asis'}
 if (adult_ent_status != "relevant") {
   cat("- Not relevant\n")
@@ -152,21 +154,23 @@ if (adult_ent_status != "relevant") {
 - **OBI Turbidity**: {paste(OBI_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 - **HOL Turbidity**: {paste(HOL_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 - **OSJ Turbidity**: {paste(OSJ_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
-- Let's link to the plot on the other SacPAS SMT page. Could include some text if we want.
 "))
 }
 ```
 
-###### Larval/Juvenile Entrainment 
 
+- See [Bay-Delta Live](https://www.baydeltalive.com/current_conditions/constituent-tracker-turbidity) for recent Delta-wide turbidity conditions.
+- Let's link to wind plot on the other SacPAS SMT page. 
+
+###### Larval/Juvenile Entrainment 
 ```{r, echo = FALSE, results='asis'}
 if (larval_ent_status != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-  - RVB temperature:
-  - SJJ temperature (in the future): 
-  - **South Delta Secchi Depth**: The most recent average secchi depth was {sd_secchi_depth}m as of {format(sd_secchi_date, '%b %d, %Y')}
+  - **RVB temperature (3-day average)**: {RVB_temp} degC as of {format(env_last_date, '%b %d, %Y')}
+  - **SJJ temperature (in the future)**: 
+  - **12-station South Delta Secchi Depth**: The most recent average secchi depth was {sd_secchi_depth}m as of {format(sd_secchi_date, '%b %d, %Y')}
 "))
 }
 ```
@@ -182,6 +186,7 @@ if (end_of_season != "relevant") {
 }
 ```
 
+- Include plot of CLC or link to CLC when relevant
   
 ###### Zone of Influence/PTM: 
 
