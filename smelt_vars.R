@@ -20,7 +20,7 @@ end_of_season = "not relevant"
 ## Narrative ----------------------
 # - Text about what actions have recently started, ended, or predicted to start
 # - Summary of relevant hydro/trigger conditions (triggered or may trigger)
-# - Summary of salvage 
+# - Summary of salvage and expectations of salvage
 
 narrative_text <- 
 "- OMR Season has not yet begun for Delta Smelt but First Flush could occur starting Dec 1
