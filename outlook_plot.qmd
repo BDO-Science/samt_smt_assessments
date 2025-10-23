@@ -79,6 +79,7 @@ flow_clean <- flow_df %>%
 
 ### Triggers
 
+This file needs to be updated manually when an action is triggered
 ```{r}
 triggers <- read_csv("data_raw/data_triggers.csv")
 triggers_clean <- triggers %>%
@@ -113,11 +114,11 @@ ann_start_VNS <- flow_clean %>% filter(station == "VNS", date == date(start)) %>
 
 flow_plot <- flow_clean %>%
   ggplot(aes(x = date)) +
-  annotate("label", x = date(start)+2, y = ann_start_FPT-3000, label = "FPT", color = "blue3")+
+  annotate("label", x = date(start)+2, y = ann_start_FPT-3000, label = "FPT", color = "#388715")+
   annotate("label", x = date(start)+2, y = ann_start_VNS+3000, label = "VNS", color = "gray20")+
   labs(y = 'Flow (cfs)') +
   geom_line(aes(y = value, color = station)) +
-  scale_color_manual(values = c("blue3", "gray15")) +
+  scale_color_manual(values = c("#43a419", "gray15")) +
   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
   theme_bw() +
   theme(legend.position = "none",
@@ -152,7 +153,7 @@ omr_plot
 #| fig-height: 7
  
 library(patchwork)
-omr_plot + flow_plot +export_plot +  plot_layout(nrow = 3)
+flow_plot +omr_plot + export_plot + plot_layout(nrow = 3)
 ```
 
 ```{r}
@@ -164,11 +165,8 @@ trigger_table <- triggers_clean %>%
          Action = action,
          `Date Triggered` = date_triggered,
          `Date Implemented` = date_implemented,
+         `Number Days Implemented` = days_implemented,
          Regulation = regulation,
          )
 kable(trigger_table)
-# flextable(trigger_table) |>
-# autofit() |>
-# set_caption("Trigger Details")
 ```
-

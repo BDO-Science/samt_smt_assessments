@@ -133,6 +133,15 @@ ggplot(ds_latlon) +
 
 ##### Environmental Surrogates
 
+###### Relevant Weather Forecasts
+```{r, echo=FALSE, results='asis'}
+cat(glue("
+- {weather_stockton}
+- {weather_antioch}
+"))
+```
+- Weather forecasts for [Stockton, CA](https://forecast.weather.gov/MapClick.php?lat=37.9537&lon=-121.2905#.Y2qMENeIaUk) and [Antioch, CA](https://forecast.weather.gov/MapClick.php?lat=38.0169&lon=-121.8138) as of `r format(Sys.Date(), "%B %d, %Y")`.
+
 ###### First Flush
 ```{r, echo = FALSE, results='asis'}
 if (first_flush_status != "relevant") {
