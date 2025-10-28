@@ -68,7 +68,6 @@ x2 <- as.numeric(tail(hydro_table$x2_position_km_dwr ,3))
 ## Weather (Lilly) --------------------------------
 # include temp, precipitation, wind
 
-
 ## Smelt catch -------------------------
 # define where data are stored
 data_raw <- here("data_raw/smelt")

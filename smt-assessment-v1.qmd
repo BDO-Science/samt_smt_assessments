@@ -41,8 +41,6 @@ Section 3.13.3.4.1 of the Proposed Action and Section 8.1.4. of the Incidental T
 cat(narrative_text)
 ```
 
-
-
 ### Operational and Regulatory Conditions
 
 - See current Weekly Fish and Water Operations Outlook document.
@@ -57,24 +55,29 @@ cat(narrative_text)
 - **Delta Smelt Life Stages**: `r lifestages`
 
 - The **abundance estimate** as of the week of `r abundance_date` was: `r paste0(abundance, " (95% CL: ", abundance_lcl, " to ", abundance_ucl, ")")`
-- Detections: 
-  - A total of `r adults_count` (`r marked` marked and `r unmarked` unmarked) adult Delta Smelt have been detected this water year. 
-  - The most recent detection(s) of `r last_catch_count` Delta Smelt occurred on `r format(last_catch_date, "%b %d, %Y")` in the `r last_catch_location` region
-  - Delta Smelt Salvage totals `r ds_salvage_count` Delta Smelt, and the cumulative seasonal salvage is `r ds_cumsalvage`
-  
-###### Context
+- A total of `r format(total_released, scientific = FALSE, big.mark = ",")` hatchery Delta Smelt have been released for WY 2026 (@tbl-ds-releases). The most recent releases of `r format(last_release_count, scientific = FALSE, big.mark = ",")` fish occurred in `r format(last_release_location, scientific = FALSE, big.mark = ",")` on `r format(last_release_date, "%b %d, %Y")`.
+- A total of `r adults_count` adult Delta Smelt have been detected this water year. See @fig-ds-map for spatial distribution and @fig-ds-catch for temporal distribution.
+- Delta Smelt Salvage totals `r ds_salvage_count` Delta Smelt, and the cumulative seasonal salvage is `r ds_cumsalvage`. 
 
+###### Notes
 - Since there are few recent detections of Delta Smelt, the Smelt Monitoring Team’s capacity to estimate where they are within the Delta is limited. 
-- A total of `r format(total_released, scientific = FALSE, big.mark = ",")` hatchery Delta Smelt have been released for WY 2026 (Table 1). The most recent releases of `r format(last_release_count, scientific = FALSE, big.mark = ",")` fish occurred in `r format(last_release_location, scientific = FALSE, big.mark = ",")` on `r format(last_release_date, "%b %d, %Y")`.
+- See [SacPAS SMT Page](https://www.cbr.washington.edu/sacramento/workgroups/delta_smelt.html) for additional details on detection in surveys and salvage.
 - Historical salvage trends can be found at: [SacPAS Salvage Timing](https://www.cbr.washington.edu/sacramento/data/query_salvage_hrt.html)
+  
+###### Table 1. Delta Smelt Release Summary
 
-###### Table 1. Release Summary
-Is release table able to be made public yet? 
-```{r}
+```{r, echo = FALSE}
+#| label: "tbl-ds-releases"
+#| tbl-cap: "Delta Smelt Water Year 2026 Releases"
 
+kable(releases)
 ```
 
+- *Release event 4 is tentative for planning purposes if extra fish are available and need to be released
+- **Total does not account for the tentative release event 4.
+
 ###### Figure 1. Distribution
+
 We might have a switch between when it's adult vs juvenile season
 ```{r, echo = FALSE}
 #| fig-width: 8
@@ -108,10 +111,12 @@ We might have a switch between when it's adult vs juvenile season
           legend.text = element_text(size = 9)))
 ```
 
+**Do we still want catch tables or just to modify tables on SacPAS - recent (2 wk) and water year totals**
+
 ###### Table 2. Total Catch by survey
 ```{r, echo = FALSE, message = FALSE}
-#| label: "table-catch-all"
-#| tab-cap: "Delta Smelt Water Year Totals by Life Stage"
+#| label: "tbl-catch-all"
+#| tbl-cap: "Delta Smelt Water Year Totals by Life Stage"
 kable(
   ds_detail %>%
   group_by(source, region, life_stage) %>%
@@ -133,60 +138,111 @@ ggplot(ds_latlon) +
 
 ##### Environmental Surrogates
 
+- We could also pull the SacPAS plots if we want for each relevant metric (or create our own)
+
 ###### First Flush
 ```{r, echo = FALSE, results='asis'}
 if (first_flush_status != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-- **FPT Flow (3-day average)**: {FPT_flow_avg} cfs as of {format(env_last_date, '%b %d, %Y')}
+- **Threshold**: 3-day avg FPT flow ≥ 25,000 cfs and 3-day avg FPT turbidity ≥ 50 FNU  
+- **FPT Flow (3-day average)**: {format(FPT_flow_avg, big.mark = ",")} cfs as of {format(env_last_date, '%b %d, %Y')}
 - **FPT Turbidity (3-day average)**: {FPT_turb_avg} FNU as of {format(env_last_date, '%b %d, %Y')}
 "))
 }
 ```
 
-###### Adult Entrainment (Turbidity Bridge) 
+###### Entrainment Actions
+
+####### Percent Entrainment (PTM and/or Zone of Influence)
+```{r}
+
+```
+
+
+####### Adult Delta Smelt
+
 ```{r, echo = FALSE, results='asis'}
 if (adult_ent_status != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
+- **Threshold**: Turbidity ≥ 12 FNU at OBI, HOL and OSJ
 - **OBI Turbidity**: {paste(OBI_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 - **HOL Turbidity**: {paste(HOL_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 - **OSJ Turbidity**: {paste(OSJ_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 "))
+
+  cat(glue("
+- <u>**Offramp Adult/Onramp Larval and Juvenile Protections** when RVB or SJJ > 12°C</u>
+- **RVB temperature (3-day average)**: {RVB_temp}°C as of {format(env_last_date, '%b %d, %Y')}
+- **SJJ temperature (in the future)**:
+"))
 }
 ```
-
 
 - See [Bay-Delta Live](https://www.baydeltalive.com/current_conditions/constituent-tracker-turbidity) for recent Delta-wide turbidity conditions.
 - Let's link to wind plot on the other SacPAS SMT page. 
 
-###### Larval/Juvenile Entrainment 
+###### Larval/Juvenile Delta Smelt
+Currently Secchi depth; move towards turbidity
 ```{r, echo = FALSE, results='asis'}
 if (larval_ent_status != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-  - **RVB temperature (3-day average)**: {RVB_temp} degC as of {format(env_last_date, '%b %d, %Y')}
-  - **SJJ temperature (in the future)**: 
+  - **Threshold**: Secchi Depth > 1m
   - **12-station South Delta Secchi Depth**: The most recent average secchi depth was {sd_secchi_depth}m as of {format(sd_secchi_date, '%b %d, %Y')}
 "))
 }
 ```
 
-###### End of OMR Management
+
+#### Longfin Smelt
+
+For Action 5, these rely on JPF (unsure how this is calculated) and population models (which don't yet exist)
+
+##### Adult Entrainment
+```{r}
+
+```
+
+##### Larval/Juvenile Entrainment 
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###### End of Smelt OMR Management
 ```{r, echo = FALSE, results='asis'}
 if (end_of_season != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-- Clifton Court Temperature: {paste(CLC_temp, collapse = ', ')} degC as of {format(env_last_date, '%b %d, %Y')}
+- **Threshold**: CLC > 25° for 3 consecutive days 
+- Clifton Court Temperature: {paste(CLC_temp, collapse = ', ')}°C as of {format(env_last_date, '%b %d, %Y')}
 "))
 }
 ```
 
-- Include plot of CLC or link to CLC when relevant
   
 ###### Zone of Influence/PTM: 
 
