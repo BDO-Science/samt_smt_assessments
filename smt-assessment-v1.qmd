@@ -64,7 +64,6 @@ cat(narrative_text)
 - See [SacPAS SMT Page](https://www.cbr.washington.edu/sacramento/workgroups/delta_smelt.html) for additional details on detection in surveys and salvage.
 - Historical salvage trends can be found at: [SacPAS Salvage Timing](https://www.cbr.washington.edu/sacramento/data/query_salvage_hrt.html)
   
-###### Table 1. Delta Smelt Release Summary
 
 ```{r, echo = FALSE}
 #| label: "tbl-ds-releases"
@@ -76,9 +75,7 @@ kable(releases)
 - *Release event 4 is tentative for planning purposes if extra fish are available and need to be released
 - **Total does not account for the tentative release event 4.
 
-###### Figure 1. Distribution
 
-We might have a switch between when it's adult vs juvenile season
 ```{r, echo = FALSE}
 #| fig-width: 8
 #| fig-height: 7
@@ -113,7 +110,6 @@ We might have a switch between when it's adult vs juvenile season
 
 **Do we still want catch tables or just to modify tables on SacPAS - recent (2 wk) and water year totals**
 
-###### Table 2. Total Catch by survey
 ```{r, echo = FALSE, message = FALSE}
 #| label: "tbl-catch-all"
 #| tbl-cap: "Delta Smelt Water Year Totals by Life Stage"
@@ -125,11 +121,9 @@ kable(
 )
 ```
 
-
-###### Figure 2. Plot of catch over time
 ```{r, echo = FALSE}
 #| label: "fig-ds-catch"
-#| fig-cap: "Delta Smelt Catch Over Time"
+#| fig-cap: "Time Series of Delta Smelt Catch, WY 2026"
 ggplot(ds_latlon) +
   geom_col(aes(date, total_catch, fill = source)) +
   scale_fill_viridis(option = "turbo", discrete = TRUE) +
@@ -146,7 +140,6 @@ cat(glue("
 "))
 ```
 - Weather forecasts for [Stockton, CA](https://forecast.weather.gov/MapClick.php?lat=37.9537&lon=-121.2905#.Y2qMENeIaUk) and [Antioch, CA](https://forecast.weather.gov/MapClick.php?lat=38.0169&lon=-121.8138) as of `r format(Sys.Date(), "%B %d, %Y")`.
-
 
 
 ###### Actions
@@ -166,9 +159,7 @@ if (first_flush_status != "relevant") {
 }
 ```
 
-####### Entrainment Actions
-
-######## Adult Delta Smelt
+####### Adult Delta Smelt Entrainment Action
 
 ```{r, echo = FALSE, results='asis'}
 if (adult_ent_status != "relevant") {
@@ -179,9 +170,7 @@ if (adult_ent_status != "relevant") {
 - **OBI Turbidity**: {paste(OBI_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 - **HOL Turbidity**: {paste(HOL_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 - **OSJ Turbidity**: {paste(OSJ_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
-"))
 
-  cat(glue("
 - <u>**Offramp Adult/Onramp Larval and Juvenile Protections** when RVB or SJJ > 12°C</u>
 - **RVB temperature (3-day average)**: {RVB_temp}°C as of {format(env_last_date, '%b %d, %Y')}
 - **SJJ temperature (in the future)**:
@@ -192,7 +181,7 @@ if (adult_ent_status != "relevant") {
 - See [Bay-Delta Live](https://www.baydeltalive.com/current_conditions/constituent-tracker-turbidity) for recent Delta-wide turbidity conditions.
 - Let's link to wind plot on the other SacPAS SMT page. 
 
-####### Larval/Juvenile Delta Smelt
+###### Larval/Juvenile Delta Smelt Entrainment Action
 Currently Secchi depth; move towards turbidity
 ```{r, echo = FALSE, results='asis'}
 if (larval_ent_status != "relevant") {
