@@ -82,4 +82,4 @@ sd_secchi_date <- ymd("2026-05-01")
 # Longfin Smelt -----------------------
 # After December 1, if cumulative water year salvage of age 1+ Longfin smelt exceeds 
 # 5% of the fall mid water trawl index plus one fish.
-adult_lfs_salvage_threshold 
+# adult_lfs_salvage_threshold 
