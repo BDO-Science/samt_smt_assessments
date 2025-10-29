@@ -138,9 +138,22 @@ ggplot(ds_latlon) +
 
 ##### Environmental Surrogates
 
-- We could also pull the SacPAS plots if we want for each relevant metric (or create our own)
+###### Relevant Weather Forecasts
+```{r, echo=FALSE, results='asis'}
+cat(glue("
+- {weather_stockton}
+- {weather_antioch}
+"))
+```
+- Weather forecasts for [Stockton, CA](https://forecast.weather.gov/MapClick.php?lat=37.9537&lon=-121.2905#.Y2qMENeIaUk) and [Antioch, CA](https://forecast.weather.gov/MapClick.php?lat=38.0169&lon=-121.8138) as of `r format(Sys.Date(), "%B %d, %Y")`.
 
-###### First Flush
+
+
+###### Actions
+
+- We could pull the SacPAS plots if we want for each relevant metric (or create our own)
+
+####### First Flush
 ```{r, echo = FALSE, results='asis'}
 if (first_flush_status != "relevant") {
   cat("- Not relevant\n")
@@ -153,15 +166,9 @@ if (first_flush_status != "relevant") {
 }
 ```
 
-###### Entrainment Actions
+####### Entrainment Actions
 
-####### Percent Entrainment (PTM and/or Zone of Influence)
-```{r}
-
-```
-
-
-####### Adult Delta Smelt
+######## Adult Delta Smelt
 
 ```{r, echo = FALSE, results='asis'}
 if (adult_ent_status != "relevant") {
@@ -185,7 +192,7 @@ if (adult_ent_status != "relevant") {
 - See [Bay-Delta Live](https://www.baydeltalive.com/current_conditions/constituent-tracker-turbidity) for recent Delta-wide turbidity conditions.
 - Let's link to wind plot on the other SacPAS SMT page. 
 
-###### Larval/Juvenile Delta Smelt
+####### Larval/Juvenile Delta Smelt
 Currently Secchi depth; move towards turbidity
 ```{r, echo = FALSE, results='asis'}
 if (larval_ent_status != "relevant") {
@@ -212,17 +219,6 @@ For Action 5, these rely on JPF (unsure how this is calculated) and population m
 ```{r}
 
 ```
-
-
-
-
-
-
-
-
-
-
-
 
 
 
