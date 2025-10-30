@@ -5,9 +5,9 @@ format:
     standalone: false
     title-block-style: none
   pdf: default
-  docx: default
 engine: knitr
 ---
+::: {.panel-tabset}
 
 ```{r}
 #| label: setup
@@ -16,27 +16,95 @@ engine: knitr
 
 library(tidyverse)
 library(here)
+library(kableExtra)
+library(flextable)
+library(gt)
+
+project <- here()
+source(here(project, 'source_code/salmon_code.R'), echo = FALSE)
+source(here(project, 'source_code/text_updates.R'), echo = FALSE)
 ```
 
-## PRELIMINARY DATA: Assessment for Delta Operations on ESA and CESA-listed Salmonids
+## **Executive Summary**
 
 *BDO Science Division*
 
 *`r format(Sys.Date(), "%B %d, %Y")`*
 
-### Executive Summary
+## Operational and Regulatory Conditions
 
-### Operational and Regulatory Conditions
+See weekly Outlook. *add hydrology graph(s) here?*
 
-### Evaluation
+## Natural Winter-run Chinook
 
-#### Natural Winter-run Chinook
+*Give update on migration, salvage, monitoring, and STARs patterns.*
 
-#### Hatchery Winter-run Chinook
+Historically, as of `r format(Sys.Date()-1, "%b %d")`, `r if_else(is.na(delta_entry_wr), '0%', delta_entry_wr)` of length-at-date (LAD) winter-run have entered the delta based on Knights Landing RST catch, `r if_else(is.na(delta_exit_wr), '0%', delta_exit_wr)` have exited the delta based on Chipps Island Trawl Catch, and `r if_else(is.na(salvage_wr), '0%', salvage_wr)` of DNA confirmed winter-run have been salvaged.
 
-#### Central Valley Steelhead
+```{r}
+#| label: wr_timing_table
+#| eval: false
+#| include: false
+#| results: asis
+#| tbl-cap: Average Percent of annual emigrating population for unclipped LAD winter-run captured at the following locations and LAD and DNA confirmed winter-run salvaged at SWP and CVP Delta facilities for the past 10 years.
 
-### References
+if (knitr::is_latex_output()) {
+  flextable(wr_natural_timing) %>%
+  vline()%>%
+  hline() %>%
+  border_outer() %>%
+  width(width = 0.75, unit = "in") %>%
+  font(fontname = 'Segoe UI', part = "body") %>%
+  font(fontname = 'Segoe UI Semibold', part = "header") %>%
+  fontsize(size = 11, part = "header") %>%
+  fontsize(size = 10, part = "body")
+} else {
+  knitr::kable(wr_natural_timing, align = "lrrrrrr")
+}
 
+```
 
+### DCC Gate Closures
 
+### Early Season Migration
+
+`r early_season_text`
+
+## Hatchery Winter-run Chinook
+
+*Give update on migration, salvage, monitoring, and telemetry findings.*
+
+As of Sys.Date() 500,000 hatchery winter-run have been released into the Sacramento River on February 15, 2025 and 50,0000 have been realed into Battle Creek on March 21, 2026. JPEs are 80,000 and 10,000 for the respective releases with annual loss thresholds of 150 fish for the Sacramento Release and 10 fish for the Battle Creek Release.
+
+## Central Valley Steelhead
+
+*Give update on migration, salvage, monitoring of clipped and unclipped steelhead.*
+
+Historically, as of `r format(Sys.Date()-1, "%b %d")`, `r if_else(is.na(delta_entry_sh), '0%', delta_entry_sh)` of CCV steelhead have entered the delta based on Knights Landing RST catch, `r if_else(is.na(delta_exit_sh), '0%', delta_exit_sh)` have exited the delta based on Chipps Island Trawl Catch, and `r if_else(is.na(salvage_sh), '0%', salvage_sh)` have been salvaged.
+
+```{r}
+#| label: sh_timing_table
+#| results: asis
+#| tbl-cap: 'Average Percent, with 95%CI, of annual emigrating population for unclipped CCV steelhead captured at the following locations and salvaged at SWP and CVP Delta facilities for the past 10 years.'
+#| echo: false
+
+if (knitr::is_latex_output()) {
+  # Print static ggplot for PDF
+  flextable(sh_natural_timing) %>%
+  vline()%>%
+  hline() %>%
+  border_outer() %>%
+  width(width = 0.75, unit = "in") %>%
+  font(fontname = 'Segoe UI', part = "body") %>%
+  font(fontname = 'Segoe UI Semibold', part = "header") %>%
+  fontsize(size = 11, part = "header") %>%
+  fontsize(size = 10, part = "body")
+} else {
+  knitr::kable(sh_natural_timing, align = "lrrrrrr")
+}
+
+```
+## Appendix
+## References
+
+:::
