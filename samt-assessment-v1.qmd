@@ -7,8 +7,12 @@ format:
   pdf: default
 engine: knitr
 ---
-::: {.panel-tabset}
 
+## Summary of CVP and SWP delta operations on salmonids (*as of `r format(Sys.Date(), "%B %d, %Y")`*)
+
+**BDO Science Division**, *Data is preliminary and subject to change*
+
+::: panel-tabset
 ```{r}
 #| label: setup
 #| echo: false
@@ -19,23 +23,53 @@ library(here)
 library(kableExtra)
 library(flextable)
 library(gt)
+library(magick)
 
 project <- here()
 source(here(project, 'source_code/salmon_code.R'), echo = FALSE)
 source(here(project, 'source_code/text_updates.R'), echo = FALSE)
+source(here(project, 'source_code/zoi_maps_query.R'), echo = FALSE)
 ```
 
 ## **Executive Summary**
 
-*BDO Science Division*
+DCC gates are currently closed and is the controlling factor. Gates will continue to operate in accordance to Table 3-6 in the Proposed Action.
 
-*`r format(Sys.Date(), "%B %d, %Y")`*
+#### *Winter-run*
 
-## Operational and Regulatory Conditions
+Winter-run catch is high at delta entry monitoring locations. No loss has yet to occur at export facilities.
 
-See weekly Outlook. *add hydrology graph(s) here?*
+#### *Central Valley Steelhead*
+
+Central Valley Steelhead catch is low and no loss has yet to occur at export facilities.
+
+## Delta Hydrodynamics
+#### Operational and Regulatory Conditions
+
+DCC gates are the current controlling factor. See most recent weekly outlook for more information.
+
+#### Current Conditions
+
+Current inflow at Freeport in the Sacramento River and Vernalis in the San Joaquin River is xx and xx.  Most recent 5-day and 10-day OMRI measurements were xx and xx respectively, and most recent export data were xx for Jones Pumping Plant and xx for Henry O. Banks Pumping Plant.
+
+#### Zone of Influence
+
+Current conditions at Freeport and Vernalis indicate that delta hydrology falls within the 'lolo' category (see appendix for hydrology bin definitions). This category is characterized by significant sensitivity in the zone of influence to changes in OMRI, where the zone of influence expands more greatly than wetter hydrologies as OMRI becomes more negative. 
+
+```{r}
+#| label: zoi_graph
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: Modeled Zone of Influence at different OMRI scenarios based on current inflow hydrology from the Sacramento River and San Joaquin River
+#| results: asis
+
+map
+```
 
 ## Natural Winter-run Chinook
+
+#### Current Status
 
 *Give update on migration, salvage, monitoring, and STARs patterns.*
 
@@ -43,8 +77,7 @@ Historically, as of `r format(Sys.Date()-1, "%b %d")`, `r if_else(is.na(delta_en
 
 ```{r}
 #| label: wr_timing_table
-#| eval: false
-#| include: false
+#| echo: false
 #| results: asis
 #| tbl-cap: Average Percent of annual emigrating population for unclipped LAD winter-run captured at the following locations and LAD and DNA confirmed winter-run salvaged at SWP and CVP Delta facilities for the past 10 years.
 
@@ -64,19 +97,41 @@ if (knitr::is_latex_output()) {
 
 ```
 
-### DCC Gate Closures
+#### Annual Loss
+Cumulative loss as of x.date is xx and is xx% of thresholds.
+```{r}
+#| label: wr_loss
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: Cumulative loss of natural-origin winter-run for WY 2026.  Cumulative loss is based on genetically confirmed winter-run captured in salvage or length-at-date winter-run in which genetic confirmation was unable to be obtained
+#| fig-width: 10
+#| fig-height: 8
+#| out-width: "100%"
 
-### Early Season Migration
+image_read('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2026/LossUnclip_1_Winter_WY.png')
+
+```
+
+#### STARs
+
+#### DCC Gate Closures
+
+#### Early Season Migration
 
 `r early_season_text`
 
 ## Hatchery Winter-run Chinook
+
+#### Current Status
 
 *Give update on migration, salvage, monitoring, and telemetry findings.*
 
 As of Sys.Date() 500,000 hatchery winter-run have been released into the Sacramento River on February 15, 2025 and 50,0000 have been realed into Battle Creek on March 21, 2026. JPEs are 80,000 and 10,000 for the respective releases with annual loss thresholds of 150 fish for the Sacramento Release and 10 fish for the Battle Creek Release.
 
 ## Central Valley Steelhead
+
+#### Current Status
 
 *Give update on migration, salvage, monitoring of clipped and unclipped steelhead.*
 
@@ -104,7 +159,23 @@ if (knitr::is_latex_output()) {
 }
 
 ```
+
+#### Annual Loss
+Cumulative loss as of x.date is xx and is xx% of thresholds.
+```{r}
+#| label: sh_loss
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: Cumulative loss of natural-origin and hatchery steelhead for WY 2026.
+#| fig-width: 10
+#| fig-height: 8
+#| out-width: "100%"
+
+image_read('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2026/LossUnclip_2_Stlhd_WY.png')
+```
 ## Appendix
-## References
+
 
 :::
+## References
