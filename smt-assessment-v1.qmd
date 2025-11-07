@@ -5,7 +5,6 @@ format:
     standalone: false
     title-block-style: none
   pdf: default
-  docx: default
 engine: knitr
 ---
 
@@ -29,8 +28,6 @@ source("smelt_vars.R")
 
 ## PRELIMINARY DATA: Assessment for Delta Operations on ESA and CESA-listed Osmerids
 
-*BDO Science Division*
-
 Last updated: *`r format(Sys.Date(), "%B %d, %Y")`*
 
 ### Executive Summary
@@ -41,51 +38,46 @@ Section 3.13.3.4.1 of the Proposed Action and Section 8.1.4. of the Incidental T
 cat(narrative_text)
 ```
 
+
 ### Operational and Regulatory Conditions
 
 - See current Weekly Fish and Water Operations Outlook document.
 - Additional information also available on the [SacPAS SMT page](https://www.cbr.washington.edu/sacramento/workgroups/delta_smelt.html).
 
-### Evaluation
 
-#### Delta Smelt
-
-##### Current Status 
+### Delta Smelt  
 
 - **Delta Smelt Life Stages**: `r lifestages`
 
-- The **abundance estimate** as of the week of `r abundance_date` was: `r paste0(abundance, " (95% CL: ", abundance_lcl, " to ", abundance_ucl, ")")`
-- A total of `r format(total_released, scientific = FALSE, big.mark = ",")` hatchery Delta Smelt have been released for WY 2026 (@tbl-ds-releases). The most recent releases of `r format(last_release_count, scientific = FALSE, big.mark = ",")` fish occurred in `r format(last_release_location, scientific = FALSE, big.mark = ",")` on `r format(last_release_date, "%b %d, %Y")`.
-- A total of `r adults_count` adult Delta Smelt have been detected this water year. See @fig-ds-map for spatial distribution and @fig-ds-catch for temporal distribution.
-- Delta Smelt Salvage totals `r ds_salvage_count` Delta Smelt, and the cumulative seasonal salvage is `r ds_cumsalvage`. 
+- **Abundance estimate:** `r paste0(abundance, " (95% CL: ", abundance_lcl, " to ", abundance_ucl, ")")` as of the week of `r abundance_date`
+- **Releases:** A total of `r format(total_released, scientific = FALSE, big.mark = ",")` hatchery Delta Smelt have been released for WY 2026. The most recent releases of `r format(last_release_count, scientific = FALSE, big.mark = ",")` fish occurred in `r format(last_release_location, scientific = FALSE, big.mark = ",")` on `r format(last_release_date, "%b %d, %Y")`. 
+- **Delta Smelt count:** `r adults_count` adult Delta Smelt and `r juveniles_count` juvenile Delta smelt have been detected this water year. See @tbl-ds-recent-catch for recent detections, @fig-ds-map for spatial distribution, and @fig-ds-catch for temporal distribution.
+- **Delta Smelt salvage:** `r ds_salvage_count` Delta Smelt have been salvaged, and the cumulative seasonal salvage is `r ds_cumsalvage`. 
 
 ###### Notes
 - Since there are few recent detections of Delta Smelt, the Smelt Monitoring Team’s capacity to estimate where they are within the Delta is limited. 
-- See [SacPAS SMT Page](https://www.cbr.washington.edu/sacramento/workgroups/delta_smelt.html) for additional details on detection in surveys and salvage.
+- See [SacPAS SMT Page](https://www.cbr.washington.edu/sacramento/workgroups/delta_smelt.html) for additional details on releases and detection in surveys and salvage.
 - Historical salvage trends can be found at: [SacPAS Salvage Timing](https://www.cbr.washington.edu/sacramento/data/query_salvage_hrt.html)
   
 
 ```{r, echo = FALSE}
-#| label: "tbl-ds-releases"
-#| tbl-cap: "Delta Smelt Water Year 2026 Releases"
+#| label: "tbl-ds-recent-catch"
+#| tbl-cap: "Delta Smelt Detections in the last 2 weeks"
 
-kable(releases)
+kable(df_recent_display)
 ```
-
-- *Release event 4 is tentative for planning purposes if extra fish are available and need to be released
-- **Total does not account for the tentative release event 4.
 
 
 ```{r, echo = FALSE}
 #| fig-width: 8
 #| fig-height: 7
 #| label: "fig-ds-map"
-#| fig-cap: "Delta Smelt Distribution"
+#| fig-cap: "Delta Smelt Distribution for WY 2026"
 (map_detections_lj <- ggplot() + 
     geom_sf(data = WW_Delta, color = "darkslategray3") +
     geom_sf(data = R_EDSM_Strata_1718P1, aes(fill = Stratum), alpha = 0.4,inherit.aes = FALSE)+
     # geom_sf(data = releases_sf, shape = 23, size =3,  fill = "red", color = "black", inherit.aes = FALSE) + 
-    geom_sf(data = ds_latlon, aes(shape = source, size = total_catch),   inherit.aes = FALSE) + 
+    geom_sf(data = df_wy, aes(shape = source, size = total_catch),   inherit.aes = FALSE) + 
     # geom_sf_text(data = sls_sf, mapping = aes(label = Station), size = 3, nudge_x = -0.012, nudge_y = 0.016) +
     annotation_north_arrow(location = "tl", which_north = "true",
                            pad_x = unit(.1, "in"), pad_y = unit(0.2, "in"),
@@ -108,8 +100,6 @@ kable(releases)
           legend.text = element_text(size = 9)))
 ```
 
-**Do we still want catch tables or just to modify tables on SacPAS - recent (2 wk) and water year totals**
-
 ```{r, echo = FALSE, message = FALSE}
 #| label: "tbl-catch-all"
 #| tbl-cap: "Delta Smelt Water Year Totals by Life Stage"
@@ -117,14 +107,15 @@ kable(
   ds_detail %>%
   group_by(source, region, life_stage) %>%
     summarize(total = sum(catch)) %>%
-    ungroup()
+    ungroup() %>%
+    select(Survey = source, Region = region, `Life Stage` = life_stage, Total = total)
 )
 ```
 
 ```{r, echo = FALSE}
 #| label: "fig-ds-catch"
 #| fig-cap: "Time Series of Delta Smelt Catch, WY 2026"
-ggplot(ds_latlon) +
+ggplot(df_wy) +
   geom_col(aes(date, total_catch, fill = source)) +
   scale_fill_viridis(option = "turbo", discrete = TRUE) +
   theme_bw()
@@ -132,13 +123,14 @@ ggplot(ds_latlon) +
 
 ##### Environmental Surrogates
 
-###### Relevant Weather Forecasts
+#### Weather Forecasts
 ```{r, echo=FALSE, results='asis'}
 cat(glue("
 - {weather_stockton}
 - {weather_antioch}
 "))
 ```
+
 - Weather forecasts for [Stockton, CA](https://forecast.weather.gov/MapClick.php?lat=37.9537&lon=-121.2905#.Y2qMENeIaUk) and [Antioch, CA](https://forecast.weather.gov/MapClick.php?lat=38.0169&lon=-121.8138) as of `r format(Sys.Date(), "%B %d, %Y")`.
 
 
@@ -158,6 +150,8 @@ if (first_flush_status != "relevant") {
 "))
 }
 ```
+
+
 
 ####### Adult Delta Smelt Entrainment Action
 
@@ -194,8 +188,7 @@ if (larval_ent_status != "relevant") {
 }
 ```
 
-
-#### Longfin Smelt
+### Longfin Smelt
 
 For Action 5, these rely on JPF (unsure how this is calculated) and population models (which don't yet exist)
 
@@ -210,12 +203,6 @@ For Action 5, these rely on JPF (unsure how this is calculated) and population m
 ```
 
 
-
-
-
-
-
-
 ###### End of Smelt OMR Management
 ```{r, echo = FALSE, results='asis'}
 if (end_of_season != "relevant") {
@@ -228,8 +215,6 @@ if (end_of_season != "relevant") {
 }
 ```
 
-  
-###### Zone of Influence/PTM: 
 
 ### References
 
