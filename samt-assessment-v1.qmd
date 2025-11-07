@@ -114,7 +114,49 @@ image_read('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2
 ```
 
 #### STARs
+The Delta STARS Model is an individual-based simulation model that predicts survival, travel time, and routing of juvenile salmon migrating through the Sacramento–San Joaquin River Delta.
 
+```{r}
+#| label: stars_survival
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: Estimated overall winter-run survival from Knights Landing to Chipps Island.  Black line indicates the current water-year, and other colored lines correspond to past water years.
+#| fig-width: 10
+#| fig-height: 8
+#| out-width: "100%"
+
+image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_plot_02-1.png')
+
+```
+
+```{r}
+#| label: stars_id_survival
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: Estimated survival from Knights Landing to Chipps Island of simulate winter-run cohorts that route through the interior delta.  Black line indicates the current water-year, and other colored lines correspond to past water years.
+#| fig-width: 10
+#| fig-height: 8
+#| out-width: "100%"
+
+image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_plot_02-2.png')
+
+```
+
+```{r}
+#| label: stars_id_routing
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: Estimated probability of winter-run routing into the interior delta.  Black line indicates the current water-year, and other colored lines correspond to past water years.
+#| fig-width: 10
+#| fig-height: 8
+#| out-width: "100%"
+
+image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_plot_02-3.png')
+
+```
 #### DCC Gate Closures
 
 #### Early Season Migration
