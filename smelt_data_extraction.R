@@ -1,6 +1,6 @@
 # smelt_data_extraction.R
 # Script for extracting data for smelt assessments- e.g. from files, SacPAS, online sources
-# Last updated 10/15/2025
+# Last updated 11/7/2025
 
 library(here)
 library(readr)
@@ -252,11 +252,11 @@ ds_latlon <- bind_rows(
 
 # this one has forklength/lifestage (for summary across wy by lifestage)
 ds_detail <- bind_rows(
-  edsm_data %>% select(source, date, catch, mark_code, fork_length, latitude, longitude, region),
+  edsm_data %>% select(source, date, catch, mark_code, fork_length, latitude, longitude, region, stratum),
   twmm_ds %>% select(source, date, catch, fork_length, latitude, longitude, region),
   salvage_data %>% select(source, date, catch, fork_length, latitude, longitude, region)) %>%
   filter(!is.na(catch),
          !is.na(latitude)) %>%
-  mutate(life_stage = ifelse(fork_length>64, "Adult", ifelse(fork_length>25, "Juvenile", "Larva"))) %>%
+  mutate(life_stage = ifelse(fork_length>64, "Adult", ifelse(fork_length>25, "Juvenile", "Larva"))) %>% 
   arrange(date)
 
