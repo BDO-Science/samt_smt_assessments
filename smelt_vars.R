@@ -18,7 +18,7 @@ source("smelt_data_extraction.R")
 ## Actions ---------------------
 first_flush_status = "relevant"
 adult_ent_status = "relevant"
-larval_ent_status = "relevant"
+larval_ent_status = "not relevant"
 end_of_season = "not relevant"
 
 ## Narrative ----------------------
@@ -28,19 +28,26 @@ end_of_season = "not relevant"
 
 narrative_text <- 
 "- OMR Season has not yet begun for Delta Smelt but First Flush could occur starting Dec 1
-- Freeport flows do not indicate First Flush. A storm is occurring this week. 
+- Freeport flows and turbidity do not indicate First Flush. 
 - No Delta Smelt salvage has been observed this water year"
 
 ## Delta Smelt current status -----------------
-past_days <- 60 # choose how far back to go
+past_days <- 14 # choose how far back to go
 
 df_wy = ds_latlon %>%
-  filter(date > ymd("2024-10-01"))
+  filter(date > ymd("2025-10-01"))
 df_recent <- ds_detail %>%
   filter(date > today()-past_days) 
 
 # pull out lifestages present based off data
 lifestages <- paste(unique(df_recent$life_stage), collapse = ", ")
+
+# edit recent with simple info
+df_recent_display <- df_recent %>% 
+  group_by(source, date, region, stratum, life_stage) %>%
+  summarize(sum = sum(catch)) %>% 
+  ungroup() %>%
+  select(Survey = source, Date=date, Region = region, Stratum = stratum, `Life Stage` = life_stage, Catch = sum)
 
 ## Abundance ------------------------------
 # pull abundance estimate
@@ -54,12 +61,14 @@ abundance_ucl <- last(abundance_current$upper_bound)
 abundance_date <- last(abundance_current$dates)
 
 ## Counts ----------------------
-adults_count <- ds_detail %>% filter(life_stage == "Adult") %>% pull(catch) %>% sum()
+adults_count <- df_recent %>% filter(life_stage == "Adult") %>% pull(catch) %>% sum()
+juveniles_count <- df_recent %>% filter(life_stage == "Juvenile") %>% pull(catch) %>% sum()
+larvae_count <- df_recent %>% filter(life_stage == "Larva") %>% pull(catch) %>% sum()
 # marked <- ds_detail %>% filter(life_stage == "Adult", mark_code != "None") %>% pull(catch) %>% sum()
 # unmarked <- ds_detail %>% filter(life_stage == "Adult", mark_code == "None") %>% pull(catch) %>% sum()
-last_catch_date <- ds_detail %>% arrange(date) %>% tail(1) %>% pull(date) 
-last_catch_location <- ds_detail %>% arrange(date) %>% tail(1) %>% pull(region) 
-last_catch_count <- ds_detail %>% arrange(date) %>% tail(1) %>% pull(catch)
+last_catch_date <- df_recent %>% arrange(date) %>% tail(1) %>% pull(date) 
+last_catch_location <- df_recent %>% arrange(date) %>% tail(1) %>% pull(region) 
+last_catch_count <- df_recent %>% arrange(date) %>% tail(1) %>% pull(catch)
 ds_salvage_count <- ds_detail %>% filter(source == "salvage") %>% pull(catch)%>% sum()
 ds_cumsalvage <- salvage_data %>% pull(salvage) %>% sum()
 
@@ -68,7 +77,7 @@ releases <- read_csv(here("data_raw/smelt/smelt_release_table_2026.csv"))
 last_release <- releases %>%
   clean_names() %>%
   mutate(release_date = mdy(release_date)) %>%
-  filter(release_date < "2025-11-30")%>% # this date needs to change to "today()" once releases start.
+  filter(release_date < today())%>% 
   mutate(approx_number_fish = parse_number(approx_number_fish))
 total_released <- last_release %>% pull(approx_number_fish) %>% sum()
 last_release_date <- last_release %>% tail(1) %>% pull(release_date)
