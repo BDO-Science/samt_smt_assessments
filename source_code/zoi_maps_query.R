@@ -32,3 +32,5 @@ hydrology <- paste0(flow_thresholds[1,1], flow_thresholds[2,1])
 
 map <- all_maps[[hydrology]]
 map
+
+ggsave(map, file = 'zoi_map.png', height = 7, width = 7)

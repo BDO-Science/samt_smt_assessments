@@ -62,9 +62,11 @@ Current conditions at Freeport and Vernalis indicate that delta hydrology falls 
 #| message: false
 #| warning: false
 #| fig-cap: Modeled Zone of Influence at different OMRI scenarios based on current inflow hydrology from the Sacramento River and San Joaquin River
+#| fig-width: 8
+#| fig-height: 8
 #| results: asis
 
-map
+image_read('zoi_map.png')
 ```
 
 ## Natural Winter-run Chinook
