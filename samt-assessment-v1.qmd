@@ -58,14 +58,15 @@ Current conditions at Freeport and Vernalis indicate that delta hydrology falls 
 
 ```{r}
 #| label: zoi_graph
-#| echo: false
+#| eval: false
 #| message: false
 #| warning: false
-#| fig-cap: Modeled Zone of Influence at different OMRI scenarios based on current inflow hydrology from the Sacramento River and San Joaquin River
-#| dev: "ragg_png"
+#| dev: ragg_png
 #| dpi: 150
-#| fig-width: 10
+#| fig-cap: Modeled Zone of Influence at different OMRI scenarios based on current inflow hydrology from the Sacramento River and San Joaquin River
 #| fig-height: 8
+#| fig-width: 10
+#| include: false
 #| results: asis
 print(map)
 ```
