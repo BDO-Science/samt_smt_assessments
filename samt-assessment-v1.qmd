@@ -67,7 +67,7 @@ Current conditions at Freeport and Vernalis indicate that delta hydrology falls 
 #| fig-width: 10
 #| fig-height: 8
 #| results: asis
-map
+print(map)
 ```
 
 ## Natural Winter-run Chinook
