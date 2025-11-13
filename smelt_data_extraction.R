@@ -285,6 +285,9 @@ abundance <- left_join(abun, abun_date) %>%
   mutate(abundance_index = if_else(abundance_index == "0*", "0", abundance_index) ) %>%
   mutate(across(c(abundance_index, lower_bound, upper_bound), as.numeric))
 
+## Smelt release table -----------------------------
+smelt_release_table <- tables[[3]] %>% clean_names()
+
 ## Combine datasets ---------------------------------
 
 ### DS ------------------------
