@@ -7,6 +7,7 @@
 library(dplyr)
 library(lubridate)
 library(readr)
+library(janitor)
 source("smelt_data_extraction.R")
 
 ## Instructions
