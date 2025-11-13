@@ -31,4 +31,7 @@ flow_thresholds <- expand.grid(hydrology = c('lo', 'med','hi'),
 hydrology <- paste0(flow_thresholds[1,1], flow_thresholds[2,1])
 
 map <- all_maps[[hydrology]]
-map
+
+png("zoi_map.png", width = 6, height = 6, res = 100, units = 'in')
+print(map)
+dev.off()

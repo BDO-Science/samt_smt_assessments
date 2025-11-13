@@ -32,12 +32,14 @@ inflow_order = c("lolo", "lomed", "lohi", "medlo", "medmed", "medhi", "hilo", "h
 inflow_labels = c("Low Sacramento - Low San Joaquin", "Low Sacramento - Medium San Joaquin", "Low Sacramento - High San Joaquin",
                   "Medium Sacramento - Low San Joaquin", "Medium Sacramento - Medium San Joaquin", "Medium Sacramento - High San Joaquin",
                   "High Sacramento - Low San Joaquin", "High Sacramento - Medium San Joaquin", "High Sacramento - High San Joaquin")
+omr_levels = unique(alt2a$OMR_flow)
 alt2a <- contours_all_Alt2a %>%
   mutate(grouper = paste0(group, "_", flow, group2),
          label = paste0(group2, "_", flow)) %>%
   rename(Inflow = group2) %>%
   mutate(Inflow_text = factor(Inflow, levels = inflow_order, labels = inflow_labels),
-         Inflow = factor(Inflow, levels = inflow_order))
+         Inflow = factor(Inflow, levels = inflow_order),
+         OMR_flow = factor(OMR_flow, levels = omr_levels))
 
 rm(list = ls(pattern = 'contours_all'))
 
@@ -61,28 +63,42 @@ nodes_4326 <- st_transform(nodes, crs = 4326) %>%
   mutate(points = "DSM2 nodes")
 WW_Delta_4326 <- st_transform(WW_Delta, crs = st_crs(delta_4326))
 WW_Delta_crop <- st_crop(WW_Delta_4326,xmin = -122.2, xmax = -121, ymin = 37.5, ymax = 38.8) %>%
-  filter(HNAME!= "SAN FRANCISCO BAY")
+  filter(HNAME!= "SAN FRANCISCO BAY") %>%
+  st_simplify(dTolerance = 200)
 
 
-# Write data for channel length script
-#  write_csv(zoi_channel_long, "data_export/prop_overlap_data_long.csv")
+n_colors <- length(omr_levels)
+omr_colors <- viridis::viridis(n_colors, option = "turbo")
+names(omr_colors) <- omr_levels
 
 plots <- alt2a %>%
   filter(contour == 0.75) %>%
   group_split(Inflow) %>%
-  map(~ ggplot() +
-        geom_sf(data = WW_Delta_crop, fill = "steelblue", color = NA, alpha = 0.6, inherit.aes = FALSE) +
-        geom_path(data = .x, 
-                  aes(x = long, group = grouper, y = lat, color= OMR_flow), linewidth = 1, inherit.aes = FALSE) +
-        ylim(c(37.7, 38.1)) +
-        xlim(c(-121.8, -121.2)) +
-        scale_color_viridis_d(option = "turbo") +
-        labs(title = 'Zone of Influence', subtitle = paste('Hydrology:', unique(.x$Inflow_text)),
-                           color = "OMR Bin") +
-        theme_bw() +
-        theme(axis.title = element_blank(),
-              legend.position = 'bottom')) %>%
+  map(~ {
+    # Create dummy data with all OMR levels (won't be visible on plot)
+    dummy <- data.frame(
+      long = NA, 
+      lat = NA, 
+      OMR_flow = factor(omr_levels, levels = omr_levels),
+      grouper = NA
+    )
+    
+    ggplot() +
+      geom_sf(data = WW_Delta_crop, fill = "steelblue", color = NA, alpha = 0.6, inherit.aes = FALSE) +
+      geom_path(data = dummy, aes(x = long, y = lat, color = OMR_flow, group = grouper), linewidth = 1) +  # Dummy layer
+      geom_path(data = .x, 
+                aes(x = long, group = grouper, y = lat, color = OMR_flow), 
+                linewidth = 1, inherit.aes = FALSE) +
+      ylim(c(37.7, 38.1)) +
+      xlim(c(-121.8, -121.2)) +
+      scale_color_manual(values = omr_colors) +
+      labs(title = 'Zone of Influence', 
+           subtitle = paste('Hydrology:', unique(.x$Inflow_text)),
+           color = "OMR Bin") +
+      theme_bw() +
+      theme(axis.title = element_blank(),
+            legend.position = 'bottom')
+  }) %>%
   set_names(unique(alt2a$Inflow[alt2a$contour == 0.75]))
-plots[["hihi"]]
 
 saveRDS(plots, 'input_data/ZOI_maps.rds')
