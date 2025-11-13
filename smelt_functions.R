@@ -1,4 +1,6 @@
-### Useful functions to read in data
+# smelt_functions.R
+# functions for reading and combining data (these are based on files we received from CDFW and USFWS)
+# Last updated 11/13/2025
 
 # Function to read Excel files - returns single dataframe ---------------
 # Load required libraries
@@ -8,6 +10,10 @@ library(purrr)
 library(stringr)
 
 # Function to read Excel files by pattern - returns single dataframe
+# pattern: the text you are looking for in your filename, e.g. "SLS" or "EDSM". 
+# folder_path: where to look for data files (default is current directory). Do not need to add quotes around folder name.
+# combine_survey_sheets: TRUE to combine multiple sheets (SLS, 20mm), FALSE to just read the first sheet
+
 read_excel_by_pattern <- function(pattern, folder_path = ".", combine_survey_sheets = FALSE) {
   
   # Get list of all Excel files matching the pattern you specify in the function
@@ -83,7 +89,9 @@ read_excel_by_pattern <- function(pattern, folder_path = ".", combine_survey_she
 
 
 # Function to read SFBS Excel files - returns single dataframe -------------------
-read_sfbs_files <- function(folder_path = data_raw) {
+# folder_path: where to look for data files (default is current directory). Do not need to add quotes around folder name.
+
+read_sfbs_files <- function(folder_path = ".") {
   
   # Get list of all Excel files starting with 'SFBS' in filename
   all_files <- list.files(path = folder_path, 
