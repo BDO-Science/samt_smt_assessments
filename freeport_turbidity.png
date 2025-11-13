@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
+    <meta charset="utf-8">
+<meta name="MobileOptimized" content="width">
+<meta name="HandheldFriendly" content="true">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/themes/custom/cbr/favicon.ico" type="image/vnd.microsoft.icon">
+
+<title>Query Issue: SacPAS Sacramento Prediction and Assessment of Salmon and other fishes</title>	
+<link rel="stylesheet" type="text/css" href="/sacramento/css/sacpas_ctrl.css">
+</head>
+<body>
+    
+<a href="#main-content" class="visually-hidden focusable skip-link">Skip to main content</a>
+<a href="#contact-search" class="visually-hidden focusable skip-link">Skip to contact and search</a>
+    
+<!-- HEADER -->
+<header id="cbr_header" class="d-print-none">
+  <div class="region region-header-cbr d-print-none">
+    <div id="block-cbrnewaltmegamenu-2" class="block block-block-content">
+            <div class="clearfix text-formatted">
+				
+<!--start megamenu-->
+
+
+<!--search -->
+<div id="cbr_logoSearch" class="d-print-none">
+	<div id="cbr_logoSearch_box">
+          <div class="cbr_logo">
+            <a href="/sacramento/"><img src="/sacramento/img/SacPAS-logo.png" class="img-fluid" alt="SacPAS: Central Valley Prediction and Assessment of Salmon"></a>
+
+          </div>
+		<div class="cbr_uw_units_box">
+			<div class="cbr_uw_units">
+<!--start uw unit -->
+              <div>
+				  <a href="https://www.washington.edu/" class="cbr_uw_units_link">
+<img src="/sac_img/UW-Wordmark_center_white.png" alt="University of Washington" width="245px"></a>
+				</div>
+				<div>
+				  <a href="https://www.cbr.washington.edu/" class="cbr_uw_units_link">Columbia Basin Research</a>
+			</div>
+<!--end uw unit -->
+			</div>
+		</div>
+	</div>
+</div>
+<!--end search box -->
+
+<!-- start mobile-->
+<nav aria-label="Site Navigation" role="navigation">
+
+<div class="cbr_mobileBlock d-print-none">
+	<div id="logo_accordion"><a href="/sacramento/" class="cbr_white">SacPAS: Central Valley Prediction and Assessment of Salmon</a></div>
+	<div id="cbraccordion">
+		<button class="cbr_icon_nav"><i class="bi-list" aria-description="Menu Button"></i></button>
+
+		<div class="cbr_Panel">
+			<button class="cbr_accordion cbr_mobile_nav">Data &amp; Alerts</button>
+			<div class="cbr_PanelSub">
+				<a href="/sacramento/data/" class="cbr_acc_landing">Data &amp; Alerts</a>
+				<button class="cbr_accordion cbr_mobile_navSub">
+				Environmental Conditions
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+						<!--different order than desktop-->
+						<li><a class="mm_li" href="/sacramento/data/query_river_graph.html">River Graph&amp;Text</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_river_map/">River Map</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_river_table.html">River Daily Table</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_river_allyears.html">All Years Graph</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_basin.html">Basin Conditions</a></li>
+						<li><a class="mm_li" href="/sacramento/data/sjr_map/">SJR Current Conditions</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_hci.html">Hydrologic Classification Indices</a></li>				
+						<li><a class="mm_li" href="/sacramento/data/query_airtemp_graph.html">Air Temperature</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_airtemp_map/">Air Temperature Map</a></li>
+					</ul>
+				</div>
+				<button class="cbr_accordion cbr_mobile_navSub">
+				Alerts
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+							<li><a class="mm_li" href="/sacramento/data/alert_weirs.html">Weir Overtopping</a></li>
+					</ul>
+				</div>  
+				<button class="cbr_accordion cbr_mobile_navSub">
+				Ecological Thresholds
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+						<li><a class="mm_li" href="/sacramento/data/tc_clear.html">Clear Creek Temperature</a></li>
+						<li><a class="mm_li" href="/sacramento/data/tc_american.html">Lower American Temperature</a></li>
+						<li><a class="mm_li" href="/sacramento/data/tc_sacramento.html">Sacramento Temperature</a></li>
+						<li><a class="mm_li" href="/sacramento/data/tc_stanislaus.html">Stanislaus Flow&amp;Temp</a></li>
+						<li><a class="mm_li" href="/sacramento/data/perform/">Exposure Index</a></li>
+					</ul>
+				</div>
+
+				<button class="cbr_accordion cbr_mobile_navSub">
+				Juvenile Monitoring &amp; Sampling
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+						<li><a class="mm_li" href="/sacramento/data/query_sampling_graph.html">Cohort Juvenile Monitoring</a></li>
+						<li><a class="mm_li" href="/sacramento/data/delta_juvenile.html">Juvenile Salmonid Monitoring</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_redbluff_daily.html">Red Bluff Calendar Year Table</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_redbluff_by.html">Red Bluff Brood Year Table</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_redbluff_graph.html">Red Bluff Daily Graph</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_hrt.html">Cohort Migration Timing</a></li>
+						<li><a class="mm_li" href="/sacramento/data/currcatch.html">Current Catch</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_stranding.html">Juvenile Stranding</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_calfishtrack.html">CalFishTrack Survival Estimates</a></li>
+						<li><a class="mm_li" href="/sacramento/data/jpe_data.html">JPE Letter Data</a></li>
+					</ul>
+				</div>            
+				<button class="cbr_accordion cbr_mobile_navSub">
+				Juvenile Salvage &amp; Loss
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+						<li><a class="mm_li" href="/sacramento/data/delta_loss.html">Delta Loss Graphs</a></li>
+						<li><a class="mm_li" href="/sacramento/data/delta_salvage.html">Delta Salvage Graphs</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_salvage_hrt.html">Salvage Timing</a></li>
+						<li><a class="mm_li" href="/sacramento/data/delta_cwt_tables.html">Hatchery Chinook Loss Tables</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_loss_detail.html">Salvage and Loss Detail</a></li>
+					</ul>
+				</div>            
+				<button class="cbr_accordion cbr_mobile_navSub">
+				Adults &amp; Redds
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+						<li><a class="mm_li" href="/sacramento/data/query_adult_grandtab.html">CDFW GrandTab Escapement</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_carcass_detail.html">Carcass Detail</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_redd_aerial.html">Aerial Redd</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_redd_dewatering.html">Redd Dewatering</a></li>
+						<li><a class="mm_li" href="/sacramento/data/pfmc_ahir.html">PFMC Harvest &amp; more</a></li>
+					</ul>
+				</div>      			
+				<button class="cbr_accordion cbr_mobile_navSub">
+				Other Fishes
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+						<li><a class="mm_li" href="/sacramento/data/smelt_releases.html">Smelt Releases</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_delta_smelt.html">Smelt Current &amp; Historical</a></li>	
+					</ul>
+				</div>      				            
+				
+				<button class="cbr_accordion cbr_mobile_navSub">
+				Resources
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+						<li><a class="mm_li" href="/sacramento/data/index.html#Access_All">Access all Data&amp;Alerts tools</a></li>
+						<li><a class="mm_li" href="/sacramento/data/metadata/">Metadata and Methods</a></li>
+						<li><a class="mm_li" href="/sacramento/data/inventory.html">Data Inventory</a></li>
+						<li><a class="mm_li" href="/sacramento/data/news.html">News and Announcements</a></li>
+					</ul>
+				</div>
+			</div>
+		<!--end data accordion -->
+		<!--start Workgroups &amp; Teams accordion -->
+			<button class="cbr_accordion cbr_mobile_nav">Workgroups &amp; Teams</button>
+			<div class="cbr_PanelSub">
+				<a href="/sacramento/workgroups/" class="cbr_acc_landing">Workgroups &amp; Teams</a>				
+				
+				<button class="cbr_accordion cbr_mobile_navSub">
+				Salmon Monitoring Team (SaMT)
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+                            <li><a class="mm_li" href="/sacramento/workgroups/salmon_monitoring.html">Current Water Year</a></li>
+					</ul>
+				</div>
+				<button class="cbr_accordion cbr_mobile_navSub">
+				Smelt Monitoring Team (SMT)
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+                            <li><a class="mm_li" href="/sacramento/workgroups/delta_smelt.html">Current Water Year</a></li>
+					</ul>
+				</div>
+				<button class="cbr_accordion cbr_mobile_navSub">
+				Stanislaus Watershed Team (SWT)
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+                             <li><a class="mm_li" href="/sacramento/workgroups/stanislaus_watershed.html">Current Water Year</a></li>
+					</ul>
+				</div>
+				<button class="cbr_accordion cbr_mobile_navSub">
+				San Joaquin River Restoration Program (SJRRP)
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+						<li><a class="mm_li" href="/sacramento/workgroups/sjrrp.html">Current Restoration Year</a></li>
+					</ul>  
+				</div>
+				<button class="cbr_accordion cbr_mobile_navSub">
+				Sacramento River Technical Group (SRG)
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+                             <li><a class="mm_li" href="/sacramento/workgroups/srg.html">Current Water Year</a></li>
+					</ul>
+				</div>
+				<button class="cbr_accordion cbr_mobile_navSub">
+				American River Group (ARG)
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+                             <li><a class="mm_li" href="/sacramento/workgroups/american_river.html">Current Water Year</a></li>
+					</ul>
+				</div>
+
+			</div>
+		<!--end Workgroups accordion -->
+		<!--start tools accordion -->          
+			<button class="cbr_accordion cbr_mobile_nav">Tools &amp; Models</button>
+			<div class="cbr_PanelSub">
+				<a href="/sacramento/tools/" class="cbr_acc_landing">Tools &amp; Models</a>
+				<button class="cbr_accordion cbr_mobile_navSub">
+				SacPAS Tools
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+                            <li><a class="mm_li" href="/sacramento/fishmodel/">Fish Model</a></li>
+                            <li><a class="mm_li" href="/sacramento/grow/">Egg Growth Model</a></li>
+					</ul>
+				</div>
+				<button class="cbr_accordion cbr_mobile_navSub">
+				3<sup>rd</sup> Party Tools
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+                             <li><a class="mm_li" href="/shiny/STARS/">Delta STARS</a></li>
+                              <li><a class="mm_li" href="/sacramento/lossandsalvage/">Loss &amp; Salvage Predictor</a></li>
+					</ul>
+				</div>
+				<button class="cbr_accordion cbr_mobile_navSub">
+				Supportive Tools
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+                              <li><a class="mm_li" href="/shiny/EGGGROWTEMPS/">EGGGROWTEMPS Shiny app</a></li>
+                              <li><a class="mm_li" href="/shiny/EGG_SURV/">EGG_SURV Shiny app</a></li>
+                              <li><a class="mm_li" href="/shiny/SURVDEMO/">SURVDEMO Shiny app</a></li>
+                              <li><a class="mm_li" href="/shiny/MIGR.DISTRIB/">MIGR_DISTRIB Shiny app</a></li>
+                              <li><a class="mm_li" href="/shiny/TEMPMAKER/">TEMPMAKER Shiny app</a></li>
+					</ul>
+				</div>
+			</div>
+		<!--end tools accordion -->
+		<!--start explore in depth accordion -->    
+			<button class="cbr_accordion cbr_mobile_nav">Explore in Depth</button>
+			<div class="cbr_PanelSub">
+				<a href="/sacramento/explore/" class="cbr_acc_landing">Explore in Depth</a>
+				<button class="cbr_accordion cbr_mobile_navSub">
+				Track-a-Cohort
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+						<li><a class="mm_li" href="/sacramento/cohort/">Winter-run Chinook</a></li>
+						<li><a class="mm_li" href="/sacramento/cohort/index.html#stlhd">Steelhead</a></li>
+					</ul>
+				</div>
+				<button class="cbr_accordion cbr_mobile_navSub">
+				Topical Questions
+				</button>
+				<div class="cbr_PanelSub2">
+					<ul class="mm_list">
+					<li><a class="mm_li" href="/sacramento/explore/tq_wateryear.html">Water Year Conditions</a></li> 
+					<li><a class="mm_li" href="/sacramento/explore/tq_endangered.html">Endangered Fish Species</a></li> 
+					<li><a class="mm_li" href="/sacramento/explore/tq_models.html">Types of Models</a></li>
+					</ul>
+				</div>
+			</div>
+		<!--end explore in depth accordion -->
+		<!--start about accordion -->              
+			<button class="cbr_accordion cbr_mobile_nav">About</button>
+			<div class="cbr_PanelSub">
+				<a href="/sacramento/about.html" class="cbr_acc_landing">About</a>
+			</div>
+		<!--end about accordion -->
+		</div>
+	</div>
+</div>
+</nav>
+<!-- end mobile-->
+
+<!-- start desktop-->
+      <nav id="cbr_meganav" aria-label="Site Mega Menu" role="navigation">
+        <div id="cbr_nav_menu" class="dropdown d-print-none">
+			<!-- collapsable header logo -->
+<a href="/sacramento/" aria-label="SacPAS Home">
+	<img src="/sacramento/img/sac_logo_collapse.png" id="collapse-logo" class="img-fluid" alt="logo"></a>
+			
+<div class="navsep">&nbsp;</div>
+<!--start DATA and alerts -->
+<div id="datagrp">
+	<div class="btn-group dropdown-center" id="cbr_btn_datagrp">
+		<a href="/sacramento/data/" id="cbr_btn_data" class="btn btn-cbrnav btn-sm cbr_topnav cbr_topnav_home cbr_dropdown cbr_dropbtn cbr_NavButtonLink" role="group">Data &amp; Alerts</a>
+		
+		<button type="button" class="btn btn-cbrnav dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Data &amp; Alerts Mega Menu" aria-controls="cbr_Data">
+		</button>
+		
+		<div class="dropdown-menu">
+			<div id="cbr_Data">
+				<div id="cbr_NavData">
+					<div class="cbr_NavWrapper">
+						<div class="cbr_NavCenterLarge">
+							<div class="cbr_NavCol1">
+								<a href="/sacramento/data/" class="cbr_NavCat">Data &amp; Alerts</a>
+								<p>
+								Publicly accessible, web-based query and reporting system of historical and current fish, environmental, and hydrologic information, vital to year-round planning and adaptive management of the Central Valley Project and State Water Project. Data uploads provide the most up-to-date data as it is made available, whether it be daily, biweekly, monthly or annually.		
+								<br><br>
+								Basic conditions, performance measures, and threshold-based alerts are available through data aggregation and analysis of environmental conditions.
+								</p>
+								<br><br>
+								<div class="cbr_NavHdr">Resources</div>
+								<ul class="mm_list">
+						<li><a class="mm_li" href="/sacramento/data/index.html#Access_All">Access all Data&amp;Alerts tools</a></li>
+						<li><a class="mm_li" href="/sacramento/data/metadata/">Metadata and Methods</a></li>
+						<li><a class="mm_li" href="/sacramento/data/inventory.html">Data Inventory</a></li>
+						<li><a class="mm_li" href="/sacramento/data/news.html">News and Announcements</a></li>
+								</ul>
+							</div>
+
+							<div class="cbr_NavCol2">
+								<div class="cbr_NavRow">
+					<!-- row 1 column 1 -->				
+									
+									<div class="cbr_NavCol3">
+										<div class="cbr_NavHdr">Environmental Conditions</div>
+										<ul class="mm_list">
+						<li><a class="mm_li" href="/sacramento/data/query_river_graph.html">River Graph&amp;Text</a> &bull; <a class="mm_li" href="/sacramento/data/query_river_map/">Map</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_river_table.html">River Daily Table</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_airtemp_graph.html">Air Temperature</a> &bull; <a class="mm_li" href="/sacramento/data/query_airtemp_map/">Map</a></li>
+					</ul>
+									<div class="cbr_NavHdr">Alerts</div>
+										<ul class="mm_list">
+							<li><a class="mm_li" href="/sacramento/data/alert_weirs.html">Weir Overtopping</a></li>
+										</ul>				
+
+									</div>
+									
+					<!-- row 1 column 2 -->				
+									<div class="cbr_NavCol3">
+										<div class="cbr_NavHdr">Environmental Conditions</div>
+					<ul class="mm_list">
+						<li><a class="mm_li" href="/sacramento/data/query_river_allyears.html">All Years Graph</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_basin.html">Basin Conditions</a></li>
+						<li><a class="mm_li" href="/sacramento/data/sjr_map/">San Joaquin Current Conditions</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_hci.html">Hydrologic Classification Indices</a></li>
+					</ul>
+					
+
+									</div>
+									
+					<!-- row 1 column 3 -->				
+									<div class="cbr_NavCol3">
+										<div class="cbr_NavHdr">Ecological Thresholds</div>
+					<ul class="mm_list">
+						<li><a class="mm_li" href="/sacramento/data/tc_clear.html">Clear Creek Temperature</a></li>
+						<li><a class="mm_li" href="/sacramento/data/tc_american.html">Lower American Temperature</a></li>
+						<li><a class="mm_li" href="/sacramento/data/tc_sacramento.html">Sacramento Temperature</a></li>
+						<li><a class="mm_li" href="/sacramento/data/tc_stanislaus.html">Stanislaus Flow&amp;Temp</a></li>
+						<li><a class="mm_li" href="/sacramento/data/perform/">Exposure Index</a></li>
+					</ul>
+					
+									</div>
+					<!-- row 1 column 4 -->				
+									
+									<div class="cbr_NavCol3">
+				<div class="cbr_NavHdr">Other Fishes</div>
+					<ul class="mm_list">
+						<li><a class="mm_li" href="/sacramento/data/smelt_releases.html">Smelt Releases</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_delta_smelt.html">Smelt Current &amp; Historical</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_loss_detail.html">Smelt Loss Detail</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_loss_detail.html">Sturgeon Loss Detail</a></li>
+					</ul>								
+									</div>
+								</div>
+								<!-- end data row 1-->
+								<!-- start data row 2-->
+								<div class="cbr_NavRow">
+					<!-- row 2 column 1 -->				
+									<div class="cbr_NavCol3">
+										<div class="cbr_NavHdr">Juvenile Monitoring &amp; Sampling</div>
+					<ul class="mm_list">
+						<li><a class="mm_li" href="/sacramento/data/query_sampling_graph.html">Cohort Juvenile Monitoring</a></li>
+						<li><a class="mm_li" href="/sacramento/data/delta_juvenile.html">Juvenile Salmonid Monitoring</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_redbluff_daily.html">Red Bluff Calendar Year Table</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_redbluff_by.html">Red Bluff Brood Year Table</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_redbluff_graph.html">Red Bluff Daily Graph</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_stranding.html">Juvenile Stranding</a></li>
+					</ul>
+									</div>
+					<!-- row 2 column 2 -->				
+									<div class="cbr_NavCol3">
+										<div class="cbr_NavHdr">Juvenile Monitoring &amp; Sampling</div>
+					<ul class="mm_list">
+						<li><a class="mm_li" href="/sacramento/data/query_hrt.html">Cohort Migration Timing</a></li>
+						<li><a class="mm_li" href="/sacramento/data/currcatch.html">Current Catch</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_calfishtrack.html">CalFishTrack Survival Estimates</a></li>
+						<li><a class="mm_li" href="/sacramento/data/jpe_data.html">JPE Letter Data</a></li>
+					</ul>
+									</div>
+					<!-- row 2 column 3 -->				
+									
+									<div class="cbr_NavCol3">
+										<div class="cbr_NavHdr">Juvenile Salvage &amp; Loss</div>
+					<ul class="mm_list">
+						<li><a class="mm_li" href="/sacramento/data/delta_loss.html">Delta Loss Graphs</a></li>
+						<li><a class="mm_li" href="/sacramento/data/delta_salvage.html">Delta Salvage Graphs</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_salvage_hrt.html">Salvage Timing</a></li>
+						<li><a class="mm_li" href="/sacramento/data/delta_cwt_tables.html">Hatchery Chinook Loss Tables</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_loss_detail.html">Salvage and Loss Detail</a></li>
+
+					</ul>
+									</div>									
+
+					<!-- row 2 column 4 -->				
+									<div class="cbr_NavCol3">
+										<div class="cbr_NavHdr">Adults &amp; Redds</div>
+										<ul class="mm_list">
+						<li><a class="mm_li" href="/sacramento/data/query_adult_grandtab.html">CDFW GrandTab Escapement</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_carcass_detail.html">Carcass Detail</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_redd_aerial.html">Aerial Redd</a></li>
+						<li><a class="mm_li" href="/sacramento/data/query_redd_dewatering.html">Redd Dewatering</a></li>
+						<li><a class="mm_li" href="/sacramento/data/pfmc_ahir.html">PFMC Harvest &amp; more</a></li>
+										</ul>
+									</div>									
+								</div>
+								<!-- end data row 2-->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--end Data and Alerts -->
+<div class="navsep">&nbsp;</div>
+
+<!--start Workgroups and Teams -->
+<div id="teamsgrp">
+          <div class="btn-group dropdown-center" id="cbr_btn_teamsgrp">
+            <a href="/sacramento/workgroups/" id="cbr_btn_teams" class="btn btn-cbrnav btn-sm cbr_topnav cbr_topnav_home cbr_dropdown cbr_dropbtn cbr_NavButtonLink" role="group">Workgroups &amp; Teams</a>
+            <button type="button" class="btn btn-cbrnav dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Workgroups & Teams Mega Menu" aria-controls="cbr_Teams">
+            </button>
+            <div class="dropdown-menu">
+              <div id="cbr_Teams">
+                <div id="cbr_NavTeams">
+                  <div class="cbr_NavWrapper">
+                    <div class="cbr_NavCenterLarge">
+                      <div class="cbr_NavCol1">
+                        <a href="/sacramento/workgroups/" class="cbr_NavCat">Workgroups &amp; Teams</a>
+                        <p>
+                          Customized data visualizations, biological thresholds, and data tables of current conditions with recent and real-time data to facilitate in-season monitoring and management by Central Valley Workgroups and Monitoring Teams.
+                          </p>
+						<div class="cbr_NavHdr mt-1">Resources</div>
+                           <ul class="mm_list">
+                          <li><a class="mm_li" href="https://www.usbr.gov/mp/bdo/water-operations.html">Water Operations and Watershed Monitoring Technical Teams</a>, BDO, BOR</li>
+                          </ul>  
+                     </div>
+                      <div class="cbr_NavCol2">
+                        <div class="cbr_NavRow">
+							
+                          <div class="cbr_NavCol3">
+                            <div class="cbr_NavHdr"><a class="mega" href="/sacramento/workgroups/salmon_monitoring.html">Salmon Monitoring Team</a></div>
+                          <ul class="mm_list">
+                              <li><a class="mm_li" href="/sacramento/workgroups/salmon_monitoring.html#juvfish">Juvenile Sampling Summary</a></li>
+                              <li><a class="mm_li" href="/sacramento/workgroups/salmon_monitoring.html#loss">Single-Year Loss Thresholds</a></li>
+                              <li><a class="mm_li" href="/sacramento/workgroups/salmon_monitoring.html#daily">Daily Loss Table</a></li>
+							<li><a class="mm_li" href="/sacramento/workgroups/salmon_monitoring.html">more SaMT <i class="bi bi-arrow-right-circle" aria-hidden="true"></i></a></li>
+                              </ul>
+                           <div class="cbr_NavHdr"><a class="mega" href="/sacramento/workgroups/sjrrp.html">San Joaquin R Restoration Program</a></div>
+							<ul class="mm_list">
+							<li><a class="mm_li" href="/sacramento/workgroups/sjrrp_query_allocmgt.html">Allocation Management</a></li>
+							<li><a class="mm_li" href="/sacramento/workgroups/sjrrp_query_restflow.html">Restoration Flow Volumes</a></li>
+							<li><a class="mm_li" href="/sacramento/workgroups/sjrrp_query_flows_hydro.html">Daily Flow Hydrograph</a></li>
+							<li><a class="mm_li" href="/sacramento/workgroups/sjrrp.html">more SJRRP <i class="bi bi-arrow-right-circle" aria-hidden="true"></i></a></li>
+                            </ul>
+                            
+
+                         </div>
+                          <div class="cbr_NavCol3">
+                           <div class="cbr_NavHdr"><a class="mega" href="/sacramento/workgroups/delta_smelt.html">Smelt Monitoring Team</a></div>
+                           <ul class="mm_list">
+                            <li><a class="mm_li" href="/sacramento/workgroups/delta_smelt.html#daily">Daily Conditions</a></li>
+                            <li><a class="mm_li" href="/sacramento/workgroups/delta_smelt.html#summary">Delta Smelt Current</a></li>
+                            <li><a class="mm_li" href="/sacramento/workgroups/delta_smelt.html#figures">OMR Management Figures</a></li>
+							<li><a class="mm_li" href="/sacramento/workgroups/delta_smelt.html">more SMT <i class="bi bi-arrow-right-circle" aria-hidden="true"></i></a></li>
+                            </ul>
+
+                          <div class="cbr_NavHdr"><a class="mega" href="/sacramento/workgroups/srg.html">Sacramento River Technical Group</a></div>
+							<ul class="mm_list">
+							<li><a class="mm_li" href="/sacramento/workgroups/srg.html">Fall Flow Redd Dewatering</a></li>
+                            </ul>
+
+                        </div>                            
+                            
+                          <div class="cbr_NavCol3">
+                            <div class="cbr_NavHdr"><a class="mega" href="/sacramento/workgroups/stanislaus_watershed.html">Stanislaus Watershed Team</a></div>
+							<ul class="mm_list">
+							<li><a class="mm_li" href="/sacramento/workgroups/stanislaus_watershed.html#tempflow">Temperature and Flow</a></li>
+                            <li><a class="mm_li" href="/sacramento/workgroups/stanislaus_watershed.html#currcond">Current River Conditions</a></li>
+                            <li><a class="mm_li" href="/sacramento/workgroups/stanislaus_watershed.html#histtemp">Water Temperature Hist. &amp; Current</a></li>
+							<li><a class="mm_li" href="/sacramento/workgroups/stanislaus_watershed.html">more SWT <i class="bi bi-arrow-right-circle" aria-hidden="true"></i></a></li>
+                            </ul>
+
+                          <div class="cbr_NavHdr"><a class="mega" href="/sacramento/workgroups/american_river.html">American River Group</a></div>
+							<ul class="mm_list">
+							<li><a class="mm_li" href="/sacramento/workgroups/american_river.html">Temperature and Flow</a></li>
+                            </ul>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+<!--end Workgroups and Teams -->
+<div class="navsep">&nbsp;</div>
+
+
+<!--start Tools and Models -->
+<div id="toolsgrp">
+          <div class="btn-group dropdown-center" id="cbr_btn_toolsgrp">
+            <a href="/sacramento/tools/" id="cbr_btn_tools" class="btn btn-cbrnav btn-sm cbr_topnav cbr_topnav_home cbr_dropdown cbr_dropbtn cbr_NavButtonLink" role="group">Tools &amp; Models</a>
+            <button type="button" class="btn btn-cbrnav dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Tools & Models Mega Menu" aria-controls="cbr_Tools">
+            </button>
+            <div class="dropdown-menu">
+              <div id="cbr_Tools">
+                <div id="cbr_NavTools">
+                  <div class="cbr_NavWrapper">
+                    <div class="cbr_NavCenterMedium">
+                      <div class="cbr_NavCol1">
+                        <a href="/sacramento/tools/" class="cbr_NavCat">Tools &amp; Models</a>
+                        <p>
+							Interactive models for prediction of egg survival and fry emergence; juvenile migration and survival; delta migration, routing, and survival; and loss and salvage. Includes Shiny apps developed by SacPAS in support model exploration and implementation of 3<sup>rd</sup> party tools.
+
+                        </p>
+                      </div>
+                      <div class="cbr_NavCol2">
+                        <div class="cbr_NavRow">
+                          <div class="cbr_NavCol3">
+                            <div class="cbr_NavHdr">SacPAS Tools</div>
+					<ul class="mm_list">
+                            <li><a class="mm_li" href="/sacramento/fishmodel/">Fish Model</a></li>
+                            <li><a class="mm_li" href="/sacramento/grow/">Egg Growth Model</a></li>
+					</ul>
+                          </div>
+
+                          <div class="cbr_NavCol3">
+                           <div class="cbr_NavHdr">3<sup>rd</sup> Party Tools</div>
+					<ul class="mm_list">
+                             <li><a class="mm_li" href="/shiny/STARS/">Delta STARS</a></li>
+                              <li><a class="mm_li" href="/sacramento/lossandsalvage/">Loss &amp; Salvage Predictor</a></li>
+					</ul>
+                            </div>
+                         <div class="cbr_NavCol3">
+                           <div class="cbr_NavHdr">Supportive Tools</div>
+					<ul class="mm_list">
+                              <li><a class="mm_li" href="/shiny/EGGGROWTEMPS/">EGGGROWTEMPS Shiny app</a></li>
+                              <li><a class="mm_li" href="/shiny/EGG_SURV/">EGG_SURV Shiny app</a></li>
+                              <li><a class="mm_li" href="/shiny/SURVDEMO/">SURVDEMO Shiny app</a></li>
+                              <li><a class="mm_li" href="/shiny/MIGR.DISTRIB/">MIGR_DISTRIB Shiny app</a></li>
+                              <li><a class="mm_li" href="/shiny/TEMPMAKER/">TEMPMAKER Shiny app</a></li>
+					</ul>
+ 
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+<!--end Tools and Models -->
+<div class="navsep">&nbsp;</div>
+
+<!--start explore in depth -->
+<div id="themesgrp">
+          <div class="btn-group dropdown-center" id="cbr_btn_themesgrp">
+            <a href="/sacramento/explore/" id="cbr_btn_themes" class="btn btn-cbrnav btn-sm cbr_topnav cbr_topnav_home cbr_dropdown cbr_dropbtn cbr_NavButtonLink" role="group">Explore in Depth</a>
+            <button type="button" class="btn btn-cbrnav dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Explore in Depth Mega Menu" aria-controls="cbr_Themes">
+            </button>
+            <div class="dropdown-menu">
+              <div id="cbr_Themes">
+                <div id="cbr_NavThemes">
+                  <div class="cbr_NavWrapper">
+                    <div class="cbr_NavCenterSmall">
+                      <div class="cbr_NavCol1">
+                        <a href="/sacramento/explore/" class="cbr_NavCat">Explore in Depth</a>
+                        <p>
+							Access all queries and modeling tools available on SacPAS by topic or theme. Topics include species, salmon life stage, and groupings of environmental data. Themes include Track-a-Cohort, Shiny apps, and maps.
+                        </p>
+                      </div>
+                      <div class="cbr_NavCol2">
+                        <div class="cbr_NavRow">
+                          <div class="cbr_NavCol3">
+                            <div class="cbr_NavHdr">Track-a-Cohort</div> 
+							<ul class="mm_list">						
+								<li><a class="mm_li_nowrap" href="/sacramento/cohort/"> Winter-run Chinook</a></li>
+								<li><a class="mm_li_nowrap" href="/sacramento/cohort/index.html#stlhd">Steelhead</a></li>
+							  </ul>
+                          </div>
+                         <div class="cbr_NavCol3">
+                           <div class="cbr_NavHdr">Topical Questions</div>
+					<ul class="mm_list">
+					<li><a class="mm_li_nowrap" href="/sacramento/explore/tq_wateryear.html">Water Year Conditions</a></li> 
+					<li><a class="mm_li_nowrap" href="/sacramento/explore/tq_endangered.html">Endangered Fish Species</a></li> 
+					<li><a class="mm_li_nowrap" href="/sacramento/explore/tq_models.html">Types of Models</a></li>
+					</ul>
+
+                          </div>                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+<!--end explore -->
+<div class="navsep">&nbsp;</div>
+
+<!--start About, no dropdown content-->         
+<div id="aboutgrp">
+	  <div class="btn-group dropdown-center" id="cbr_btn_aboutgrp">
+		<a href="/sacramento/about.html" id="cbr_btn_about" class="btn btn-cbrnav btn-sm cbr_topnav cbr_topnav_home cbr_dropdown cbr_dropbtn cbr_NavButtonLink" role="group">About</a>
+	  </div>
+<!--end About -->
+        </div>
+</nav>
+<!--end nav -->
+
+<!--end megamenu-->
+
+<!--end-->
+</div>
+  </div>
+  </div>
+</header>
+<!-- HEADER -->
+
+
+<!-- breadcrumb -->
+<div class="region region-breadcrumbs d-print-none">
+	<div id="block-breadcrumbs-2" class="block block-system block-system-breadcrumb-block">
+		<div class="cbr-crumb">
+			<div class="cbr-crumb-center">
+				<nav aria-label="breadcrumb">
+				<h2 id="system-breadcrumb" class="visually-hidden">Breadcrumb</h2>
+				<ol class="breadcrumb cbr-crumb-light">
+				<li class="breadcrumb-item">
+				<a href="/sacramento/">Home</a>
+				</li>
+				<li class="breadcrumb-item">
+				<a href="/sacramento/data/">Data &amp; Alerts</a>
+				</li>
+				</ol>
+				</nav>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- breadcrumb -->
+
+     <!-- MAIN CONTENT -->
+<main>
+<div class="page_width_box">
+<div class="genPageContent">
+  <a id="main-content" tabindex="-1" class="cbr_jumpTo"></a>
+
+<!-- title -->
+		<h1 id="pageTitle">Query Issue</h1>
+<!-- title --><div class="d-print-none small pb-2"></div>
+<p>Invalid submission: Query Type.</p>
+</div>
+</div> 
+</div> 
+      <!-- MAIN CONTENT -->
+</main>
+<footer>
+<nav id="footer-nav" aria-label="Footer">
+  <!-- FOOTER -->
+   <div class="region region-footer-cbr d-print-none">
+    <div id="block-cbrfooternavnewsub-3" class="block block-block-content">
+            <div class="clearfix text-formatted">
+				
+				<!--start-->
+<a id="contact-search" tabindex="-1" class="cbr_jumpTo"></a>
+<div class="footerHome">
+
+<!--start media query footer-->
+	<div id="homeAltFooter">
+		<div class="container text-center">
+			<div class="row align-items-center">
+				<div class="footer_nav">
+				<ul>
+				<li><a href="/sacramento/">Home</a></li>
+				<li><a href="/sacramento/data/">Data &amp; Alerts</a></li>
+				<li><a href="/sacramento/workgroups/">Workgroups &amp; Teams</a></li>
+				<li><a href="/sacramento/tools/">Tools &amp; Models</a></li>
+				<li><a href="/sacramento/explore/">Explore in Depth</a></li>
+				<li><a href="/sacramento/about.html">About</a></li>
+				</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+<!--end media query footer-->
+				
+<!--display all-->
+	<div class="footerContact mt-1 mb-3 mr-1">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-auto align-self-center footer_nav">
+					Questions? Requests? Contact: <a href="mailto:web@cbr.washington.edu">web@cbr.washington.edu</a>
+				</div>
+				<div class="col-auto align-self-center footer_nav ml-1" id="searchbox">
+<script async src="https://cse.google.com/cse.js?cx=b5dd25660b3a34772">
+</script>
+<div class="gcse-search" aria-label="Search SacPAS website using Google Search">
+</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="footerUWunits mt-3">
+		<a href="/">Columbia Basin Research</a> &#8226; 
+		<a href="https://fish.uw.edu/">School of Aquatic &amp; Fishery Sciences</a> &#8226; 
+		<a href="https://environment.uw.edu/">College of the Environment</a> &#8226; 
+		<a href="https://www.washington.edu/">University of Washington</a>	
+	</div>
+
+</div>
+
+<!--end-->
+</div>
+  </div>
+  </div>
+  <!-- FOOTER -->
+</nav> 
+</footer>
+
+<script src="/core/assets/vendor/jquery/jquery.min.js?v=3.6.3"></script>
+<script src="/core/assets/vendor/once/once.min.js?v=1.0.1"></script>
+<script src="/core/assets/vendor/jquery-once/jquery.once.min.js?v=2.2.3"></script>
+<script src="/core/misc/drupalSettingsLoader.js?v=9.5.9"></script>
+<script src="/core/misc/drupal.js?v=9.5.9"></script>
+<script src="/core/misc/drupal.init.js?v=9.5.9"></script>
+<script src="/core/assets/vendor/popperjs/popper.min.js?v=2.11.6"></script>
+<script src="/core/misc/jquery.once.bc.js?v=9.5.9"></script>
+<script src="/themes/custom/cbr/assets/bootstrap-5.2.3-dist/js/bootstrap.min.js?v=9.5.9"></script>
+<script src="/themes/custom/cbr/assets/js/jquery/jquery.tablesorter.min.js?v=9.5.9"></script>
+<script src="/themes/custom/cbr/assets/js/nav_CBR.js?v=9.5.9"></script>
+<script src="/themes/custom/cbr/assets/js/jquery/jquery.selectboxes.js?v=9.5.9"></script>
+<script src="/themes/custom/cbr/assets/js/scripts.js?v=9.5.9"></script>
+
+
+<script src="/sacramento/js/cbr_scrolltotop.js"></script>
+<script src="/sacramento/js/cbr_collapse-nav.js"></script>
+
+<script src="/sacramento/js/data.js"></script>
+<script src="/sacramento/js/data_jquery.js"></script>
+<a id="scrollTopButton-image" href="#" class="scroll-top-button" aria-hidden="true"></a>
+<a href="#" class="visually-hidden focusable skip-link">Skip to Top</a>
+
+
+</body>
+</html>
