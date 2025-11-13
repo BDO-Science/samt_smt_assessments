@@ -1,4 +1,4 @@
 ﻿date_triggered,date_implemented,days_implemented,action,regulation,plot_label,description
 10/1/2025,10/3/2025,3,September Salinity,D1641,1,Salinity at ABC < 1234
-10/4/2025,10/7/2025,7,Salmon Action,OMR,2,Salmon run
-11/1/2025,11/6/2025,3,Delta Smelt Action,OMR,3,Delta smelt swimming
+10/4/2025,10/7/2025,7,Salmon Action,OMR,2,Salmon salvage greater than X
+11/1/2025,11/6/2025,3,Delta Smelt Action,OMR,3,Turbidity exceeded 12 FNU at all stations

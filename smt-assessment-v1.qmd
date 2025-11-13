@@ -44,17 +44,32 @@ cat(narrative_text)
 - See current Weekly Fish and Water Operations Outlook document.
 - Additional information also available on the [SacPAS SMT page](https://www.cbr.washington.edu/sacramento/workgroups/delta_smelt.html).
 
+### Environmental Conditions
+
+##### Weather Forecasts
+```{r, echo=FALSE, results='asis'}
+cat(glue("
+- {weather_stockton}
+- {weather_antioch}
+"))
+```
+
+- Weather forecasts for [Stockton, CA](https://forecast.weather.gov/MapClick.php?lat=37.9537&lon=-121.2905#.Y2qMENeIaUk) and [Antioch, CA](https://forecast.weather.gov/MapClick.php?lat=38.0169&lon=-121.8138) as of `r format(Sys.Date(), "%B %d, %Y")`.
 
 ### Delta Smelt  
 
-- **Delta Smelt Life Stages**: `r lifestages`
+#### Biological
+
+- **Delta Smelt Life Stages:** `r ds_lifestages`
 
 - **Abundance estimate:** `r paste0(abundance, " (95% CL: ", abundance_lcl, " to ", abundance_ucl, ")")` as of the week of `r abundance_date`
-- **Releases:** A total of `r format(total_released, scientific = FALSE, big.mark = ",")` hatchery Delta Smelt have been released for WY 2026. The most recent releases of `r format(last_release_count, scientific = FALSE, big.mark = ",")` fish occurred in `r format(last_release_location, scientific = FALSE, big.mark = ",")` on `r format(last_release_date, "%b %d, %Y")`. 
-- **Delta Smelt count:** `r adults_count` adult Delta Smelt and `r juveniles_count` juvenile Delta smelt have been detected this water year. See @tbl-ds-recent-catch for recent detections, @fig-ds-map for spatial distribution, and @fig-ds-catch for temporal distribution.
+- **Releases:** A total of `r format(total_released, scientific = FALSE, big.mark = ",")` hatchery Delta Smelt have been released for WY 2026. The most recent releases of `r format(last_release_count, scientific = FALSE, big.mark = ",")` fish occurred in `r format(last_release_location, scientific = FALSE, big.mark = ",")` on `r format(first_last_release_date, "%b %d, %Y")` to  `r format(last_release_date, "%b %d, %Y")`. 
+- **Delta Smelt count:** `r ds_adults_count` adult Delta Smelt and `r ds_juveniles_count` juvenile Delta smelt have been detected this water year. See @tbl-ds-recent-catch for recent detections, @fig-ds-map for spatial distribution, and @fig-ds-catch for temporal distribution.
 - **Delta Smelt salvage:** `r ds_salvage_count` Delta Smelt have been salvaged, and the cumulative seasonal salvage is `r ds_cumsalvage`. 
 
-###### Notes
+
+**Notes**
+
 - Since there are few recent detections of Delta Smelt, the Smelt Monitoring Team’s capacity to estimate where they are within the Delta is limited. 
 - See [SacPAS SMT Page](https://www.cbr.washington.edu/sacramento/workgroups/delta_smelt.html) for additional details on releases and detection in surveys and salvage.
 - Historical salvage trends can be found at: [SacPAS Salvage Timing](https://www.cbr.washington.edu/sacramento/data/query_salvage_hrt.html)
@@ -62,9 +77,9 @@ cat(narrative_text)
 
 ```{r, echo = FALSE}
 #| label: "tbl-ds-recent-catch"
-#| tbl-cap: "Delta Smelt Detections in the last 2 weeks"
+#| tbl-cap: "Delta Smelt Detections in the last 2 weeks. Fork Length > 58mm = Adult, Fork Length 20-58mm = Juvenile, Fork Length < 20mm = Larva."
 
-kable(df_recent_display)
+kable(ds_recent_display)
 ```
 
 
@@ -77,7 +92,7 @@ kable(df_recent_display)
     geom_sf(data = WW_Delta, color = "darkslategray3") +
     geom_sf(data = R_EDSM_Strata_1718P1, aes(fill = Stratum), alpha = 0.4,inherit.aes = FALSE)+
     # geom_sf(data = releases_sf, shape = 23, size =3,  fill = "red", color = "black", inherit.aes = FALSE) + 
-    geom_sf(data = df_wy, aes(shape = source, size = total_catch),   inherit.aes = FALSE) + 
+    geom_sf(data = ds_wy, aes(shape = source, size = total_catch),   inherit.aes = FALSE) +
     # geom_sf_text(data = sls_sf, mapping = aes(label = Station), size = 3, nudge_x = -0.012, nudge_y = 0.016) +
     annotation_north_arrow(location = "tl", which_north = "true",
                            pad_x = unit(.1, "in"), pad_y = unit(0.2, "in"),
@@ -85,8 +100,8 @@ kable(df_recent_display)
     annotation_scale(location = "bl", bar_cols = c("black", "white", "black", "white")) +
     scale_x_continuous(limits = c(-122.35, -121.3)) + 
     scale_y_continuous(limits = c(37.8, 38.6)) +
-    scale_shape_manual(values = c(15, 17, 4))+
-    scale_size(range = c(2, 2), breaks = c(1,1)) + 
+     scale_shape_manual(values = c(1, 15, 17, 4))+
+    # scale_size(range = c(2, 2), breaks = c(1,1)) + 
     viridis::scale_fill_viridis(option = "turbo", discrete = TRUE) + 
     guides(fill = guide_legend(nrow = 3, byrow = TRUE)) +
     theme_bw() +
@@ -104,7 +119,7 @@ kable(df_recent_display)
 #| label: "tbl-catch-all"
 #| tbl-cap: "Delta Smelt Water Year Totals by Life Stage"
 kable(
-  ds_detail %>%
+  ds_recent %>%
   group_by(source, region, life_stage) %>%
     summarize(total = sum(catch)) %>%
     ungroup() %>%
@@ -115,106 +130,185 @@ kable(
 ```{r, echo = FALSE}
 #| label: "fig-ds-catch"
 #| fig-cap: "Time Series of Delta Smelt Catch, WY 2026"
-ggplot(df_wy) +
+ggplot(ds_wy) +
   geom_col(aes(date, total_catch, fill = source)) +
+  labs(x = "Date", y = "Total Catch", fill = "Survey") + 
   scale_fill_viridis(option = "turbo", discrete = TRUE) +
   theme_bw()
 ```
 
-##### Environmental Surrogates
+#### Environmental
 
-#### Weather Forecasts
-```{r, echo=FALSE, results='asis'}
-cat(glue("
-- {weather_stockton}
-- {weather_antioch}
-"))
-```
-
-- Weather forecasts for [Stockton, CA](https://forecast.weather.gov/MapClick.php?lat=37.9537&lon=-121.2905#.Y2qMENeIaUk) and [Antioch, CA](https://forecast.weather.gov/MapClick.php?lat=38.0169&lon=-121.8138) as of `r format(Sys.Date(), "%B %d, %Y")`.
-
-
-###### Actions
-
-- We could pull the SacPAS plots if we want for each relevant metric (or create our own)
-
-####### First Flush
+##### First Flush
 ```{r, echo = FALSE, results='asis'}
 if (first_flush_status != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-- **Threshold**: 3-day avg FPT flow ≥ 25,000 cfs and 3-day avg FPT turbidity ≥ 50 FNU  
+**Threshold**: 3-day avg FPT flow ≥ 25,000 cfs and 3-day avg FPT turbidity ≥ 50 FNU
+
 - **FPT Flow (3-day average)**: {format(FPT_flow_avg, big.mark = ",")} cfs as of {format(env_last_date, '%b %d, %Y')}
 - **FPT Turbidity (3-day average)**: {FPT_turb_avg} FNU as of {format(env_last_date, '%b %d, %Y')}
 "))
 }
 ```
 
+```{r, echo = FALSE, eval = first_flush_status == "relevant", out.width = "85%"}
+knitr::include_graphics(here("smelt_figures/freeport_flow.png"))
+```
 
+##### Adult Delta Smelt Entrainment Action
 
-####### Adult Delta Smelt Entrainment Action
+*Add JPF later*
 
 ```{r, echo = FALSE, results='asis'}
 if (adult_ent_status != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-- **Threshold**: Turbidity ≥ 12 FNU at OBI, HOL and OSJ
+**Threshold**: Turbidity ≥ 12 FNU at OBI, HOL and OSJ
+
 - **OBI Turbidity**: {paste(OBI_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 - **HOL Turbidity**: {paste(HOL_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 - **OSJ Turbidity**: {paste(OSJ_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 
-- <u>**Offramp Adult/Onramp Larval and Juvenile Protections** when RVB or SJJ > 12°C</u>
+<u>**Offramp Adult/Onramp Larval and Juvenile Protections** when RVB or SJJ > 12°C</u>
+
 - **RVB temperature (3-day average)**: {RVB_temp}°C as of {format(env_last_date, '%b %d, %Y')}
 - **SJJ temperature (in the future)**:
 "))
 }
 ```
 
-- See [Bay-Delta Live](https://www.baydeltalive.com/current_conditions/constituent-tracker-turbidity) for recent Delta-wide turbidity conditions.
-- Let's link to wind plot on the other SacPAS SMT page. 
+```{r, echo = FALSE, eval = adult_ent_status == "relevant", out.width = "85%"}
+knitr::include_graphics(here("smelt_figures/freeport_turbidity.png"))
+```
 
-###### Larval/Juvenile Delta Smelt Entrainment Action
-Currently Secchi depth; move towards turbidity
+- See [Bay-Delta Live](https://www.baydeltalive.com/current_conditions/constituent-tracker-turbidity) for recent Delta-wide turbidity conditions.
+- Let's link to wind plot on the other SacPAS SMT page. [Wind plot](https://github.com/BDO-Science/smt/blob/main/WindRose_Grace.R)
+
+##### Larval/Juvenile Delta Smelt Entrainment Action
+
+*Currently Secchi depth; add JPF, South Delta turbidity and PTM later*
+
 ```{r, echo = FALSE, results='asis'}
 if (larval_ent_status != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-  - **Threshold**: Secchi Depth > 1m
+**Threshold**: Secchi Depth > 1m
+
   - **12-station South Delta Secchi Depth**: The most recent average secchi depth was {sd_secchi_depth}m as of {format(sd_secchi_date, '%b %d, %Y')}
 "))
 }
 ```
 
+
+
 ### Longfin Smelt
+#### Biological
 
-For Action 5, these rely on JPF (unsure how this is calculated) and population models (which don't yet exist)
+- **Longfin Smelt Life Stages:** `r lfs_lifestages`
 
-##### Adult Entrainment
-```{r}
+- **Longfin Smelt count:** `r lfs_adults_count` adult Longfin Smelt and `r lfs_juveniles_count` juvenile Longfin smelt have been detected this water year. See @tbl-lfs-recent-catch for recent detections, @fig-lfs-map for spatial distribution, and @fig-lfs-catch for temporal distribution.
+- **Longfin Smelt salvage:** `r lfs_salvage_count` Longfin Smelt have been salvaged, and the cumulative seasonal salvage is `r lfs_cumsalvage`. 
+- Include plot of cumulative longfin salvage? [Salvage plot code](https://github.com/BDO-Science/smt/tree/main/daily_longfin_salvage)
 
+```{r, echo = FALSE}
+#| label: "tbl-lfs-recent-catch"
+#| tbl-cap: "Longfin Smelt Detections in the last 2 weeks. Fork Length > 84mm = Adult, Fork Length 20-84mm = Juvenile, Fork Length < 20mm = Larva."
+
+kable(lfs_recent_display)
 ```
 
-##### Larval/Juvenile Entrainment 
-```{r}
+```{r, echo = FALSE}
+#| fig-width: 8
+#| fig-height: 7
+#| label: "fig-lfs-map"
+#| fig-cap: "Longfin Smelt Distribution for WY 2026"
+(map_detections_lj <- ggplot() + 
+    geom_sf(data = WW_Delta, color = "darkslategray3") +
+    geom_sf(data = R_EDSM_Strata_1718P1, aes(fill = Stratum), alpha = 0.4,inherit.aes = FALSE)+
+    # geom_sf(data = releases_sf, shape = 23, size =3,  fill = "red", color = "black", inherit.aes = FALSE) + 
+    geom_sf(data = lfs_wy, aes(shape = source, size = total_catch),   inherit.aes = FALSE) + 
+    # geom_sf_text(data = sls_sf, mapping = aes(label = Station), size = 3, nudge_x = -0.012, nudge_y = 0.016) +
+    annotation_north_arrow(location = "tl", which_north = "true",
+                           pad_x = unit(.1, "in"), pad_y = unit(0.2, "in"),
+                           style = north_arrow_fancy_orienteering) +
+    annotation_scale(location = "bl", bar_cols = c("black", "white", "black", "white")) +
+    scale_x_continuous(limits = c(-122.35, -121.3)) + 
+    scale_y_continuous(limits = c(37.8, 38.6)) +
+    scale_shape_manual(values = c(1, 15, 17, 4))+
+    # scale_size(range = c(2, 2), breaks = c(1,1)) + 
+    viridis::scale_fill_viridis(option = "turbo", discrete = TRUE) + 
+    guides(fill = guide_legend(nrow = 3, byrow = TRUE)) +
+    theme_bw() +
+    theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank(),
+          axis.text = element_text(size = 10),
+          axis.text.x = element_text(angle = 45, vjust = 0.5),
+          legend.position = "top",
+          legend.box = "vertical",
+          legend.title = element_blank(),
+          legend.text = element_text(size = 9)))
+```
 
+```{r, echo = FALSE, message = FALSE}
+#| label: "tbl-lfs-catch-all"
+#| tbl-cap: "Longfin Smelt Water Year Totals by Life Stage"
+kable(
+  lfs_recent %>%
+  group_by(source, region, life_stage) %>%
+    summarize(total = sum(catch)) %>%
+    ungroup() %>%
+    select(Survey = source, Region = region, `Life Stage` = life_stage, Total = total)
+)
+```
+
+```{r, echo = FALSE}
+#| label: "fig-lfs-catch"
+#| fig-cap: "Time Series of Longfin Smelt Catch, WY 2026"
+ggplot(lfs_wy) +
+  geom_col(aes(date, total_catch, fill = source)) +
+  labs(x = "Date", y = "Total Catch", fill = "Survey") + 
+  scale_fill_viridis(option = "turbo", discrete = TRUE) +
+  theme_bw()
 ```
 
 
-###### End of Smelt OMR Management
+#### Environmental
+
+##### Adult Longfin Smelt Entrainment
+
+- Jersey Point Flow: 
+  - Threshold: JPF < 0 cfs
+  - Reclamation and DWR would compute JPF based on San Joaquin River Inflow at Vernalis, Cosumnes River Inflow, Mokelumne River Inflow, Calaveras River Inflow, Flow from Sacramento River through DCC, Flow from Sacramento River through Georgiana Slough, 65% of in-Delta precipitation, -65% of in-Delta diversions, and -Export Pumping at (Banks + Jones).
+- Longfin Smelt salvage of age 1+ Longfin Smelt:
+  - Threshold for OMR Season Start: 5% FMWT Index + 1
+  - Threshold for Real-time: 5% Adult population abundance
+
+##### Larval/Juvenile Longfin Smelt Entrainment 
+
+- Jersey Point Flow: 
+  - Threshold: JPF<0 cfs
+- Population model demonstrates need to reduce entrainment to avoid population decline
+
+### End of Smelt OMR Management
 ```{r, echo = FALSE, results='asis'}
 if (end_of_season != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-- **Threshold**: CLC > 25° for 3 consecutive days 
+**Threshold**: CLC > 25° for 3 consecutive days 
+
 - Clifton Court Temperature: {paste(CLC_temp, collapse = ', ')}°C as of {format(env_last_date, '%b %d, %Y')}
 "))
 }
 ```
 
+```{r, echo = FALSE, eval = end_of_season == "relevant", out.width = "85%"}
+knitr::include_graphics(here("smelt_figures/clifton_court_temp.png"))
+```
 
 ### References
 

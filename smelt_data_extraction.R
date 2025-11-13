@@ -1,7 +1,8 @@
 # smelt_data_extraction.R
 # Script for extracting data for smelt assessments- e.g. from files, SacPAS, online sources
-# Last updated 11/7/2025
+# Last updated 11/13/2025
 
+# Libraries 
 library(here)
 library(readr)
 library(dplyr)
@@ -56,6 +57,8 @@ RVB_temp <- as.numeric(tail(env_table$water_temperature_3_day_sr_at_rio_vista_br
 CLC_temp <- as.numeric(tail(env_table$water_temperature_clifton_court_c_cdec_clc,3))
 
 ## Hydro Table ------------------------------
+### Add JPF later on 
+
 hydro_table_raw <- tables[[1]][-1,]
 hydro_table <- hydro_table_raw %>% clean_names()
 
@@ -67,7 +70,31 @@ qwest <- as.numeric(tail(hydro_table$qwest_cfs_dwr,3))
 qwest7 <- as.numeric(tail(hydro_table$qwest_7_day_cfs_dwr,1))
 x2 <- as.numeric(tail(hydro_table$x2_position_km_dwr ,3))
 
-## Weather (Lilly) --------------------------------
+# Plots from SacPAS ---------------------
+### Consider generating these on our own for more flexibility. For now, pulling from SacPAS.
+
+### First Flush
+download.file(
+  "https://www.cbr.washington.edu/sacramento/workgroups/include_gen/deltasmelt_fpt.png",
+  "smelt_figures/freeport_flow.png",
+  mode = "wb"
+)
+
+### Turbidity
+download.file(
+  "https://www.cbr.washington.edu/sacramento/workgroups/include_gen/deltasmelt_turb1.png",
+  "smelt_figures/freeport_turbidity.png",
+  mode = "wb"
+)
+
+### Clifton Court
+download.file(
+  "https://www.cbr.washington.edu/sacramento/workgroups/include_gen/deltasmelt_clc.png",
+  "smelt_figures/clifton_court_temp.png",
+  mode = "wb"
+)
+
+# Weather (Lilly) --------------------------------
 # include temp, precipitation, wind and summarize
 make_location_summary <- function(lat, lon, name = NULL) {
   url <- glue("https://forecast.weather.gov/MapClick.php?lat={lat}&lon={lon}&FcstType=json")
@@ -124,11 +151,11 @@ weather_stockton <- make_location_summary(37.9537, -121.2905, "Stockton, CA")
 weather_antioch <- make_location_summary(38.0169, -121.8138, "Antioch, CA")
 
 
-## Smelt catch -------------------------
+# Smelt catch -------------------------
 # define where data are stored
 data_raw <- here("data_raw/smelt")
 
-# station crosswalk 
+## Coordinates, station crosswalk ------------------------
 # CDFW stations with lat/lon and region
 station_region <- read_csv(here("data_clean/station_region_crosswalk.csv")) %>%
   select(Station, Latitude, Longitude, Region) %>%
@@ -141,37 +168,58 @@ sta_salvage <- data.frame(station = c("CVP", "SWP"),
                           longitude = c(-121.560709, -121.59523),
                           region = "South")
 
-# EDSM data - directly add in file; remove old file
+## EDSM data -----------------
+# directly add in file; remove old file 
 edsm_data_raw <- read_excel_by_pattern("EDSM", data_raw, FALSE)
 edsm_data <- edsm_data_raw %>%
   clean_names() %>%
   mutate(source = "edsm") %>%
-  filter(organism_code == "DSM") %>%
   select(source, date = sample_date, region = region_code, stratum, 
          latitude = latitude_start, longitude = longitude_start, mark_code,
-         fork_length, catch=sum_of_catch_count) 
+         fork_length, catch=sum_of_catch_count, organism_code)
+edsm_ds <- edsm_data %>% filter(organism_code == "DSM") %>% select(-organism_code)
+edsm_lfs <- edsm_data %>% filter(organism_code == "LFS")%>% select(-organism_code)
 
-# Salvage data - reading from SacPAS which is connected to the Salvage database
-# We don't currently have mark_code for these - comes in the pdf - does have an adipose clip col?
-salvage_data_raw <- read_csv("https://www.cbr.washington.edu/sacramento/data/php/rpt/juv_loss_detail.php?sc=1&outputFormat=csv&year=2025&species=26%3Aall&dnaOnly=no&age=no")  %>%
+## Salvage data --------------------
+# reading from SacPAS which is connected to the Salvage database 
+# Will need to change the read to 2026 once salvage starts. 
+# Get the new link here (probably just change 2025 to 2026 below): https://www.cbr.washington.edu/sacramento/data/query_loss_detail.html
+salvage_ds_data_raw <- read_csv("https://www.cbr.washington.edu/sacramento/data/php/rpt/juv_loss_detail.php?sc=1&outputFormat=csv&year=2025&species=26%3Aall&dnaOnly=no&age=no")  %>%
   filter(!is.na(Species)) %>%
   clean_names()
-salvage_data <- salvage_data_raw %>% 
+salvage_ds_data <- salvage_ds_data_raw %>%
   mutate(sample_time = ymd_hms(sample_time),
          date = date(sample_time),
          length = as.numeric(length)) %>%
   mutate(source = "salvage") %>%
   mutate(salvage = if_else(!is.na(sample_fraction), nfish/sample_fraction, nfish)) %>%
-  select(source, station = facility, date, study_type, catch = nfish, salvage, 
-         fork_length = length, 
+  select(source, station = facility, date, study_type, catch = nfish, salvage,
+         fork_length = length,
          omri = x14_day_omri) %>%
   left_join(sta_salvage)
 
-# manually update for other DS data 
+salvage_lfs_data_raw <- read_csv("https://www.cbr.washington.edu/sacramento/data/php/rpt/juv_loss_detail.php?sc=1&outputFormat=csv&year=2025&species=25%3Aall&dnaOnly=no&age=no")  %>%
+  filter(!is.na(Species)) %>%
+  clean_names()
+salvage_lfs_data <- salvage_lfs_data_raw %>%
+  mutate(sample_time = ymd_hms(sample_time),
+         date = date(sample_time),
+         length = as.numeric(length)) %>%
+  mutate(source = "salvage") %>%
+  mutate(salvage = if_else(!is.na(sample_fraction), nfish/sample_fraction, nfish)) %>%
+  select(source, station = facility, date, study_type, catch = nfish, salvage,
+         fork_length = length,
+         omri = x14_day_omri) %>%
+  left_join(sta_salvage)
+
+## Other data ----------------------
+# manually update for other DS data (random Broodstock, FRP)
 other_ds_data <- read_csv(here("data_raw/smelt/smelt_catch_test.csv")) %>%
   mutate(date = mdy(date))
 
-# Bay Study: directly add new files in. Will combine files together.
+## Bay Study -----------------
+# directly add new files in. Code will combine files together.
+# Longfin Smelt
 sfbs_data_raw <- read_sfbs_files(data_raw)
 sfbs_data <- sfbs_data_raw %>%
   clean_names() %>%
@@ -181,13 +229,14 @@ sfbs_data <- sfbs_data_raw %>%
          catch = 1) %>%
   select(source, station, date, catch, fork_length = length, latitude, longitude, region)
 
-# SLS and 20mm issues
+# SLS and 20mm notes
 # - not individual fish, but instead grouped with mean, min, max
 # - stars and symbols next to station numbers
 # - not standardized on column naming
 # - header and metadata at top, sides
 
-# SLS: directly add file in - will read most recently modified file
+## SLS ---------------------------------
+# directly add file in - will read most recently modified file
 sls_data_raw <- read_excel_by_pattern("SLS", data_raw, TRUE)
 colnames(sls_data_raw) <- as.character(sls_data_raw[1, ])  # Set first row as column names
 sls_data <- sls_data_raw[-1, ]  # Remove the first row
@@ -207,7 +256,8 @@ sls_data <- sls_data %>% filter(!is.na(Date)) %>%
 sls_ds <- sls_data %>% filter(species == "Delta Smelt")
 sls_lfs <- sls_data %>% filter(species == "Longfin Smelt")
 
-# 20mm: directly add file in - will read most recently modified file
+## 20mm ---------
+# directly add file in - will read most recently modified file
 twmm_data_raw <- read_excel_by_pattern("20-mm", data_raw, TRUE)
 colnames(twmm_data_raw) <- as.character(twmm_data_raw[1, ])  # Set first row as column names
 twmm_data <- twmm_data_raw[-1, ] # remove first row
@@ -226,7 +276,8 @@ twmm_data <- twmm_data %>%
 twmm_ds <- twmm_data %>% filter(species == "Delta Smelt") 
 twmm_lfs <- twmm_data %>% filter(species == "Longfin Smelt")
 
-# abundance estimates (manually update spreadsheet with each week's table for sheet 1)
+## EDSM abundance estimates --------------------------
+# (manually update spreadsheet with each week's table for sheet 1)
 abun <- read_excel(here("data_raw/smelt/abundance_estimates.xlsx"), sheet = 1)
 abun_date <- read_excel(here("data_raw/smelt/abundance_estimates.xlsx"), sheet = 2)
 abundance <- left_join(abun, abun_date) %>% 
@@ -234,14 +285,15 @@ abundance <- left_join(abun, abun_date) %>%
   mutate(abundance_index = if_else(abundance_index == "0*", "0", abundance_index) ) %>%
   mutate(across(c(abundance_index, lower_bound, upper_bound), as.numeric))
 
-## Make datasets ---------------------------------
+## Combine datasets ---------------------------------
 
+### DS ------------------------
 # this one has lat/lon (for map)
 # could filter by date for life stage here
 ds_latlon <- bind_rows(
-  edsm_data %>% select(source, date, catch, latitude, longitude, region),
-  twmm_ds %>% select(source, date, catch, latitude, longitude, region),
-  salvage_data %>% select(source, date, catch, latitude, longitude, region)) %>%
+  edsm_ds %>% select(source, date, catch, latitude, longitude, region),
+  twmm_ds %>% select(source, date, catch, latitude, longitude, region), 
+  salvage_ds_data %>% select(source, date, catch, latitude, longitude, region)) %>%
   filter(!is.na(catch),
          !is.na(latitude)) %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326, remove = FALSE) %>%
@@ -251,12 +303,40 @@ ds_latlon <- bind_rows(
   ungroup()
 
 # this one has forklength/lifestage (for summary across wy by lifestage)
+# uncomment salvage once salvage is updated
 ds_detail <- bind_rows(
-  edsm_data %>% select(source, date, catch, mark_code, fork_length, latitude, longitude, region, stratum),
+  edsm_ds %>% select(source, date, catch, mark_code, fork_length, latitude, longitude, region, stratum),
   twmm_ds %>% select(source, date, catch, fork_length, latitude, longitude, region),
-  salvage_data %>% select(source, date, catch, fork_length, latitude, longitude, region)) %>%
+  salvage_ds_data %>% select(source, date, catch, fork_length, latitude, longitude, region)) %>%
   filter(!is.na(catch),
          !is.na(latitude)) %>%
-  mutate(life_stage = ifelse(fork_length>64, "Adult", ifelse(fork_length>25, "Juvenile", "Larva"))) %>% 
+  mutate(life_stage = ifelse(fork_length>58, "Adult", ifelse(fork_length>=20, "Juvenile", "Larva"))) %>% 
+  arrange(date)
+
+
+### LFS ------------------
+# this one has lat/lon (for map)
+# could filter by date for life stage here
+lfs_latlon <- bind_rows(
+  edsm_lfs %>% select(source, date, catch, latitude, longitude, region),
+  twmm_lfs %>% select(source, date, catch, latitude, longitude, region), 
+  sfbs_data %>% select(source, date, catch, latitude, longitude, region), 
+  salvage_lfs_data %>% select(source, date, catch, latitude, longitude, region)) %>%
+  filter(!is.na(catch),
+         !is.na(latitude)) %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326, remove = FALSE) %>%
+  st_transform(crs = st_crs(WW_Delta)) %>%
+  group_by(source, date, latitude, longitude, region) %>%
+  summarize(total_catch = sum(catch)) %>%
+  ungroup()
+
+# this one has forklength/lifestage (for summary across wy by lifestage)
+lfs_detail <- bind_rows(
+  edsm_lfs %>% select(source, date, catch, mark_code, fork_length, latitude, longitude, region, stratum),
+  twmm_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region),
+  salvage_lfs_data %>% select(source, date, catch, fork_length, latitude, longitude, region)) %>%
+  filter(!is.na(catch),
+         !is.na(latitude)) %>%
+  mutate(life_stage = ifelse(fork_length>84, "Adult", ifelse(fork_length>=20, "Juvenile", "Larva"))) %>% 
   arrange(date)
 
