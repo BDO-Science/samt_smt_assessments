@@ -1,0 +1,60 @@
+---
+format:
+  html:
+    toc: true
+    standalone: false
+    title-block-style: none
+  pdf: default
+engine: knitr
+---
+
+## Summary of CVP and SWP delta operations on salmonids (*as of `r format(Sys.Date(), "%B %d, %Y")`*)
+
+**BDO Science Division**, *Data is preliminary and subject to change*
+
+```{r}
+#| label: setup
+#| echo: false
+#| output: false
+
+library(tidyverse)
+library(here)
+library(kableExtra)
+library(flextable)
+library(gt)
+library(magick)
+
+project <- here()
+source(here(project, 'source_code/salmon_code.R'), echo = FALSE)
+source(here(project, 'source_code/text_updates.R'), echo = FALSE)
+source(here(project, 'source_code/zoi_maps_query.R'), echo = FALSE)
+```
+
+## Delta Hydrodynamics
+### Operational and Regulatory Conditions
+
+DCC gates are the current controlling factor. See most recent weekly outlook for more information.
+
+### Current Conditions
+
+Current inflow at Freeport in the Sacramento River and Vernalis in the San Joaquin River is xx and xx.  Most recent 5-day and 10-day OMRI measurements were xx and xx respectively, and most recent export data were xx for Jones Pumping Plant and xx for Henry O. Banks Pumping Plant.
+
+### Zone of Influence
+
+Current conditions at Freeport and Vernalis indicate that delta hydrology falls within the 'lolo' category (see appendix for hydrology bin definitions). This category is characterized by significant sensitivity in the zone of influence to changes in OMRI, where the zone of influence expands more greatly than wetter hydrologies as OMRI becomes more negative. 
+
+```{r}
+#| label: zoi_graph
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-height: 8
+#| fig-width: 10
+#| include: true
+#| out-width: "75%"
+#| results: asis
+#| fig-cap: Modeled Zone of Influence at different OMRI scenarios based on current inflow hydrology from the Sacramento River and San Joaquin River
+
+image_read('zoi_map.png')
+
+```

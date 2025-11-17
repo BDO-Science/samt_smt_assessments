@@ -8,11 +8,10 @@ format:
 engine: knitr
 ---
 
-## Summary of CVP and SWP delta operations on salmonids (*as of `r format(Sys.Date(), "%B %d, %Y")`*)
+## PRELIMINARY DATA: Assessment for Delta Operations on ESA and CESA-listed Salmonids
 
-**BDO Science Division**, *Data is preliminary and subject to change*
+Last updated: *`r format(Sys.Date(), "%B %d, %Y")`*
 
-::: panel-tabset
 ```{r}
 #| label: setup
 #| echo: false
@@ -31,53 +30,21 @@ source(here(project, 'source_code/text_updates.R'), echo = FALSE)
 source(here(project, 'source_code/zoi_maps_query.R'), echo = FALSE)
 ```
 
-## **Executive Summary**
+### Executive Summary
 
-DCC gates are currently closed and is the controlling factor. Gates will continue to operate in accordance to Table 3-6 in the Proposed Action.
+-   DCC gates are currently closed and is the controlling factor. Gates will continue to operate in accordance to Table 3-6 in the Proposed Action.
 
-#### *Winter-run*
+-   Winter-run catch is high at delta entry monitoring locations. No loss has yet to occur at export facilities.
 
-Winter-run catch is high at delta entry monitoring locations. No loss has yet to occur at export facilities.
+-   Central Valley Steelhead catch is low and no loss has yet to occur at export facilities.
 
-#### *Central Valley Steelhead*
-
-Central Valley Steelhead catch is low and no loss has yet to occur at export facilities.
-
-## Delta Hydrodynamics
-#### Operational and Regulatory Conditions
-
-DCC gates are the current controlling factor. See most recent weekly outlook for more information.
-
-#### Current Conditions
-
-Current inflow at Freeport in the Sacramento River and Vernalis in the San Joaquin River is xx and xx.  Most recent 5-day and 10-day OMRI measurements were xx and xx respectively, and most recent export data were xx for Jones Pumping Plant and xx for Henry O. Banks Pumping Plant.
-
-#### Zone of Influence
-
-Current conditions at Freeport and Vernalis indicate that delta hydrology falls within the 'lolo' category (see appendix for hydrology bin definitions). This category is characterized by significant sensitivity in the zone of influence to changes in OMRI, where the zone of influence expands more greatly than wetter hydrologies as OMRI becomes more negative. 
-
-```{r}
-#| label: zoi_graph
-#| eval: false
-#| message: false
-#| warning: false
-#| dev: ragg_png
-#| dpi: 150
-#| fig-cap: Modeled Zone of Influence at different OMRI scenarios based on current inflow hydrology from the Sacramento River and San Joaquin River
-#| fig-height: 8
-#| fig-width: 10
-#| include: false
-#| results: asis
-print(map)
-```
-
-## Natural Winter-run Chinook
+### Natural Winter-run Chinook
 
 #### Current Status
 
 *Give update on migration, salvage, monitoring, and STARs patterns.*
 
-Historically, as of `r format(Sys.Date()-1, "%b %d")`, `r if_else(is.na(delta_entry_wr), '0%', delta_entry_wr)` of length-at-date (LAD) winter-run have entered the delta based on Knights Landing RST catch, `r if_else(is.na(delta_exit_wr), '0%', delta_exit_wr)` have exited the delta based on Chipps Island Trawl Catch, and `r if_else(is.na(salvage_wr), '0%', salvage_wr)` of DNA confirmed winter-run have been salvaged.
+`r wr_jpe` Historically, as of `r format(Sys.Date()-1, "%b %d")`, `r if_else(is.na(delta_entry_wr), '0%', delta_entry_wr)` of length-at-date (LAD) winter-run have entered the delta based on Knights Landing RST catch, `r if_else(is.na(delta_exit_wr), '0%', delta_exit_wr)` have exited the delta based on Chipps Island Trawl Catch, and `r if_else(is.na(salvage_wr), '0%', salvage_wr)` of DNA confirmed winter-run have been salvaged.
 
 ```{r}
 #| label: wr_timing_table
@@ -102,7 +69,9 @@ if (knitr::is_latex_output()) {
 ```
 
 #### Annual Loss
-Cumulative loss as of x.date is xx and is xx% of thresholds.
+
+`r wr_threshold` `r wr_annual_text`
+
 ```{r}
 #| label: wr_loss
 #| echo: false
@@ -111,14 +80,18 @@ Cumulative loss as of x.date is xx and is xx% of thresholds.
 #| fig-cap: Cumulative loss of natural-origin winter-run for WY 2026.  Cumulative loss is based on genetically confirmed winter-run captured in salvage or length-at-date winter-run in which genetic confirmation was unable to be obtained
 #| fig-width: 10
 #| fig-height: 8
-#| out-width: "100%"
+#| out-width: "75%"
 
-image_read('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2026/LossUnclip_1_Winter_WY.png')
+image_read('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2026/LossUnclip_1_DNAWinter_WY.png')
 
 ```
 
+#### Weekly Distributed Loss
 #### STARs
-The Delta STARS Model is an individual-based simulation model that predicts survival, travel time, and routing of juvenile salmon migrating through the Sacramento–San Joaquin River Delta.
+
+The Delta STARS Model is an individual-based simulation model that predicts survival, travel time, and routing of juvenile salmon migrating through the Sacramento–San Joaquin River Delta. This model gives insight into survival and routing patterns of winter-run based on most current conditions.
+
+`r stars_text`
 
 ```{r}
 #| label: stars_survival
@@ -128,7 +101,7 @@ The Delta STARS Model is an individual-based simulation model that predicts surv
 #| fig-cap: Estimated overall winter-run survival from Knights Landing to Chipps Island.  Black line indicates the current water-year, and other colored lines correspond to past water years.
 #| fig-width: 10
 #| fig-height: 8
-#| out-width: "100%"
+#| out-width: "75%"
 
 image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_plot_02-1.png')
 
@@ -142,7 +115,7 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 #| fig-cap: Estimated survival from Knights Landing to Chipps Island of simulate winter-run cohorts that route through the interior delta.  Black line indicates the current water-year, and other colored lines correspond to past water years.
 #| fig-width: 10
 #| fig-height: 8
-#| out-width: "100%"
+#| out-width: "75%"
 
 image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_plot_02-2.png')
 
@@ -156,30 +129,23 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 #| fig-cap: Estimated probability of winter-run routing into the interior delta.  Black line indicates the current water-year, and other colored lines correspond to past water years.
 #| fig-width: 10
 #| fig-height: 8
-#| out-width: "100%"
+#| out-width: "75%"
 
 image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_plot_02-3.png')
 
 ```
-#### DCC Gate Closures
 
-#### Early Season Migration
+### Hatchery Winter-run Chinook
+#### Current Status
+`r wr_hatch_jpe` `r wr_hatchery_releases`
 
-`r early_season_text`
+#### Annual Loss
 
-## Hatchery Winter-run Chinook
+`r wr_hatch_threshold` `r wr_hatchery_loss`
+
+### Central Valley Steelhead
 
 #### Current Status
-
-*Give update on migration, salvage, monitoring, and telemetry findings.*
-
-As of Sys.Date() 500,000 hatchery winter-run have been released into the Sacramento River on February 15, 2025 and 50,0000 have been realed into Battle Creek on March 21, 2026. JPEs are 80,000 and 10,000 for the respective releases with annual loss thresholds of 150 fish for the Sacramento Release and 10 fish for the Battle Creek Release.
-
-## Central Valley Steelhead
-
-#### Current Status
-
-*Give update on migration, salvage, monitoring of clipped and unclipped steelhead.*
 
 Historically, as of `r format(Sys.Date()-1, "%b %d")`, `r if_else(is.na(delta_entry_sh), '0%', delta_entry_sh)` of CCV steelhead have entered the delta based on Knights Landing RST catch, `r if_else(is.na(delta_exit_sh), '0%', delta_exit_sh)` have exited the delta based on Chipps Island Trawl Catch, and `r if_else(is.na(salvage_sh), '0%', salvage_sh)` have been salvaged.
 
@@ -207,7 +173,10 @@ if (knitr::is_latex_output()) {
 ```
 
 #### Annual Loss
-Cumulative loss as of x.date is xx and is xx% of thresholds.
+
+`r sh_annual_text`
+
+
 ```{r}
 #| label: sh_loss
 #| echo: false
@@ -216,12 +185,12 @@ Cumulative loss as of x.date is xx and is xx% of thresholds.
 #| fig-cap: Cumulative loss of natural-origin and hatchery steelhead for WY 2026.
 #| fig-width: 10
 #| fig-height: 8
-#| out-width: "100%"
+#| out-width: "75%"
 
 image_read('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2026/LossUnclip_2_Stlhd_WY.png')
 ```
-## Appendix
 
-
-:::
-## References
+### Spring-run
+#### Current Status
+#### Surrogate Releases and Current Loss
+### References
