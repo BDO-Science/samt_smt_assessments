@@ -81,16 +81,14 @@ ds_cumsalvage <- 0
 
 ## Releases ----------------------- 
 releases <- read_csv(here("data_raw/smelt/smelt_release_table_2026.csv")) 
-last_release <- releases %>%
-  clean_names() %>%
-  mutate(release_date = mdy(release_date)) %>%
-  filter(release_date < today())%>% 
-  mutate(approx_number_fish = parse_number(approx_number_fish))
-total_released <- last_release %>% pull(approx_number_fish) %>% sum()
+last_release <- smelt_release_table %>%
+  mutate(release_date = ymd(date)) %>%
+  filter(release_date < today())
+total_released <- last_release %>% pull(total_released) %>% sum()
 last_release_date <- last_release %>% tail(1) %>% pull(release_date)
 first_last_release_date <- last_release %>% tail(2) %>% head(1) %>% pull(release_date)
-last_release_location <- last_release %>% tail(1) %>% pull(release_site)
-last_release_count <- last_release %>% tail(2) %>% pull(approx_number_fish) %>% sum()
+last_release_location <- last_release %>% tail(1) %>% pull(location)
+last_release_count <- last_release %>% tail(2) %>% pull(total_released) %>% sum()
 
 ## Secchi depth (currently by email)-------------------------
 sd_secchi_depth <- 0.76
