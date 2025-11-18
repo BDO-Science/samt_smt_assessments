@@ -62,7 +62,7 @@ cat(glue("
 
 - **Delta Smelt Life Stages:** `r ds_lifestages`
 
-- **Abundance estimate:** `r paste0(abundance, " (95% CL: ", abundance_lcl, " to ", abundance_ucl, ")")` as of the week of `r abundance_date`
+- **Abundance estimate:** `r paste0(abundance, " (95% CL: ", format(abundance_lcl,big.mark = ","), " to ", format(abundance_ucl,big.mark = ","), ")")` as of the week of `r abundance_date`
 - **Releases:** A total of `r format(total_released, scientific = FALSE, big.mark = ",")` hatchery Delta Smelt have been released for WY 2026. The most recent releases of `r format(last_release_count, scientific = FALSE, big.mark = ",")` fish occurred in `r format(last_release_location, scientific = FALSE, big.mark = ",")` on `r format(first_last_release_date, "%b %d, %Y")` to  `r format(last_release_date, "%b %d, %Y")`. 
 - **Delta Smelt count:** `r ds_adults_count` adult Delta Smelt and `r ds_juveniles_count` juvenile Delta smelt have been detected this water year. See @tbl-ds-recent-catch for recent detections, @fig-ds-map for spatial distribution, and @fig-ds-catch for temporal distribution.
 - **Delta Smelt salvage:** `r ds_salvage_count` Delta Smelt have been salvaged, and the cumulative seasonal salvage is `r ds_cumsalvage`. 
