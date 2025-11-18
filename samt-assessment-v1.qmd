@@ -27,7 +27,6 @@ library(magick)
 project <- here()
 source(here(project, 'source_code/salmon_code.R'), echo = FALSE)
 source(here(project, 'source_code/text_updates.R'), echo = FALSE)
-source(here(project, 'source_code/zoi_maps_query.R'), echo = FALSE)
 ```
 
 ### Executive Summary
