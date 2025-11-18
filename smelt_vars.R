@@ -16,6 +16,7 @@ source("smelt_data_extraction.R")
 # 3. Edit narrative text
 # 4. Edit secchi depth if relevant
 # 5. Make edits to salvage when salvage starts (see smelt_data_extraction.R Salvage section and Salvage sections below)
+# 6. Need to render pdf separately from the html to get both to be updated (option in render in quarto doc)
 
 # Actions ---------------------
 first_flush_status = "relevant"
