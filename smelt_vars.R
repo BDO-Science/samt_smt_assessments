@@ -11,10 +11,11 @@ library(janitor)
 source("smelt_data_extraction.R")
 
 ## Instructions
-# 1. Upload new data files that are not online already (SLS, 20mm, Bay Study, EDSM, release table, abundance estimates)
+# 1. Upload new data files that are not online already (SLS, 20mm, Bay Study, EDSM, abundance estimates - add the newest estimates (sheet 1) and dates (sheet 2))
 # 2. Edit which actions are relevant 
-# 3. Edit any narrative text
+# 3. Edit narrative text
 # 4. Edit secchi depth if relevant
+# 5. Make edits to salvage when salvage starts (see smelt_data_extraction.R Salvage section and Salvage sections below)
 
 # Actions ---------------------
 first_flush_status = "relevant"
@@ -73,6 +74,7 @@ ds_last_catch_date <- ds_recent %>% arrange(date) %>% tail(1) %>% pull(date)
 ds_last_catch_location <- ds_recent %>% arrange(date) %>% tail(1) %>% pull(region) 
 ds_last_catch_count <- ds_recent %>% arrange(date) %>% tail(1) %>% pull(catch)
 
+## Salvage ----------------------
 # Once 2026 starts updating go back to this code
 # ds_salvage_count <- ds_recent %>% filter(source == "salvage") %>% pull(catch)%>% sum()
 # ds_cumsalvage <- salvage_ds_data %>% pull(salvage) %>% sum()
@@ -128,6 +130,7 @@ lfs_last_catch_date <- lfs_recent %>% arrange(date) %>% tail(1) %>% pull(date)
 lfs_last_catch_location <- lfs_recent %>% arrange(date) %>% tail(1) %>% pull(region) 
 lfs_last_catch_count <- lfs_recent %>% arrange(date) %>% tail(1) %>% pull(catch)
 
+## Salvage ----------------------------
 # Once 2026 starts updating go back to this code
 # lfs_salvage_count <- lfs_recent %>% filter(source == "salvage") %>% pull(catch)%>% sum()
 # lfs_cumsalvage <- salvage_lfs_data %>% pull(salvage) %>% sum()
