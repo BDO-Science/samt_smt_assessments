@@ -52,18 +52,19 @@ source(here(project, 'source_code/zoi_maps_query.R'), echo = FALSE)
 #| results: asis
 #| tbl-cap: Average Percent of annual emigrating population for unclipped LAD winter-run captured at the following locations and LAD and DNA confirmed winter-run salvaged at SWP and CVP Delta facilities for the past 10 years.
 
-if (knitr::is_latex_output()) {
+if (knitr::is_html_output()) {
+  knitr::kable(wr_natural_timing, align = "lrrrrrr")
+} else {
   flextable(wr_natural_timing) %>%
   vline()%>%
   hline() %>%
   border_outer() %>%
   width(width = 0.75, unit = "in") %>%
-  font(fontname = 'Segoe UI', part = "body") %>%
-  font(fontname = 'Segoe UI Semibold', part = "header") %>%
+  font(fontname = 'Open Sans Regular', part = "body") %>%
+  font(fontname = 'Open Sans Regular', part = "header") %>%
+  bold(bold = TRUE, part = "header") %>%
   fontsize(size = 11, part = "header") %>%
   fontsize(size = 10, part = "body")
-} else {
-  knitr::kable(wr_natural_timing, align = "lrrrrrr")
 }
 
 ```
@@ -155,19 +156,19 @@ Historically, as of `r format(Sys.Date()-1, "%b %d")`, `r if_else(is.na(delta_en
 #| tbl-cap: 'Average Percent, with 95%CI, of annual emigrating population for unclipped CCV steelhead captured at the following locations and salvaged at SWP and CVP Delta facilities for the past 10 years.'
 #| echo: false
 
-if (knitr::is_latex_output()) {
-  # Print static ggplot for PDF
+if (knitr::is_html_output()) {
+  knitr::kable(sh_natural_timing, align = "lrrrrrr")
+} else {
   flextable(sh_natural_timing) %>%
   vline()%>%
   hline() %>%
   border_outer() %>%
   width(width = 0.75, unit = "in") %>%
-  font(fontname = 'Segoe UI', part = "body") %>%
-  font(fontname = 'Segoe UI Semibold', part = "header") %>%
+  font(fontname = 'Open Sans Regular', part = "body") %>%
+  font(fontname = 'Open Sans Regular', part = "header") %>%
+  bold(bold = TRUE, part = "header") %>%
   fontsize(size = 11, part = "header") %>%
   fontsize(size = 10, part = "body")
-} else {
-  knitr::kable(sh_natural_timing, align = "lrrrrrr")
 }
 
 ```

@@ -86,5 +86,5 @@ weekly_loss_text <- if(Sys.Date() < as.Date(paste0(wy,"-1-01"))) {
 #####################################################
 stars_text <- print(paste0("As of ",format(as.Date(stars_date), '%B %d'), 
                            ' overall through delta STARs estimated survival probability (with 80% credible intervals) is ',overall_survival,
-                           '. STARs estimated rounting and survival probabilities (with 80% credible intervals) into the interior delta are',
+                           '. STARs estimated rounting and survival probabilities (with 80% credible intervals) into the interior delta are ',
                            id_routing,' and ', id_survival, ' respectively.'))
