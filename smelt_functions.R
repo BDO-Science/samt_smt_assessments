@@ -11,7 +11,7 @@ library(stringr)
 
 # Function to read Excel files by pattern - returns single dataframe
 # pattern: the text you are looking for in your filename, e.g. "SLS" or "EDSM". 
-# folder_path: where to look for data files (default is current directory). Do not need to add quotes around folder name.
+# folder_path: where to look for data files (default is current directory).
 # combine_survey_sheets: TRUE to combine multiple sheets (SLS, 20mm), FALSE to just read the first sheet
 
 read_excel_by_pattern <- function(pattern, folder_path = ".", combine_survey_sheets = FALSE) {
@@ -34,14 +34,52 @@ read_excel_by_pattern <- function(pattern, folder_path = ".", combine_survey_she
     all_files[1]
   } else {
     message(paste("Found", length(all_files), "files. Reading most recently modified..."))
-    
+    ##########################################################
+    # NOTE on finding most recent: GitHub assigns commit times to files, not original timestamp
+    # approach 1: by file mod time
+    #   a. original files with timestamps (works)
+    #   b. git clone with follow up step to apply commit times to files (yes&no)
+    #   c. git clone without commit times OR download zip (no, all files have same timestamp)
+    # approach 2: by hard-coded patterns to match filenames and lubridate
     most_recent <- all_files %>%
       tibble(file_path = .) %>%
       mutate(mtime = map_dbl(file_path, ~file.info(.)$mtime)) %>%
       slice_max(mtime, n = 1) %>%
       pull(file_path)
     
-    message(paste("Most recent file:", basename(most_recent)))
+    if (length(most_recent) == 1) {
+      # approach 1 found one file as most recent
+      message(paste("Most recent file:", basename(most_recent)))
+    } else if (length(most_recent) > 1) {
+      # approach 1 found more than 1 file matching pattern with same timestamp
+      # initiating approach 2
+      message(paste("Found", length(most_recent), "files with same modtime. Trying hard-coded filename method with lubridate."))
+      thesenames <- basename(all_files)
+      if(pattern == "SLS"){
+        # file name is static before the date. easy
+        thesedates <- sub("SMT SLS catch update_","",thesenames) %>% sub(".xlsx","",.) 
+        properdates <- as_date(mdy(thesedates))
+        latestindex <- which(properdates == max(properdates))
+        most_recent <- all_files[latestindex]
+      } 
+      else if(pattern == "EDSM"){
+        # file name changes before the date, date length is constant, find by index
+        thesedates <- substring(thesenames,18,24)
+        properdates <- as_date(ymd(thesedates))
+        latestindex <- which(properdates == max(properdates))
+        most_recent <- all_files[latestindex]
+      }
+      else if(pattern == "20-mm"){
+        # file name changes before the date, find by index but date length could vary, so chop iend of file name
+        library(stringr)
+        thesenames <- sub(".xlsx","",thesenames)
+        thesedates <- substring(thesenames,str_locate(thesenames,"_")[1]+1) 
+        properdates <- as_date(mdy(thesedates))
+        latestindex <- which(properdates == max(properdates))
+        most_recent <- all_files[latestindex]
+      }
+      message(paste("Most recent file:", basename(most_recent)))
+    }  
     most_recent
   }
   
@@ -89,7 +127,7 @@ read_excel_by_pattern <- function(pattern, folder_path = ".", combine_survey_she
 
 
 # Function to read SFBS Excel files - returns single dataframe -------------------
-# folder_path: where to look for data files (default is current directory). Do not need to add quotes around folder name.
+# folder_path: where to look for data files (default is current directory). 
 
 read_sfbs_files <- function(folder_path = ".") {
   
