@@ -23,11 +23,14 @@ library(kableExtra)
 library(flextable)
 library(gt)
 library(magick)
+library(readr)
+library(patchwork)
 
 project <- here()
 source(here(project, 'source_code/salmon_code.R'), echo = FALSE)
 source(here(project, 'source_code/text_updates.R'), echo = FALSE)
 source(here(project, 'source_code/zoi_maps_query.R'), echo = FALSE)
+source(here(project, 'source_code/hydro_data_extraction.R'), echo = FALSE)
 ```
 
 ## Delta Hydrodynamics
@@ -36,6 +39,91 @@ source(here(project, 'source_code/zoi_maps_query.R'), echo = FALSE)
 DCC gates are the current controlling factor. See most recent weekly outlook for more information.
 
 ### Current Conditions
+```{r}
+#| include: false
+export_plot <- pumping_clean %>%
+  ggplot(aes(x = date)) +
+  labs(y = 'Exports (cfs)') +
+  geom_col(aes(y = value, fill = facility), color = "black") +
+  scale_fill_manual(values = c('#0072B2', 'gray80')) +
+  scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
+  theme_bw() +
+  theme(axis.title.x = element_blank(),
+        axis.text = element_text(size = 15),
+        legend.text = element_text(size =15),
+        legend.title = element_text(size = 15),
+        legend.position = "bottom",
+        axis.title= element_text(size = 15))
+export_plot
+```
+
+```{r}
+#| include: false
+# Pull annotation start value for flow plot
+ann_start_FPT <- flow_clean %>% filter(station == "FPT", date == date(start)) %>% pull(value)
+ann_start_VNS <- flow_clean %>% filter(station == "VNS", date == date(start)) %>% pull(value)
+
+flow_plot <- flow_clean %>%
+  ggplot(aes(x = date)) +
+  annotate("label", x = date(start)+2, y = ann_start_FPT-3000, label = "FPT", color = "#388715")+
+  annotate("label", x = date(start)+2, y = ann_start_VNS+3000, label = "VNS", color = "gray20")+
+  labs(y = 'Flow (cfs)') +
+  geom_line(aes(y = value, color = station)) +
+  scale_color_manual(values = c("#43a419", "gray15")) +
+  scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
+  theme_bw() +
+  theme(legend.position = "none",
+        axis.title.x = element_blank(),
+        axis.text = element_text(size = 15),
+        axis.title= element_text(size = 15))
+flow_plot
+```
+
+```{r}
+#| include: false
+omr_plot <- 
+  ggplot() +
+  geom_line(data = omr_clean, aes(x = date, y = value)) +
+  geom_vline(data = triggers_clean, aes(xintercept = date, color = regulation))+
+  geom_text(data = triggers_clean, aes(x = date-2, y = -3500, label = plot_label), size = 5)+
+  labs(y = 'Daily OMRI (cfs)') +
+  scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
+  scale_color_manual(values = c("magenta4", "blue3"))+
+  theme_bw() +
+  theme(legend.position = "none",
+        axis.title.x = element_blank(),
+        axis.text = element_text(size = 15),
+        axis.title = element_text(size = 15))
+omr_plot
+```
+
+```{r}
+#| label: fig-triggers
+#| warning: false
+#| fig-cap: "Operations and Action Summary, WY 2026. The colors in the OMRI plot indicate different types of triggers (see Table 1). OMRI data calculated by SacPAS, Freeport (FPT) and Vernalis (VNS) flow data from CDEC, and CVP (TRP) and SWP (HRO) exports data from CDEC."
+#| fig-width: 9
+#| fig-height: 7
+#| echo: false
+ 
+flow_plot +omr_plot + export_plot + plot_layout(nrow = 3)
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| label: tbl-triggers
+#| tbl-cap: "Summary of Actions and Triggers, WY 2026"
+
+trigger_table <- triggers_clean %>%
+  select(Label = plot_label,
+         Action = action,
+         `Date Triggered` = date_triggered,
+         `Date Implemented` = date_implemented,
+         `Number Days Implemented` = days_implemented,
+         Regulation = regulation,
+         )
+kable(trigger_table)
+```
 
 Current inflow at Freeport in the Sacramento River and Vernalis in the San Joaquin River is xx and xx.  Most recent 5-day and 10-day OMRI measurements were xx and xx respectively, and most recent export data were xx for Jones Pumping Plant and xx for Henry O. Banks Pumping Plant.
 
@@ -58,3 +146,8 @@ Current conditions at Freeport and Vernalis indicate that delta hydrology falls 
 image_read('zoi_map.png')
 
 ```
+
+```{r}
+knitr::include_graphics(here("zoi_map.png"))
+```
+
