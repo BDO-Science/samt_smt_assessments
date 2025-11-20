@@ -32,11 +32,15 @@ inflow_order = c("lolo", "lomed", "lohi", "medlo", "medmed", "medhi", "hilo", "h
 inflow_labels = c("Low Sacramento - Low San Joaquin", "Low Sacramento - Medium San Joaquin", "Low Sacramento - High San Joaquin",
                   "Medium Sacramento - Low San Joaquin", "Medium Sacramento - Medium San Joaquin", "Medium Sacramento - High San Joaquin",
                   "High Sacramento - Low San Joaquin", "High Sacramento - Medium San Joaquin", "High Sacramento - High San Joaquin")
-omr_levels = unique(alt2a$OMR_flow)
+
 alt2a <- contours_all_Alt2a %>%
   mutate(grouper = paste0(group, "_", flow, group2),
          label = paste0(group2, "_", flow)) %>%
-  rename(Inflow = group2) %>%
+  rename(Inflow = group2) 
+
+omr_levels = unique(alt2a$OMR_flow)
+
+alt2a <- alt2a %>%
   mutate(Inflow_text = factor(Inflow, levels = inflow_order, labels = inflow_labels),
          Inflow = factor(Inflow, levels = inflow_order),
          OMR_flow = factor(OMR_flow, levels = omr_levels))
