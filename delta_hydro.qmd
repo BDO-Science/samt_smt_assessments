@@ -8,9 +8,9 @@ format:
 engine: knitr
 ---
 
-## Summary of CVP and SWP delta operations on salmonids (*as of `r format(Sys.Date(), "%B %d, %Y")`*)
+## PRELIMINARY DATA: Current Delta Hydrologic Conditions
 
-**BDO Science Division**, *Data is preliminary and subject to change*
+Last updated: *`r format(Sys.Date(), "%B %d, %Y")`*
 
 ```{r}
 #| label: setup
@@ -27,18 +27,18 @@ library(readr)
 library(patchwork)
 
 project <- here()
-source(here(project, 'source_code/salmon_code.R'), echo = FALSE)
-source(here(project, 'source_code/text_updates.R'), echo = FALSE)
 source(here(project, 'source_code/zoi_maps_query.R'), echo = FALSE)
 source(here(project, 'source_code/hydro_data_extraction.R'), echo = FALSE)
+source(here(project, 'source_code/text_updates.R'), echo = FALSE)
 ```
 
-## Delta Hydrodynamics
 ### Operational and Regulatory Conditions
 
 DCC gates are the current controlling factor. See most recent weekly outlook for more information.
 
 ### Current Conditions
+
+Current inflow at Freeport in the Sacramento River and Vernalis in the San Joaquin River is xx and xx.  Most recent 5-day and 10-day OMRI measurements were xx and xx respectively, and most recent export data were xx for Jones Pumping Plant and xx for Henry O. Banks Pumping Plant.
 ```{r}
 #| include: false
 export_plot <- pumping_clean %>%
@@ -125,29 +125,25 @@ trigger_table <- triggers_clean %>%
 kable(trigger_table)
 ```
 
-Current inflow at Freeport in the Sacramento River and Vernalis in the San Joaquin River is xx and xx.  Most recent 5-day and 10-day OMRI measurements were xx and xx respectively, and most recent export data were xx for Jones Pumping Plant and xx for Henry O. Banks Pumping Plant.
-
 ### Zone of Influence
 
-Current conditions at Freeport and Vernalis indicate that delta hydrology falls within the 'lolo' category (see appendix for hydrology bin definitions). This category is characterized by significant sensitivity in the zone of influence to changes in OMRI, where the zone of influence expands more greatly than wetter hydrologies as OMRI becomes more negative. 
+The Zone of Influence (ZOI) analysis served as a Line of Evidence for comparing alternative actions in the Long Term Operations EIS. This analysis evaluated the spatial extent of hydrologic alteration resulting from pumping under varying Old and Middle River flow conditions and Sacramento-San Joaquin river inflow conditions.  This analysis was adapted for the assessment by focusing on a single alternative, Alt2woTUCPDeltaVa, which served as the proposed action in the LTO, and binned maps into 1 of 9 categories based on low, medium, and high inflows from the Sacramento and San Joaquin flow. In general, changes in channel length across OMR levels may correlate with entrainment risk, where larger increases in channel length from more positive to more negative OMR represent greater entrainment risk.
+
+Current conditions at Freeport and Vernalis indicate that delta hydrology falls within the `r paste0("'",hydrology, "'")` category (see appendix for hydrology bin definitions). `r zoi_text`
 
 ```{r}
 #| label: zoi_graph
 #| echo: false
 #| message: false
 #| warning: false
-#| fig-height: 8
-#| fig-width: 10
+#| fig-height: 6
+#| fig-width: 8
 #| include: true
 #| out-width: "75%"
 #| results: asis
 #| fig-cap: Modeled Zone of Influence at different OMRI scenarios based on current inflow hydrology from the Sacramento River and San Joaquin River
 
-image_read('zoi_map.png')
+all_maps[[hydrology]]
 
-```
-
-```{r}
-knitr::include_graphics(here("zoi_map.png"))
 ```
 

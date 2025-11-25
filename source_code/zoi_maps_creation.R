@@ -67,8 +67,7 @@ nodes_4326 <- st_transform(nodes, crs = 4326) %>%
   mutate(points = "DSM2 nodes")
 WW_Delta_4326 <- st_transform(WW_Delta, crs = st_crs(delta_4326))
 WW_Delta_crop <- st_crop(WW_Delta_4326,xmin = -122.2, xmax = -121, ymin = 37.5, ymax = 38.8) %>%
-  filter(HNAME!= "SAN FRANCISCO BAY") %>%
-  st_simplify(dTolerance = 200)
+  filter(HNAME!= "SAN FRANCISCO BAY")
 
 
 n_colors <- length(omr_levels)
@@ -88,11 +87,11 @@ plots <- alt2a %>%
     )
     
     ggplot() +
-      geom_sf(data = WW_Delta_crop, fill = "steelblue", color = NA, alpha = 0.6, inherit.aes = FALSE) +
+      geom_sf(data = WW_Delta_crop, fill = "#9ecae1", color = "#4292c6", alpha = 0.4, inherit.aes = FALSE) +
       geom_path(data = dummy, aes(x = long, y = lat, color = OMR_flow, group = grouper), linewidth = 1) +  # Dummy layer
       geom_path(data = .x, 
                 aes(x = long, group = grouper, y = lat, color = OMR_flow), 
-                linewidth = 1, inherit.aes = FALSE) +
+                linewidth = 1.5, inherit.aes = FALSE) +
       ylim(c(37.7, 38.1)) +
       xlim(c(-121.8, -121.2)) +
       scale_color_manual(values = omr_colors) +
@@ -104,5 +103,15 @@ plots <- alt2a %>%
             legend.position = 'bottom')
   }) %>%
   set_names(unique(alt2a$Inflow[alt2a$contour == 0.75]))
-
+plots[["lolo"]]
 saveRDS(plots, 'input_data/ZOI_maps.rds')
+
+##save plots separately
+lapply(names(plots), function(name) {
+  ggsave(
+    filename = here(project, 'zoi_maps', paste0(name, '.png')),
+    plot = plots[[name]],
+    height = 6,
+    width = 6
+  )
+})

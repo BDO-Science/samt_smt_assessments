@@ -3,6 +3,7 @@ library(tidyverse)
 
 project <- here()
 source(here(project, 'source_code/salmon_code.R'), echo = FALSE)
+source(here(project, 'source_code/zoi_maps_query.R'), echo = FALSE)
 #####################################################
 ##setting language for early season migration action
 #####################################################
@@ -88,3 +89,14 @@ stars_text <- print(paste0("As of ",format(as.Date(stars_date), '%B %d'),
                            ' overall through delta STARs estimated survival probability (with 80% credible intervals) is ',overall_survival,
                            '. STARs estimated rounting and survival probabilities (with 80% credible intervals) into the interior delta are ',
                            id_routing,' and ', id_survival, ' respectively.'))
+
+
+#####################################################
+##setting language for ZOI
+#####################################################
+
+zoi_text <- print(paste0("The altered channel length for the '", hydrology, "' hydrology is ", 
+                         channel_filter$length_low, " kilometers (km) for an OMR of ", channel_filter$omr_bin_low, " and ", 
+                         channel_filter$length_high, " km for an OMR of ", channel_filter$omr_bin_high,
+                         ". Change in altered channel length between OMR levels is ", channel_filter$length_change, 
+                         " km, which represents ", channel_filter$prop_change, "% of change in altered channel length among the nine hydrology bins"))
