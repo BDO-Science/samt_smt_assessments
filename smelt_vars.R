@@ -20,7 +20,7 @@ source("smelt_data_extraction.R")
 
 # Actions ---------------------
 first_flush_status = "relevant"
-adult_ent_status = "relevant"
+adult_ent_status = "not relevant"
 larval_ent_status = "not relevant"
 lfs_adult_ent_status = "relevant"
 lfs_larval_ent_status = "not relevant"
@@ -33,8 +33,9 @@ end_of_season = "not relevant"
 
 narrative_text <- 
 "- OMR Season has not yet begun for Delta Smelt but First Flush could occur starting Dec 1
-- Freeport flows and turbidity do not indicate First Flush 
-- No Delta Smelt salvage has been observed this water year"
+- Freeport flows and turbidity do not indicate First Flush will occur this week
+- No Delta Smelt salvage has been observed this water year
+- Two Delta smelt releases (hard truck, each 30,000 fish) are expected to occur on 12/2 and 12/3"
 
 # Delta Smelt ---------------------------
 
