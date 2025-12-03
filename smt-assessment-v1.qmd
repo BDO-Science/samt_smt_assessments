@@ -5,6 +5,7 @@ format:
     standalone: false
     title-block-style: none
   pdf: default
+  docx: default
 engine: knitr
 ---
 
