@@ -38,8 +38,7 @@ source(here(project, 'source_code/text_updates.R'), echo = FALSE)
 -   Central Valley Steelhead catch is low and no loss has yet to occur at export facilities.
 
 ### Natural Winter-run Chinook
-
-#### Current Status
+#### Juvenile Production Estimate and Current Status
 
 *Give update on migration, salvage, monitoring, and STARs patterns.*
 
@@ -86,7 +85,6 @@ image_read('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2
 
 ```
 
-#### Weekly Distributed Loss
 #### STARs
 
 The Delta STARS Model is an individual-based simulation model that predicts survival, travel time, and routing of juvenile salmon migrating through the Sacramento–San Joaquin River Delta. This model gives insight into survival and routing patterns of winter-run based on most current conditions.
@@ -136,15 +134,14 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 ```
 
 ### Hatchery Winter-run Chinook
-#### Current Status
+#### Juvenile Production Estimate and Current Status
 `r wr_hatch_jpe` `r wr_hatchery_releases`
 
 #### Annual Loss
 
 `r wr_hatch_threshold` `r wr_hatchery_loss`
 
-### Central Valley Steelhead
-
+### Natural-origin Central Valley Steelhead
 #### Current Status
 
 Historically, as of `r format(Sys.Date()-1, "%b %d")`, `r if_else(is.na(delta_entry_sh), '0%', delta_entry_sh)` of CCV steelhead have entered the delta based on Knights Landing RST catch, `r if_else(is.na(delta_exit_sh), '0%', delta_exit_sh)` have exited the delta based on Chipps Island Trawl Catch, and `r if_else(is.na(salvage_sh), '0%', salvage_sh)` have been salvaged.
@@ -189,6 +186,10 @@ if (knitr::is_html_output()) {
 
 image_read('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2026/LossUnclip_2_Stlhd_WY.png')
 ```
+
+### Hatchery-origin Central Valley Steelhead
+#### Juvenile Production Estimate and Current Status
+#### Annual Loss
 
 ### Spring-run
 #### Current Status
