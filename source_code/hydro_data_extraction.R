@@ -2,7 +2,6 @@ library(lubridate)
 library(dplyr)
 library(readr)
 library(here)
-library(CDECRetrieve)
 library(janitor)
 library(tidyverse)
 
