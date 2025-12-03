@@ -30,6 +30,7 @@ project <- here()
 source(here(project, 'source_code/zoi_maps_query.R'), echo = FALSE)
 source(here(project, 'source_code/hydro_data_extraction.R'), echo = FALSE)
 source(here(project, 'source_code/text_updates.R'), echo = FALSE)
+mapList <- list.files(here(project, 'zoi_maps/'), full.names = TRUE)
 ```
 
 ### Operational and Regulatory Conditions
@@ -145,7 +146,8 @@ Current conditions at Freeport and Vernalis indicate that delta hydrology falls 
 #| results: asis
 #| fig-cap: Modeled Zone of Influence at different OMRI scenarios based on current inflow hydrology from the Sacramento River and San Joaquin River
 
-all_maps[[hydrology]]
+map_file <- grep(hydrology, mapList, value = TRUE)
 
+image_read(map_file)
 ```
 
