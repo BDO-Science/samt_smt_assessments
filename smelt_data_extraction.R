@@ -1,6 +1,6 @@
 # smelt_data_extraction.R
 # Script for extracting data for smelt assessments- e.g. from files, SacPAS, online sources
-# Last updated 11/13/2025
+# Last updated 12/14/2025- lm adding A5 data
 
 # Libraries 
 library(here)
@@ -18,6 +18,7 @@ library(sf)
 library(jsonlite) #weather
 library(glue) #weather
 library(purrr) #weather
+library(pdftools) # JPF
 source("smelt_functions.R")
 
 # Tables from SacPAS ---------------------------------
@@ -346,3 +347,116 @@ lfs_detail <- bind_rows(
   mutate(life_stage = ifelse(fork_length>84, "Adult", ifelse(fork_length>=20, "Juvenile", "Larva"))) %>% 
   arrange(date)
 
+## Jersey Point Flow ---------------------------------
+
+# ---- download the PDF Delta Hydrology Conditions (DWR)----
+url1 <- "https://water.ca.gov/-/media/DWR-Website/Web-Pages/Programs/State-Water-Project/Operations-And-Maintenance/Files/Operations-Control-Office/Delta-Status-And-Operations/Delta-Hydrologic-Conditions-Daily-Summary.pdf"
+tmp1 <- tempfile(fileext = ".pdf")
+download.file(url1, tmp1, mode="wb")
+
+# ---- extract raw text ---- 
+txt <- pdf_text(tmp1)
+
+# ---- parse page 1 table ----
+page1 <- txt[1] %>% str_split("\n") %>% unlist()
+
+# find lines with data (dates etc.)
+data_lines1 <- page1[str_detect(page1, "\\d{1,2}/\\d{1,2}")]
+
+# split each row by whitespace
+hydro1 <- data_lines1 %>%
+  str_squish() %>%
+  str_replace_all("[^[:print:]]", "") %>%
+  .[str_detect(., "^\\d{1,2}/\\d{1,2}/\\d{2,4}")] %>%
+  str_split_fixed(" ", n = 11) %>%
+  as.data.frame(stringsAsFactors = FALSE)
+
+# add column names
+colnames(hydro1) <- c(
+  "Date","SR_at_Freeport_SRWTP","Yolo_Rumsey_FRE_FWB", "E_side_streams",
+  "SJR_a_Vernalis", "Stockton_rain_in","CCF_cfs",
+  "Tracy_cfs","CCWD_cfs","Barker_Slough_cfs",
+  "Byron_Bethany_cfs"
+)
+
+numeric.col1 <- c("SR_at_Freeport_SRWTP","Yolo_Rumsey_FRE_FWB", "E_side_streams",
+                  "SJR_a_Vernalis", "Stockton_rain_in","CCF_cfs",
+                  "Tracy_cfs","CCWD_cfs","Barker_Slough_cfs",
+                  "Byron_Bethany_cfs")
+hydro1 <- hydro1 %>% 
+  dplyr::filter(str_detect(Date, "\\d{1,2}/\\d{1,2}")) %>% 
+  mutate(across(all_of(numeric.col1),
+                ~ str_remove_all(.x, "[^0-9.-]") %>% as.numeric())) %>% 
+  mutate(Date = as.Date(Date, format = "%m/%d/%Y"))
+
+
+
+# ---- parse page 2 table ----
+page2 <- txt[2] %>% str_split("\n") %>% unlist()
+data_lines2 <- page2[str_detect(page2, "\\d{1,2}/\\d{1,2}")]
+hydro2 <- data_lines2 %>%
+  str_squish() %>%
+  str_replace_all("[^[:print:]]", "") %>%
+  .[str_detect(., "^\\d{1,2}/\\d{1,2}/\\d{2,4}")] %>%
+  str_split_fixed(" ", n = 9) %>%
+  as.data.frame(stringsAsFactors = FALSE)
+
+colnames(hydro2) <- c(
+  "Date","Banks_PP_cfs","Delta_GCD_cfs","Rio_Vista_Flow_cfs",
+  "QWEST_cfs","NDOI_cfs","EI_3day","EI_14day","Delta_Status"
+)
+
+numeric.col2 <- c("Banks_PP_cfs","Delta_GCD_cfs","Rio_Vista_Flow_cfs",
+                  "QWEST_cfs","NDOI_cfs","EI_3day","EI_14day","Delta_Status")
+
+hydro2 <- hydro2 |>
+  dplyr::filter(str_detect(Date, "\\d{1,2}/\\d{1,2}")) %>% 
+  mutate(across(all_of(numeric.col2),
+                ~ str_remove_all(.x, "[^0-9.-]") %>% as.numeric())) %>% 
+  mutate(Date = as.Date(Date, format = "%m/%d/%Y"))
+
+
+# Extract variables
+
+# Define dates: (today and previous 7 days)
+hydro1_7d <- hydro1 %>%
+  arrange(desc(Date)) %>%  # newest date first
+  slice(1:7) %>%           # take the last 7 rows
+  arrange(Date) 
+
+hydro2_7d <- hydro2 %>%
+  arrange(desc(Date)) %>%
+  slice(1:7) %>%
+  arrange(Date)
+
+#join tables
+hydro_7d <- hydro1_7d %>%
+  left_join(hydro2_7d, by = "Date")
+
+#select cols of interest
+hydro_7d <- hydro_7d %>%
+  select(Date, SJR_a_Vernalis, E_side_streams, SR_at_Freeport_SRWTP, Stockton_rain_in, 
+         Delta_GCD_cfs, CCF_cfs, Tracy_cfs)
+
+#make calculations
+hydro_7d <- hydro_7d %>% 
+  mutate(
+    QXGEO = 0.133 * SR_at_Freeport_SRWTP + 829,
+    Delta_precip = Stockton_rain_in / 12/5 * 682230 * 0.5041666604 * 0.65, # 65% of in Delta precip
+    Delta_div = Delta_GCD_cfs * 0.65, #65% of in Delta diversions
+    pumps = CCF_cfs + Tracy_cfs
+  )
+
+#calc JPF for past 7-days
+hydro_7d <- hydro_7d %>% 
+  mutate(JPF = 
+      SJR_a_Vernalis +
+      E_side_streams +
+      QXGEO +
+      Delta_precip -
+      Delta_div -
+      pumps)
+
+JPF_7d <- mean(hydro_7d$JPF)
+
+JPF_last_date <- ymd(tail(hydro_7d$Date, 1))
