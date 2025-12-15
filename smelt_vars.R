@@ -32,10 +32,9 @@ end_of_season = "not relevant"
 # - Summary of salvage and expectations of salvage
 
 narrative_text <- 
-"- OMR Season has not yet begun for Delta Smelt but First Flush could occur starting Dec 1
-- Freeport flows and turbidity do not indicate First Flush will occur this week
-- No Delta Smelt salvage has been observed this water year
-- Two Delta smelt releases (hard truck, each 30,000 fish) are expected to occur on 12/2 and 12/3"
+"- Entrainment Management Season has not yet begun for Delta Smelt but First Flush could occur
+- Freeport flows and turbidity are increasing this week due to incoming storms
+- No Delta Smelt salvage has been observed this water year"
 
 # Delta Smelt ---------------------------
 
