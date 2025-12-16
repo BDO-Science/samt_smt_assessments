@@ -238,15 +238,18 @@ sfbs_data <- sfbs_data_raw %>%
 ## SLS ---------------------------------
 # directly add file in - will read most recently modified file
 sls_data_raw <- read_excel_by_pattern("SLS", data_raw, TRUE)
-colnames(sls_data_raw) <- as.character(sls_data_raw[1, ])  # Set first row as column names
-sls_data <- sls_data_raw[-1, ]  # Remove the first row
-sls_data$Date <- as.Date(as.numeric(sls_data$Date), origin = "1899-12-30")
+#colnames(sls_data_raw) <- as.character(sls_data_raw[1, ])  # Set first row as column names
+#sls_data <- sls_data_raw[-1, ]  # Remove the first row
+sls_data <- sls_data_raw[-nrow(sls_data_raw), ]   # Remove last row (notes from CDFW)
+#sls_data$Date <- as.Date(as.numeric(sls_data$Date), origin = "1899-12-30") #didn't work
+sls_data$Date <- as.Date(sls_data$Date) #change to date format
 sls_data <- sls_data[, !is.na(names(sls_data)) & names(sls_data) != ""]
   
 # right now sls data include min, mean, max length... not sure if we want to display all of them
 sls_data <- sls_data %>% filter(!is.na(Date)) %>%
   clean_names() %>%
-  rename(station = sls_station) %>%
+  rename(station = sls_station) %>% 
+  mutate(station = as.character(station)) %>%
   left_join(station_region, by = "station")%>%
   mutate(source = "sls",
          smelt_catch = as.numeric(smelt_catch),
