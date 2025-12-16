@@ -5,7 +5,8 @@ format:
     standalone: false
     title-block-style: none
   pdf: default
-  docx: default
+  docx:
+    tbl-cap-location: top
 engine: knitr
 ---
 
@@ -51,8 +52,24 @@ source(here(project, 'source_code/text_updates.R'), echo = FALSE)
 #| results: asis
 #| tbl-cap: Average Percent of annual emigrating population for unclipped LAD winter-run captured at the following locations and LAD and DNA confirmed winter-run salvaged at SWP and CVP Delta facilities for the past 10 years.
 
+if (knitr::pandoc_to() == "docx") {
+  cat("**Table 1.** Average Percent of annual emigrating population for unclipped LAD winter-run captured at the following locations and LAD and DNA confirmed winter-run salvaged at SWP and CVP Delta facilities for the past 10 years.\n\n")
+}
 
-knitr::kable(wr_natural_timing, align = "lrrrrrr")
+if (knitr::pandoc_to() == "docx") {
+  flextable(wr_natural_timing) %>%
+    vline() %>%
+    hline() %>%
+    border_outer() %>%
+    width(width = 1, unit = "in") %>%
+    font(fontname = 'Segoe UI', part = "body") %>%
+    font(fontname = 'Segoe UI Semibold', part = "header") %>%
+    fontsize(size = 12, part = "header") %>%
+    fontsize(size = 11, part = "body")
+} else {
+  knitr::kable(wr_natural_timing, align = "lrrrrrr",
+               caption = "Average Percent of annual emigrating population for unclipped LAD winter-run captured at the following locations and LAD and DNA confirmed winter-run salvaged at SWP and CVP Delta facilities for the past 10 years.")
+}
 
 ```
 
@@ -142,8 +159,24 @@ Historically, as of `r format(Sys.Date()-1, "%b %d")`, `r if_else(is.na(delta_en
 #| echo: false
 
 
-knitr::kable(sh_natural_timing, align = "lrrrrrr")
+if (knitr::pandoc_to() == "docx") {
+  cat("**Table 2.** Average Percent of annual emigrating population for unclipped CCV steelhead captured at the following locations and salvaged at SWP and CVP Delta facilities for the past 10 years.\n\n")
+}
 
+if (knitr::pandoc_to() == "docx") {
+  flextable(sh_natural_timing) %>%
+    vline() %>%
+    hline() %>%
+    border_outer() %>%
+    width(width = 1, unit = "in") %>%
+    font(fontname = 'Segoe UI', part = "body") %>%
+    font(fontname = 'Segoe UI Semibold', part = "header") %>%
+    fontsize(size = 12, part = "header") %>%
+    fontsize(size = 11, part = "body")
+} else {
+  knitr::kable(wr_natural_timing, align = "lrrrrrr",
+               caption = "Average Percent of annual emigrating population for unclipped CCV steelhead captured at the following locations and salvaged at SWP and CVP Delta facilities for the past 10 years.")
+}
 ```
 
 #### Annual Loss
@@ -171,4 +204,6 @@ image_read('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2
 ### Spring-run
 #### Current Status
 #### Surrogate Releases and Current Loss
+
+### Evaluation
 ### References

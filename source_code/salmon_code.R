@@ -15,6 +15,7 @@ battle_jpe <- NA
 wr_loss_threshold <- 0.01
 wr_hatch_loss_threshold <- 0.01
 sh_hatch_loss_threshold <- 0.01
+sr_surrogate_threshold <- 0.01
 
 ##########################################
 #pull in latest salmon and steelhead files
@@ -83,6 +84,8 @@ wr_loss <- loss_summary_table %>%
 wr_perc <- loss_summary_table %>%
   select(dna_winter_run_chinook) %>%
   slice(4) %>%
+  mutate(dna_winter_run_chinook = as.character(dna_winter_run_chinook)) %>%
+  replace(is.na(.), "0.00%") %>%
   pull()
 wr_7d <- loss_summary_table %>%
   select(dna_winter_run_chinook) %>%
@@ -133,6 +136,56 @@ sh_7d <- loss_summary_table %>%
   pull()
 
 #hatchery steelhead
+###########################################
+#pull in juvenile sampling table
+###########################################
+
+juv_url <- paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,'/samt_juvfish.html')
+juv <- read_html(juv_url) %>% 
+  html_nodes("table") %>%
+  html_table(fill = T, header = TRUE) 
+
+juv_table <- juv[[1]] %>%
+  slice(-1)
+
+samples <- colnames(juv_table[c(-1:-3,-6)])  
+
+
+sample_list <- lapply(samples, function(sample){
+  date <- juv_table %>% 
+    select(2, all_of(sample)) %>%
+    filter(`Data Item` %in% c('Min Sample Date', 'Max Sample Date')) %>%
+    mutate(date = ymd(.data[[sample]])) %>%  # Reference the column by the name in sample
+    group_by(`Data Item`) %>%  # Fixed parenthesis
+    summarize(min_date = min(date, na.rm = TRUE),
+              max_date = max(date, na.rm = TRUE))
+  
+  max_date <- date[1, 3]
+  min_date <- date[2, 2]
+  
+  fish <- juv_table %>% 
+    select(2, all_of(sample)) %>%
+    filter(grepl('chinook|steelhead', `Data Item`, ignore.case = TRUE)) %>%
+    mutate(catch = as.numeric(.data[[sample]])) %>%  # Reference the column by the name in sample
+    group_by(`Data Item`) %>%  # Fixed parenthesis
+    summarize(catch = sum(catch, na.rm = TRUE)) %>%
+    replace(is.na(.), 0) %>%
+    t()
+  
+  colnames(fish) <- fish[1, ]
+  fish <- fish[-1, , drop = FALSE]
+  fish <- as.data.frame(fish)
+  
+  all <- bind_cols(min_date, max_date, fish) %>%
+    mutate(Location = sample) %>%
+    select(10, 'Date Start' = 1, 'Date End' = 2, 9, 6, 8, 4, 5, 7, 3)
+  return(all)
+})
+
+all_sampling <- bind_rows(sample_list) %>%
+  mutate(`Date Start` = if_else(is.infinite(`Date Start`), NA, `Date Start`),
+         `Date End` = if_else(is.infinite(`Date End`), NA, `Date End`),
+         mutate(across(4:10, as.numeric)))
 
 ###########################################
 #pull in migration timing table
