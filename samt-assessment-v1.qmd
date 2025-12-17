@@ -33,52 +33,54 @@ source(here(project, 'source_code/text_updates.R'), echo = FALSE)
 
 ### Executive Summary
 
--   DCC gates are currently closed and is the controlling factor. Gates will continue to operate in accordance to Table 3-6 in the Proposed Action.
+-   Entrainment management season is not active at this time.
 
--   Winter-run catch is high at delta entry monitoring locations. No loss has yet to occur at export facilities.
+-   No salmonids have been salvaged this season.
 
--   Central Valley Steelhead catch is low and no loss has yet to occur at export facilities.
+-   Winter-run presence in the delta is high.
 
 ### Natural Winter-run Chinook
-#### Juvenile Production Estimate and Current Status
 
-*Give update on migration, salvage, monitoring, and STARs patterns.*
+#### Juvenile Production Estimate
 
-`r wr_jpe` Historically, as of `r format(Sys.Date()-1, "%b %d")`, `r if_else(is.na(delta_entry_wr), '0%', delta_entry_wr)` of length-at-date (LAD) winter-run have entered the delta based on Knights Landing RST catch, `r if_else(is.na(delta_exit_wr), '0%', delta_exit_wr)` have exited the delta based on Chipps Island Trawl Catch, and `r if_else(is.na(salvage_wr), '0%', salvage_wr)` of DNA confirmed winter-run have been salvaged.
+`r wr_jpe`
+
+#### Current Status
+
+*Entry Timing* - Historically, as of `r format(Sys.Date()-1, "%b %d")`, `r if_else(is.na(delta_entry_wr), '0%', delta_entry_wr)` of length-at-date (LAD) winter-run have entered the delta based on Knights Landing RST catch, `r if_else(is.na(delta_exit_wr), '0%', delta_exit_wr)` have exited the delta based on Chipps Island Trawl Catch, and `r if_else(is.na(salvage_wr), '0%', salvage_wr)` of DNA confirmed winter-run have been salvaged.
 
 ```{r}
-#| label: wr_timing_table
+#| label: tbl-wr_timing_table
 #| echo: false
 #| results: asis
 #| tbl-cap: Average Percent of annual emigrating population for unclipped LAD winter-run captured at the following locations and LAD and DNA confirmed winter-run salvaged at SWP and CVP Delta facilities for the past 10 years.
-
-if (knitr::pandoc_to() == "docx") {
-  cat("**Table 1.** Average Percent of annual emigrating population for unclipped LAD winter-run captured at the following locations and LAD and DNA confirmed winter-run salvaged at SWP and CVP Delta facilities for the past 10 years.\n\n")
-}
 
 if (knitr::pandoc_to() == "docx") {
   flextable(wr_natural_timing) %>%
     vline() %>%
     hline() %>%
     border_outer() %>%
-    width(width = 1, unit = "in") %>%
+    width(width = 0.8, unit = "in") %>%
     font(fontname = 'Segoe UI', part = "body") %>%
     font(fontname = 'Segoe UI Semibold', part = "header") %>%
     fontsize(size = 12, part = "header") %>%
     fontsize(size = 11, part = "body")
 } else {
-  knitr::kable(wr_natural_timing, align = "lrrrrrr",
-               caption = "Average Percent of annual emigrating population for unclipped LAD winter-run captured at the following locations and LAD and DNA confirmed winter-run salvaged at SWP and CVP Delta facilities for the past 10 years.")
+  knitr::kable(wr_natural_timing, align = "lrrrrrr")
 }
 
 ```
+
+*Red Bluff Diversion Dam Passage Estimate* - As of `r format(wr_rbdd_date, '%b %d')` estimated passage to date of LAD winter run at Red Bluff Diversion is approximately `r wr_passage` million fish. * *Note that outmigration timing overlaps with spring run migrating fish, and true winter-run abundance likely differs from these estimates.*
+
+*Delta Monitoring* - `r wr_delta_catch`
 
 #### Annual Loss
 
 `r wr_threshold` `r wr_annual_text`
 
 ```{r}
-#| label: wr_loss
+#| label: fig-wr_loss
 #| echo: false
 #| message: false
 #| warning: false
@@ -98,7 +100,7 @@ The Delta STARS Model is an individual-based simulation model that predicts surv
 `r stars_text`
 
 ```{r}
-#| label: stars_survival
+#| label: fig-stars_survival
 #| echo: false
 #| message: false
 #| warning: false
@@ -112,7 +114,7 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 ```
 
 ```{r}
-#| label: stars_id_survival
+#| label: fig-stars_id_survival
 #| echo: false
 #| message: false
 #| warning: false
@@ -126,7 +128,7 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 ```
 
 ```{r}
-#| label: stars_id_routing
+#| label: fig-stars_id_routing
 #| echo: false
 #| message: false
 #| warning: false
@@ -140,52 +142,54 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 ```
 
 ### Hatchery Winter-run Chinook
-#### Juvenile Production Estimate and Current Status
-`r wr_hatch_jpe` `r wr_hatchery_releases`
+
+#### Hatchery Releases
+
+`r wr_hatchery_releases`
+
+#### Juvenile Production Estimate
+
+`r wr_hatch_jpe`
 
 #### Annual Loss
 
 `r wr_hatch_threshold` `r wr_hatchery_loss`
 
 ### Natural-origin Central Valley Steelhead
+
 #### Current Status
 
-Historically, as of `r format(Sys.Date()-1, "%b %d")`, `r if_else(is.na(delta_entry_sh), '0%', delta_entry_sh)` of CCV steelhead have entered the delta based on Knights Landing RST catch, `r if_else(is.na(delta_exit_sh), '0%', delta_exit_sh)` have exited the delta based on Chipps Island Trawl Catch, and `r if_else(is.na(salvage_sh), '0%', salvage_sh)` have been salvaged.
+*Delta Entry Timing* - Historically, as of `r format(Sys.Date()-1, "%b %d")`, `r if_else(is.na(delta_entry_sh), '0%', delta_entry_sh)` of CCV steelhead have entered the delta based on Knights Landing RST catch, `r if_else(is.na(delta_exit_sh), '0%', delta_exit_sh)` have exited the delta based on Chipps Island Trawl Catch, and `r if_else(is.na(salvage_sh), '0%', salvage_sh)` have been salvaged.
 
 ```{r}
-#| label: sh_timing_table
+#| label: tbl-sh_timing_table
 #| results: asis
 #| tbl-cap: 'Average Percent of annual emigrating population for unclipped CCV steelhead captured at the following locations and salvaged at SWP and CVP Delta facilities for the past 10 years.'
 #| echo: false
-
-
-if (knitr::pandoc_to() == "docx") {
-  cat("**Table 2.** Average Percent of annual emigrating population for unclipped CCV steelhead captured at the following locations and salvaged at SWP and CVP Delta facilities for the past 10 years.\n\n")
-}
 
 if (knitr::pandoc_to() == "docx") {
   flextable(sh_natural_timing) %>%
     vline() %>%
     hline() %>%
     border_outer() %>%
-    width(width = 1, unit = "in") %>%
+    width(width = 0.8, unit = "in") %>%
     font(fontname = 'Segoe UI', part = "body") %>%
     font(fontname = 'Segoe UI Semibold', part = "header") %>%
     fontsize(size = 12, part = "header") %>%
     fontsize(size = 11, part = "body")
 } else {
-  knitr::kable(wr_natural_timing, align = "lrrrrrr",
-               caption = "Average Percent of annual emigrating population for unclipped CCV steelhead captured at the following locations and salvaged at SWP and CVP Delta facilities for the past 10 years.")
+  knitr::kable(sh_natural_timing, align = "lrrrrrr")
 }
 ```
+
+*Delta Monitoring* - `r sh_delta_catch`
 
 #### Annual Loss
 
 `r sh_annual_text`
 
-
 ```{r}
-#| label: sh_loss
+#| label: fig-sh_loss
 #| echo: false
 #| message: false
 #| warning: false
@@ -198,12 +202,70 @@ image_read('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2
 ```
 
 ### Hatchery-origin Central Valley Steelhead
-#### Juvenile Production Estimate and Current Status
-#### Annual Loss
+
+#### Hatchery Releases
+
+#### Juvenile Production Estimate
 
 ### Spring-run
+
 #### Current Status
-#### Surrogate Releases and Current Loss
+
+*Delta Entry Timing*- Historically, as of `r format(Sys.Date()-1, "%b %d")`, `r if_else(is.na(delta_entry_sr), '0%', delta_entry_sr)` of LAD spring run have entered the delta based on Knights Landing RST catch, `r if_else(is.na(delta_exit_sr), '0%', delta_exit_sr)` have exited the delta based on Chipps Island Trawl Catch, and `r if_else(is.na(salvage_sr), '0%', salvage_sr)` have been salvaged.
+
+```{r}
+#| label: tbl-sr_timing_table
+#| results: asis
+#| tbl-cap: 'Average Percent of annual emigrating population for LAD Spring-run Chinook Salmon captured at the following locations and salvaged at SWP and CVP Delta facilities for the past 10 years.'
+#| echo: false
+
+
+if (knitr::pandoc_to() == "docx") {
+  flextable(sr_natural_timing) %>%
+    vline() %>%
+    hline() %>%
+    border_outer() %>%
+    width(width = 0.8, unit = "in") %>%
+    font(fontname = 'Segoe UI', part = "body") %>%
+    font(fontname = 'Segoe UI Semibold', part = "header") %>%
+    fontsize(size = 12, part = "header") %>%
+    fontsize(size = 11, part = "body")
+} else {
+  knitr::kable(sr_natural_timing, align = "lrrrrrr")
+}
+```
+
+*Red Bluff Diversion Dam Passage Estimate* - As of `r format(sr_rbdd_date, '%b %d')` estimated passage to date of LAD spring run at Red Bluff Diversion is approximately `r sr_passage` million fish. * *Note that outmigration timing overlaps with winter run and fall run outmigration, and true spring run abundance likely differs from these estimates.*
+
+*Delta Monitoring*- `r sr_delta_catch`
+
+#### Surrogate Releases
+A total of `r yearling` yearling surrogate fish have been released across `r nrow(subset(sr_surrogate_table, Type == 'Yearling'))` releases and a total of `r yoy` young-of-year surrogate fish have been released across `r nrow(subset(sr_surrogate_table, Type == 'Young-of-year'))` releases.  See details in table below.
+
+```{r}
+#| label: tbl-sr_surrogate_table
+#| results: asis
+#| tbl-cap: 'Spring-run Chinook Salmon Hatchery Surrogate Summary Table.'
+#| echo: false
+
+
+if (knitr::pandoc_to() == "docx") {
+  flextable(sr_surrogate_table_clean) %>%
+    vline() %>%
+    hline() %>%
+    border_outer() %>%
+    width(width = 0.75, unit = "in") %>%
+    font(fontname = 'Segoe UI', part = "body") %>%
+    font(fontname = 'Segoe UI Semibold', part = "header") %>%
+    fontsize(size = 12, part = "header") %>%
+    fontsize(size = 11, part = "body")
+} else {
+  knitr::kable(sr_surrogate_table_clean, align = "lrrrrrrr")
+}
+```
 
 ### Evaluation
+
+1.  **After January 1, has the first winter-run Chinook salvage occurred?** These criteria for the start of entrainment management for winter-run Chinook Salmon have not occurred.
+
 ### References

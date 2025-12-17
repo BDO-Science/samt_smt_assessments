@@ -61,17 +61,20 @@ omr_clean <- bind_rows(omr, omr5D, omr14D) %>%
   mutate(measure = factor(measure, levels = c('OMR', 'OMR5D', 'OMR14D'),
                           labels = c('OMR', 'OMR 5 day index', 'OMR 14 day index')))
 omr_text <- omr_clean %>%
-  filter(measure == 'OMR') %>%
+  filter(measure == 'OMR',
+         !is.na(value)) %>%
   slice_tail() %>%
   pull(value) %>%
   prettyNum(big.mark = ",")
 omr5D_text <- omr_clean %>%
-  filter(measure == 'OMR 5 day index') %>%
+  filter(measure == 'OMR 5 day index',
+         !is.na(value)) %>%
   slice_tail() %>%
   pull(value) %>%
   prettyNum(big.mark = ",")
 omr14D_text <- omr_clean %>%
-  filter(measure == 'OMR 14 day index') %>%
+  filter(measure == 'OMR 14 day index',
+         !is.na(value)) %>%
   slice_tail() %>%
   pull(value) %>%
   prettyNum(big.mark = ",")
