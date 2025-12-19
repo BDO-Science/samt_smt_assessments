@@ -6,6 +6,7 @@ library(here)
 
 project <- here()
 wy <- 2026
+by <- wy-1
 url <- 'https://filelib.wildlife.ca.gov/Public/salvage/Salmon%20Monitoring%20Team%20and%20Sturgeon/' #site with salvage files
 season_start <- ymd(paste0(wy-1,'-10-01'))
 season_end <- ymd(paste0(wy,'-06-30'))
@@ -15,6 +16,7 @@ battle_jpe <- NA
 wr_loss_threshold <- 0.01
 wr_hatch_loss_threshold <- 0.01
 sh_hatch_loss_threshold <- 0.01
+sr_surrogate_threshold <- 0.01
 
 ##########################################
 #pull in latest salmon and steelhead files
@@ -83,6 +85,8 @@ wr_loss <- loss_summary_table %>%
 wr_perc <- loss_summary_table %>%
   select(dna_winter_run_chinook) %>%
   slice(4) %>%
+  mutate(dna_winter_run_chinook = as.character(dna_winter_run_chinook)) %>%
+  replace(is.na(.), "0.00%") %>%
   pull()
 wr_7d <- loss_summary_table %>%
   select(dna_winter_run_chinook) %>%
@@ -132,8 +136,6 @@ sh_7d <- loss_summary_table %>%
   slice(1) %>%
   pull()
 
-#hatchery steelhead
-
 ###########################################
 #pull in migration timing table
 ###########################################
@@ -143,7 +145,9 @@ timing <- read_html(timing_url) %>%
   html_nodes("table") %>%
   html_table(fill = T) 
 timing_table <- timing[[1]] %>%
-  mutate(across(2:7, ~gsub("^(-?\\d+\\.?\\d*%).*", "\\1", .))) %>%
+  mutate(across(2:7, ~gsub("^(-?\\d+\\.?\\d*).*", "\\1", .))) %>%
+  mutate(across(2:7, ~round(as.numeric(.), 0))) %>%
+  mutate(across(2:7, ~if_else(is.na(.), NA_character_, paste0(., '%')))) %>%
   select(1,2,3,4,'Sac Trawl (Sherwood)' = 5, 'Chipps Island Trawl' = 6, 7)
 
 wr_natural_timing <- timing_table %>%
@@ -156,17 +160,26 @@ delta_exit_wr <- wr_natural_timing[1,6] %>%
 salvage_wr <- wr_natural_timing[2,7] %>%
   pull()
 
+sr_natural_timing <- timing_table %>%
+  slice(2)
+
+delta_entry_sr <- sr_natural_timing[1,4] %>%
+  pull()
+delta_exit_sr <- sr_natural_timing[1,6] %>%
+  pull()
+salvage_sr <- sr_natural_timing[1,7] %>%
+  pull()
+
 sh_natural_timing <- timing_table %>%
   filter(grepl('steelhead', Species, ignore.case = TRUE)) %>%
   mutate(Species = 'Steelhead, Unclipped') %>%
   pivot_longer(names_to = 'measure',
                values_to = 'value', -1) %>%
   group_by(Species, measure) %>%
-  summarize(value = max(value)) %>%
+  summarize(value = max(value, na.rm = TRUE)) %>%
   pivot_wider(names_from = 'measure',
               values_from = 'value') %>%
-  select(4,7,3,5,2,6) %>%
-  mutate_all(na_if,"")
+  select(4,7,3,5,2,6)
 
 delta_entry_sh <- sh_natural_timing[1,4] %>%
   pull()
@@ -274,3 +287,103 @@ sj_table <- read.table(text = sj_valley_data,
 sj_wy_type <- sj_table %>%
   slice_tail(n = 1) %>%
   pull(type)
+
+###########################################
+#pull in juvenile sampling table
+###########################################
+
+juv_url <- paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,'/samt_juvfish.html')
+juv <- read_html(juv_url) %>% 
+  html_nodes("table") %>%
+  html_table(fill = T, header = TRUE) 
+
+juv_table <- juv[[1]] %>%
+  slice(-1)
+
+samples <- colnames(juv_table[c(-1:-3,-6)])  
+
+
+sample_list <- lapply(samples, function(sample){
+  date <- juv_table %>% 
+    select(2, all_of(sample)) %>%
+    filter(`Data Item` %in% c('Min Sample Date', 'Max Sample Date')) %>%
+    mutate(date = ymd(.data[[sample]])) %>%  # Reference the column by the name in sample
+    group_by(`Data Item`) %>%  # Fixed parenthesis
+    summarize(min_date = min(date, na.rm = TRUE),
+              max_date = max(date, na.rm = TRUE))
+  
+  max_date <- date[1, 3]
+  min_date <- date[2, 2]
+  
+  fish <- juv_table %>% 
+    select(2, all_of(sample)) %>%
+    filter(grepl('chinook|steelhead', `Data Item`, ignore.case = TRUE)) %>%
+    mutate(catch = as.numeric(.data[[sample]])) %>%  # Reference the column by the name in sample
+    group_by(`Data Item`) %>%  # Fixed parenthesis
+    summarize(catch = sum(catch, na.rm = TRUE)) %>%
+    replace(is.na(.), 0) %>%
+    t()
+  
+  colnames(fish) <- fish[1, ]
+  fish <- fish[-1, , drop = FALSE]
+  fish <- as.data.frame(fish)
+  
+  all <- bind_cols(min_date, max_date, fish) %>%
+    mutate(Location = sample) %>%
+    select(10, 'Date Start' = 1, 'Date End' = 2, 9, 6, 8, 4, 5, 7, 3)
+  return(all)
+})
+
+all_sampling <- bind_rows(sample_list) %>%
+  mutate(`Date Start` = if_else(is.infinite(`Date Start`), NA, `Date Start`),
+         `Date End` = if_else(is.infinite(`Date End`), NA, `Date End`),
+         mutate(across(4:10, as.numeric)))
+
+###########################################
+#pull in RBDD stuff
+###########################################
+wr_rbdd <- read_csv(paste0('https://www.cbr.washington.edu/sacramento/data/php/rpt/redbluff_by.php?sc=1&outputFormat=csv&esttype=daily&year%5B%5D=',
+                           by,'&species%5B%5D=Chinook%3AWinter&stage%5B%5D=Total')) %>%
+  clean_names() %>%
+  mutate(date = as.Date(date))
+
+sr_rbdd <- read_csv(paste0('https://www.cbr.washington.edu/sacramento/data/php/rpt/redbluff_by.php?sc=1&outputFormat=csv&esttype=daily&year%5B%5D=',
+                           by,'&species%5B%5D=Chinook%3ASpring&stage%5B%5D=Total')) %>%
+  clean_names() %>%
+  mutate(date = as.Date(date))
+
+wr_passage <- round(sum(wr_rbdd$passage_estimate, na.rm = TRUE)/1000000,2)
+wr_rbdd_date <- max(wr_rbdd$date, na.rm = TRUE)
+sr_passage <- round(sum(sr_rbdd$passage_estimate, na.rm = TRUE)/1000000,2)
+sr_rbdd_date <- max(sr_rbdd$date, na.rm = TRUE)
+
+###########################################
+#spring-run hatchery surrogates
+###########################################
+sr_url <- paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,'/cwt_spring_surrogates.html')
+
+sr_surrogate <- read_html(sr_url) %>% 
+  html_nodes("table") %>%
+  html_table(fill = T, header = TRUE) 
+
+sr_surrogate_table <- sr_surrogate[[1]] %>%
+  select(1:5,7,10,11) %>%
+  mutate(`# of CWT Fish Released` = as.numeric(gsub(",", "", `# of CWT Fish Released`))) %>%
+  mutate('Loss Threshold (1% of CWT Released)' = `# of CWT Fish Released` * sr_surrogate_threshold) %>%
+  select(1:6,9,7,8)
+
+sr_surrogate_table_clean <- sr_surrogate_table %>%
+  mutate('Loss (% of threshold)' = paste0(`Confirmed Loss`,' (', `% Loss of CWT Number Released`,')')) %>%
+  select(-8,-9)
+
+yearling <- sr_surrogate_table %>%
+  filter(Type == 'Yearling') %>%
+  summarize(sum(`# of CWT Fish Released`)) %>%
+  pull() %>%
+  prettyNum(big.mark = ",")
+
+yoy <- sr_surrogate_table %>%
+  filter(Type == 'Young-of-year') %>%
+  summarize(sum(`# of CWT Fish Released`)) %>%
+  pull() %>%
+  prettyNum(big.mark = ",")

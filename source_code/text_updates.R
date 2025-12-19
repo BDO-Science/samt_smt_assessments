@@ -86,7 +86,7 @@ stars_text <- print(paste0("As of ",format(as.Date(stars_date), '%B %d'),
                            ', overall through delta STARs estimated survival probability (with 80% credible intervals) is ',overall_survival, 
                            ' placing it in the ', perc_surv, 'th percentile of historical STARs survival estimates for the month of ', 
                            month(Sys.Date(), label = TRUE, abbr = FALSE), ' (WYs 2018-2025)',
-                           '. STARs estimated rounting and survival probabilities (with 80% credible intervals) into the interior delta are ',
+                           '. STARs estimated routing and survival probabilities (with 80% credible intervals) into the interior delta are ',
                            id_routing,' and ', id_survival, ', respectively, corresponding to the ', perc_id_route, 'th and ', perc_id_surv, 'th percentiles of historical ',
                            month(Sys.Date(), label = TRUE, abbr = FALSE), ' estimates (WYs 2018-2025).'))
 
@@ -100,3 +100,36 @@ zoi_text <- print(paste0("The altered channel length for the '", hydrology, "' h
                          channel_filter$length_high, " km for an OMR of ", channel_filter$omr_bin_high,
                          ". Change in altered channel length between OMR levels is ", channel_filter$length_change, 
                          " km, which represents ", channel_filter$prop_change, "% of change in altered channel length among the nine hydrology bins"))
+
+#####################################################
+##setting language for delta monitoring location
+#####################################################
+
+wr_delta_catch <- print(paste0("Total catch of LAD winter run at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River between ",
+                        format(min(all_sampling[1:3, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
+                        format(max(all_sampling[1:3, 3, drop = TRUE], na.rm = TRUE), '%b %d'),' is ',sum(all_sampling[1:3,4]) ,' individuals.  Total catch at Sacramento Trawl and Beach Seines in the delta between ',
+                        format(min(all_sampling[4:5, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
+                        format(max(all_sampling[4:5, 3, drop = TRUE], na.rm = TRUE), '%b %d'), ' is ', sum(all_sampling[4:5,4]), ' individuals. Total catch at Delta Exit at Chipps Island between ',
+                        format(min(all_sampling[6, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
+                        format(max(all_sampling[6, 3, drop = TRUE], na.rm = TRUE), '%b %d'), ' is ', sum(all_sampling[6,4]), ' individuals.'))
+
+sr_delta_catch <- print(paste0("Total catch of LAD spring run at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River between ",
+                        format(min(all_sampling[1:3, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
+                        format(max(all_sampling[1:3, 3, drop = TRUE], na.rm = TRUE), '%b %d'),' is ',sum(all_sampling[1:3,5]) ,' individuals.  Total catch at Sacramento Trawl and Beach Seines in the delta between ',
+                        format(min(all_sampling[4:5, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
+                        format(max(all_sampling[4:5, 3, drop = TRUE], na.rm = TRUE), '%b %d'), ' is ', sum(all_sampling[4:5,5]), ' individuals. Total catch at Delta Exit at Chipps Island between ',
+                        format(min(all_sampling[6, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
+                        format(max(all_sampling[6, 3, drop = TRUE], na.rm = TRUE), '%b %d'), ' is ', sum(all_sampling[6,5]), ' individuals.'))
+
+sh_delta_catch <- print(paste0("Total catch of unclipped steelhead at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River between ",
+                        format(min(all_sampling[1:3, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
+                        format(max(all_sampling[1:3, 3, drop = TRUE], na.rm = TRUE), '%b %d'),' is ',sum(all_sampling[1:3,6]) ,' individuals.  Total catch at Sacramento Trawl and Beach Seines in the delta between ',
+                        format(min(all_sampling[4:5, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
+                        format(max(all_sampling[4:5, 3, drop = TRUE], na.rm = TRUE), '%b %d'), ' is ', sum(all_sampling[4:5,6]), ' individuals. Total catch at Delta Exit at Chipps Island between ',
+                        format(min(all_sampling[6, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
+                        format(max(all_sampling[6, 3, drop = TRUE], na.rm = TRUE), '%b %d'), ' is ', sum(all_sampling[6,6]), ' individuals.'))
+
+#####################################################
+##setting language for RBDD passage estimates
+#####################################################
+

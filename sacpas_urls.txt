@@ -1,0 +1,40 @@
+<div id="dccfish">
+DCC Operations
+https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2025/samt_dccfish.html
+
+<div id="alertsflow">
+Alerts: Deer Creek, Mill Creek, Wilkins Slough, Knights Landing
+https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2025/samt_alertsflow.html
+
+<div id="juvfish">
+Juvenile Sampling
+https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2025/samt_juvfish.html
+
+<div id="hrt">
+Historical Migration Pattern for &quot;Today&quot;
+https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2025/samt_hrt.html
+
+<div id="stars">
+Delta STARS Estimates
+https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2025/samt_stars.html
+
+<div id="lsp">
+Loss&amp;Salvage Predictor Estimates
+
+https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2025/samt_lsp_env.html
+https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2025/samt_lsp_fish.html
+
+<div id="spsurr">
+Spring Surrogates
+https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2025/cwt_spring_surrogates.html    
+              
+<div id="loss">
+Single-Year Loss Thresholds
+
+<div id="summary">
+Loss Summary Table
+https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2025/LossUnclip_WY_summary.html
+
+<div id="daily">
+Daily Loss Table
+https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2025/LossUnclip_WY_daily.html
