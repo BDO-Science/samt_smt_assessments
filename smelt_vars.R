@@ -32,8 +32,8 @@ end_of_season = "not relevant"
 # - Summary of salvage and expectations of salvage
 
 narrative_text <- 
-"- Entrainment Management Season has not yet begun for Delta Smelt but First Flush could occur
-- Freeport flows and turbidity are increasing this week due to incoming storms
+"- First flush is not anitipated to occur in the weekly outlook, but could initiate the start of the Entrainment Management season for Delta smelt
+- Freeport flows and turbidity are expected to increase late this week due to incoming storms
 - No Delta Smelt salvage has been observed this water year"
 
 # Delta Smelt ---------------------------
