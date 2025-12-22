@@ -3,7 +3,6 @@ library(tidyverse)
 
 project <- here()
 source(here(project, 'source_code/salmon_code.R'), echo = FALSE)
-source(here(project, 'source_code/zoi_maps_query.R'), echo = FALSE)
 #####################################################
 ##setting language for early season migration action
 #####################################################
@@ -83,23 +82,13 @@ wr_hatchery_loss <- if(nrow(wr_hatch) == 0) {
 ##setting language for STARs estimate
 #####################################################
 stars_text <- print(paste0("As of ",format(as.Date(stars_date), '%B %d'), 
-                           ', overall through delta STARs estimated survival probability (with 80% credible intervals) is ',overall_survival, 
-                           ' placing it in the ', perc_surv, 'th percentile of historical STARs survival estimates for the month of ', 
+                           ', overall through delta STARS estimated survival probability (with 80% credible intervals) is ',overall_survival, 
+                           ' placing it in the ', perc_surv, 'th percentile of historical STARS survival estimates for the month of ', 
                            month(Sys.Date(), label = TRUE, abbr = FALSE), ' (WYs 2018-2025)',
-                           '. STARs estimated routing and survival probabilities (with 80% credible intervals) into the interior delta are ',
+                           '. STARS estimated routing and survival probabilities (with 80% credible intervals) into the interior delta are ',
                            id_routing,' and ', id_survival, ', respectively, corresponding to the ', perc_id_route, 'th and ', perc_id_surv, 'th percentiles of historical ',
                            month(Sys.Date(), label = TRUE, abbr = FALSE), ' estimates (WYs 2018-2025).'))
 
-
-#####################################################
-##setting language for ZOI
-#####################################################
-
-zoi_text <- print(paste0("The altered channel length for the '", hydrology, "' hydrology is ", 
-                         channel_filter$length_low, " kilometers (km) for an OMR of ", channel_filter$omr_bin_low, " and ", 
-                         channel_filter$length_high, " km for an OMR of ", channel_filter$omr_bin_high,
-                         ". Change in altered channel length between OMR levels is ", channel_filter$length_change, 
-                         " km, which represents ", channel_filter$prop_change, "% of change in altered channel length among the nine hydrology bins"))
 
 #####################################################
 ##setting language for delta monitoring location

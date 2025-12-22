@@ -30,7 +30,6 @@ library(patchwork)
 project <- here()
 source(here(project, 'source_code/zoi_maps_query.R'), echo = FALSE)
 source(here(project, 'source_code/hydro_data_extraction.R'), echo = FALSE)
-source(here(project, 'source_code/text_updates.R'), echo = FALSE)
 mapList <- list.files(here(project, 'zoi_maps/'), full.names = TRUE)
 ```
 
@@ -131,24 +130,40 @@ kable(trigger_table)
 
 ### Zone of Influence
 
-The Zone of Influence (ZOI) analysis served as a Line of Evidence for comparing alternative actions in the Long Term Operations EIS. This analysis evaluated the spatial extent of hydrologic alteration resulting from pumping under varying Old and Middle River flow conditions and Sacramento-San Joaquin river inflow conditions.  This analysis was adapted for the assessment by focusing on a single alternative, Alt2woTUCPDeltaVa, which served as the proposed action in the LTO, and binned maps into 1 of 9 categories based on low, medium, and high inflows from the Sacramento and San Joaquin flow. In general, changes in channel length across OMR levels may correlate with entrainment risk, where larger increases in channel length from more positive to more negative OMR represent greater entrainment risk.
+The Zone of Influence (ZOI) analysis served as a Line of Evidence for comparing alternative actions in the Long Term Operations EIS. This analysis evaluated the spatial extent of hydrologic alteration resulting from pumping under varying Old and Middle River flow conditions and Sacramento-San Joaquin river inflow conditions.  This analysis was adapted for the assessment by focusing on a single alternative, Alt2woTUCPDeltaVa, which served as the proposed action in the 2024 Record of Decision, and binned maps into 1 of 9 categories based on low, medium, and high inflows from the Sacramento and San Joaquin flow. In general, changes in channel length across OMR levels may correlate with entrainment risk, where larger increases in channel length from more positive to more negative OMR represent greater entrainment risk.
 
-Current conditions at Freeport and Vernalis indicate that delta hydrology falls within the `r paste0("'",hydrology, "'")` category (see appendix for hydrology bin definitions). `r zoi_text`
+Current conditions were queried from most recent Freeport flow data on the Sacramento River and Vernalis flow data on the San Joaquin river from [SacPAS](https://www.cbr.washington.edu/sacramento/data/query_river_table.html).  Forecasted flows were queried from short range deterministic flows provided by the [California Nevada River Forecast Center](https://www.cnrfc.noaa.gov/deterministicHourlyProductCSV.php).
+
+Current conditions at Freeport and Vernalis indicate that delta hydrology falls within the `r paste0("'",hydrology_current, "'")` category.  Forecasted conditions averaged across the next 7 days falls within the `r paste0("'",hydrology_forecast, "'")` category.
+
+The altered channel length for the current, `r paste0('"', hydrology_current, '"')` hydrology is `r channel_filter_current$length_low`, kilometers (km) for an OMR of `r channel_filter_current$omr_bin_low` and `r channel_filter_current$length_high` km for an OMR of `r channel_filter_current$omr_bin_high`. The altered channel length for forecasted, `r paste0('"', hydrology_forecast, '"')` hydrology is `r channel_filter_forecast$length_low`, kilometers (km) for an OMR of `r channel_filter_forecast$omr_bin_low` and `r channel_filter_forecast$length_high` km for an OMR of `r channel_filter_forecast$omr_bin_high`.
+
+Change in altered channel length between OMR levels is `r channel_filter_current$length_change` km for current conditions and `r channel_filter_forecast$length_change` km for forecasted conditions indicating that ZOI impacts to OMR based on ZOI would `r difference` under forecasted hydrology.
 
 ```{r}
 #| label: zoi_graph
 #| echo: false
 #| message: false
 #| warning: false
-#| fig-height: 6
+#| fig-height: 4
 #| fig-width: 8
 #| include: true
 #| out-width: "100%"
 #| results: asis
-#| fig-cap: Modeled Zone of Influence at different OMRI scenarios based on current inflow hydrology from the Sacramento River and San Joaquin River
+#| fig-cap: Modeled Zone of Influence at different OMRI scenarios based on current inflow hydrology (left) and forecasted inflow hydrology (right) from the Sacramento River and San Joaquin River
 
-map_file <- grep(hydrology, mapList, value = TRUE)
+map_file_current <- grep(hydrology_current, mapList, value = TRUE)
+map_file_forecast <- grep(hydrology_forecast, mapList, value = TRUE)
 
-image_read(map_file)
+current <- image_read(map_file_current) %>% 
+  image_ggplot() + 
+  ggtitle("Current Flow")
+
+forecast <- image_read(map_file_forecast) %>% 
+  image_ggplot() + 
+  ggtitle("Forecasted Flow")
+
+(current | forecast)
+
 ```
 

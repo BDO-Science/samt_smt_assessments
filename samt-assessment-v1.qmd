@@ -53,6 +53,7 @@ source(here(project, 'source_code/text_updates.R'), echo = FALSE)
 #| label: tbl-wr_timing_table
 #| echo: false
 #| results: asis
+#| warning: false
 #| tbl-cap: Average Percent of annual emigrating population for unclipped LAD winter-run captured at the following locations and LAD and DNA confirmed winter-run salvaged at SWP and CVP Delta facilities for the past 10 years.
 
 if (knitr::pandoc_to() == "docx") {
@@ -93,7 +94,7 @@ image_read('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2
 
 ```
 
-#### STARs
+#### STARS
 
 The Delta STARS Model is an individual-based simulation model that predicts survival, travel time, and routing of juvenile salmon migrating through the Sacramento–San Joaquin River Delta. This model gives insight into survival and routing patterns of winter-run based on most current conditions.
 
@@ -166,6 +167,7 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 #| results: asis
 #| tbl-cap: 'Average Percent of annual emigrating population for unclipped CCV steelhead captured at the following locations and salvaged at SWP and CVP Delta facilities for the past 10 years.'
 #| echo: false
+#| warning: false
 
 if (knitr::pandoc_to() == "docx") {
   flextable(sh_natural_timing) %>%
@@ -218,6 +220,7 @@ image_read('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2
 #| results: asis
 #| tbl-cap: 'Average Percent of annual emigrating population for LAD Spring-run Chinook Salmon captured at the following locations and salvaged at SWP and CVP Delta facilities for the past 10 years.'
 #| echo: false
+#| warning: false
 
 
 if (knitr::pandoc_to() == "docx") {
