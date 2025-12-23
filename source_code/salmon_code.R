@@ -225,13 +225,13 @@ stars_data <- bind_rows(stars_list) %>%
   clean_names()
 
 ecdf_surv <- ecdf(stars_data$survival_overall_est)
-perc_surv <- round(ecdf_surv(stars_table[2,5])*100,0)
+perc_surv <- scales::ordinal(round(ecdf_surv(stars_table[2,5])*100,0))
 
 ecdf_id_surv <- ecdf(stars_data$survival_interior_delta_est)
-perc_id_surv <- round(ecdf_id_surv(stars_table[17,5])*100,0)
+perc_id_surv <- scales::ordinal(round(ecdf_id_surv(stars_table[17,5])*100,0))
 
 ecdf_id_route <- ecdf(stars_data$routing_probability_interior_delta_est)
-perc_id_route <- round(ecdf_id_route(stars_table[16,5])*100,0)
+perc_id_route <- scales::ordinal(round(ecdf_id_route(stars_table[16,5])*100,0))
 #######################################
 #hatchery steelhead jpe
 #######################################

@@ -4,15 +4,19 @@ format:
     toc: true
     standalone: false
     title-block-style: none
-  pdf: default
+  pdf:
+    fig-dpi: 1000
+    fig-pos: "H"
   docx:
-    tbl-cap-location: top
+    fig-dpi: 1000
 engine: knitr
 ---
 
 ## PRELIMINARY DATA: Assessment for Delta Operations on ESA and CESA-listed Salmonids
 
 Last updated: *`r format(Sys.Date(), "%B %d, %Y")`*
+
+For more detailed data on salmonid conditions in the Delta see corresponding webpage on [SacPAS](https://www.cbr.washington.edu/sacramento/workgroups/salmon_monitoring.html).
 
 ```{r}
 #| label: setup
@@ -23,7 +27,6 @@ library(tidyverse)
 library(here)
 library(kableExtra)
 library(flextable)
-library(gt)
 library(magick)
 
 project <- here()
@@ -56,19 +59,8 @@ source(here(project, 'source_code/text_updates.R'), echo = FALSE)
 #| warning: false
 #| tbl-cap: Average Percent of annual emigrating population for unclipped LAD winter-run captured at the following locations and LAD and DNA confirmed winter-run salvaged at SWP and CVP Delta facilities for the past 10 years.
 
-if (knitr::pandoc_to() == "docx") {
-  flextable(wr_natural_timing) %>%
-    vline() %>%
-    hline() %>%
-    border_outer() %>%
-    width(width = 0.8, unit = "in") %>%
-    font(fontname = 'Segoe UI', part = "body") %>%
-    font(fontname = 'Segoe UI Semibold', part = "header") %>%
-    fontsize(size = 12, part = "header") %>%
-    fontsize(size = 11, part = "body")
-} else {
-  knitr::kable(wr_natural_timing, align = "lrrrrrr")
-}
+
+knitr::kable(wr_natural_timing, align = "lrrrrrr")
 
 ```
 
@@ -169,19 +161,8 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 #| echo: false
 #| warning: false
 
-if (knitr::pandoc_to() == "docx") {
-  flextable(sh_natural_timing) %>%
-    vline() %>%
-    hline() %>%
-    border_outer() %>%
-    width(width = 0.8, unit = "in") %>%
-    font(fontname = 'Segoe UI', part = "body") %>%
-    font(fontname = 'Segoe UI Semibold', part = "header") %>%
-    fontsize(size = 12, part = "header") %>%
-    fontsize(size = 11, part = "body")
-} else {
-  knitr::kable(sh_natural_timing, align = "lrrrrrr")
-}
+knitr::kable(sh_natural_timing, align = "lrrrrrr")
+
 ```
 
 *Delta Monitoring* - `r sh_delta_catch`
@@ -223,19 +204,8 @@ image_read('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2
 #| warning: false
 
 
-if (knitr::pandoc_to() == "docx") {
-  flextable(sr_natural_timing) %>%
-    vline() %>%
-    hline() %>%
-    border_outer() %>%
-    width(width = 0.8, unit = "in") %>%
-    font(fontname = 'Segoe UI', part = "body") %>%
-    font(fontname = 'Segoe UI Semibold', part = "header") %>%
-    fontsize(size = 12, part = "header") %>%
-    fontsize(size = 11, part = "body")
-} else {
-  knitr::kable(sr_natural_timing, align = "lrrrrrr")
-}
+knitr::kable(sr_natural_timing, align = "lrrrrrr")
+
 ```
 
 *Red Bluff Diversion Dam Passage Estimate* - As of `r format(sr_rbdd_date, '%b %d')` estimated passage to date of LAD spring run at Red Bluff Diversion is approximately `r sr_passage` million fish. * *Note that outmigration timing overlaps with winter run and fall run outmigration, and true spring run abundance likely differs from these estimates.*
@@ -252,19 +222,8 @@ A total of `r yearling` yearling surrogate fish have been released across `r nro
 #| echo: false
 
 
-if (knitr::pandoc_to() == "docx") {
-  flextable(sr_surrogate_table_clean) %>%
-    vline() %>%
-    hline() %>%
-    border_outer() %>%
-    width(width = 0.75, unit = "in") %>%
-    font(fontname = 'Segoe UI', part = "body") %>%
-    font(fontname = 'Segoe UI Semibold', part = "header") %>%
-    fontsize(size = 12, part = "header") %>%
-    fontsize(size = 11, part = "body")
-} else {
-  knitr::kable(sr_surrogate_table_clean, align = "lrrrrrrr")
-}
+knitr::kable(sr_surrogate_table_clean, align = "lrrrrrrr")
+
 ```
 
 ### Evaluation

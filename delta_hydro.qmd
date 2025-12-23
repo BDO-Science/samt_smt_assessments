@@ -4,8 +4,11 @@ format:
     toc: true
     standalone: false
     title-block-style: none
-  pdf: default
-  docx: default
+  pdf:
+    fig-dpi: 1000
+    fig-pos: "H"
+  docx:
+    fig-dpi: 1000
 engine: knitr
 ---
 
@@ -22,7 +25,6 @@ library(tidyverse)
 library(here)
 library(kableExtra)
 library(flextable)
-library(gt)
 library(magick)
 library(readr)
 library(patchwork)
@@ -125,7 +127,12 @@ trigger_table <- triggers_clean %>%
          `Number Days Implemented` = days_implemented,
          Regulation = regulation,
          )
-kable(trigger_table)
+
+
+knitr::kable(trigger_table, align = "lrrrrr")
+
+
+
 ```
 
 ### Zone of Influence
@@ -136,12 +143,12 @@ Current conditions were queried from most recent Freeport flow data on the Sacra
 
 Current conditions at Freeport and Vernalis indicate that delta hydrology falls within the `r paste0("'",hydrology_current, "'")` category.  Forecasted conditions averaged across the next 7 days falls within the `r paste0("'",hydrology_forecast, "'")` category.
 
-The altered channel length for the current, `r paste0('"', hydrology_current, '"')` hydrology is `r channel_filter_current$length_low`, kilometers (km) for an OMR of `r channel_filter_current$omr_bin_low` and `r channel_filter_current$length_high` km for an OMR of `r channel_filter_current$omr_bin_high`. The altered channel length for forecasted, `r paste0('"', hydrology_forecast, '"')` hydrology is `r channel_filter_forecast$length_low`, kilometers (km) for an OMR of `r channel_filter_forecast$omr_bin_low` and `r channel_filter_forecast$length_high` km for an OMR of `r channel_filter_forecast$omr_bin_high`.
+The altered channel length for the current `r paste0('"', hydrology_current, '"')` hydrology is `r channel_filter_current$length_low` kilometers (km) for an OMR of `r channel_filter_current$omr_bin_low` and `r channel_filter_current$length_high` km for an OMR of `r channel_filter_current$omr_bin_high`. The altered channel length for forecasted `r paste0('"', hydrology_forecast, '"')` hydrology is `r channel_filter_forecast$length_low` kilometers (km) for an OMR of `r channel_filter_forecast$omr_bin_low` and `r channel_filter_forecast$length_high` km for an OMR of `r channel_filter_forecast$omr_bin_high`.
 
-Change in altered channel length between OMR levels is `r channel_filter_current$length_change` km for current conditions and `r channel_filter_forecast$length_change` km for forecasted conditions indicating that ZOI impacts to OMR based on ZOI would `r difference` under forecasted hydrology.
+Change in altered channel length between OMR levels is `r channel_filter_current$length_change` km for current conditions and `r channel_filter_forecast$length_change` km for forecasted conditions indicating that ZOI impacts across OMR scenarios would `r difference` under forecasted hydrology.
 
 ```{r}
-#| label: zoi_graph
+#| label: fig-zoi_graph
 #| echo: false
 #| message: false
 #| warning: false
