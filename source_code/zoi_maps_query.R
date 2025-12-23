@@ -97,20 +97,20 @@ hydrology_current <- paste0(flow_thresholds[1,1], flow_thresholds[2,1])
 hydrology_forecast <- paste0(flow_thresholds_forecast[1,1], flow_thresholds_forecast[2,1])
 
 ####channel length
-
+#read in channel length
 channel <- read_csv(here(project, 'input_data/zoi_channel_length.csv')) %>%
   clean_names() %>%
   dplyr::select(1,2,length = 3) %>%
   filter(!is.na(length)) %>%
   mutate(length = round(length * 0.00030),1)
-
+#slicing channel length by low and high length and OMR bins
 channel_all <- channel %>%
   group_by(inflow_group) %>%
   slice(c(1, n())) %>%
   mutate(level = rep(c('low', 'high'))) %>%
   ungroup() %>%
   pivot_wider(names_from = 'level', values_from = c('omr_bin', 'length')) 
-
+#calculating some metrics for use in the quarto code
 channel_all <- channel_all %>%
   mutate(length_change = length_high - length_low,
          stand_change = (length_change-min(channel_all$length_change))/(max(channel_all$length_change) 
@@ -122,12 +122,67 @@ channel_all <- channel_all %>%
          prop_change = round(prop.table(length_change)*100,1)
          )
 
+#filtering by respective current and forecasted hydrology
 channel_filter_current <- channel_all %>%
   filter(inflow_group == hydrology_current)
 
 channel_filter_forecast <- channel_all %>%
   filter(inflow_group == hydrology_forecast)
 
-difference <- if_else(channel_filter_current$length_change < channel_filter_forecast$length_change,
-                      'increase', 'decrease')
-print(difference)
+#conditional statement on whether zoi impacts are increased or decreased across OMR bins
+#between current and forecasted hydrology
+difference <- case_when(channel_filter_current$length_change < channel_filter_forecast$length_change ~ 'would increase',
+                        channel_filter_current$length_change == channel_filter_forecast$length_change ~ 'would have no impact',
+                        channel_filter_current$length_change > channel_filter_forecast$length_change ~ 'would decrease')
+
+###filtering for current hydrology to pull all omr bins and channel lengths
+channel_current <- channel %>%
+  filter(inflow_group == hydrology_current)
+
+channel_current_omr <- channel_current %>%
+  pull(omr_bin)
+channel_current_length <- channel_current %>%
+  pull(length)
+
+###creating text for showing comparisons between all OMR bins and channel lengths for current hydro
+if (length(channel_current_omr) > 1) {
+  omr_current <- paste(paste(channel_current_omr[-length(channel_current_omr)], collapse = ", "), 
+                  "and", 
+                  channel_current_omr[length(channel_current_omr)])
+} else {
+  omr_current <- channel_current_omr
+}
+
+if (length(channel_current_length) > 1) {
+  length_current <- paste(paste(channel_current_length[-length(channel_current_length)], collapse = ", "), 
+                       "and", 
+                       channel_current_length[length(channel_current_length)])
+} else {
+  length_current <- channel_current_length
+}
+
+###filtering for forecast hydrology to pull all omr bins and channel lengths
+channel_forecast <- channel %>%
+  filter(inflow_group == hydrology_forecast)
+
+channel_forecast_omr <- channel_forecast %>%
+  pull(omr_bin)
+channel_forecast_length <- channel_forecast %>%
+  pull(length)
+
+###creating text for showing comparisons between all OMR bins and channel lengths for forecast hydro
+if (length(channel_forecast_omr) > 1) {
+  omr_forecast <- paste(paste(channel_forecast_omr[-length(channel_forecast_omr)], collapse = ", "), 
+                       "and", 
+                       channel_forecast_omr[length(channel_forecast_omr)])
+} else {
+  omr_forecast <- channel_forecast_omr
+}
+
+if (length(channel_forecast_length) > 1) {
+  length_forecast <- paste(paste(channel_forecast_length[-length(channel_forecast_length)], collapse = ", "), 
+                          "and", 
+                          channel_forecast_length[length(channel_forecast_length)])
+} else {
+  length_forecast <- channel_forecast_length
+}

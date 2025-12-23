@@ -143,9 +143,9 @@ Current conditions were queried from most recent Freeport flow data on the Sacra
 
 Current conditions at Freeport and Vernalis indicate that delta hydrology falls within the `r paste0("'",hydrology_current, "'")` category.  Forecasted conditions averaged across the next 7 days falls within the `r paste0("'",hydrology_forecast, "'")` category.
 
-The altered channel length for the current `r paste0('"', hydrology_current, '"')` hydrology is `r channel_filter_current$length_low` kilometers (km) for an OMR of `r channel_filter_current$omr_bin_low` and `r channel_filter_current$length_high` km for an OMR of `r channel_filter_current$omr_bin_high`. The altered channel length for forecasted `r paste0('"', hydrology_forecast, '"')` hydrology is `r channel_filter_forecast$length_low` kilometers (km) for an OMR of `r channel_filter_forecast$omr_bin_low` and `r channel_filter_forecast$length_high` km for an OMR of `r channel_filter_forecast$omr_bin_high`.
+The altered channel length for the current `r paste0('"', hydrology_current, '"')` hydrology is `r length_current` kilometers (km) across OMR bins of `r omr_current` respectively. The altered channel length for forecasted `r paste0('"', hydrology_forecast, '"')` hydrology is `r length_forecast` kilometeres (km) across OMR bins of `r omr_forecast` respectively.
 
-Change in altered channel length between OMR levels is `r channel_filter_current$length_change` km for current conditions and `r channel_filter_forecast$length_change` km for forecasted conditions indicating that ZOI impacts across OMR scenarios would `r difference` under forecasted hydrology.
+Change in altered channel length between OMR levels is `r channel_filter_current$length_change` km for current conditions and `r channel_filter_forecast$length_change` km for forecasted conditions indicating that ZOI impacts across OMR scenarios `r difference` under forecasted hydrology.
 
 ```{r}
 #| label: fig-zoi_graph
