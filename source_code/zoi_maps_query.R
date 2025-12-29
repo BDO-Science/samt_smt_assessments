@@ -32,7 +32,12 @@ flow_thresholds_all <- expand.grid(hydrology = c('lo', 'med','hi'),
 
 flow_thresholds <- flow_thresholds_all %>%
   filter(filter_actuals == 1)
-
+sac_current_hydrology <- flow_thresholds %>%
+  filter(river == 'Sacramento River') %>%
+  pull(hydrology)
+sj_current_hydrology <- flow_thresholds %>%
+  filter(river == 'San Joaquin River') %>%
+  pull(hydrology)
 ####pull in forecasted flows
 hydro_url <- 'https://www.cnrfc.noaa.gov/deterministicHourlyProductCSV.php'
 
@@ -93,8 +98,15 @@ flow_thresholds_forecast <- flow_thresholds_all %>%
   mutate(forecasts = if_else(river == 'Sacramento River', sac_forecast_mean, sj_forecast_mean)) %>%
   mutate(filter_forecast = if_else(forecasts >= min & forecasts <= max, 1, 0)) %>%
   filter(filter_forecast == 1)
-hydrology_current <- paste0(flow_thresholds[1,1], flow_thresholds[2,1])
-hydrology_forecast <- paste0(flow_thresholds_forecast[1,1], flow_thresholds_forecast[2,1])
+sac_forecast_hydrology <- flow_thresholds_forecast %>%
+  filter(river == 'Sacramento River') %>%
+  pull(hydrology)
+sj_forecast_hydrology <- flow_thresholds_forecast %>%
+  filter(river == 'San Joaquin River') %>%
+  pull(hydrology)
+  
+hydrology_current <- paste0(sac_current_hydrology, sj_current_hydrology)
+hydrology_forecast <- paste0(sac_forecast_hydrology, sj_forecast_hydrology)
 
 ####channel length
 #read in channel length
