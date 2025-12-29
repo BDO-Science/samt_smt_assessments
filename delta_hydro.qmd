@@ -37,7 +37,7 @@ mapList <- list.files(here(project, 'zoi_maps/'), full.names = TRUE)
 
 ### Operational and Regulatory Conditions
 
-DCC gates are the current controlling factor. See most recent weekly outlook for more information.
+Entrainment management is the current controlling factor. See most recent weekly outlook for more information.
 
 ### Current Conditions
 
@@ -145,7 +145,7 @@ Current conditions at Freeport and Vernalis indicate that delta hydrology falls 
 
 The altered channel length for the current `r paste0('"', hydrology_current, '"')` hydrology is `r length_current` kilometers (km) across OMR bins of `r omr_current` respectively. The altered channel length for forecasted `r paste0('"', hydrology_forecast, '"')` hydrology is `r length_forecast` kilometeres (km) across OMR bins of `r omr_forecast` respectively.
 
-Change in altered channel length between OMR levels is `r channel_filter_current$length_change` km for current conditions and `r channel_filter_forecast$length_change` km for forecasted conditions indicating that ZOI impacts across OMR scenarios `r difference` under forecasted hydrology.
+Change in altered channel length between OMR levels is `r channel_filter_current$length_change` km for current conditions and `r channel_filter_forecast$length_change` km for forecasted conditions indicating that ZOI impacts across OMR scenarios `r difference` between current and forecasted conditions.  Across the nine hydrology bins, `r channel_length_text`
 
 ```{r}
 #| label: fig-zoi_graph

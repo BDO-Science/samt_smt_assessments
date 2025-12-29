@@ -122,17 +122,33 @@ channel_all <- channel_all %>%
          prop_change = round(prop.table(length_change)*100,1)
          )
 
+high_channel <- quantile(channel_all$prop_change, 0.75)
+low_channel <-quantile(channel_all$prop_change, 0.25) 
+
 #filtering by respective current and forecasted hydrology
 channel_filter_current <- channel_all %>%
-  filter(inflow_group == hydrology_current)
+  filter(inflow_group == hydrology_current) %>%
+  mutate(group = case_when(prop_change >= high_channel ~ 'high (>75th percentile)',
+                           prop_change > low_channel & prop_change < high_channel ~ 'moderate (between 25th and 75th percentiles)',
+                           prop_change <= low_channel ~ 'low (<25th percentile)'))
 
 channel_filter_forecast <- channel_all %>%
-  filter(inflow_group == hydrology_forecast)
+  filter(inflow_group == hydrology_forecast) %>%
+  mutate(group = case_when(prop_change >= high_channel ~ 'high (>75th percentile)',
+                           prop_change > low_channel & prop_change < high_channel ~ 'moderate (between 25th and 75th percentiles)',
+                           prop_change <= low_channel ~ 'low (<25th percentile)'))
 
+channel_length_text <- if(channel_filter_current$group == channel_filter_forecast$group) {
+  print(paste0('changes in altered channel length across OMR scenarios are ',channel_filter_current$group, 
+               ' for both current and forecasted hydrology.'))
+} else {
+  print(paste0('changes in altered channel length across OMR scenarios are ',channel_filter_current$group, ' and ',
+               channel_filter_forecast$group, ' respectively for current and forecasted hydrology.'))
+}
 #conditional statement on whether zoi impacts are increased or decreased across OMR bins
 #between current and forecasted hydrology
 difference <- case_when(channel_filter_current$length_change < channel_filter_forecast$length_change ~ 'would increase',
-                        channel_filter_current$length_change == channel_filter_forecast$length_change ~ 'would have no impact',
+                        channel_filter_current$length_change == channel_filter_forecast$length_change ~ 'would not change',
                         channel_filter_current$length_change > channel_filter_forecast$length_change ~ 'would decrease')
 
 ###filtering for current hydrology to pull all omr bins and channel lengths
