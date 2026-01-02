@@ -20,7 +20,7 @@ source("smelt_data_extraction.R")
 
 # Actions ---------------------
 first_flush_status = "relevant"
-adult_ent_status = "not relevant"
+adult_ent_status = "relevant"
 larval_ent_status = "not relevant"
 lfs_adult_ent_status = "relevant"
 lfs_larval_ent_status = "not relevant"
@@ -32,9 +32,11 @@ end_of_season = "not relevant"
 # - Summary of salvage and expectations of salvage
 
 narrative_text <- 
-"- First flush is not anitipated to occur in the weekly outlook, but could initiate the start of the Entrainment Management season for Delta smelt
-- Freeport flows and turbidity are expected to increase late this week due to incoming storms
-- No Delta Smelt salvage has been observed this water year"
+"- First flush conditions were met on 12/23/25, and the action was implemented on 12/26/25.
+- Delta smelt are primarily distributed west of the confluence, in Suisun Marsh
+- No Delta smelt or longfin smelt salvage has been observed this water year
+- Turbidity in the central/south Delta is increasing
+"
 
 # Delta Smelt ---------------------------
 
@@ -70,10 +72,17 @@ abundance_date <- last(abundance_current$dates)
 ## Counts ----------------------
 ds_adults_count <- ds_recent %>% filter(life_stage == "Adult") %>% pull(catch) %>% sum()
 ds_juveniles_count <- ds_recent %>% filter(life_stage == "Juvenile") %>% pull(catch) %>% sum()
+#filter(date > ymd("2025-10-01"))
 ds_larvae_count <- ds_recent %>% filter(life_stage == "Larva") %>% pull(catch) %>% sum()
 ds_last_catch_date <- ds_recent %>% arrange(date) %>% tail(1) %>% pull(date) 
 ds_last_catch_location <- ds_recent %>% arrange(date) %>% tail(1) %>% pull(region) 
 ds_last_catch_count <- ds_recent %>% arrange(date) %>% tail(1) %>% pull(catch)
+
+#wy counts
+ds_adults_count_wy <- ds_detail %>% filter(date > ymd("2025-10-01")) %>% 
+  filter(life_stage == "Adult") %>% pull(catch) %>% sum()
+ds_juveniles_count_wy <- ds_detail %>% filter(date > ymd("2025-10-01")) %>% 
+  filter(life_stage == "Juvenile") %>% pull(catch) %>% sum()
 
 ## Salvage ----------------------
 # Once 2026 starts updating go back to this code
@@ -83,15 +92,31 @@ ds_salvage_count <- 0
 ds_cumsalvage <- 0
 
 ## Releases ----------------------- 
-releases <- read_csv(here("data_raw/smelt/smelt_release_table_2026.csv")) 
-last_release <- smelt_release_table %>%
-  mutate(release_date = ymd(date)) %>%
+# releases <- read_csv(here("data_raw/smelt/smelt_release_table_2026.csv")) 
+# last_release <- smelt_release_table %>%
+#   mutate(release_date = ymd(date)) %>%
+#   filter(release_date < today())
+# total_released <- last_release %>% pull(total_released) %>% sum()
+# last_release_date <- last_release %>% tail(1) %>% pull(release_date)
+# first_last_release_date <- last_release %>% tail(2) %>% head(1) %>% pull(release_date)
+# last_release_location <- last_release %>% tail(1) %>% pull(location)
+# last_release_count <- last_release %>% tail(2) %>% pull(total_released) %>% sum()
+
+#prepping new code for release data
+releases <- read_tsv("https://www.cbr.washington.edu/sacramento/data/generated/WY2026_smeltreleases.txt") %>% 
+  filter(!is.na(Location)) %>% 
+  arrange(Date) %>% 
+  clean_names()
+last_release <- releases %>%
+  mutate(date = as.Date(date)) %>% 
+  mutate(release_date= date) %>% 
+    #release_date = ymd(date)) %>%
   filter(release_date < today())
 total_released <- last_release %>% pull(total_released) %>% sum()
 last_release_date <- last_release %>% tail(1) %>% pull(release_date)
 first_last_release_date <- last_release %>% tail(2) %>% head(1) %>% pull(release_date)
 last_release_location <- last_release %>% tail(1) %>% pull(location)
-last_release_count <- last_release %>% tail(2) %>% pull(total_released) %>% sum()
+last_release_count <- last_release %>% tail(1) %>% pull(total_released) %>% sum()
 
 ## Secchi depth (currently by email)-------------------------
 sd_secchi_depth <- 0.76
@@ -130,6 +155,12 @@ lfs_larvae_count <- lfs_recent %>% filter(life_stage == "Larva") %>% pull(catch)
 lfs_last_catch_date <- lfs_recent %>% arrange(date) %>% tail(1) %>% pull(date) 
 lfs_last_catch_location <- lfs_recent %>% arrange(date) %>% tail(1) %>% pull(region) 
 lfs_last_catch_count <- lfs_recent %>% arrange(date) %>% tail(1) %>% pull(catch)
+
+#wy counts
+lfs_adults_count_wy <- lfs_detail %>% filter(date > ymd("2025-10-01")) %>% 
+  filter(life_stage == "Adult") %>% pull(catch) %>% sum()
+lfs_juveniles_count_wy <- lfs_detail %>% filter(date > ymd("2025-10-01")) %>% 
+  filter(life_stage == "Juvenile") %>% pull(catch) %>% sum()
 
 ## Salvage ----------------------------
 # Once 2026 starts updating go back to this code
