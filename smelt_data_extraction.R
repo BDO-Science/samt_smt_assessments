@@ -14,6 +14,7 @@ library(rvest)
 library(janitor)
 library(deltamapr)
 library(ggspatial)
+library(readxl)
 library(sf)
 library(jsonlite) #weather
 library(glue) #weather
@@ -58,7 +59,7 @@ RVB_temp <- as.numeric(tail(env_table$water_temperature_3_day_sr_at_rio_vista_br
 CLC_temp <- as.numeric(tail(env_table$water_temperature_clifton_court_c_cdec_clc,3))
 
 ## Hydro Table ------------------------------
-### Add JPF later on 
+### Add JPF later on when added to SacPAS, for now pulling from DWR hydro rpt
 
 hydro_table_raw <- tables[[1]][-1,]
 hydro_table <- hydro_table_raw %>% clean_names()
@@ -289,8 +290,12 @@ sfbs_data <- sfbs_data_raw %>%
 
 ## SLS ---------------------------------
 # directly add file in - will read most recently modified file
-# BEFORE reading in, make sure you remove any symbols in the station col
-sls_data_raw <- read_excel_by_pattern("SLS", data_raw, TRUE)
+# BEFORE reading in, make sure you remove any symbols in the station col (added to read_excel_by_pattern fcn)
+#updated code for this:
+sls_data_raw <- read_excel_by_pattern("SLS", data_raw, TRUE) %>% 
+  mutate(`SLS Station` = readr::parse_number(`SLS Station`))
+# sls_data_raw <- read_excel_by_pattern("SLS", data_raw, TRUE) %>% 
+#   mutate(`SLS Station` = parse_number(`SLS Station`))
 #colnames(sls_data_raw) <- as.character(sls_data_raw[1, ])  # Set first row as column names
 #sls_data <- sls_data_raw[-1, ]  # Remove the first row
 sls_data <- sls_data_raw %>% 
@@ -307,9 +312,10 @@ sls_data <- sls_data %>% filter(!is.na(Date)) %>%
   mutate(station = as.character(station)) %>%
   left_join(station_region, by = "station")%>%
   mutate(source = "sls",
+         life_stage = "Larva",
          smelt_catch = as.numeric(smelt_catch),
          mean_length = as.numeric(mean_length))%>%
-  select(source, station, date, catch = smelt_catch, species, fork_length = mean_length, latitude, longitude, region)
+  select(source, station, date, catch = smelt_catch, species, fork_length = mean_length, life_stage, latitude, longitude, region)
 
 sls_ds <- sls_data %>% filter(species == "Delta Smelt")
 sls_lfs <- sls_data %>% filter(species == "Longfin Smelt")
@@ -353,7 +359,8 @@ smelt_release_table <- tables[[3]] %>% clean_names()
 # could filter by date for life stage here
 ds_latlon <- bind_rows(
   edsm_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
-  beachsn %>% select(source, date, catch, latitude, longitude, region, life_stage)) %>% 
+  beachsn %>% select(source, date, catch, latitude, longitude, region, life_stage),
+  sls_ds %>% select(source, date, catch, latitude, longitude, region, life_stage)) %>% 
   #twmm_ds %>% select(source, date, catch, latitude, longitude, region, life_state), 
   #salvage_ds_data %>% select(source, date, catch, latitude, longitude, region)) %>%
   filter(!is.na(catch),
@@ -370,6 +377,7 @@ ds_detail <- bind_rows(
   edsm_ds %>% select(source, date, catch, mark_code, fork_length, latitude, longitude, region, stratum),
   beachsn %>% select(source, date, catch, fork_length, latitude, longitude, region),
   twmm_ds %>% select(source, date, catch, fork_length, latitude, longitude, region),
+  sls_ds %>% select(source, date, catch, fork_length, latitude, longitude, region),
   salvage_ds_data %>% select(source, date, catch, fork_length, latitude, longitude, region)) %>%
   filter(!is.na(catch),
          !is.na(latitude)) %>%
@@ -383,6 +391,7 @@ ds_detail <- bind_rows(
 lfs_latlon <- bind_rows(
   edsm_lfs %>% select(source, date, catch, latitude, longitude, region),
   twmm_lfs %>% select(source, date, catch, latitude, longitude, region),
+  sls_lfs %>% select(source, date, catch, latitude, longitude, region),
   chipps_lfs %>% select(source, date, catch, latitude, longitude, region),
   sfbs_data %>% select(source, date, catch, latitude, longitude, region), 
   salvage_lfs_data %>% select(source, date, catch, latitude, longitude, region)) %>%
@@ -398,6 +407,7 @@ lfs_latlon <- bind_rows(
 lfs_detail <- bind_rows(
   edsm_lfs %>% select(source, date, catch, mark_code, fork_length, latitude, longitude, region, stratum),
   twmm_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region),
+  sls_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region),
   chipps_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   sfbs_data %>% select(source, date, catch, fork_length, latitude, longitude, region),
   salvage_lfs_data %>% select(source, date, catch, fork_length, latitude, longitude, region)) %>%
@@ -475,47 +485,73 @@ hydro2 <- hydro2 |>
   mutate(Date = as.Date(Date, format = "%m/%d/%Y"))
 
 
-# Extract variables
-
-# Define dates: (today and previous 7 days)
-hydro1_7d <- hydro1 %>%
+# Define dates: (today and previous 14 days)
+hydro1_14d <- hydro1 %>%
   arrange(desc(Date)) %>%  # newest date first
-  slice(1:7) %>%           # take the last 7 rows
-  arrange(Date) 
+  slice(1:14) %>%           # take the last 14 rows
+  arrange(Date)
 
-hydro2_7d <- hydro2 %>%
+hydro2_14d <- hydro2 %>%
   arrange(desc(Date)) %>%
-  slice(1:7) %>%
+  slice(1:14) %>%
   arrange(Date)
 
 #join tables
-hydro_7d <- hydro1_7d %>%
-  left_join(hydro2_7d, by = "Date")
+hydro_14d <- hydro1_14d %>%
+  left_join(hydro2_14d, by = "Date")
 
 #select cols of interest
-hydro_7d <- hydro_7d %>%
-  select(Date, SJR_a_Vernalis, E_side_streams, SR_at_Freeport_SRWTP, Stockton_rain_in, 
-         Delta_GCD_cfs, CCF_cfs, Tracy_cfs)
+hydro_14d <- hydro_14d %>%
+  select(Date, SJR_a_Vernalis, E_side_streams, SR_at_Freeport_SRWTP, Stockton_rain_in,
+         Delta_GCD_cfs, JPF_cfs, Banks_PP_cfs, CCF_cfs, Tracy_cfs)
 
-#make calculations
-hydro_7d <- hydro_7d %>% 
-  mutate(
-    QXGEO = 0.133 * SR_at_Freeport_SRWTP + 829,
-    Delta_precip = Stockton_rain_in / 12/5 * 682230 * 0.5041666604 * 0.65, # 65% of in Delta precip
-    Delta_div = Delta_GCD_cfs * 0.65, #65% of in Delta diversions
-    pumps = CCF_cfs + Tracy_cfs
-  )
 
-#calc JPF for past 7-days
-hydro_7d <- hydro_7d %>% 
-  mutate(JPF = 
-      SJR_a_Vernalis +
-      E_side_streams +
-      QXGEO +
-      Delta_precip -
-      Delta_div -
-      pumps)
+JPF_1d_lastdate <- hydro_14d %>% tail(1) %>% pull(Date)
+JPF_1d <- hydro_14d %>% tail(1) %>% pull(JPF_cfs)
 
-JPF_7d <- mean(hydro_7d$JPF)
 
-JPF_last_date <- ymd(tail(hydro_7d$Date, 1))
+
+# Extract variables # this was code used before JPF was added to DWR hydrology report
+
+# # Define dates: (today and previous 7 days)
+# hydro1_7d <- hydro1 %>%
+#   arrange(desc(Date)) %>%  # newest date first
+#   slice(1:7) %>%           # take the last 7 rows
+#   arrange(Date) 
+# 
+# hydro2_7d <- hydro2 %>%
+#   arrange(desc(Date)) %>%
+#   slice(1:7) %>%
+#   arrange(Date)
+# 
+# #join tables
+# hydro_7d <- hydro1_7d %>%
+#   left_join(hydro2_7d, by = "Date")
+# 
+# #select cols of interest
+# hydro_7d <- hydro_7d %>%
+#   select(Date, SJR_a_Vernalis, E_side_streams, SR_at_Freeport_SRWTP, Stockton_rain_in, 
+#          Delta_GCD_cfs, JPF_cfs, Banks_PP_cfs, CCF_cfs, Tracy_cfs)
+
+# #make calculations     
+# hydro_7d <- hydro_7d %>% 
+#   mutate(
+#     QXGEO = 0.133 * SR_at_Freeport_SRWTP + 829,
+#     Delta_precip = Stockton_rain_in / 12/5 * 682230 * 0.5041666604 * 0.65, # 65% of in Delta precip
+#     Delta_div = Delta_GCD_cfs * 0.65, #65% of in Delta diversions
+#     pumps = Banks_PP_cfs + Tracy_cfs #
+#   )
+# 
+# #calc JPF for past 7-days
+# hydro_7d <- hydro_7d %>% 
+#   mutate(JPF = 
+#       SJR_a_Vernalis +
+#       E_side_streams +
+#       QXGEO +
+#       Delta_precip -
+#       Delta_div -
+#       pumps)
+# 
+# JPF_7d <- mean(hydro_7d$JPF)
+# 
+# JPF_last_date <- ymd(tail(hydro_7d$Date, 1))

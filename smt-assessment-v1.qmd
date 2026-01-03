@@ -54,7 +54,7 @@ cat(narrative_text)
 - **Delta Smelt Life Stages:** `r ds_lifestages`
 
 - **Abundance estimate:** `r paste0(abundance, " (95% CL: ", format(abundance_lcl,big.mark = ","), " to ", format(abundance_ucl,big.mark = ","), ")")` as of the week of `r abundance_date`
-- **Releases:** A total of `r format(total_released, scientific = FALSE, big.mark = ",")` cultured Delta Smelt have been released for WY 2026. The most recent releases of `r format(last_release_count, scientific = FALSE, big.mark = ",")` fish occurred in `r format(last_release_location, scientific = FALSE, big.mark = ",")` on `r format(last_release_date, "%b %d, %Y")`. 
+- **Releases:** A total of `r format(total_released, scientific = FALSE, big.mark = ",")` cultured Delta Smelt have been released for WY 2026. The most recent release of `r format(last_release_count, scientific = FALSE, big.mark = ",")` fish occurred in `r format(last_release_location, scientific = FALSE, big.mark = ",")` on `r format(last_release_date, "%b %d, %Y")`. 
 - **Delta Smelt count:** `r ds_adults_count_wy` adult Delta Smelt and `r ds_juveniles_count_wy` juvenile Delta smelt have been detected this water year. See @tbl-ds-recent-catch for recent detections, @fig-ds-map for spatial distribution, and @fig-ds-catch for temporal distribution.
 - **Delta Smelt salvage:** `r ds_salvage_count` Delta Smelt have been salvaged, and the cumulative seasonal salvage is `r ds_cumsalvage`. 
 
@@ -167,9 +167,9 @@ if (adult_ent_status != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-**Threshold**: If JPF < 0 AND turbidity ≥ 12 FNU at OBI, HOL and OSJ
+**Threshold**: If daily average JPF < 0 AND turbidity ≥ 12 FNU at OBI, HOL and OSJ
 
-- **JPF**: {paste(round(JPF_7d)), collapse = ', ')} cfs as of {format(JPF_last_date, '%b %d, %Y')}
+- **JPF**: {paste(JPF_1d, collapse = ', ')} cfs as of {format(JPF_1d_lastdate, '%b %d, %Y')}
 - **OBI Turbidity**: {paste(OBI_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 - **HOL Turbidity**: {paste(HOL_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 - **OSJ Turbidity**: {paste(OSJ_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
@@ -216,7 +216,7 @@ if (larval_ent_status != "relevant") {
 
 - **Longfin Smelt Life Stages:** `r lfs_lifestages`
 
-- **Longfin Smelt count:** `r lfs_adults_count_wy` adult Longfin Smelt and `r lfs_juveniles_count_wy` juvenile Longfin smelt have been detected this water year. See @tbl-lfs-recent-catch for recent detections, @fig-lfs-map for spatial distribution, and @fig-lfs-catch for temporal distribution.
+- **Longfin Smelt count:** `r lfs_adults_count_wy` adult, `r lfs_juveniles_count_wy` juvenile, and `r lfs_larvae_count_wy` larval Longfin smelt have been detected this water year. See @tbl-lfs-recent-catch for recent detections, @fig-lfs-map for spatial distribution, and @fig-lfs-catch for temporal distribution.
 - **Longfin Smelt salvage:** `r lfs_salvage_count` Longfin Smelt have been salvaged, and the cumulative seasonal salvage is `r lfs_cumsalvage`. 
 <!--
 - Include plot of cumulative longfin salvage? [Salvage plot code](https://github.com/BDO-Science/smt/tree/main/daily_longfin_salvage)
@@ -265,8 +265,10 @@ kable(lfs_recent_display)
 #| label: "tbl-lfs-catch-all"
 #| tbl-cap: "Longfin Smelt Water Year Totals by Life Stage"
 kable(
-  lfs_recent %>%
-  group_by(source, region, life_stage) %>%
+  lfs_detail %>% #could also do lfs_recent, but this is for wy totals
+    filter(date > ymd("2025-10-01"),
+           !is.na(life_stage)) %>% 
+    group_by(source, region, life_stage) %>%
     summarize(total = sum(catch)) %>%
     ungroup() %>%
     select(Survey = source, Region = region, `Life Stage` = life_stage, Total = total)
@@ -289,20 +291,20 @@ ggplot(lfs_wy) +
 ##### Start of Entrainment Management (Adult Longfin Smelt)
 
 - Threshold: JPF < 0 cfs AND salvage of adult longfin exceeds 26.8 fish (5% of FMWT Index + 1)
-  - 7-day average JPF: `r round(JPF_7d)` cfs as of `r format(JPF_last_date, "%b %d, %Y")`
+  - 7-day average JPF: `r round(JPF_1d)` cfs as of `r format(JPF_1d_lastdate, "%b %d, %Y")`
   - Water year total Age 1+ longfin smelt salvage = 0
 
 ##### Adult Longfin Smelt
 
 - Threshold: JPF < 0 cfs AND annual loss is on a trajectory to exceed 5% of the adult population abundance 
-  - 7-day average JPF: `r round(JPF_7d)` cfs as of `r format(JPF_last_date, "%b %d, %Y")`
+  - 7-day average JPF: `r round(JPF_1d)` cfs as of `r format(JPF_1d_lastdate, "%b %d, %Y")`
   - Water year total adult longfin smelt salvage = 0
   
 
 ##### Larval/Juvenile Longfin Smelt
 
 - Threshold: JPF < 0 cfs AND population model demonstrates need to reduce entrainment to avoid population decline
-  - 7-day average JPF: `r round(JPF_7d)` cfs as of `r format(JPF_last_date, "%b %d, %Y")`
+  - 7-day average JPF: `r round(JPF_1d)` cfs as of `r format(JPF_1d_lastdate, "%b %d, %Y")`
   
 #### Evaluation
 

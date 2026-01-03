@@ -83,6 +83,8 @@ ds_adults_count_wy <- ds_detail %>% filter(date > ymd("2025-10-01")) %>%
   filter(life_stage == "Adult") %>% pull(catch) %>% sum()
 ds_juveniles_count_wy <- ds_detail %>% filter(date > ymd("2025-10-01")) %>% 
   filter(life_stage == "Juvenile") %>% pull(catch) %>% sum()
+ds_larvae_count_wy <- ds_detail %>% filter(date > ymd("2025-10-01")) %>% 
+  filter(life_stage == "Larva") %>% pull(catch) %>% sum()
 
 ## Salvage ----------------------
 # Once 2026 starts updating go back to this code
@@ -161,6 +163,8 @@ lfs_adults_count_wy <- lfs_detail %>% filter(date > ymd("2025-10-01")) %>%
   filter(life_stage == "Adult") %>% pull(catch) %>% sum()
 lfs_juveniles_count_wy <- lfs_detail %>% filter(date > ymd("2025-10-01")) %>% 
   filter(life_stage == "Juvenile") %>% pull(catch) %>% sum()
+lfs_larvae_count_wy <- lfs_detail %>% filter(date > ymd("2025-10-01")) %>% 
+  filter(life_stage == "Larva") %>% pull(catch) %>% sum()
 
 ## Salvage ----------------------------
 # Once 2026 starts updating go back to this code
