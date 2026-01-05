@@ -14,6 +14,7 @@ library(rvest)
 library(janitor)
 library(deltamapr)
 library(ggspatial)
+library(readxl)
 library(sf)
 library(jsonlite) #weather
 library(glue) #weather
@@ -58,7 +59,7 @@ RVB_temp <- as.numeric(tail(env_table$water_temperature_3_day_sr_at_rio_vista_br
 CLC_temp <- as.numeric(tail(env_table$water_temperature_clifton_court_c_cdec_clc,3))
 
 ## Hydro Table ------------------------------
-### Add JPF later on 
+### Add JPF later on when added to SacPAS, for now pulling from DWR hydro rpt
 
 hydro_table_raw <- tables[[1]][-1,]
 hydro_table <- hydro_table_raw %>% clean_names()
@@ -171,15 +172,38 @@ sta_salvage <- data.frame(station = c("CVP", "SWP"),
 
 ## EDSM data -----------------
 # directly add in file; remove old file 
-edsm_data_raw <- read_excel_by_pattern("EDSM", data_raw, FALSE)
+# edsm_data_raw <- read_excel_by_pattern("EDSM", data_raw, FALSE)
+# edsm_data <- edsm_data_raw %>%
+#   clean_names() %>%
+#   mutate(source = "edsm") %>%
+#   select(source, date = sample_date, region = region_code, stratum, 
+#          latitude = latitude_start, longitude = longitude_start, mark_code,
+#          fork_length, catch=sum_of_catch_count, organism_code)
+# edsm_ds <- edsm_data %>% filter(organism_code == "DSM") %>% select(-organism_code)
+# edsm_lfs <- edsm_data %>% filter(organism_code == "LFS")%>% select(-organism_code)
+
+#test code edsm
+# read in full csv from SacPAS
+edsm_data_raw <- read_csv("https://www.cbr.washington.edu/sacramento/data/generated/WY2026_smeltcatch_edsm.csv")
 edsm_data <- edsm_data_raw %>%
   clean_names() %>%
-  mutate(source = "edsm") %>%
-  select(source, date = sample_date, region = region_code, stratum, 
-         latitude = latitude_start, longitude = longitude_start, mark_code,
-         fork_length, catch=sum_of_catch_count, organism_code)
-edsm_ds <- edsm_data %>% filter(organism_code == "DSM") %>% select(-organism_code)
-edsm_lfs <- edsm_data %>% filter(organism_code == "LFS")%>% select(-organism_code)
+  select(-source) %>% 
+  select(source= program, date, region, stratum, latitude=latitude_start, longitude=longitude_start, life_stage, 
+          mark_code, fork_length, catch= nfish, species)
+edsm_ds <- edsm_data %>% filter(species == "Delta Smelt") %>% select(-species)
+edsm_lfs <- edsm_data %>% filter(species == "Longfin Smelt") %>% select(-species)
+
+#test code for chipps island trawl catch
+chipps_data_raw <- read_csv("https://www.cbr.washington.edu/sacramento/data/generated/WY2026_smeltcatch_chipps.csv")
+chipps_data <- chipps_data_raw %>%
+  clean_names() %>%
+  select(-source) %>% 
+  mutate(region = "N/A") %>%
+  mutate(stratum = "Chipps Island") %>%
+  select(source=program, date, region, stratum, latitude, longitude, life_stage, mark_code, fork_length,
+         catch= nfish, species)
+chipps_ds <- chipps_data %>% filter(species == "Delta Smelt") %>% select(-species)
+chipps_lfs <- chipps_data %>% filter(species == "Longfin Smelt") %>% select(-species)
 
 ## Salvage data --------------------
 # reading from SacPAS which is connected to the Salvage database 
@@ -214,6 +238,17 @@ salvage_lfs_data <- salvage_lfs_data_raw %>%
   left_join(sta_salvage)
 
 ## Other data ----------------------
+# manually update for DJFMP beach seines
+beachsn <- read_csv(here("data_raw/smelt/Beach_seines_2025-12-22.csv")) %>%
+  clean_names() %>% 
+  mutate(date = mdy(date),
+         date = date(ymd(date))) %>% 
+  filter(species == "DSM") %>% 
+  mutate(source = "DJFMP") %>% 
+  mutate(region= "North") %>%  #fix this, obviously not true for all stations
+  select(region, station, source, date, latitude, longitude, species, mark, catch,
+         fork_length= fl, life_stage= stage)
+
 # manually update for other DS data (random Broodstock, FRP)
 other_ds_data <- read_csv(here("data_raw/smelt/smelt_catch_test.csv")) %>%
   mutate(date = mdy(date))
@@ -225,10 +260,27 @@ sfbs_data_raw <- read_sfbs_files(data_raw)
 sfbs_data <- sfbs_data_raw %>%
   clean_names() %>%
   mutate(station = as.character(station)) %>%
+  mutate(date = ymd_hms(date),
+         date = date(date)) %>%
+  #mutate(catch = coalesce(frequency, plus_count)) %>% 
+  # mutate(frequency = frequency %>% # some catch # are in plus count. Use frequency unless NA, then use plus count
+  #     str_remove_all("[^0-9.-]") %>%
+  #     as.numeric(),
+  #   plus_count = plus_count %>%
+  #     str_remove_all("[^0-9.-]") %>%
+  #     as.numeric(),
+  #   catch = coalesce(frequency, plus_count)) %>% 
+  mutate(frequency = frequency %>%
+           str_remove_all("[^0-9.-]") %>%
+           as.numeric()) %>% 
+  filter(!is.na(frequency)) %>%
+  mutate(length = length %>%
+           str_remove_all("[^0-9.-]") %>%
+           as.numeric()) %>% 
+  filter(!is.na(length)) %>%
   left_join(station_region, by = "station")%>%
-  mutate(source = "baystudy", 
-         catch = 1) %>%
-  select(source, station, date, catch, fork_length = length, latitude, longitude, region)
+  mutate(source = "baystudy") %>%
+  select(source, station, date, catch=frequency, fork_length = length, latitude, longitude, region)
 
 # SLS and 20mm notes
 # - not individual fish, but instead grouped with mean, min, max
@@ -238,13 +290,20 @@ sfbs_data <- sfbs_data_raw %>%
 
 ## SLS ---------------------------------
 # directly add file in - will read most recently modified file
-sls_data_raw <- read_excel_by_pattern("SLS", data_raw, TRUE)
+# BEFORE reading in, make sure you remove any symbols in the station col (added to read_excel_by_pattern fcn)
+#updated code for this:
+sls_data_raw <- read_excel_by_pattern("SLS", data_raw, TRUE) %>% 
+  mutate(`SLS Station` = readr::parse_number(`SLS Station`))
+# sls_data_raw <- read_excel_by_pattern("SLS", data_raw, TRUE) %>% 
+#   mutate(`SLS Station` = parse_number(`SLS Station`))
 #colnames(sls_data_raw) <- as.character(sls_data_raw[1, ])  # Set first row as column names
 #sls_data <- sls_data_raw[-1, ]  # Remove the first row
-sls_data <- sls_data_raw[-nrow(sls_data_raw), ]   # Remove last row (notes from CDFW)
+sls_data <- sls_data_raw %>% 
+  filter(!is.na(Species)) # removes lines that are notes (from CDFW)
+#sls_data <- sls_data_raw[-nrow(sls_data_raw), ]   # Remove last row (notes from CDFW)
 #sls_data$Date <- as.Date(as.numeric(sls_data$Date), origin = "1899-12-30") #didn't work
 sls_data$Date <- as.Date(sls_data$Date) #change to date format
-sls_data <- sls_data[, !is.na(names(sls_data)) & names(sls_data) != ""]
+sls_data <- sls_data[, !is.na(names(sls_data)) & names(sls_data) != ""] #not sure what this does, but Cat had it here
   
 # right now sls data include min, mean, max length... not sure if we want to display all of them
 sls_data <- sls_data %>% filter(!is.na(Date)) %>%
@@ -253,9 +312,10 @@ sls_data <- sls_data %>% filter(!is.na(Date)) %>%
   mutate(station = as.character(station)) %>%
   left_join(station_region, by = "station")%>%
   mutate(source = "sls",
+         life_stage = "Larva",
          smelt_catch = as.numeric(smelt_catch),
          mean_length = as.numeric(mean_length))%>%
-  select(source, station, date, catch = smelt_catch, species, fork_length = mean_length, latitude, longitude, region)
+  select(source, station, date, catch = smelt_catch, species, fork_length = mean_length, life_stage, latitude, longitude, region)
 
 sls_ds <- sls_data %>% filter(species == "Delta Smelt")
 sls_lfs <- sls_data %>% filter(species == "Longfin Smelt")
@@ -298,9 +358,11 @@ smelt_release_table <- tables[[3]] %>% clean_names()
 # this one has lat/lon (for map)
 # could filter by date for life stage here
 ds_latlon <- bind_rows(
-  edsm_ds %>% select(source, date, catch, latitude, longitude, region),
-  twmm_ds %>% select(source, date, catch, latitude, longitude, region), 
-  salvage_ds_data %>% select(source, date, catch, latitude, longitude, region)) %>%
+  edsm_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
+  beachsn %>% select(source, date, catch, latitude, longitude, region, life_stage),
+  sls_ds %>% select(source, date, catch, latitude, longitude, region, life_stage)) %>% 
+  #twmm_ds %>% select(source, date, catch, latitude, longitude, region, life_state), 
+  #salvage_ds_data %>% select(source, date, catch, latitude, longitude, region)) %>%
   filter(!is.na(catch),
          !is.na(latitude)) %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326, remove = FALSE) %>%
@@ -313,7 +375,9 @@ ds_latlon <- bind_rows(
 # uncomment salvage once salvage is updated
 ds_detail <- bind_rows(
   edsm_ds %>% select(source, date, catch, mark_code, fork_length, latitude, longitude, region, stratum),
+  beachsn %>% select(source, date, catch, fork_length, latitude, longitude, region),
   twmm_ds %>% select(source, date, catch, fork_length, latitude, longitude, region),
+  sls_ds %>% select(source, date, catch, fork_length, latitude, longitude, region),
   salvage_ds_data %>% select(source, date, catch, fork_length, latitude, longitude, region)) %>%
   filter(!is.na(catch),
          !is.na(latitude)) %>%
@@ -326,7 +390,9 @@ ds_detail <- bind_rows(
 # could filter by date for life stage here
 lfs_latlon <- bind_rows(
   edsm_lfs %>% select(source, date, catch, latitude, longitude, region),
-  twmm_lfs %>% select(source, date, catch, latitude, longitude, region), 
+  twmm_lfs %>% select(source, date, catch, latitude, longitude, region),
+  sls_lfs %>% select(source, date, catch, latitude, longitude, region),
+  chipps_lfs %>% select(source, date, catch, latitude, longitude, region),
   sfbs_data %>% select(source, date, catch, latitude, longitude, region), 
   salvage_lfs_data %>% select(source, date, catch, latitude, longitude, region)) %>%
   filter(!is.na(catch),
@@ -341,6 +407,9 @@ lfs_latlon <- bind_rows(
 lfs_detail <- bind_rows(
   edsm_lfs %>% select(source, date, catch, mark_code, fork_length, latitude, longitude, region, stratum),
   twmm_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region),
+  sls_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region),
+  chipps_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
+  sfbs_data %>% select(source, date, catch, fork_length, latitude, longitude, region),
   salvage_lfs_data %>% select(source, date, catch, fork_length, latitude, longitude, region)) %>%
   filter(!is.na(catch),
          !is.na(latitude)) %>%
@@ -398,16 +467,16 @@ hydro2 <- data_lines2 %>%
   str_squish() %>%
   str_replace_all("[^[:print:]]", "") %>%
   .[str_detect(., "^\\d{1,2}/\\d{1,2}/\\d{2,4}")] %>%
-  str_split_fixed(" ", n = 9) %>%
+  str_split_fixed(" ", n = 10) %>%
   as.data.frame(stringsAsFactors = FALSE)
 
 colnames(hydro2) <- c(
   "Date","Banks_PP_cfs","Delta_GCD_cfs","Rio_Vista_Flow_cfs",
-  "QWEST_cfs","NDOI_cfs","EI_3day","EI_14day","Delta_Status"
+  "QWEST_cfs", "JPF_cfs", "NDOI_cfs","EI_3day","EI_14day","Delta_Status"
 )
 
 numeric.col2 <- c("Banks_PP_cfs","Delta_GCD_cfs","Rio_Vista_Flow_cfs",
-                  "QWEST_cfs","NDOI_cfs","EI_3day","EI_14day","Delta_Status")
+                  "QWEST_cfs","JPF_cfs", "NDOI_cfs","EI_3day","EI_14day","Delta_Status")
 
 hydro2 <- hydro2 |>
   dplyr::filter(str_detect(Date, "\\d{1,2}/\\d{1,2}")) %>% 
@@ -416,47 +485,73 @@ hydro2 <- hydro2 |>
   mutate(Date = as.Date(Date, format = "%m/%d/%Y"))
 
 
-# Extract variables
-
-# Define dates: (today and previous 7 days)
-hydro1_7d <- hydro1 %>%
+# Define dates: (today and previous 14 days)
+hydro1_14d <- hydro1 %>%
   arrange(desc(Date)) %>%  # newest date first
-  slice(1:7) %>%           # take the last 7 rows
-  arrange(Date) 
+  slice(1:14) %>%           # take the last 14 rows
+  arrange(Date)
 
-hydro2_7d <- hydro2 %>%
+hydro2_14d <- hydro2 %>%
   arrange(desc(Date)) %>%
-  slice(1:7) %>%
+  slice(1:14) %>%
   arrange(Date)
 
 #join tables
-hydro_7d <- hydro1_7d %>%
-  left_join(hydro2_7d, by = "Date")
+hydro_14d <- hydro1_14d %>%
+  left_join(hydro2_14d, by = "Date")
 
 #select cols of interest
-hydro_7d <- hydro_7d %>%
-  select(Date, SJR_a_Vernalis, E_side_streams, SR_at_Freeport_SRWTP, Stockton_rain_in, 
-         Delta_GCD_cfs, CCF_cfs, Tracy_cfs)
+hydro_14d <- hydro_14d %>%
+  select(Date, SJR_a_Vernalis, E_side_streams, SR_at_Freeport_SRWTP, Stockton_rain_in,
+         Delta_GCD_cfs, JPF_cfs, Banks_PP_cfs, CCF_cfs, Tracy_cfs)
 
-#make calculations
-hydro_7d <- hydro_7d %>% 
-  mutate(
-    QXGEO = 0.133 * SR_at_Freeport_SRWTP + 829,
-    Delta_precip = Stockton_rain_in / 12/5 * 682230 * 0.5041666604 * 0.65, # 65% of in Delta precip
-    Delta_div = Delta_GCD_cfs * 0.65, #65% of in Delta diversions
-    pumps = CCF_cfs + Tracy_cfs
-  )
 
-#calc JPF for past 7-days
-hydro_7d <- hydro_7d %>% 
-  mutate(JPF = 
-      SJR_a_Vernalis +
-      E_side_streams +
-      QXGEO +
-      Delta_precip -
-      Delta_div -
-      pumps)
+JPF_1d_lastdate <- hydro_14d %>% tail(1) %>% pull(Date)
+JPF_1d <- hydro_14d %>% tail(1) %>% pull(JPF_cfs)
 
-JPF_7d <- mean(hydro_7d$JPF)
 
-JPF_last_date <- ymd(tail(hydro_7d$Date, 1))
+
+# Extract variables # this was code used before JPF was added to DWR hydrology report
+
+# # Define dates: (today and previous 7 days)
+# hydro1_7d <- hydro1 %>%
+#   arrange(desc(Date)) %>%  # newest date first
+#   slice(1:7) %>%           # take the last 7 rows
+#   arrange(Date) 
+# 
+# hydro2_7d <- hydro2 %>%
+#   arrange(desc(Date)) %>%
+#   slice(1:7) %>%
+#   arrange(Date)
+# 
+# #join tables
+# hydro_7d <- hydro1_7d %>%
+#   left_join(hydro2_7d, by = "Date")
+# 
+# #select cols of interest
+# hydro_7d <- hydro_7d %>%
+#   select(Date, SJR_a_Vernalis, E_side_streams, SR_at_Freeport_SRWTP, Stockton_rain_in, 
+#          Delta_GCD_cfs, JPF_cfs, Banks_PP_cfs, CCF_cfs, Tracy_cfs)
+
+# #make calculations     
+# hydro_7d <- hydro_7d %>% 
+#   mutate(
+#     QXGEO = 0.133 * SR_at_Freeport_SRWTP + 829,
+#     Delta_precip = Stockton_rain_in / 12/5 * 682230 * 0.5041666604 * 0.65, # 65% of in Delta precip
+#     Delta_div = Delta_GCD_cfs * 0.65, #65% of in Delta diversions
+#     pumps = Banks_PP_cfs + Tracy_cfs #
+#   )
+# 
+# #calc JPF for past 7-days
+# hydro_7d <- hydro_7d %>% 
+#   mutate(JPF = 
+#       SJR_a_Vernalis +
+#       E_side_streams +
+#       QXGEO +
+#       Delta_precip -
+#       Delta_div -
+#       pumps)
+# 
+# JPF_7d <- mean(hydro_7d$JPF)
+# 
+# JPF_last_date <- ymd(tail(hydro_7d$Date, 1))
