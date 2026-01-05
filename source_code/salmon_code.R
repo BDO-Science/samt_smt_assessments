@@ -301,10 +301,35 @@ releases <- read_csv(here(project, 'input_data/wy_2026_sh_releases.csv')) %>%
 release_table <- releases %>%
   select(1:4, 10:11)
 
+new_column_names <- c('Hatchery', 'Date of Release', 'Mean Fork Length (mm)', 'Number Released', 'Estimated Survival', 'Juvenile Production Estimate')
+
+release_table_print <- release_table %>% 
+  mutate(hatchery = factor(hatchery, levels = c('CNFH', 'NMFH', 'FRFH', 'MKFH'),
+                           labels = c('Coleman', 'Nimbus', 'Feather River', 'Mokelumne River')),
+         survival = paste0(round(survival * 100, 0),'%'),
+         stocked = prettyNum(stocked, big.mark = ","),
+         jpe = prettyNum(jpe, big.mark = ","))
+
+colnames(release_table_print) <- new_column_names
+###pulling in clippped steelhead loss
+sh_clipped_url <- paste0('https://www.cbr.washington.edu/sacramento/data/php/rpt/juv_loss_detail.php?sc=1&outputFormat=csv&year='
+                         ,wy,'&species=2%3At&dnaOnly=no&age=no')
+sh_clipped_loss <- read_csv(sh_clipped_url)
+###numbers for text
+sh_stocked <- sum(release_table$stocked) %>% prettyNum(big.mark = ",")
+sh_jpe <- sum(release_table$jpe) %>% prettyNum(big.mark = ",")
+sh_survival <- paste0(round(mean(release_table$survival)*100,0),'%')
+sh_clipped_threshold <- round(sum(release_table$jpe) * 0.01,0)
+n_releases <- nrow(release_table)
+sh_clipped_loss_total <- sum(sh_clipped_loss$Loss, na.rm = TRUE)
+sh_clipped_perc_threshold <- paste0(round((sh_clipped_loss_total/(sum(release_table$jpe) * .01))*100,2),'%')
+
+
 ###########################################
-#pull in juvenile sampling table
+#pull in juvenile sampling data
 ###########################################
 
+####pull in table from SaMT page
 juv_url <- paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,'/samt_juvfish.html')
 juv <- read_html(juv_url) %>% 
   html_nodes("table") %>%
@@ -352,6 +377,34 @@ all_sampling <- bind_rows(sample_list) %>%
          `Date End` = if_else(is.infinite(`Date End`), NA, `Date End`),
          mutate(across(4:10, as.numeric)))
 
+####pull in annual monitoring data
+url_species_data = data.frame(species = rep(c('CHN', 'CHN', 'RBT'),5), run = rep(c('Winter', 'Spring', 'NA'),5)) %>%
+  arrange(species, run)
+url_sample_data <- data.frame(
+  site_name = c('Chipps Island', 'Sac Seine', 'Sac Trawl', 'Knights Landing', 'Tisdale'),
+  site_code = c('ASB018%3A1', 'Asacbeach%3A1', 'ASR055%3A1','AKNL%3A0', 'ATIS%3A0'), 
+  sample = c('trawl', 'seine', 'trawl', 'trap', 'trap')
+) %>%
+  slice(rep(1:n(), 3))
+url_data <- bind_cols(url_sample_data, url_species_data)
+
+sample_list <- apply(url_data, 1, function(row){
+  read_csv(paste0('https://www.cbr.washington.edu/sacramento/data/php/rpt/sampling_graph.php?sc=1&outputFormat=csv&year=',by,'&species=',row['species'],'%3A',row['run'],'&loc=',row['sample'],'%3',row['site_code'],'&typeData=raw')) %>%
+    select(1, catch = 2) %>%
+    mutate(site = row['site_name'],
+           species = row['species'],
+           run = row['run'])
+})
+
+all_sample <- bind_rows(sample_list) %>%
+  mutate(Date = ymd(Date)) %>%
+  filter(!is.na(Date)) %>%
+  mutate(region = case_when(site %in% c('Knights Landing', 'Tisdale') ~ 'Delta Entry',
+                            site %in% c('Sac Seine', 'Sac Trawl') ~ 'Delta',
+                            site == 'Chipps Island' ~ 'Delta Exit')) %>%
+  group_by(region, species, run) %>%
+  summarize(catch = sum(catch, na.rm = TRUE),
+            start_date = min(Date))
 ###########################################
 #pull in RBDD stuff
 ###########################################

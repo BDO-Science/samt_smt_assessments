@@ -63,15 +63,15 @@ export_plot
 ```{r}
 #| include: false
 # Pull annotation start value for flow plot
-ann_start_FPT <- flow_clean %>% filter(station == "FPT", date == date(start)) %>% pull(value)
-ann_start_VNS <- flow_clean %>% filter(station == "VNS", date == date(start)) %>% pull(value)
+ann_start_FPT <- flow_clean %>% filter(station == "FPT", date == date(start)) %>% pull(flow)
+ann_start_VNS <- flow_clean %>% filter(station == "VNS", date == date(start)) %>% pull(flow)
 
 flow_plot <- flow_clean %>%
   ggplot(aes(x = date)) +
   annotate("label", x = date(start)+2, y = ann_start_FPT-3000, label = "FPT", color = "#388715")+
   annotate("label", x = date(start)+2, y = ann_start_VNS+3000, label = "VNS", color = "gray20")+
   labs(y = 'Flow (cfs)') +
-  geom_line(aes(y = value, color = station)) +
+  geom_line(aes(y = flow, color = station)) +
   scale_color_manual(values = c("#43a419", "gray15")) +
   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
   theme_bw() +
@@ -131,15 +131,11 @@ trigger_table <- triggers_clean %>%
 
 knitr::kable(trigger_table, align = "lrrrrr")
 
-
-
 ```
 
 ### Zone of Influence
 
-The Zone of Influence (ZOI) analysis served as a Line of Evidence for comparing alternative actions in the Long Term Operations EIS. This analysis evaluated the spatial extent of hydrologic alteration resulting from pumping under varying Old and Middle River flow conditions and Sacramento-San Joaquin river inflow conditions.  This analysis was adapted for the assessment by focusing on a single alternative, Alt2woTUCPDeltaVa, which served as the proposed action in the 2024 Record of Decision, and binned maps into 1 of 9 categories based on low, medium, and high inflows from the Sacramento and San Joaquin flow. In general, changes in channel length across OMR levels may correlate with entrainment risk, where larger increases in channel length from more positive to more negative OMR represent greater entrainment risk.
-
-Current conditions were queried from most recent Freeport flow data on the Sacramento River and Vernalis flow data on the San Joaquin river from [SacPAS](https://www.cbr.washington.edu/sacramento/data/query_river_table.html).  Forecasted flows were queried from short range deterministic flows provided by the [California Nevada River Forecast Center](https://www.cnrfc.noaa.gov/deterministicHourlyProductCSV.php).
+Zone of Influence (ZOI) analysis is discussed in detail in the December 22 assessment. Current conditions were queried from most recent Freeport flow data on the Sacramento River and Vernalis flow data on the San Joaquin river from [SacPAS](https://www.cbr.washington.edu/sacramento/data/query_river_table.html).  Forecasted flows were queried from short range deterministic flows provided by the [California Nevada River Forecast Center](https://www.cnrfc.noaa.gov/deterministicHourlyProductCSV.php).
 
 Current conditions at Freeport and Vernalis indicate that delta hydrology falls within the `r paste0("'",hydrology_current, "'")` category.  Forecasted conditions averaged across the next 7 days falls within the `r paste0("'",hydrology_forecast, "'")` category.
 

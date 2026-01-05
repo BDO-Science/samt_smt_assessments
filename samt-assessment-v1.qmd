@@ -186,9 +186,20 @@ image_read('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2
 
 ### Hatchery-origin Central Valley Steelhead
 
-#### Hatchery Releases
+#### Surrogate Releases
 
-#### Juvenile Production Estimate
+There have been a total of `r n_releases` releases totaling `r sh_stocked` steelhead  in Water Year 2026.  JPE for the hatchery releases as of today is `r sh_jpe` based on estimated survivals using forecasted water year types (see details in table below). The annual loss threshold, equal to 1% of the JPE, is currently `r sh_clipped_threshold`, but is subject to change with additional steelhead releases.  Total loss of hatchery-origin steelhead is `r sh_clipped_loss_total` or `r sh_clipped_perc_threshold` of the threshold.  *Note that hatchery origin of salvaged fish can not be determined at this time and salvage is based on the assumption of similar routing and survival probabilities of individual hatchery releases.
+
+```{r}
+#| label: tbl-sh_clipped_table
+#| results: asis
+#| tbl-cap: 'Summary of steelhead hatchery releases in Water Year 2026'
+#| echo: false
+#| warning: false
+
+knitr::kable(release_table_print, align = "lrrrrr")
+
+```
 
 ### Spring-run
 
@@ -228,6 +239,11 @@ knitr::kable(sr_surrogate_table_clean, align = "lrrrrrrr")
 
 ### Evaluation
 
-1.  **After January 1, has the first winter-run Chinook salvage occurred?** These criteria for the start of entrainment management for winter-run Chinook Salmon have not occurred.
+1.  **What is the probability of exceeding natural or hatchery winter-run Chinook Salmon loss thresholds in the upcoming week?**
+
+2.  **What is the probability of spring-run hatchery Chinook Salmon loss thresholds in the upcoming week?**
+
+3.  **What is the probability of spring-run hatchery Chinook Salmon loss thresholds in the upcoming week?**
+
 
 ### References

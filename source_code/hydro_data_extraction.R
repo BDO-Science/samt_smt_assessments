@@ -8,14 +8,15 @@ library(tidyverse)
 # Define start and end date
 start <- "2025-10-01"
 end <- today()
+wy <- 2026
+py <- wy-1
 
-pumping_clean <- read_csv('https://www.cbr.washington.edu/sacramento/data/php/rpt/mg.php?map=1&mgconfig=river&tempUnit=F&avgyear=0&consolidate=1&grid=1&y1min=&y1max=&y2min=&y2max=&size=large&outputFormat=csv&data[]=PumpingDischarge&loc[]=HRO&loc[]=TRP&year[]=2025') %>%
+pumping_clean <- bind_rows(read_csv(paste0('https://www.cbr.washington.edu/sacramento/data/php/rpt/mg.php?map=1&mgconfig=river&tempUnit=F&avgyear=0&consolidate=1&grid=1&y1min=&y1max=&y2min=&y2max=&size=large&outputFormat=csvSingle&data[]=PumpingDischarge&loc[]=TRP&loc[]=HRO&year[]=',wy)),
+                           read_csv(paste0('https://www.cbr.washington.edu/sacramento/data/php/rpt/mg.php?map=1&mgconfig=river&tempUnit=F&avgyear=0&consolidate=1&grid=1&y1min=&y1max=&y2min=&y2max=&size=large&outputFormat=csvSingle&data[]=PumpingDischarge&loc[]=TRP&loc[]=HRO&year[]=',py))) %>%
   clean_names() %>%
-  mutate(year = year(Sys.Date())) %>%
   mutate(date = ymd(paste0(year,'-',mm_dd))) %>%
   filter(!is.na(date)) %>%
-  select(date, HRO = 2, TRP = 3) %>%
-  pivot_longer(names_to = 'station', values_to = 'value', 2:3) %>%
+  select(date, station = 3, 7) %>%
   mutate(parameter = 'exports',
          facility = if_else(station == 'HRO', 'SWP', 'CVP')) %>%
   select(1,2,4,3,5) %>%
@@ -45,21 +46,28 @@ swp = pumping_clean %>%
 #   mutate(facility = if_else(station == "TRP", "CVP", "SWP"))
 
 # Read in OMRI from SacPAS
-url_omr <- "https://www.cbr.washington.edu/sacramento/data/php/rpt/mg.php?sc=1&mgconfig=river&outputFormat=csvSingle&hafilter=Delta&year%5B%5D=2025&loc%5B%5D=DTO&data%5B%5D=OMRIndex&tempUnit=F&startdate=1%2F1&enddate=12%2F31&avgyear=0&consolidate=1&grid=1&y1min=&y1max=&y2min=&y2max=&size=large"
-url_omr5D <- "https://www.cbr.washington.edu/sacramento/data/php/rpt/mg.php?sc=1&mgconfig=river&outputFormat=csvSingle&hafilter=All&year%5B%5D=2025&loc%5B%5D=KWK&data%5B%5D=OMRIndex5Day&tempUnit=F&startdate=1%2F1&enddate=12%2F31&avgyear=0&consolidate=1&grid=1&y1min=&y1max=&y2min=&y2max=&size=large"
-url_omr14D <- "https://www.cbr.washington.edu/sacramento/data/php/rpt/mg.php?sc=1&mgconfig=river&outputFormat=csvSingle&hafilter=All&year%5B%5D=2025&loc%5B%5D=KWK&data%5B%5D=OMRIndex14Day&tempUnit=F&startdate=1%2F1&enddate=12%2F31&avgyear=0&consolidate=1&grid=1&y1min=&y1max=&y2min=&y2max=&size=large"
-omr <- read_csv(url_omr) %>%
+url_omr <- paste0("https://www.cbr.washington.edu/sacramento/data/php/rpt/mg.php?sc=1&mgconfig=river&outputFormat=csvSingle&hafilter=Delta&year%5B%5D=",wy,"&loc%5B%5D=DTO&data%5B%5D=OMRIndex&tempUnit=F&startdate=1%2F1&enddate=12%2F31&avgyear=0&consolidate=1&grid=1&y1min=&y1max=&y2min=&y2max=&size=large")
+url_omr5D <- paste0("https://www.cbr.washington.edu/sacramento/data/php/rpt/mg.php?sc=1&mgconfig=river&outputFormat=csvSingle&hafilter=All&year%5B%5D=",wy,"&loc%5B%5D=KWK&data%5B%5D=OMRIndex5Day&tempUnit=F&startdate=1%2F1&enddate=12%2F31&avgyear=0&consolidate=1&grid=1&y1min=&y1max=&y2min=&y2max=&size=large")
+url_omr14D <- paste0("https://www.cbr.washington.edu/sacramento/data/php/rpt/mg.php?sc=1&mgconfig=river&outputFormat=csvSingle&hafilter=All&year%5B%5D=",wy,"&loc%5B%5D=KWK&data%5B%5D=OMRIndex14Day&tempUnit=F&startdate=1%2F1&enddate=12%2F31&avgyear=0&consolidate=1&grid=1&y1min=&y1max=&y2min=&y2max=&size=large")
+url_omr_prev <- paste0("https://www.cbr.washington.edu/sacramento/data/php/rpt/mg.php?sc=1&mgconfig=river&outputFormat=csvSingle&hafilter=Delta&year%5B%5D=",py,"&loc%5B%5D=DTO&data%5B%5D=OMRIndex&tempUnit=F&startdate=1%2F1&enddate=12%2F31&avgyear=0&consolidate=1&grid=1&y1min=&y1max=&y2min=&y2max=&size=large")
+url_omr5D_prev <- paste0("https://www.cbr.washington.edu/sacramento/data/php/rpt/mg.php?sc=1&mgconfig=river&outputFormat=csvSingle&hafilter=All&year%5B%5D=",py,"&loc%5B%5D=KWK&data%5B%5D=OMRIndex5Day&tempUnit=F&startdate=1%2F1&enddate=12%2F31&avgyear=0&consolidate=1&grid=1&y1min=&y1max=&y2min=&y2max=&size=large")
+url_omr14D_prev <- url_omr14D <- paste0("https://www.cbr.washington.edu/sacramento/data/php/rpt/mg.php?sc=1&mgconfig=river&outputFormat=csvSingle&hafilter=All&year%5B%5D=",py,"&loc%5B%5D=KWK&data%5B%5D=OMRIndex14Day&tempUnit=F&startdate=1%2F1&enddate=12%2F31&avgyear=0&consolidate=1&grid=1&y1min=&y1max=&y2min=&y2max=&size=large")
+omr <- bind_rows(read_csv(url_omr),
+                 read_csv(url_omr_prev)) %>%
   mutate(measure = 'OMR')
-omr5D <- read_csv(url_omr5D) %>%
+omr5D <- bind_rows(read_csv(url_omr5D),
+                   read_csv(url_omr5D_prev)) %>%
   mutate(measure = "OMR5D")
-omr14D <- read_csv(url_omr14D) %>%
+omr14D <- bind_rows(read_csv(url_omr14D),
+                    read_csv(url_omr14D_prev)) %>%
   mutate(measure = "OMR14D")
 omr_clean <- bind_rows(omr, omr5D, omr14D) %>%
   filter(!is.na(parameter)) %>%
   mutate(date = ymd(paste0(year, "-", `mm-dd`))) %>%
   filter(date < end, date >= start) %>%
   mutate(measure = factor(measure, levels = c('OMR', 'OMR5D', 'OMR14D'),
-                          labels = c('OMR', 'OMR 5 day index', 'OMR 14 day index')))
+                          labels = c('OMR', 'OMR 5 day index', 'OMR 14 day index'))) %>%
+  arrange(date)
 omr_text <- omr_clean %>%
   filter(measure == 'OMR',
          !is.na(value)) %>%
@@ -81,27 +89,24 @@ omr14D_text <- omr_clean %>%
 
 # Read in Freeport and Vernalis Flow
 
-flow_clean <- read_csv('https://www.cbr.washington.edu/sacramento/data/php/rpt/mg.php?map=1&mgconfig=river&tempUnit=F&avgyear=0&consolidate=1&grid=1&y1min=&y1max=&y2min=&y2max=&size=large&outputFormat=csv&data[]=Flow&loc[]=FPT&loc[]=VNS&year[]=2025') %>%
+flow_clean <- bind_rows(read_csv(paste0('https://www.cbr.washington.edu/sacramento/data/php/rpt/mg.php?map=1&mgconfig=river&tempUnit=F&avgyear=0&consolidate=1&grid=1&y1min=&y1max=&y2min=&y2max=&size=large&outputFormat=csvSingle&data[]=Flow&loc[]=FPT&loc[]=VNS&year[]=',wy)),
+                        read_csv(paste0('https://www.cbr.washington.edu/sacramento/data/php/rpt/mg.php?map=1&mgconfig=river&tempUnit=F&avgyear=0&consolidate=1&grid=1&y1min=&y1max=&y2min=&y2max=&size=large&outputFormat=csvSingle&data[]=Flow&loc[]=FPT&loc[]=VNS&year[]=',py))) %>%
   clean_names() %>%
-  mutate(year = year(Sys.Date())) %>%
   mutate(date = ymd(paste0(year,'-',mm_dd))) %>%
   filter(!is.na(date)) %>%
-  select(date, VNS = 2, FPT = 3) %>%
-  pivot_longer(names_to = 'station', values_to = 'value', 2:3) %>%
-  mutate(parameter = 'flow') %>%
-  select(1,2,4,3) %>%
+  select(date, station = 3, flow = 7) %>%
   filter(date >= start)
 
 fpt = flow_clean %>%
   filter(station == 'FPT') %>%
   slice_max(order_by = date) %>%
-  pull(value) %>%
+  pull(flow) %>%
   round(0) %>%
   prettyNum(big.mark = ",")
 vns = flow_clean %>%
   filter(station == 'VNS') %>%
   slice_max(order_by = date) %>%
-  pull(value) %>%
+  pull(flow) %>%
   round(0) %>%
   prettyNum(big.mark = ",")
 #stations_flow <- c("FPT", "VNS")

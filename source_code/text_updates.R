@@ -94,6 +94,23 @@ stars_text <- print(paste0("As of ",format(as.Date(stars_date), '%B %d'),
 ##setting language for delta monitoring location
 #####################################################
 
+entry_sampling <- all_sampling %>%
+  filter(grepl('RST', Location)) %>%
+  filter(!is.na(`Date Start`) & !is.na(`Date End`))
+delta_sampling <- all_sampling %>%
+  filter(grepl('Sherwood|Beach', Location))
+exit_sampling <- all_sampling %>%
+  filter(grepl('Chipps', Location))
+
+wr_entry_catch <- if(nrow(entry_sampling) == 0){
+  print('No catch has been reported at Delta Entry RSTs (Tisdale, Knights Landing, Lower Sacramento River) in the past two weeks')
+} else {
+  print(paste0("Total catch of LAD winter run at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River) between ",
+               format(min(all_sampling[1:3, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
+               format(max(all_sampling[1:3, 3, drop = TRUE], na.rm = TRUE), '%b %d'),' is ',sum(all_sampling[1:3,4]) ,' individuals.'))
+}
+
+wr_delta_catch <- 
 wr_delta_catch <- print(paste0("Total catch of LAD winter run at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River) between ",
                         format(min(all_sampling[1:3, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
                         format(max(all_sampling[1:3, 3, drop = TRUE], na.rm = TRUE), '%b %d'),' is ',sum(all_sampling[1:3,4]) ,' individuals.  Total catch at Sacramento Trawl and Beach Seines in the delta between ',
