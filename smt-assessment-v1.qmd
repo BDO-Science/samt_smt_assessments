@@ -62,6 +62,7 @@ cat(narrative_text)
 **Notes**
 
 - Since there are few recent detections of Delta Smelt, estimation of distribution within the Delta is limited. 
+- As mentioned in EDSM reporting, fork length ranges reported for Delta Smelt and Longfin Smelt life stages are defined by the Interagency Ecological Program for permit reporting purposes and are not intended to delineate cohorts or distinguish from hatchery or wild origin. See @tbl-ds-recent-catch caption for fork-length ranges for age groups of Delta smelt. 
 - See [SacPAS SMT Page](https://www.cbr.washington.edu/sacramento/workgroups/delta_smelt.html) for additional details on releases and detection in surveys and salvage.
 - Historical salvage trends can be found at: [SacPAS Salvage Timing](https://www.cbr.washington.edu/sacramento/data/query_salvage_hrt.html)
   
@@ -177,11 +178,11 @@ if (adult_ent_status != "relevant") {
 <u>**Offramp Adult/Onramp Larval and Juvenile Protections** when RVB or SJJ > 12°C</u>
 
 - **RVB temperature (3-day average)**: {RVB_temp}°C as of {format(env_last_date, '%b %d, %Y')}
-- **SJJ temperature (in the future)**:
 "))
 }
 
-# round to nearest 2 decimals only: {paste(sprintf('%.2f', JPF_7d), collapse = ', ')}
+# round to nearest 2 decimals only: {paste(sprintf('%.2f', JPF_7d), collapse = ', ')} 
+#need to add SJJ temp to cutoff
 ```
 
 ```{r, echo = FALSE, eval = adult_ent_status == "relevant", out.width = "85%"}
@@ -200,14 +201,14 @@ if (larval_ent_status != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-**Threshold**: JPF < 0 AND turbidity is ≥ 12 FNU in the south Delta AND PTM modeling indicates the action would avoid ≥ 5% entrainment of Delta smelt population
+**Threshold**: After the onset of spawning, if JPF < 0 cfs AND turbidity is ≥ 12 FNU in the south Delta AND PTM modeling indicates the action would avoid ≥ 5% entrainment of Delta smelt population after 30 days
 
-  - **12-station South Delta Secchi Depth**: The most recent average secchi depth was {sd_secchi_depth}m as of {format(sd_secchi_date, '%b %d, %Y')}
+  - **12-station South Delta Turbidity**: The most recent average turbidity was {sd_turb} FNU as of {format(sd_turb_date, '%b %d, %Y')}
 "))
 }
 ```
 
-#### Evalutation
+#### Evaluation
 
 
 
@@ -289,22 +290,33 @@ ggplot(lfs_wy) +
 #### Real-time Assessment Thresholds
 
 ##### Start of Entrainment Management (Adult Longfin Smelt)
+```{r, echo = FALSE, results='asis'}
+if (first_flush_lfs_status != "relevant") {
+  cat("- Not relevant\n")
+} else {
+  cat(glue("
+**Threshold**: If daily average JPF < 0 cfs AND salvage of adult longfin exceeds 5% of FMWT Index + 1
 
-- Threshold: JPF < 0 cfs AND salvage of adult longfin exceeds 26.8 fish (5% of FMWT Index + 1)
-  - 7-day average JPF: `r round(JPF_1d)` cfs as of `r format(JPF_1d_lastdate, "%b %d, %Y")`
-  - Water year total Age 1+ longfin smelt salvage = 0
+- **Daily average JPF**: {paste(JPF_1d, collapse = ', ')} cfs as of {format(JPF_1d_lastdate, '%b %d, %Y')}
+- **Total LFS salvage**: {paste(lfs_salvage_count, collapse = ', ')} fish, with a cumulative salvage of {paste(lfs_salvage_count, collapse = ', ')}
+"))
+}
+
+# round to nearest 2 decimals only: {paste(sprintf('%.2f', JPF_7d), collapse = ', ')}
+```
+
 
 ##### Adult Longfin Smelt
 
-- Threshold: JPF < 0 cfs AND annual loss is on a trajectory to exceed 5% of the adult population abundance 
-  - 7-day average JPF: `r round(JPF_1d)` cfs as of `r format(JPF_1d_lastdate, "%b %d, %Y")`
+- **Threshold:** JPF < 0 cfs, annual loss is on a trajectory to exceed 5% of the adult population abundance, and reduced exports will reduce entrainment in the south Delta
+  - Daily average JPF: `r round(JPF_1d)` cfs as of `r format(JPF_1d_lastdate, "%b %d, %Y")`
   - Water year total adult longfin smelt salvage = 0
   
 
 ##### Larval/Juvenile Longfin Smelt
 
-- Threshold: JPF < 0 cfs AND population model demonstrates need to reduce entrainment to avoid population decline
-  - 7-day average JPF: `r round(JPF_1d)` cfs as of `r format(JPF_1d_lastdate, "%b %d, %Y")`
+- **Threshold:** JPF < 0 cfs AND population model demonstrates need to reduce entrainment to avoid population decline
+  - Daily average JPF: `r round(JPF_1d)` cfs as of `r format(JPF_1d_lastdate, "%b %d, %Y")`
   
 #### Evaluation
 

@@ -20,10 +20,11 @@ source("smelt_data_extraction.R")
 
 # Actions ---------------------
 first_flush_status = "relevant"
+first_flush_lfs_status = "not relevant"
 adult_ent_status = "relevant"
-larval_ent_status = "not relevant"
+larval_ent_status = "relevant"
 lfs_adult_ent_status = "relevant"
-lfs_larval_ent_status = "not relevant"
+lfs_larval_ent_status = "relevant"
 end_of_season = "not relevant"
 
 # Narrative ----------------------
@@ -33,9 +34,10 @@ end_of_season = "not relevant"
 
 narrative_text <- 
 "- First flush conditions were met on 12/23/25, and the action was implemented on 12/26/25.
+- The First flush action implementation period will end on 1/7/26, then other entrainment management actions will become active.
 - Delta smelt are primarily distributed west of the confluence, in Suisun Marsh
 - No Delta smelt or longfin smelt salvage has been observed this water year
-- Turbidity in the central/south Delta is increasing
+- Turbidity in the central/south Delta is high
 "
 
 # Delta Smelt ---------------------------
@@ -120,9 +122,11 @@ first_last_release_date <- last_release %>% tail(2) %>% head(1) %>% pull(release
 last_release_location <- last_release %>% tail(1) %>% pull(location)
 last_release_count <- last_release %>% tail(1) %>% pull(total_released) %>% sum()
 
-## Secchi depth (currently by email)-------------------------
+## South Delta conditions (turbidity and secchi depth-currently by email)-------------------------
 sd_secchi_depth <- 0.76
 sd_secchi_date <- ymd("2026-05-01")
+sd_turb <- 19.1
+sd_turb_date <- ymd("2025-12-30")
 
 # Longfin Smelt -----------------------
 
