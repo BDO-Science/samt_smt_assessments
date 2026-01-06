@@ -47,29 +47,29 @@ cat(narrative_text)
 - Additional information also available on the [SacPAS SMT page](https://www.cbr.washington.edu/sacramento/workgroups/delta_smelt.html).
 
 
-### Delta Smelt  
+### Delta smelt  
 
 #### Biological
 
-- **Delta Smelt Life Stages:** `r ds_lifestages`
+- **Delta smelt life stages:** `r ds_lifestages`
 
 - **Abundance estimate:** `r paste0(abundance, " (95% CL: ", format(abundance_lcl,big.mark = ","), " to ", format(abundance_ucl,big.mark = ","), ")")` as of the week of `r abundance_date`
-- **Releases:** A total of `r format(total_released, scientific = FALSE, big.mark = ",")` cultured Delta Smelt have been released for WY 2026. The most recent release of `r format(last_release_count, scientific = FALSE, big.mark = ",")` fish occurred in `r format(last_release_location, scientific = FALSE, big.mark = ",")` on `r format(last_release_date, "%b %d, %Y")`. 
-- **Delta Smelt count:** `r ds_adults_count_wy` adult Delta Smelt and `r ds_juveniles_count_wy` juvenile Delta smelt have been detected this water year. See @tbl-ds-recent-catch for recent detections, @fig-ds-map for spatial distribution, and @fig-ds-catch for temporal distribution.
-- **Delta Smelt salvage:** `r ds_salvage_count` Delta Smelt have been salvaged, and the cumulative seasonal salvage is `r ds_cumsalvage`. 
+- **Releases:** A total of `r format(total_released, scientific = FALSE, big.mark = ",")` cultured Delta smelt have been released for WY 2026. The most recent release of `r format(last_release_count, scientific = FALSE, big.mark = ",")` fish occurred in `r format(last_release_location, scientific = FALSE, big.mark = ",")` on `r format(last_release_date, "%b %d, %Y")`. 
+- **Delta smelt count:** `r ds_adults_count_wy` adult Delta smelt and `r ds_juveniles_count_wy` juvenile Delta smelt have been detected this water year. See @tbl-ds-recent-catch for recent detections, @fig-ds-map for spatial distribution, and @fig-ds-catch for temporal distribution.
+- **Delta smelt salvage:** `r ds_salvage_count` Delta smelt have been salvaged, and the cumulative seasonal salvage is `r ds_cumsalvage`. 
 
 
 **Notes**
 
-- Since there are few recent detections of Delta Smelt, estimation of distribution within the Delta is limited. 
-- As mentioned in EDSM reporting, fork length ranges reported for Delta Smelt and Longfin Smelt life stages are defined by the Interagency Ecological Program for permit reporting purposes and are not intended to delineate cohorts or distinguish from hatchery or wild origin. See @tbl-ds-recent-catch caption for fork-length ranges for age groups of Delta smelt. 
+- Since there are few recent detections of Delta smelt, estimation of distribution within the Delta is limited. 
+- As mentioned in EDSM reporting, fork length ranges reported for Delta smelt and longfin smelt life stages are defined by permit reporting purposes and are not intended to delineate cohorts or distinguish from hatchery or wild origin. See @tbl-ds-recent-catch caption for fork-length ranges for age groups of Delta smelt. 
 - See [SacPAS SMT Page](https://www.cbr.washington.edu/sacramento/workgroups/delta_smelt.html) for additional details on releases and detection in surveys and salvage.
 - Historical salvage trends can be found at: [SacPAS Salvage Timing](https://www.cbr.washington.edu/sacramento/data/query_salvage_hrt.html)
   
 
 ```{r, echo = FALSE}
 #| label: "tbl-ds-recent-catch"
-#| tbl-cap: "Delta Smelt Detections in the last 2 weeks. Fork Length > 58mm = Adult, Fork Length 20-58mm = Juvenile, Fork Length < 20mm = Larva."
+#| tbl-cap: "Delta smelt detections in the last 2 weeks. Fork Length > 58mm = Adult, Fork Length 20-58mm = Juvenile, Fork Length < 20mm = Larva."
 
 kable(ds_recent_display)
 ```
@@ -79,7 +79,7 @@ kable(ds_recent_display)
 #| fig-width: 8
 #| fig-height: 7
 #| label: "fig-ds-map"
-#| fig-cap: "Delta Smelt Distribution for WY 2026"
+#| fig-cap: "Delta smelt distribution for WY 2026"
 (map_detections_lj <- ggplot() + 
     geom_sf(data = WW_Delta, color = "darkslategray3") +
     geom_sf(data = R_EDSM_Strata_1718P1, aes(fill = Stratum), alpha = 0.4,inherit.aes = FALSE)+
@@ -109,7 +109,7 @@ kable(ds_recent_display)
 
 ```{r, echo = FALSE, message = FALSE}
 #| label: "tbl-catch-all"
-#| tbl-cap: "Delta Smelt Water Year Totals by Life Stage"
+#| tbl-cap: "Delta smelt water year totals by life stage"
 kable(
   ds_detail %>%
     filter(date > ymd("2025-10-01")) %>% 
@@ -122,7 +122,7 @@ kable(
 
 ```{r, echo = FALSE}
 #| label: "fig-ds-catch"
-#| fig-cap: "Time Series of Delta Smelt Catch, WY 2026"
+#| fig-cap: "Time series of Delta smelt catch, WY 2026"
 ggplot(ds_wy) +
   geom_col(aes(date, total_catch, fill = source)) +
   labs(x = "Date", y = "Total Catch", fill = "Survey") + 
@@ -161,7 +161,7 @@ knitr::include_graphics(here("delta_hydro_files/figure-html/zoi_graph-1.png"))
 #### Real-time Assessment Thresholds
 
 
-##### Adult Delta Smelt
+##### Adult Delta smelt
  
 ```{r, echo = FALSE, results='asis'}
 if (adult_ent_status != "relevant") {
@@ -194,7 +194,7 @@ knitr::include_graphics(here("smelt_figures/freeport_turbidity.png"))
 - Let's link to wind plot on the other SacPAS SMT page. [Wind plot](https://github.com/BDO-Science/smt/blob/main/WindRose_Grace.R)
 -->
 
-##### Larval/Juvenile Delta Smelt
+##### Larval/juvenile Delta smelt
 
 ```{r, echo = FALSE, results='asis'}
 if (larval_ent_status != "relevant") {
@@ -212,20 +212,20 @@ if (larval_ent_status != "relevant") {
 
 
 
-### Longfin Smelt
+### Longfin smelt
 #### Biological
 
-- **Longfin Smelt Life Stages:** `r lfs_lifestages`
+- **Longfin smelt life stages:** `r lfs_lifestages`
 
-- **Longfin Smelt count:** `r lfs_adults_count_wy` adult, `r lfs_juveniles_count_wy` juvenile, and `r lfs_larvae_count_wy` larval Longfin smelt have been detected this water year. See @tbl-lfs-recent-catch for recent detections, @fig-lfs-map for spatial distribution, and @fig-lfs-catch for temporal distribution.
-- **Longfin Smelt salvage:** `r lfs_salvage_count` Longfin Smelt have been salvaged, and the cumulative seasonal salvage is `r lfs_cumsalvage`. 
+- **Longfin smelt count:** `r lfs_adults_count_wy` adult, `r lfs_juveniles_count_wy` juvenile, and `r lfs_larvae_count_wy` larval longfin smelt have been detected this water year. See @tbl-lfs-recent-catch for recent detections, @fig-lfs-map for spatial distribution, and @fig-lfs-catch for temporal distribution.
+- **Longfin smelt salvage:** `r lfs_salvage_count` longfin smelt have been salvaged, and the cumulative seasonal salvage is `r lfs_cumsalvage`. 
 <!--
 - Include plot of cumulative longfin salvage? [Salvage plot code](https://github.com/BDO-Science/smt/tree/main/daily_longfin_salvage)
 -->
 
 ```{r, echo = FALSE}
 #| label: "tbl-lfs-recent-catch"
-#| tbl-cap: "Longfin Smelt Detections in the last 2 weeks. Fork Length > 84mm = Adult, Fork Length 20-84mm = Juvenile, Fork Length < 20mm = Larva."
+#| tbl-cap: "Longfin smelt detections in the last 2 weeks. Fork Length > 84mm = Adult, Fork Length 20-84mm = Juvenile, Fork Length < 20mm = Larva."
 
 kable(lfs_recent_display)
 ```
@@ -264,7 +264,7 @@ kable(lfs_recent_display)
 
 ```{r, echo = FALSE, message = FALSE}
 #| label: "tbl-lfs-catch-all"
-#| tbl-cap: "Longfin Smelt Water Year Totals by Life Stage"
+#| tbl-cap: "Longfin smelt water year totals by life stage"
 kable(
   lfs_detail %>% #could also do lfs_recent, but this is for wy totals
     filter(date > ymd("2025-10-01"),
@@ -278,7 +278,7 @@ kable(
 
 ```{r, echo = FALSE}
 #| label: "fig-lfs-catch"
-#| fig-cap: "Time Series of Longfin Smelt Catch, WY 2026"
+#| fig-cap: "Time series of longfin smelt catch, WY 2026"
 ggplot(lfs_wy) +
   geom_col(aes(date, total_catch, fill = source)) +
   labs(x = "Date", y = "Total Catch", fill = "Survey") + 
@@ -306,21 +306,21 @@ if (first_flush_lfs_status != "relevant") {
 ```
 
 
-##### Adult Longfin Smelt
+##### Adult longfin smelt
 
 - **Threshold:** JPF < 0 cfs, annual loss is on a trajectory to exceed 5% of the adult population abundance, and reduced exports will reduce entrainment in the south Delta
   - Daily average JPF: `r round(JPF_1d)` cfs as of `r format(JPF_1d_lastdate, "%b %d, %Y")`
   - Water year total adult longfin smelt salvage = 0
   
 
-##### Larval/Juvenile Longfin Smelt
+##### Larval/juvenile longfin smelt
 
 - **Threshold:** JPF < 0 cfs AND population model demonstrates need to reduce entrainment to avoid population decline
   - Daily average JPF: `r round(JPF_1d)` cfs as of `r format(JPF_1d_lastdate, "%b %d, %Y")`
   
 #### Evaluation
 
-### End of Smelt OMR Management
+### End of smelt Entrainment Management
 ```{r, echo = FALSE, results='asis'}
 if (end_of_season != "relevant") {
   cat("- Not relevant\n")
