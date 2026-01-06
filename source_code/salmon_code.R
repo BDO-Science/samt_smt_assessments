@@ -239,52 +239,52 @@ perc_id_route <- scales::ordinal(round(ecdf_id_route(stars_table[16,5])*100,0))
 ####pulling most up to date water year type
 ####based on 75% exceedance
 
-url <- 'https://cdec.water.ca.gov/reportapp/javareports?name=WSI'
-
-page <- read_html(url)
-
-pre_text <- page %>%
-  html_element("pre") %>%
-  html_text()
-
-lines <- str_split(pre_text, "\n")[[1]]
-
-sac_valley_start <- which(str_detect(lines, "SACRAMENTO VALLEY WATER"))[1]
-sac_valley_lines <- lines[sac_valley_start:(sac_valley_start + 9)]
-sac_valley_data <- sac_valley_lines[str_detect(sac_valley_lines, "Dec|Jan|Feb|Mar|Apr|May")]
-sac_table <- read.table(text = sac_valley_data,
-                        fill = TRUE,
-                        col.names = c('Mon', 'Day', 'Year', '99_perc', '90_perc', 
-                                      '75_perc', '50_perc', '25_perc', '10_perc')) %>%
-  clean_names() %>%
-  mutate(date = mdy(paste0(mon,day,year))) %>%
-  select(10,6) %>%
-  mutate(type = case_when(x75_perc >= 9.2 ~ 'W',
-                          x75_perc > 7.8 ~ 'AN',
-                          x75_perc > 6.5 ~ 'BN',
-                          x75_perc > 5.4 ~ 'D',
-                          x75_perc <= 5.4 ~ 'C'),
-         month = month(date),
-         basin = 'sac')
-
-sj_valley_start <- which(str_detect(lines, "SAN JOAQUIN VALLEY WATER"))[1]
-sj_valley_lines <- lines[sj_valley_start:(sj_valley_start + 9)]
-sj_valley_data <- sj_valley_lines[str_detect(sj_valley_lines, "Dec|Jan|Feb|Mar|Apr|May")]
-sj_table <- read.table(text = sj_valley_data,
-                       fill = TRUE,
-                       col.names = c('Mon', 'Day', 'Year', '99_perc', '90_perc', 
-                                     '75_perc', '50_perc', '25_perc', '10_perc')) %>%
-  clean_names() %>%
-  mutate(date = mdy(paste0(mon,day,year))) %>%
-  select(10,6) %>%
-  mutate(type = case_when(x75_perc >= 3.8 ~ 'W',
-                          x75_perc > 3.1 ~ 'AN',
-                          x75_perc > 2.5 ~ 'BN',
-                          x75_perc > 2.1 ~ 'D',
-                          x75_perc <= 2.1 ~ 'C'),
-         month = month(date),
-         basin = 'sj')
-wy_types_all <- bind_rows(sac_table, sj_table)
+# url <- 'https://cdec.water.ca.gov/reportapp/javareports?name=WSI'
+# 
+# page <- read_html(url)
+# 
+# pre_text <- page %>%
+#   html_element("pre") %>%
+#   html_text()
+# 
+# lines <- str_split(pre_text, "\n")[[1]]
+# 
+# sac_valley_start <- which(str_detect(lines, "SACRAMENTO VALLEY WATER"))[1]
+# sac_valley_lines <- lines[sac_valley_start:(sac_valley_start + 9)]
+# sac_valley_data <- sac_valley_lines[str_detect(sac_valley_lines, "Dec|Jan|Feb|Mar|Apr|May")]
+# sac_table <- read.table(text = sac_valley_data,
+#                         fill = TRUE,
+#                         col.names = c('Mon', 'Day', 'Year', '99_perc', '90_perc', 
+#                                       '75_perc', '50_perc', '25_perc', '10_perc')) %>%
+#   clean_names() %>%
+#   mutate(date = mdy(paste0(mon,day,year))) %>%
+#   select(10,6) %>%
+#   mutate(type = case_when(x75_perc >= 9.2 ~ 'W',
+#                           x75_perc > 7.8 ~ 'AN',
+#                           x75_perc > 6.5 ~ 'BN',
+#                           x75_perc > 5.4 ~ 'D',
+#                           x75_perc <= 5.4 ~ 'C'),
+#          month = month(date),
+#          basin = 'sac')
+# 
+# sj_valley_start <- which(str_detect(lines, "SAN JOAQUIN VALLEY WATER"))[1]
+# sj_valley_lines <- lines[sj_valley_start:(sj_valley_start + 9)]
+# sj_valley_data <- sj_valley_lines[str_detect(sj_valley_lines, "Dec|Jan|Feb|Mar|Apr|May")]
+# sj_table <- read.table(text = sj_valley_data,
+#                        fill = TRUE,
+#                        col.names = c('Mon', 'Day', 'Year', '99_perc', '90_perc', 
+#                                      '75_perc', '50_perc', '25_perc', '10_perc')) %>%
+#   clean_names() %>%
+#   mutate(date = mdy(paste0(mon,day,year))) %>%
+#   select(10,6) %>%
+#   mutate(type = case_when(x75_perc >= 3.8 ~ 'W',
+#                           x75_perc > 3.1 ~ 'AN',
+#                           x75_perc > 2.5 ~ 'BN',
+#                           x75_perc > 2.1 ~ 'D',
+#                           x75_perc <= 2.1 ~ 'C'),
+#          month = month(date),
+#          basin = 'sj')
+# wy_types_all <- bind_rows(sac_table, sj_table)
 
 ###Steelhead JPE data
 surv <- read_csv(here(project, 'input_data/sh_hatchery_survival.csv'))
@@ -293,13 +293,14 @@ releases <- read_csv(here(project, 'input_data/wy_2026_sh_releases.csv')) %>%
   mutate(date = mdy(date),
          basin = if_else(hatchery == 'MKFH', 'sj', 'sac'),
          month = month(date)) %>%
-  left_join(wy_types_all, by = c('month', 'basin')) %>%
-  mutate(type = if_else(is.na(type), lead(type, 1), type)) %>%
+  #left_join(wy_types_all, by = c('month', 'basin')) %>%
+  #mutate(type = if_else(is.na(type), lead(type, 1), type)) %>%
+  mutate(type = 'BN') %>%
   left_join(surv, by = c('hatchery', 'type' = 'wy_type')) %>%
   mutate(jpe = round(stocked * survival,0))
 
 release_table <- releases %>%
-  select(1:4, 10:11)
+  select(1:4, 8:9)
 
 new_column_names <- c('Hatchery', 'Date of Release', 'Mean Fork Length (mm)', 'Number Released', 'Estimated Survival', 'Juvenile Production Estimate')
 
