@@ -66,7 +66,7 @@ knitr::kable(wr_natural_timing, align = "lrrrrrr")
 
 *Red Bluff Diversion Dam Passage Estimate* - As of `r format(wr_rbdd_date, '%b %d')` estimated passage to date of LAD winter run at Red Bluff Diversion is approximately `r wr_passage` million fish. * *Note that outmigration timing overlaps with spring run migrating fish, and true winter-run abundance likely differs from these estimates.*
 
-*Delta Monitoring* - `r wr_delta_catch`
+*Delta Monitoring* - `r wr_entry_catch` `r wr_delta_catch` `r wr_exit_catch`
 
 #### Annual Loss
 
@@ -165,7 +165,7 @@ knitr::kable(sh_natural_timing, align = "lrrrrrr")
 
 ```
 
-*Delta Monitoring* - `r sh_delta_catch`
+*Delta Monitoring* - `r sh_entry_catch` `r sh_delta_catch` `r sh_exit_catch`
 
 #### Annual Loss
 
@@ -221,7 +221,7 @@ knitr::kable(sr_natural_timing, align = "lrrrrrr")
 
 *Red Bluff Diversion Dam Passage Estimate* - As of `r format(sr_rbdd_date, '%b %d')` estimated passage to date of LAD spring run at Red Bluff Diversion is approximately `r sr_passage` million fish. * *Note that outmigration timing overlaps with winter run and fall run outmigration, and true spring run abundance likely differs from these estimates.*
 
-*Delta Monitoring*- `r sr_delta_catch`
+*Delta Monitoring*- `r sr_entry_catch` `r sr_delta_catch` `r sr_exit_catch`
 
 #### Surrogate Releases
 A total of `r yearling` yearling surrogate fish have been released across `r nrow(subset(sr_surrogate_table, Type == 'Yearling'))` releases and a total of `r yoy` young-of-year surrogate fish have been released across `r nrow(subset(sr_surrogate_table, Type == 'Young-of-year'))` releases.  See details in table below.

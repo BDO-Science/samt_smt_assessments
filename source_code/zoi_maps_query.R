@@ -26,7 +26,7 @@ flow_thresholds_all <- expand.grid(hydrology = c('lo', 'med','hi'),
                                river = c('Sacramento River', 'San Joaquin River')) %>%
   arrange(hydrology) %>%
   mutate(min = c(0,0,13416,1984,24726,4097),
-         max = c(13415,1983,24725,4096,87222,61005)) %>%
+         max = c(13415,1983,24725,4096,300000,61005)) %>%
   mutate(actuals = if_else(river == 'Sacramento River', sac, sjr)) %>%
   mutate(filter_actuals = if_else(actuals >= min & actuals <= max, 1, 0)) 
 
