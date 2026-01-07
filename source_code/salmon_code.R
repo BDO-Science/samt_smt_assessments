@@ -12,15 +12,14 @@ season_start <- ymd(paste0(wy-1,'-10-01'))
 season_end <- ymd(paste0(wy,'-06-30'))
 jpe <- NA
 livingston_jpe <- NA
-battle_jpe <- NA
 wr_loss_threshold <- 0.01
 wr_hatch_loss_threshold <- 0.01
 sh_hatch_loss_threshold <- 0.01
 sr_surrogate_threshold <- 0.01
 
-##########################################
-#pull in latest salmon and steelhead files
-##########################################
+#########################################################
+#pull in latest salmon and steelhead files from CDFW ftp
+#########################################################
 
 # ###CDFW method
 # #isolating csv files on CDFW ftp site
@@ -64,14 +63,18 @@ sr_surrogate_threshold <- 0.01
 #   steelhead_raw
 # }
 
-###SacPAS table
-loss_summary_url <- paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,
-                           '/LossUnclip_WY_summary.html')
+#########################################################
+#pull in latest salmon and steelhead loss from SacPAS
+#########################################################
+
+loss_summary_url <- paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,'/Loss_WY_summary.html')
 loss_summary <- read_html(loss_summary_url) %>% 
   html_nodes("table") %>%
   html_table(fill = T) 
 loss_summary_table <- loss_summary[[1]] %>%
   clean_names()
+
+
 ###########################################
 #summarize data for report and graphs
 ###########################################
@@ -92,29 +95,39 @@ wr_7d <- loss_summary_table %>%
   select(dna_winter_run_chinook) %>%
   slice(1) %>%
   pull()
-#hatchery winter-run
 
 wr_hatch <- read_csv('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2026/cwt_winter_releases.csv') %>%
   clean_names() %>%
   mutate(wYear = get_fy(as.Date(release_start), opt_fy_start = '10-01')) %>%
   filter(wYear == wy) %>%
   mutate(loss = ifelse(is.na(loss), 0, loss))
-
-liv_loss <- wr_hatch %>%
-  filter(grepl('livingston', hatchery, ignore.case = TRUE)) %>%
-  summarize(loss = sum(loss)) %>%
-  pull()
+# 
+# liv_loss <- wr_hatch %>%
+#   filter(grepl('livingston', hatchery, ignore.case = TRUE)) %>%
+#   summarize(loss = sum(loss)) %>%
+#   pull()
 
 # batt_loss <- wr_hatch %>%
 #   filter(grepl('coleman', hatchery, ignore.case = TRUE)) %>%
 #   summarize(loss = sum(loss)) %>%
 #   pull()
 
-liv_perc <- if(is.na(liv_loss/(livingston_jpe * wr_hatch_loss_threshold))) {
-  print('0%')
-} else {
-  paste0(round((liv_loss/(livingston_jpe*wr_hatch_loss_threshold))*100,2),'%')
-}
+#hatchery winter-run
+#just Livingston fish in Action 5
+wr_hatch_loss <- loss_summary_table %>%
+  select(lsnfh_hatchery_cwt_winter_run_chinook) %>%
+  slice(3) %>%
+  pull()
+wr_hatch_perc <- loss_summary_table %>%
+  select(lsnfh_hatchery_cwt_winter_run_chinook) %>%
+  slice(4) %>%
+  mutate(lsnfh_hatchery_cwt_winter_run_chinook = as.character(lsnfh_hatchery_cwt_winter_run_chinook)) %>%
+  replace(is.na(.), "0.00%") %>%
+  pull()
+wr_hatch_7d <- loss_summary_table %>%
+  select(lsnfh_hatchery_cwt_winter_run_chinook) %>%
+  slice(1) %>%
+  pull()
 
 # batt_perc <- if(is.na(batt_loss/(battle_jpe * 0.0017))) {
 #   print('0%')
@@ -194,6 +207,7 @@ salvage_sh <- sh_natural_timing[1,7] %>%
 #######################################
 
 ####pulling most recent STARs data
+####this is for summarizing data in text
 stars_url <- paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,'/samt_stars.html')
 
 stars <- read_html(stars_url) %>% 
@@ -286,7 +300,7 @@ sj_table <- read.table(text = sj_valley_data,
          basin = 'sj')
 wy_types_all <- bind_rows(sac_table, sj_table)
 
-###Steelhead JPE data
+###Steelhead JPE data calculation
 surv <- read_csv(here(project, 'input_data/sh_hatchery_survival.csv'))
 
 releases <- read_csv(here(project, 'input_data/wy_2026_sh_releases.csv')) %>%
@@ -312,17 +326,22 @@ release_table_print <- release_table %>%
          jpe = prettyNum(jpe, big.mark = ","))
 
 colnames(release_table_print) <- new_column_names
-###pulling in clippped steelhead loss
-sh_clipped_url <- paste0('https://www.cbr.washington.edu/sacramento/data/php/rpt/juv_loss_detail.php?sc=1&outputFormat=csv&year='
-                         ,wy,'&species=2%3At&dnaOnly=no&age=no')
-sh_clipped_loss <- read_csv(sh_clipped_url)
+
 ###numbers for text
 sh_stocked <- sum(release_table$stocked) %>% prettyNum(big.mark = ",")
 sh_jpe <- sum(release_table$jpe) %>% prettyNum(big.mark = ",")
 sh_survival <- paste0(round(mean(release_table$survival)*100,0),'%')
 sh_clipped_threshold <- round(sum(release_table$jpe) * 0.01,0)
 n_releases <- nrow(release_table)
-sh_clipped_loss_total <- sum(sh_clipped_loss$Loss, na.rm = TRUE)
+
+sh_clipped_loss_total <- loss_summary_table %>%
+  select(hatchery_steelhead) %>%
+  slice(3) %>%
+  pull()
+sh_7d <- loss_summary_table %>%
+  select(hatchery_steelhead) %>%
+  slice(1) %>%
+  pull()
 sh_clipped_perc_threshold <- paste0(round((sh_clipped_loss_total/(sum(release_table$jpe) * .01))*100,2),'%')
 
 

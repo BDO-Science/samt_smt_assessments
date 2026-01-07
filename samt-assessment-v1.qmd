@@ -5,10 +5,10 @@ format:
     standalone: false
     title-block-style: none
   pdf:
-    fig-dpi: 1000
+    fig-dpi: 750
     fig-pos: "H"
   docx:
-    fig-dpi: 1000
+    fig-dpi: 750
 engine: knitr
 ---
 
@@ -70,7 +70,7 @@ knitr::kable(wr_natural_timing, align = "lrrrrrr")
 
 #### Annual Loss
 
-`r wr_threshold` `r wr_annual_text`
+`r wr_threshold` As of `r format(Sys.Date()-1, '%B %d')`, cumulative loss of genetically confirmed winter-run is `r wr_loss` or `r wr_perc` of the annual loss threshold. Cumulative loss in the past 7 days has been `r wr_7d`.
 
 ```{r}
 #| label: fig-wr_loss
@@ -82,7 +82,7 @@ knitr::kable(wr_natural_timing, align = "lrrrrrr")
 #| fig-height: 8
 #| out-width: "75%"
 
-image_read('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2026/LossUnclip_1_DNAWinter_WY.png')
+image_read(paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,'/LossUnclip_1_DNAWinter_WY.png'))
 
 ```
 
@@ -146,7 +146,7 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 
 #### Annual Loss
 
-`r wr_hatch_threshold` `r wr_hatchery_loss`
+`r wr_hatchery_loss`
 
 ### Natural-origin Central Valley Steelhead
 
@@ -169,26 +169,26 @@ knitr::kable(sh_natural_timing, align = "lrrrrrr")
 
 #### Annual Loss
 
-`r sh_annual_text`
+As of `r format(Sys.Date()-1, '%B %d')`, cumulative loss of unclipped steelhead is `r sh_loss` or `r sh_perc` of the incidental take limit in the NMFS Biological Opinion. Cumulative loss in the past 7 days has been `r sh_7d`.
 
 ```{r}
 #| label: fig-sh_loss
 #| echo: false
 #| message: false
 #| warning: false
-#| fig-cap: Cumulative loss of natural-origin and hatchery steelhead for WY 2026.
+#| fig-cap: Cumulative loss of natural-origin steelhead for WY 2026.
 #| fig-width: 10
 #| fig-height: 8
 #| out-width: "75%"
 
-image_read('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2026/LossUnclip_2_Stlhd_WY.png')
+image_read(paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,'/LossUnclip_2_Stlhd_WY.png'))
 ```
 
 ### Hatchery-origin Central Valley Steelhead
 
 #### Surrogate Releases
 
-There have been a total of `r n_releases` releases totaling `r sh_stocked` steelhead  in Water Year 2026.  JPE for the hatchery releases as of today is `r sh_jpe` based on estimated survivals using forecasted water year types (see details in table below). The annual loss threshold, equal to 1% of the JPE, is currently `r sh_clipped_threshold`, but is subject to change with additional steelhead releases.  Total loss of hatchery-origin steelhead is `r sh_clipped_loss_total` or `r sh_clipped_perc_threshold` of the threshold.  *Note that hatchery origin of salvaged fish can not be determined at this time and salvage is based on the assumption of similar routing and survival probabilities of individual hatchery releases.
+There have been a total of `r n_releases` releases totaling `r sh_stocked` steelhead  in Water Year 2026.  JPE for the hatchery releases as of today is `r sh_jpe` based on estimated survivals using forecasted water year types (see details in table below). The annual loss threshold, equal to 1% of the JPE, is currently `r sh_clipped_threshold`, but is subject to change with additional steelhead releases.  
 
 ```{r}
 #| label: tbl-sh_clipped_table
@@ -200,6 +200,22 @@ There have been a total of `r n_releases` releases totaling `r sh_stocked` steel
 knitr::kable(release_table_print, align = "lrrrrr")
 
 ```
+
+Total loss of hatchery-origin steelhead is `r sh_clipped_loss_total` or `r sh_clipped_perc_threshold` of the threshold.  *Note that hatchery origin of salvaged fish can not be determined at this time and salvage is based on the assumption of similar routing and survival probabilities of individual hatchery releases.
+
+```{r}
+#| label: fig-sh_hatch_loss
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: Cumulative loss of hatchery steelhead for WY 2026.
+#| fig-width: 10
+#| fig-height: 8
+#| out-width: "75%"
+
+image_read(paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,'/LossClipped_2_StlhdHatch_WY.png'))
+```
+
 
 ### Spring-run
 

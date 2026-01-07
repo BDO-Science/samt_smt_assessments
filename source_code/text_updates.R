@@ -16,38 +16,24 @@ early_season_text <- if(Sys.Date() < as.Date(paste0(wy-1,"-11-01")) | Sys.Date()
 #####################################################
 ##setting language for annual loss thresholds
 #####################################################
-wr_annual_text <- print(paste0('As of ',format(Sys.Date()-1, '%B %d'),' cumulative loss of genetically confirmed winter-run is ', wr_loss,
-                               ' or ',wr_perc,' of the annual loss threshold. Cumulative loss in the past 7 days has been ',
-                               wr_7d, '.'))
-sh_annual_text <- print(paste0('As of ',format(Sys.Date()-1, '%B %d'),' cumulative loss of unclipped steelhead is ', sh_loss,
-                               ' or ',sh_perc,' of the annual loss threshold. Cumulative loss in the past 7 days has been ',
-                               sh_7d, '.'))
-
 
 wr_jpe <- if(is.na(jpe)) {
   print('The Juvenile Production Estimate for winter-run has not been established for the current water year.')
 } else {
-  print(paste0('The Juvenile Production Estimate for winter-run is ',jpe,' for the current water year'))
+  print(paste0('The Juvenile Production Estimate for winter-run is ',jpe,' for the current water year.'))
 }
 
 wr_hatch_jpe <- if(is.na(livingston_jpe)) {
   print('The Juvenile Production Estimate for Livingstone Stone hatchery winter-run has not been established for the current water year.')
 } else {
   print(paste0('The Juvenile Production Estimate for hatchery winter-run is '
-         ,livingston_jpe,' for Livingston Stone releases'))
+         ,livingston_jpe,' for Livingston Stone releases.'))
 }
 
 wr_threshold <- if(is.na(jpe)) {
-  print('The Juvenile Production Estimate has not been established for the current water year so thresholds are absent or are included from the previous water year.')
+  print('Thresholds are included from the previous water year.')
 } else {
-  print(paste0('The annual Loss threshold for natural winter-run is 0.5% of the jpe or ', round(jpe*wr_loss_threshold,2),'fish.'))
-}
-
-wr_hatch_threshold <- if(is.na(livingston_jpe)) {
-  print('The Juvenile Production Estimate has not been established for the current water year so thresholds are absent or are included from the previous water year.')
-} else {
-  print(paste0('The annual Loss threshold for Livingston Stone hatchery winter-run releases is 1% of the jpe or ', 
-               round(livingston_jpe*wr_hatch_loss_threshold,2), 'fish.'))
+  print(paste0('The annual Loss threshold for natural winter-run is 1% of the jpe or ', round(jpe*wr_loss_threshold,2),'fish.'))
 }
   
 wr_hatchery_releases <- if(nrow(wr_hatch) == 0) {
@@ -60,7 +46,8 @@ wr_hatchery_loss <- if(nrow(wr_hatch) == 0) {
   print('To date, no loss has occurred as no hatchery winter-run have been released.')
 } else {
     print(paste0('As of ',format(Sys.Date(), '%B %d'), ' cumulative loss of Livingston Stone hatchery fish is ', 
-                 liv_loss, ' or ', liv_perc, ' of the annual loss threshold.'))
+                 wr_hatch_loss, ' or ', wr_hatch_perc, 
+                 ' of the annual loss threshold. Cumulative loss in the past 7 days has been ', wr_hatch_7d, '.'))
   }
 
 
