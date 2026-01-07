@@ -14,7 +14,7 @@ source("smelt_data_extraction.R")
 # 1. Upload new data files that are not online already (SLS, 20mm, Bay Study, EDSM, abundance estimates - add the newest estimates (sheet 1) and dates (sheet 2))
 # 2. Edit which actions are relevant 
 # 3. Edit narrative text
-# 4. Edit secchi depth if relevant
+# 4. Edit turbidity and secchi depth if relevant
 # 5. Make edits to salvage when salvage starts (see smelt_data_extraction.R Salvage section and Salvage sections below)
 # 6. Need to render pdf separately from the html to get both to be updated (option in render in quarto doc)
 

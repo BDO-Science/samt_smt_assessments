@@ -158,9 +158,14 @@ weather_antioch <- make_location_summary(38.0169, -121.8138, "Antioch, CA")
 data_raw <- here("data_raw/smelt")
 
 ## Coordinates, station crosswalk ------------------------
-# CDFW stations with lat/lon and region
+# CDFW stations with lat/lon and region, added stratum
 station_region <- read_csv(here("data_clean/station_region_crosswalk.csv")) %>%
   select(Station, Latitude, Longitude, Region) %>%
+  mutate(Station = as.character(Station)) %>%
+  clean_names()
+
+station_stratum <- read_csv(here("data_clean/station_stratum_crosswalk.csv")) %>%
+  select(Station, Stratum) %>%
   mutate(Station = as.character(Station)) %>%
   clean_names()
 
@@ -279,8 +284,9 @@ sfbs_data <- sfbs_data_raw %>%
            as.numeric()) %>% 
   filter(!is.na(length)) %>%
   left_join(station_region, by = "station")%>%
+  left_join(station_stratum, by = "station")%>%
   mutate(source = "baystudy") %>%
-  select(source, station, date, catch=frequency, fork_length = length, latitude, longitude, region)
+  select(source, station, date, catch=frequency, fork_length = length, latitude, longitude, region, stratum)
 
 # SLS and 20mm notes
 # - not individual fish, but instead grouped with mean, min, max
@@ -311,11 +317,12 @@ sls_data <- sls_data %>% filter(!is.na(Date)) %>%
   rename(station = sls_station) %>% 
   mutate(station = as.character(station)) %>%
   left_join(station_region, by = "station")%>%
+  left_join(station_stratum, by = "station")%>%
   mutate(source = "sls",
          life_stage = "Larva",
          smelt_catch = as.numeric(smelt_catch),
          mean_length = as.numeric(mean_length))%>%
-  select(source, station, date, catch = smelt_catch, species, fork_length = mean_length, life_stage, latitude, longitude, region)
+  select(source, station, date, catch = smelt_catch, species, fork_length = mean_length, life_stage, latitude, longitude, region, stratum)
 
 sls_ds <- sls_data %>% filter(species == "Delta Smelt")
 sls_lfs <- sls_data %>% filter(species == "Longfin Smelt")
@@ -377,7 +384,7 @@ ds_detail <- bind_rows(
   edsm_ds %>% select(source, date, catch, mark_code, fork_length, latitude, longitude, region, stratum),
   beachsn %>% select(source, date, catch, fork_length, latitude, longitude, region),
   twmm_ds %>% select(source, date, catch, fork_length, latitude, longitude, region),
-  sls_ds %>% select(source, date, catch, fork_length, latitude, longitude, region),
+  sls_ds %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   salvage_ds_data %>% select(source, date, catch, fork_length, latitude, longitude, region)) %>%
   filter(!is.na(catch),
          !is.na(latitude)) %>%
@@ -407,9 +414,9 @@ lfs_latlon <- bind_rows(
 lfs_detail <- bind_rows(
   edsm_lfs %>% select(source, date, catch, mark_code, fork_length, latitude, longitude, region, stratum),
   twmm_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region),
-  sls_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region),
+  sls_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   chipps_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
-  sfbs_data %>% select(source, date, catch, fork_length, latitude, longitude, region),
+  sfbs_data %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   salvage_lfs_data %>% select(source, date, catch, fork_length, latitude, longitude, region)) %>%
   filter(!is.na(catch),
          !is.na(latitude)) %>%
