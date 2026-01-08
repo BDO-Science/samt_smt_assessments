@@ -70,6 +70,7 @@ cat(narrative_text)
 ```{r, echo = FALSE}
 #| label: "tbl-ds-recent-catch"
 #| tbl-cap: "Delta smelt detections in the last 2 weeks. Fork Length > 58mm = Adult, Fork Length 20-58mm = Juvenile, Fork Length < 20mm = Larva."
+#| warning: false
 
 kable(ds_recent_display)
 ```
@@ -110,6 +111,7 @@ kable(ds_recent_display)
 ```{r, echo = FALSE, message = FALSE}
 #| label: "tbl-catch-all"
 #| tbl-cap: "Delta smelt water year totals by life stage"
+#| warning: false
 kable(
   ds_detail %>%
     filter(date > ymd("2025-10-01")) %>% 
@@ -226,6 +228,7 @@ if (larval_ent_status != "relevant") {
 ```{r, echo = FALSE}
 #| label: "tbl-lfs-recent-catch"
 #| tbl-cap: "Longfin smelt detections in the last 2 weeks. Fork Length > 84mm = Adult, Fork Length 20-84mm = Juvenile, Fork Length < 20mm = Larva."
+#| warning: false
 
 kable(lfs_recent_display)
 ```
@@ -265,6 +268,7 @@ kable(lfs_recent_display)
 ```{r, echo = FALSE, message = FALSE}
 #| label: "tbl-lfs-catch-all"
 #| tbl-cap: "Longfin smelt water year totals by life stage"
+#| warning: false
 kable(
   lfs_detail %>% #could also do lfs_recent, but this is for wy totals
     filter(date > ymd("2025-10-01"),

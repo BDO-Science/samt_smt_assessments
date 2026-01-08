@@ -33,7 +33,7 @@ end_of_season = "not relevant"
 # - Summary of salvage and expectations of salvage
 
 narrative_text <- 
-"- First flush conditions were met on 12/23/25, and the action was implemented on 12/26/25.
+"- First flush conditions were met on 12/23/25, and the action was implemented on 12/25/25.
 - The First flush action implementation period will end on 1/7/26, then other entrainment management actions will become active.
 - Delta smelt are primarily distributed west of the confluence, in Suisun Marsh
 - No Delta smelt or longfin smelt salvage has been observed this water year
