@@ -80,6 +80,7 @@ kable(ds_recent_display)
 #| fig-width: 8
 #| fig-height: 7
 #| label: "fig-ds-map"
+#| fig-alt: "Map showing catch location and relative count of Delta smelt captured across different regions in WY2026"
 #| fig-cap: "Delta smelt distribution for WY 2026"
 (map_detections_lj <- ggplot() + 
     geom_sf(data = WW_Delta, color = "darkslategray3") +
@@ -125,6 +126,7 @@ kable(
 ```{r, echo = FALSE}
 #| label: "fig-ds-catch"
 #| fig-cap: "Time series of Delta smelt catch, WY 2026"
+#| fig-alt: "Column chart showing total catch of Delta smelt between Oct 1 and current day for multiple surveys."
 ggplot(ds_wy) +
   geom_col(aes(date, total_catch, fill = source)) +
   labs(x = "Date", y = "Total Catch", fill = "Survey") + 
@@ -149,12 +151,14 @@ if (first_flush_status != "relevant") {
 ```
 
 ```{r, echo = FALSE, eval = first_flush_status == "relevant", out.width = "85%"}
+#| fig-alt: "Line graph showing average flow at Freeport on Y1 and average turbidity on Y2 for the previous 14 days."
 knitr::include_graphics(here("smelt_figures/freeport_flow.png"))
 ```
 
 ####  Zone of Influence Analysis
 
 ```{r, echo = FALSE, eval = first_flush_status == "relevant", out.width = "100%"}
+#| fig-alt: "Map of the Delta with colored contours indicating extent of hydrodynamic footprint at different OMRI scenarios; figure on the left shows results for current flow conditions, and figure on the right shows results for forecasted flow conditions"
 knitr::include_graphics(here("delta_hydro_files/figure-html/zoi_graph-1.png"))
 ```
 
@@ -188,6 +192,7 @@ if (adult_ent_status != "relevant") {
 ```
 
 ```{r, echo = FALSE, eval = adult_ent_status == "relevant", out.width = "85%"}
+#| fig-alt: "Line graph showing daily average turbidity over the last 14 days at 6 stations, represented by different line colors and symbols."
 knitr::include_graphics(here("smelt_figures/freeport_turbidity.png"))
 ```
 
@@ -237,6 +242,7 @@ kable(lfs_recent_display)
 #| fig-width: 8
 #| fig-height: 7
 #| label: "fig-lfs-map"
+#| fig-alt: "Map showing catch location and relative count oflongfin smelt captured across different regions in WY2026"
 #| fig-cap: "Longfin Smelt Distribution for WY 2026"
 (map_detections_lj <- ggplot() + 
     geom_sf(data = WW_Delta, color = "darkslategray3") +
@@ -282,6 +288,7 @@ kable(
 
 ```{r, echo = FALSE}
 #| label: "fig-lfs-catch"
+#| fig-alt: "Column chart showing total catch of longfin smelt between Oct 1 and current day for multiple surveys."
 #| fig-cap: "Time series of longfin smelt catch, WY 2026"
 ggplot(lfs_wy) +
   geom_col(aes(date, total_catch, fill = source)) +
@@ -338,6 +345,7 @@ if (end_of_season != "relevant") {
 ```
 
 ```{r, echo = FALSE, eval = end_of_season == "relevant", out.width = "85%"}
+#| fig-alt: "Line chart showing water temperature at Clifton Court over the last 14 days, with a horizontal dashed line indicating the temperature threshold."
 knitr::include_graphics(here("smelt_figures/clifton_court_temp.png"))
 ```
 
