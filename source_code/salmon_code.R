@@ -10,8 +10,9 @@ by <- wy-1
 url <- 'https://filelib.wildlife.ca.gov/Public/salvage/Salmon%20Monitoring%20Team%20and%20Sturgeon/' #site with salvage files
 season_start <- ymd(paste0(wy-1,'-10-01'))
 season_end <- ymd(paste0(wy,'-06-30'))
-jpe <- NA
-livingston_jpe <- NA
+jpe <- 1057452
+livingston_jpe <- 130096
+# regulatory thresholds
 wr_loss_threshold <- 0.01
 wr_hatch_loss_threshold <- 0.01
 sh_hatch_loss_threshold <- 0.01

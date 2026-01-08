@@ -20,20 +20,27 @@ early_season_text <- if(Sys.Date() < as.Date(paste0(wy-1,"-11-01")) | Sys.Date()
 wr_jpe <- if(is.na(jpe)) {
   print('The Juvenile Production Estimate for winter-run has not been established for the current water year.')
 } else {
-  print(paste0('The Juvenile Production Estimate for winter-run is ',jpe,' for the current water year.'))
+  # Added prettyNum here
+  print(paste0('The Juvenile Production Estimate for winter-run is ', 
+               prettyNum(jpe, big.mark = ","), 
+               ' for the current water year.'))
 }
 
 wr_hatch_jpe <- if(is.na(livingston_jpe)) {
   print('The Juvenile Production Estimate for Livingstone Stone hatchery winter-run has not been established for the current water year.')
 } else {
-  print(paste0('The Juvenile Production Estimate for hatchery winter-run is '
-         ,livingston_jpe,' for Livingston Stone releases.'))
+  # Added prettyNum here
+  print(paste0('The Juvenile Production Estimate for hatchery winter-run is ', 
+               prettyNum(livingston_jpe, big.mark = ","), 
+               ' for Livingston Stone releases.'))
 }
 
 wr_threshold <- if(is.na(jpe)) {
   print('Thresholds are included from the previous water year.')
 } else {
-  print(paste0('The annual Loss threshold for natural winter-run is 1% of the jpe or ', round(jpe*wr_loss_threshold,2),'fish.'))
+  print(paste0('The annual Loss threshold for natural winter-run is 1% of the jpe or ', 
+               prettyNum(round(jpe*wr_loss_threshold, 2), big.mark = ","), 
+               ' fish.'))
 }
   
 wr_hatchery_releases <- if(nrow(wr_hatch) == 0) {
