@@ -178,6 +178,7 @@ knitr::kable(wr_natural_timing, align = "lrrrrrr")
 #| message: false
 #| warning: false
 #| fig-cap: Cumulative loss of natural-origin winter-run for WY 2026.  Cumulative loss is based on genetically confirmed winter-run captured in salvage or length-at-date winter-run in which genetic confirmation was unable to be obtained
+#| fig-alt: Line chart of cumulative loss of natural-origin winter-run Chinook Salmon at Delta facilities where daily loss is tracked against the annual threshold.
 #| fig-width: 10
 #| fig-height: 8
 #| out-width: "75%"
@@ -198,6 +199,7 @@ The Delta STARS Model is an individual-based simulation model that predicts surv
 #| message: false
 #| warning: false
 #| fig-cap: Estimated overall winter-run survival from Knights Landing to Chipps Island.  Black line indicates the current water-year, and other colored lines correspond to past water years.
+#| fig-alt: Line chart of estimated overall winter-run survival probability from Knights Landing to Chipps Island where the current water year is compared to historical years.
 #| fig-width: 10
 #| fig-height: 8
 #| out-width: "75%"
@@ -212,6 +214,7 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 #| message: false
 #| warning: false
 #| fig-cap: Estimated survival from Knights Landing to Chipps Island of simulate winter-run cohorts that route through the interior delta.  Black line indicates the current water-year, and other colored lines correspond to past water years.
+#| fig-alt: Line chart of winter-run survival probability through the interior Delta where the current water year is compared to historical years.
 #| fig-width: 10
 #| fig-height: 8
 #| out-width: "75%"
@@ -226,6 +229,7 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 #| message: false
 #| warning: false
 #| fig-cap: Estimated probability of winter-run routing into the interior delta.  Black line indicates the current water-year, and other colored lines correspond to past water years.
+#| fig-alt: Line chart of winter-run routing probability into the interior Delta where the current water year is compared to historical years.
 #| fig-width: 10
 #| fig-height: 8
 #| out-width: "75%"
@@ -277,6 +281,7 @@ As of `r format(Sys.Date()-1, '%B %d')`, cumulative loss of unclipped steelhead 
 #| message: false
 #| warning: false
 #| fig-cap: Cumulative loss of natural-origin steelhead for WY 2026.
+#| fig-alt: Line chart of cumulative loss of natural-origin Steelhead at Delta facilities where daily loss is tracked against the annual threshold.
 #| fig-width: 10
 #| fig-height: 8
 #| out-width: "75%"
@@ -309,6 +314,7 @@ Total loss of hatchery-origin steelhead is `r sh_clipped_loss_total` or `r sh_cl
 #| message: false
 #| warning: false
 #| fig-cap: Cumulative loss of hatchery steelhead for WY 2026.
+#| fig-alt: Line chart of cumulative loss of hatchery-origin Steelhead at Delta facilities where daily loss is tracked against the annual threshold.
 #| fig-width: 10
 #| fig-height: 8
 #| out-width: "75%"
