@@ -10,6 +10,8 @@ format:
   docx:
     fig-dpi: 750
 engine: knitr
+execute:
+  warning: false
 ---
 
 ## PRELIMINARY DATA: Assessment for Delta Operations on ESA and CESA-listed Salmonids
@@ -22,7 +24,6 @@ For more detailed data on salmonid conditions in the Delta see corresponding web
 #| label: setup
 #| echo: false
 #| output: false
-#| warning: false
 
 library(tidyverse)
 library(here)
@@ -59,7 +60,7 @@ source(here(project, 'source_code/text_updates.R'), echo = FALSE)
 #| label: tbl-wr_timing_table
 #| echo: false
 #| results: asis
-#| warning: false
+
 #| tbl-cap: Average Percent of annual emigrating population for unclipped LAD winter-run captured at the following locations and LAD and DNA confirmed winter-run salvaged at SWP and CVP Delta facilities for the past 10 years.
 
 
@@ -79,7 +80,7 @@ knitr::kable(wr_natural_timing, align = "lrrrrrr")
 #| label: fig-wr_loss
 #| echo: false
 #| message: false
-#| warning: false
+
 #| fig-cap: Cumulative loss of natural-origin winter-run for WY 2026.  Cumulative loss is based on genetically confirmed winter-run captured in salvage or length-at-date winter-run in which genetic confirmation was unable to be obtained
 #| fig-alt: Line chart of cumulative loss of natural-origin winter-run Chinook Salmon at Delta facilities where daily loss is tracked against the annual threshold.
 #| fig-width: 10
@@ -100,7 +101,7 @@ The Delta STARS Model is an individual-based simulation model that predicts surv
 #| label: fig-stars_survival
 #| echo: false
 #| message: false
-#| warning: false
+
 #| fig-cap: Estimated overall winter-run survival from Knights Landing to Chipps Island.  Black line indicates the current water-year, and other colored lines correspond to past water years.
 #| fig-alt: Line chart of estimated overall winter-run survival probability from Knights Landing to Chipps Island where the current water year is compared to historical years.
 #| fig-width: 10
@@ -115,7 +116,7 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 #| label: fig-stars_id_survival
 #| echo: false
 #| message: false
-#| warning: false
+
 #| fig-cap: Estimated survival from Knights Landing to Chipps Island of simulate winter-run cohorts that route through the interior delta.  Black line indicates the current water-year, and other colored lines correspond to past water years.
 #| fig-alt: Line chart of winter-run survival probability through the interior Delta where the current water year is compared to historical years.
 #| fig-width: 10
@@ -130,7 +131,7 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 #| label: fig-stars_id_routing
 #| echo: false
 #| message: false
-#| warning: false
+
 #| fig-cap: Estimated probability of winter-run routing into the interior delta.  Black line indicates the current water-year, and other colored lines correspond to past water years.
 #| fig-alt: Line chart of winter-run routing probability into the interior Delta where the current water year is compared to historical years.
 #| fig-width: 10
@@ -166,7 +167,7 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 #| results: asis
 #| tbl-cap: 'Average Percent of annual emigrating population for unclipped CCV steelhead captured at the following locations and salvaged at SWP and CVP Delta facilities for the past 10 years.'
 #| echo: false
-#| warning: false
+
 
 knitr::kable(sh_natural_timing, align = "lrrrrrr")
 
@@ -182,7 +183,7 @@ As of `r format(Sys.Date()-1, '%B %d')`, cumulative loss of unclipped steelhead 
 #| label: fig-sh_loss
 #| echo: false
 #| message: false
-#| warning: false
+
 #| fig-cap: Cumulative loss of natural-origin steelhead for WY 2026.
 #| fig-alt: Line chart of cumulative loss of natural-origin Steelhead at Delta facilities where daily loss is tracked against the annual threshold.
 #| fig-width: 10
@@ -203,7 +204,7 @@ There have been a total of `r n_releases` releases totaling `r sh_stocked` steel
 #| results: asis
 #| tbl-cap: 'Summary of steelhead hatchery releases in Water Year 2026'
 #| echo: false
-#| warning: false
+
 
 knitr::kable(release_table_print, align = "lrrrrr")
 
@@ -215,7 +216,7 @@ Total loss of hatchery-origin steelhead is `r sh_clipped_loss_total` or `r sh_cl
 #| label: fig-sh_hatch_loss
 #| echo: false
 #| message: false
-#| warning: false
+
 #| fig-cap: Cumulative loss of hatchery steelhead for WY 2026.
 #| fig-alt: Line chart of cumulative loss of hatchery-origin Steelhead at Delta facilities where daily loss is tracked against the annual threshold.
 #| fig-width: 10
@@ -237,7 +238,7 @@ image_read(paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_
 #| results: asis
 #| tbl-cap: 'Average Percent of annual emigrating population for LAD Spring-run Chinook Salmon captured at the following locations and salvaged at SWP and CVP Delta facilities for the past 10 years.'
 #| echo: false
-#| warning: false
+
 
 
 knitr::kable(sr_natural_timing, align = "lrrrrrr")
@@ -256,7 +257,7 @@ A total of `r yearling` yearling surrogate fish have been released across `r nro
 #| results: asis
 #| tbl-cap: 'Spring-run Chinook Salmon Hatchery Surrogate Summary Table.'
 #| echo: false
-#| warning: false
+
 
 knitr::kable(sr_surrogate_table_clean, align = "lrrrrrrr")
 
