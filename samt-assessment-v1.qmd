@@ -22,6 +22,7 @@ For more detailed data on salmonid conditions in the Delta see corresponding web
 #| label: setup
 #| echo: false
 #| output: false
+#| warning: false
 
 library(tidyverse)
 library(here)
@@ -32,104 +33,6 @@ library(magick)
 project <- here()
 source(here(project, 'source_code/salmon_code.R'), echo = FALSE)
 source(here(project, 'source_code/text_updates.R'), echo = FALSE)
-```
-
-```{r}
-#| label: exec_summary_logic
-#| echo: false
-#| results: false
-
-library(lubridate)
-library(readr)
-library(dplyr)
-
-# Helper function to safely get numeric values without crashing
-safe_parse <- function(var_name) {
-  if (exists(var_name, where = .GlobalEnv) && !is.na(get(var_name))) {
-    val <- get(var_name)
-    if(is.numeric(val)) return(val)
-    return(parse_number(as.character(val)))
-  }
-  return(0)
-}
-
-# --- 1. Action 5 / Entrainment Management Status ---
-current_date <- Sys.Date()
-is_season_date_range <- month(current_date) %in% c(1, 2, 3, 4, 5, 6)
-pct_wr_in_delta <- safe_parse("delta_entry_wr")
-pct_sh_in_delta <- safe_parse("delta_entry_sh")
-
-# Triggered if in date range OR if >5% of target species have entered
-entrainment_status <- if(is_season_date_range | (pct_wr_in_delta > 5 | pct_sh_in_delta > 5)) {
-  "Entrainment management season is **active**."
-} else {
-  "Entrainment management season is **not active** at this time."
-}
-
-# --- 2. Loss Status (From Loss Summary Table) ---
-get_loss_val <- function(pattern) {
-  if(!exists("loss_summary_table")) return(0)
-  loss_summary_table %>%
-    filter(grepl("Cumulative Loss Total", data_item, ignore.case = TRUE)) %>%
-    select(matches(pattern)) %>%
-    pull() %>%
-    as.character() %>%
-    parse_number() %>%
-    sum(na.rm = TRUE)
-}
-
-loss_dna_wr    <- get_loss_val("dna_winter_run_chinook")
-loss_lad_wr    <- get_loss_val("lad_winter_run_chinook")
-loss_hatch_wr  <- get_loss_val("lsnfh_hatchery_cwt_winter_run_chinook")
-loss_nat_sh    <- get_loss_val("natural_steelhead")
-loss_hatch_sh  <- get_loss_val("hatchery_steelhead")
-
-total_loss <- sum(loss_dna_wr, loss_lad_wr, loss_hatch_wr, loss_nat_sh, loss_hatch_sh, na.rm = TRUE)
-
-salvage_status <- if(total_loss > 0) {
-  paste0("Season Loss: **", loss_dna_wr, "** DNA Winter-run, **", 
-         loss_lad_wr, "** LAD Winter-run, **", 
-         loss_hatch_wr, "** Hatchery Winter-run, **", 
-         loss_nat_sh, "** Natural Steelhead, and **", 
-         loss_hatch_sh, "** Hatchery Steelhead.")
-} else {
-  "No salmonid loss has been recorded this season."
-}
-
-# --- 3. Presence Logic Helper Function (UPDATED) ---
-get_presence_status <- function(species_name, entry_pct, exit_pct, catch_keyword) {
-  real_catch <- 0
-  if(exists("all_sampling")) {
-    real_catch <- all_sampling %>% 
-      filter(Location %in% c('Sac Trawl (Sherwood)', 'Sac Seine')) %>% 
-      select(contains(catch_keyword)) %>% 
-      as.matrix() %>% sum(na.rm = TRUE)
-  }
-  
-  case_when(
-    # 1. Emigration Complete (>95% Exited)
-    exit_pct >= 95 ~ paste0(species_name, " presence in the Delta is **low** (emigration nearly complete)."),
-    
-    # 2. Peak Presence (25% - 75% Entry)
-    entry_pct >= 25 & entry_pct <= 75 ~ paste0(species_name, " presence in the Delta is **high** (historical peak)."),
-    
-    # 3. Decreasing Presence (>75% Entry, but still in system)
-    entry_pct > 75 & exit_pct < 95 ~ paste0(species_name, " presence in the Delta is **decreasing** (winding down)."),
-    
-    # 4. Increasing Presence (5% - 25% Entry)
-    entry_pct >= 5 & entry_pct < 25 ~ paste0(species_name, " presence in the Delta is **increasing**."),
-    
-    # 5. Early Detection (Low Hist < 5%, but Real Fish Caught)
-    entry_pct < 5 & real_catch > 0 ~ paste0(species_name, " presence in the Delta is **low**, but fish have been **detected** (", real_catch, " captured in Delta monitoring)."),
-    
-    # 6. Low/Inactive
-    TRUE ~ paste0(species_name, " presence in the Delta is **low** (immigration has not peaked).")
-  )
-}
-
-# Generate Status for Each Run
-wr_presence_status <- get_presence_status("Winter-run", safe_parse("delta_entry_wr"), safe_parse("delta_exit_wr"), "Winter")
-sh_presence_status <- get_presence_status("Steelhead", safe_parse("delta_entry_sh"), safe_parse("delta_exit_sh"), "Steelhead")
 ```
 
 ### Executive Summary
