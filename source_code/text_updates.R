@@ -16,12 +16,22 @@ entrainment_status <- if(is_season_date_range | (pct_wr_in_delta > 5 | pct_sh_in
 }
 
 #status of the salmonid loss
+
+# Calculate LAD percent (using Natural Winter-run Threshold)
+# Matches logic from salmon_code.R: jpe * wr_loss_threshold
+lad_wr_threshold_val <- if(exists("jpe") & exists("wr_loss_threshold")) jpe * wr_loss_threshold else NA
+lad_wr_pct <- if(!is.na(lad_wr_threshold_val) & lad_wr_threshold_val > 0) {
+  paste0(sprintf("%.2f", (loss_lad_wr / lad_wr_threshold_val) * 100), "%")
+} else {
+  "NA%"
+}
+
+#status of the salmonid loss
 salvage_status <- if(total_loss > 0) {
-  paste0("Season Loss: **", loss_dna_wr, "** DNA Winter-run, **", 
-         loss_lad_wr, "** LAD Winter-run, **", 
-         loss_hatch_wr, "** Hatchery Winter-run, **", 
-         loss_nat_sh, "** Natural Steelhead, and **", 
-         loss_hatch_sh, "** Hatchery Steelhead.")
+  paste0("Season Loss: **", loss_dna_wr, "** (", wr_perc, " of threshold) DNA Winter-run, **", 
+         loss_hatch_wr, "** (", wr_hatch_perc, " of threshold) Hatchery Winter-run, **", 
+         loss_nat_sh, "** (", sh_perc, " of threshold) Natural Steelhead, and **", 
+         loss_hatch_sh, "** (", sh_clipped_perc_threshold, " of threshold) Hatchery Steelhead.")
 } else {
   "No salmonid loss has been recorded this season."
 }
