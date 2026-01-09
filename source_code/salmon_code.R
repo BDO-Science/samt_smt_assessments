@@ -476,11 +476,9 @@ yoy <- sr_surrogate_table %>%
   pull() %>%
   prettyNum(big.mark = ",")
 
-
-##########################
-####EXECUTIVE SUMMARY#####
-##########################
-
+###########################################
+#EXECUTIVE SUMMARY LOGIC
+#############################################
 # Helper function to safely get numeric values without crashing
 safe_parse <- function(var_name) {
   if (exists(var_name, where = .GlobalEnv) && !is.na(get(var_name))) {
@@ -496,13 +494,6 @@ current_date <- Sys.Date()
 is_season_date_range <- month(current_date) %in% c(1, 2, 3, 4, 5, 6)
 pct_wr_in_delta <- safe_parse("delta_entry_wr")
 pct_sh_in_delta <- safe_parse("delta_entry_sh")
-
-# Triggered if in date range OR if >5% of target species have entered
-entrainment_status <- if(is_season_date_range | (pct_wr_in_delta > 5 | pct_sh_in_delta > 5)) {
-  "Entrainment management season is **active**."
-} else {
-  "Entrainment management season is **not active** at this time."
-}
 
 # --- 2. Loss Status (From Loss Summary Table) ---
 get_loss_val <- function(pattern) {
@@ -523,16 +514,6 @@ loss_nat_sh    <- get_loss_val("natural_steelhead")
 loss_hatch_sh  <- get_loss_val("hatchery_steelhead")
 
 total_loss <- sum(loss_dna_wr, loss_lad_wr, loss_hatch_wr, loss_nat_sh, loss_hatch_sh, na.rm = TRUE)
-
-salvage_status <- if(total_loss > 0) {
-  paste0("Season Loss: **", loss_dna_wr, "** DNA Winter-run, **", 
-         loss_lad_wr, "** LAD Winter-run, **", 
-         loss_hatch_wr, "** Hatchery Winter-run, **", 
-         loss_nat_sh, "** Natural Steelhead, and **", 
-         loss_hatch_sh, "** Hatchery Steelhead.")
-} else {
-  "No salmonid loss has been recorded this season."
-}
 
 # --- 3. Presence Logic Helper Function (UPDATED) ---
 get_presence_status <- function(species_name, entry_pct, exit_pct, catch_keyword) {
@@ -565,6 +546,3 @@ get_presence_status <- function(species_name, entry_pct, exit_pct, catch_keyword
   )
 }
 
-# Generate Status for Each Run
-wr_presence_status <- get_presence_status("Winter-run", safe_parse("delta_entry_wr"), safe_parse("delta_exit_wr"), "Winter")
-sh_presence_status <- get_presence_status("Steelhead", safe_parse("delta_entry_sh"), safe_parse("delta_exit_sh"), "Steelhead")

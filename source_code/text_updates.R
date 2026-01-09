@@ -3,6 +3,33 @@ library(tidyverse)
 
 project <- here()
 source(here(project, 'source_code/salmon_code.R'), echo = FALSE)
+
+##########################
+####EXECUTIVE SUMMARY#####
+##########################
+
+# Triggered if in date range OR if >5% of target species have entered
+entrainment_status <- if(is_season_date_range | (pct_wr_in_delta > 5 | pct_sh_in_delta > 5)) {
+  "Entrainment management season is **active**."
+} else {
+  "Entrainment management season is **not active** at this time."
+}
+
+#status of the salmonid loss
+salvage_status <- if(total_loss > 0) {
+  paste0("Season Loss: **", loss_dna_wr, "** DNA Winter-run, **", 
+         loss_lad_wr, "** LAD Winter-run, **", 
+         loss_hatch_wr, "** Hatchery Winter-run, **", 
+         loss_nat_sh, "** Natural Steelhead, and **", 
+         loss_hatch_sh, "** Hatchery Steelhead.")
+} else {
+  "No salmonid loss has been recorded this season."
+}
+
+# Generate Delta status for each run
+wr_presence_status <- get_presence_status("Winter-run", safe_parse("delta_entry_wr"), safe_parse("delta_exit_wr"), "Winter")
+sh_presence_status <- get_presence_status("Steelhead", safe_parse("delta_entry_sh"), safe_parse("delta_exit_sh"), "Steelhead")
+
 #####################################################
 ##setting language for early season migration action
 #####################################################
