@@ -14,9 +14,10 @@ source("smelt_data_extraction.R")
 # 1. Upload new data files that are not online already (SLS, 20mm, Bay Study, EDSM, abundance estimates - add the newest estimates (sheet 1) and dates (sheet 2))
 # 2. Edit which actions are relevant 
 # 3. Edit narrative text
-# 4. Edit turbidity and secchi depth if relevant
-# 5. Make edits to salvage when salvage starts (see smelt_data_extraction.R Salvage section and Salvage sections below)
-# 6. Need to render pdf separately from the html to get both to be updated (option in render in quarto doc)
+# 4. Edit evaluation questions
+# 5. Edit turbidity and secchi depth if relevant
+# 6. Make edits to salvage when salvage starts (see smelt_data_extraction.R Salvage section and Salvage sections below)
+# 7. Need to render pdf separately from the html to get both to be updated (option in render in quarto doc)
 
 # Actions ---------------------
 first_flush_status = "relevant"
@@ -40,6 +41,61 @@ narrative_text <-
 - Turbidity in the central/south Delta is high
 "
 
+# Evaluation question responses ---------------------
+
+# Delta smelt
+
+# 1. After the start of entrainment management, is JPF < 0, is daily average turbidity ≥ 12 FNU 
+#in the OMR corridor (stations OBI, HOL, and OSJ), and has the average water temperature 
+#at Jersey Point or Rio Vista not exceeded 53.6°F (12°C) for 3 consecutive days?
+ds_eval_1 <- "No, these conditions will not be met this week."
+
+# 2. Has the average water temperature at Jersey Point or Rio Vista not exceeded 
+#53.6°F (12°C) for 3 consecutive days and/or has this action already been taken during WY 2026?
+ds_eval_2 <- "Temperature at Rio Vista or Jersey Point has not exceeded the threshold. The Delta smelt adult 
+entrainment management action has not yet been taken in WY 2026."
+
+# 3. What is the evidence for the onset of Delta smelt spawning?
+ds_eval_3 <- "Upstream migration for Delta smelt occurs between September and December and in response 
+to “first flush” conditions (Sommer et al. 2011, Grimaldo et al. 2009). Migration typically ranges one 
+to four weeks after flow and turbidity increases, based on salvage data (Sommer et al. 2011). 
+Historically, detections of ripe Delta smelt began in January and peaked in February and March and 
+the majority of Delta Smelt spawning occurs within a temperature range of 9-18˚C (Damon et al. 2016). 
+Based on [historical monitoring data](https://github.com/Delta-Stewardship-Council/deltafish) from the past few years, 
+first detection of larvae in the Central and South Delta has typically occurred by mid to late March. 
+Based on historic data the migration is likely occurring now, and the onset of spawning has likely not yet occurred."
+
+# 4. After the onset of spawning, have the following conditions occurred: JPF < 0, 
+#daily average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
+#OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
+#entrainment of the Delta smelt population at facilities after 30 days?
+ds_eval_4 <- "The onset of spawning is unlikely to have occurred and JPF is not < 0 cfs."
+
+# Longfin smelt
+
+# 1. If JPF < 0, what is the trajectory of annual loss of adult longfin smelt 
+#and is it likely to exceed 5% of the adult population estimate? 
+#Is South Delta entrainment expected to decrease due to a reduction in export pumping?
+lfs_eval_1 <- "JPF is not < 0 cfs and we have not detected any adult longfin 
+smelt in salvage. The ZOI analysis indicates little change in the hydrodynamic 
+footprint between current and forecasted flows this week. The analysis showed 
+a 65 km difference in hydrodynamic footprint between OMRI of –3500 cfs and –5000 
+cfs, indicating a low risk of entrainment."
+
+# 2. For larval and juvenile longfin smelt, if JPF < 0 cfs, do particle tracking 
+#models show a moderate to high difference in particle fates across different 
+#OMRI scenarios? Does Zone of Influence modeling show moderate to high changes 
+#in hydrodynamic footprint across different OMRI scenarios? Are these effects 
+#anticipated to cause a population decline?
+lfs_eval_2 <-  "JPF is not less than zero. No PTM was run this week. 
+ZOI modeling shows moderate changes in hydrodynamic footprint between OMRI scenarios."
+
+# DONT NEED TO CHANGE UNLESS YOU WANT TO
+# 3. Is there additional information or other analyses that should be considered in this evaluation?
+lfs_eval_3 <- "Additional information may be discussed if needed at the DAT call."
+
+
+
 # Delta Smelt ---------------------------
 
 ## Delta Smelt current status -----------------
@@ -59,6 +115,12 @@ ds_recent_display <- ds_recent %>%
   summarize(sum = sum(catch)) %>% 
   ungroup() %>%
   select(Survey = source, Date=date, Region = region, Stratum = stratum, `Life Stage` = life_stage, Catch = sum)
+
+## EDIT: South Delta conditions (turbidity and secchi depth-currently by email)-------------------------
+sd_secchi_depth <- 0.76
+sd_secchi_date <- ymd("2026-05-01")
+sd_turb <- 19.1
+sd_turb_date <- ymd("2025-12-30")
 
 ## Abundance ------------------------------
 # pull abundance estimate
@@ -122,11 +184,7 @@ first_last_release_date <- last_release %>% tail(2) %>% head(1) %>% pull(release
 last_release_location <- last_release %>% tail(1) %>% pull(location)
 last_release_count <- last_release %>% tail(1) %>% pull(total_released) %>% sum()
 
-## South Delta conditions (turbidity and secchi depth-currently by email)-------------------------
-sd_secchi_depth <- 0.76
-sd_secchi_date <- ymd("2026-05-01")
-sd_turb <- 19.1
-sd_turb_date <- ymd("2025-12-30")
+
 
 # Longfin Smelt -----------------------
 

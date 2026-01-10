@@ -1,4 +1,8 @@
 ---
+execute:
+  echo: false
+  warning: false
+  error: false
 format:
   html:
     toc: true
@@ -155,14 +159,6 @@ if (first_flush_status != "relevant") {
 knitr::include_graphics(here("smelt_figures/freeport_flow.png"))
 ```
 
-####  Zone of Influence Analysis
-
-```{r, echo = FALSE, eval = first_flush_status == "relevant", out.width = "100%"}
-#| fig-alt: "Map of the Delta with colored contours indicating extent of hydrodynamic footprint at different OMRI scenarios; figure on the left shows results for current flow conditions, and figure on the right shows results for forecasted flow conditions"
-knitr::include_graphics(here("delta_hydro_files/figure-html/zoi_graph-1.png"))
-```
-
-#### Particle Tracking Models
 
 #### Real-time Assessment Thresholds
 
@@ -176,7 +172,7 @@ if (adult_ent_status != "relevant") {
   cat(glue("
 **Threshold**: If daily average JPF < 0 AND turbidity ≥ 12 FNU at OBI, HOL and OSJ
 
-- **JPF**: {paste(JPF_1d, collapse = ', ')} cfs as of {format(JPF_1d_lastdate, '%b %d, %Y')}
+- **JPF**: {paste(formatC(JPF_1d, format = 'f', big.mark = ',', digits = 0), collapse = ', ')} cfs as of {format(JPF_1d_lastdate, '%b %d, %Y')}
 - **OBI Turbidity**: {paste(OBI_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 - **HOL Turbidity**: {paste(HOL_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 - **OSJ Turbidity**: {paste(OSJ_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
@@ -217,7 +213,24 @@ if (larval_ent_status != "relevant") {
 
 #### Evaluation
 
+**Delta smelt:**
 
+1. After the start of entrainment management, is JPF < 0 and is daily average turbidity ≥ 12 FNU in the OMR corridor (stations OBI, HOL, and OSJ)?
+
+    `r ds_eval_1`
+
+2. Has the average water temperature at Jersey Point or Rio Vista not exceeded 53.6°F (12°C) for 3 consecutive days and/or has this action already been taken during WY 2026?
+
+    `r ds_eval_2`
+
+3. What is the evidence for the onset of Delta smelt spawning?
+
+    `r ds_eval_3`
+
+4. After the onset of spawning, have the following conditions occurred: JPF < 0, daily average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% entrainment of the Delta smelt population at facilities after 30 days?
+
+    `r ds_eval_4`
+  
 
 ### Longfin smelt
 #### Biological
@@ -308,28 +321,44 @@ if (first_flush_lfs_status != "relevant") {
   cat(glue("
 **Threshold**: If daily average JPF < 0 cfs AND salvage of adult longfin exceeds 5% of FMWT Index + 1
 
-- **Daily average JPF**: {paste(JPF_1d, collapse = ', ')} cfs as of {format(JPF_1d_lastdate, '%b %d, %Y')}
+- **Daily average JPF**: {paste(formatC(JPF_1d, format = 'f', big.mark = ',', digits = 0), collapse = ', ')} cfs as of {format(JPF_1d_lastdate, '%b %d, %Y')}
 - **Total LFS salvage**: {paste(lfs_salvage_count, collapse = ', ')} fish, with a cumulative salvage of {paste(lfs_salvage_count, collapse = ', ')}
 "))
 }
 
 # round to nearest 2 decimals only: {paste(sprintf('%.2f', JPF_7d), collapse = ', ')}
+# used to be {paste(JPF_1d, collapse = ', ')}
 ```
 
 
 ##### Adult longfin smelt
 
 - **Threshold:** JPF < 0 cfs, annual loss is on a trajectory to exceed 5% of the adult population abundance, and reduced exports will reduce entrainment in the south Delta
-  - Daily average JPF: `r round(JPF_1d)` cfs as of `r format(JPF_1d_lastdate, "%b %d, %Y")`
+  - Daily average JPF: `r formatC(JPF_1d, format = 'f', big.mark = ',', digits = 0)` cfs as of `r format(JPF_1d_lastdate, "%b %d, %Y")`
   - Water year total adult longfin smelt salvage = 0
   
 
 ##### Larval/juvenile longfin smelt
 
 - **Threshold:** JPF < 0 cfs AND population model demonstrates need to reduce entrainment to avoid population decline
-  - Daily average JPF: `r round(JPF_1d)` cfs as of `r format(JPF_1d_lastdate, "%b %d, %Y")`
+  - Daily average JPF: `r formatC(JPF_1d, format = 'f', big.mark = ',', digits = 0)` cfs as of `r format(JPF_1d_lastdate, "%b %d, %Y")`
   
 #### Evaluation
+
+**Longfin smelt:**
+
+1. If JPF < 0, what is the trajectory of annual loss of adult longfin smelt and is it likely to exceed 5% of the adult population estimate? Is South Delta entrainment expected to decrease due to a reduction in export pumping?
+
+    `r lfs_eval_1`
+  
+2. For larval and juvenile longfin smelt, if JPF < 0 cfs, do particle tracking models show a moderate to high difference in particle fates across different OMRI scenarios? Does Zone of Influence modeling show moderate to high changes in hydrodynamic footprint across different OMRI scenarios? Are these effects anticipated to cause a population decline?
+
+    `r lfs_eval_2`
+  
+3. Is there additional information or other analyses that should be considered in this evaluation?
+
+    `r lfs_eval_3`
+
 
 ### End of smelt Entrainment Management
 ```{r, echo = FALSE, results='asis'}
