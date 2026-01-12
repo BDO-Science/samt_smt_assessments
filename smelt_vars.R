@@ -46,11 +46,11 @@ narrative_text <-
 
 # 1. After the start of entrainment management, is JPF < 0, is daily average turbidity ≥ 12 FNU 
 #in the OMR corridor (stations OBI, HOL, and OSJ), and has the average water temperature 
-#at Jersey Point or Rio Vista not exceeded 53.6°F (12°C) for 3 consecutive days?
+#at Jersey Point or Rio Vista not exceeded 53.6\(^{\circ}\)F (12\(^{\circ}\)C) for 3 consecutive days?
 ds_eval_1 <- "No, these conditions will not be met this week."
 
 # 2. Has the average water temperature at Jersey Point or Rio Vista not exceeded 
-#53.6°F (12°C) for 3 consecutive days and/or has this action already been taken during WY 2026?
+#53.6\(^{\circ}\)F (12\(^{\circ}\)C) for 3 consecutive days and/or has this action already been taken during WY 2026?
 ds_eval_2 <- "Temperature at Rio Vista or Jersey Point has not exceeded the threshold. The Delta smelt adult 
 entrainment management action has not yet been taken in WY 2026."
 

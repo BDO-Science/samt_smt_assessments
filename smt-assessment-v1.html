@@ -35,6 +35,35 @@ ul.task-list li input[type="checkbox"] {
 <link href="smt-assessment-v1_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="smt-assessment-v1_files/libs/bootstrap/bootstrap-f18df3632ac14ff77ac649842474db34.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -69,11 +98,10 @@ ul.task-list li input[type="checkbox"] {
 <section id="executive-summary" class="level3">
 <h3 class="anchored" data-anchor-id="executive-summary">Executive Summary</h3>
 <ul>
-<li>First flush conditions were met on 12/23/25, and the action was implemented on 12/25/25.</li>
-<li>The First flush action implementation period will end on 1/7/26, then other entrainment management actions will become active.</li>
+<li>The First flush action implementation period ended on 1/7/26. Entrainment management is currently active.</li>
 <li>Delta smelt are primarily distributed west of the confluence, in Suisun Marsh</li>
 <li>No Delta smelt or longfin smelt salvage has been observed this water year</li>
-<li>Turbidity in the central/south Delta is high</li>
+<li>Turbidity in the central/south Delta is moderate.</li>
 </ul>
 </section>
 <section id="operational-and-regulatory-conditions" class="level3">
@@ -89,7 +117,7 @@ ul.task-list li input[type="checkbox"] {
 <h4 class="anchored" data-anchor-id="biological">Biological</h4>
 <ul>
 <li><p><strong>Delta smelt life stages:</strong> Adult, Juvenile</p></li>
-<li><p><strong>Abundance estimate:</strong> 6821 (95% CL: 1,477 to 20,185) as of the week of December 29, 2025–January 2, 2026</p></li>
+<li><p><strong>Abundance estimate:</strong> 8963 (95% CL: 1,984 to 26,236) as of the week of January 5–9, 2026</p></li>
 <li><p><strong>Releases:</strong> A total of 163,349 cultured Delta smelt have been released for WY 2026. The most recent release of 24,606 fish occurred in Sacramento River at Rio Vista on Dec 16, 2025.</p></li>
 <li><p><strong>Delta smelt count:</strong> 33 adult Delta smelt and 24 juvenile Delta smelt have been detected this water year. See <a href="#tbl-ds-recent-catch" class="quarto-xref">Table&nbsp;1</a> for recent detections, <a href="#fig-ds-map" class="quarto-xref">Figure&nbsp;1</a> for spatial distribution, and <a href="#fig-ds-catch" class="quarto-xref">Figure&nbsp;2</a> for temporal distribution.</p></li>
 <li><p><strong>Delta smelt salvage:</strong> 0 Delta smelt have been salvaged, and the cumulative seasonal salvage is 0.</p></li>
@@ -258,29 +286,18 @@ Figure&nbsp;2: Time series of Delta smelt catch, WY 2026
 <h4 class="anchored" data-anchor-id="environmental">Environmental</h4>
 <section id="first-flush" class="level5">
 <h5 class="anchored" data-anchor-id="first-flush">First Flush</h5>
-<p><strong>Threshold</strong>: 3-day avg FPT flow ≥ 25,000 cfs and 3-day avg FPT turbidity ≥ 50 FNU</p>
 <ul>
-<li><strong>FPT Flow (3-day average)</strong>: 71297 cfs as of Jan 11, 2026</li>
-<li><strong>FPT Turbidity (3-day average)</strong>: 48.81 FNU as of Jan 11, 2026</li>
+<li>Not relevant</li>
 </ul>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="smelt_figures/freeport_flow.png" class="img-fluid figure-img" style="width:85.0%" alt="Line graph showing average flow at Freeport on Y1 and average turbidity on Y2 for the previous 14 days."></p>
-</figure>
-</div>
-</div>
-</div>
 </section>
 </section>
 <section id="real-time-assessment-thresholds" class="level4">
 <h4 class="anchored" data-anchor-id="real-time-assessment-thresholds">Real-time Assessment Thresholds</h4>
 <section id="adult-delta-smelt" class="level5">
 <h5 class="anchored" data-anchor-id="adult-delta-smelt">Adult Delta smelt</h5>
-<p><strong>Threshold</strong>: If daily average JPF &lt; 0 AND turbidity ≥ 12 FNU at OBI, HOL and OSJ</p>
+<p><strong>Threshold</strong>: If daily average JPF &lt; 0 AND turbidity <span class="math inline">\(\ge\)</span> 12 FNU at OBI, HOL and OSJ</p>
 <ul>
-<li><strong>JPF</strong>: 18,657 cfs as of Jan 08, 2026</li>
+<li><strong>JPF</strong>: 9,516 cfs as of Jan 11, 2026</li>
 <li><strong>OBI Turbidity</strong>: 6.65, 6.76, 6.66 FNU as of Jan 11, 2026</li>
 <li><strong>HOL Turbidity</strong>: 10.56, 8.52, 7.39 FNU as of Jan 11, 2026</li>
 <li><strong>OSJ Turbidity</strong>: 15.15, 15.31, 18.22 FNU as of Jan 11, 2026</li>
@@ -306,7 +323,7 @@ Figure&nbsp;2: Time series of Delta smelt catch, WY 2026
 </section>
 <section id="larvaljuvenile-delta-smelt" class="level5">
 <h5 class="anchored" data-anchor-id="larvaljuvenile-delta-smelt">Larval/juvenile Delta smelt</h5>
-<p><strong>Threshold</strong>: After the onset of spawning, if JPF &lt; 0 cfs AND turbidity is ≥ 12 FNU in the south Delta AND PTM modeling indicates the action would avoid ≥ 5% entrainment of Delta smelt population after 30 days</p>
+<p><strong>Threshold</strong>: After the onset of spawning, if JPF &lt; 0 cfs AND turbidity is <span class="math inline">\(\ge\)</span> 12 FNU in the south Delta AND PTM modeling indicates the action would avoid <span class="math inline">\(\ge\)</span> 5% entrainment of Delta smelt population after 30 days</p>
 <ul>
 <li><strong>12-station South Delta Turbidity</strong>: The most recent average turbidity was 19.1 FNU as of Dec 30, 2025</li>
 </ul>
@@ -316,14 +333,14 @@ Figure&nbsp;2: Time series of Delta smelt catch, WY 2026
 <h4 class="anchored" data-anchor-id="evaluation">Evaluation</h4>
 <p><strong>Delta smelt:</strong></p>
 <ol type="1">
-<li><p>After the start of entrainment management, is JPF &lt; 0 and is daily average turbidity ≥ 12 FNU in the OMR corridor (stations OBI, HOL, and OSJ)?</p>
+<li><p>After the start of entrainment management, is JPF &lt; 0 and is daily average turbidity <span class="math inline">\(\ge\)</span> 12 FNU in the OMR corridor (stations OBI, HOL, and OSJ)?</p>
 <p>No, these conditions will not be met this week.</p></li>
 <li><p>Has the average water temperature at Jersey Point or Rio Vista not exceeded 53.6°F (12°C) for 3 consecutive days and/or has this action already been taken during WY 2026?</p>
 <p>Temperature at Rio Vista or Jersey Point has not exceeded the threshold. The Delta smelt adult entrainment management action has not yet been taken in WY 2026.</p></li>
 <li><p>What is the evidence for the onset of Delta smelt spawning?</p>
-<p>Upstream migration for Delta smelt occurs between September and December and in response to “first flush” conditions (Sommer et al.&nbsp;2011, Grimaldo et al.&nbsp;2009). Migration typically ranges one to four weeks after flow and turbidity increases, based on salvage data (Sommer et al.&nbsp;2011). Historically, detections of ripe Delta smelt began in January and peaked in February and March and the majority of Delta Smelt spawning occurs within a temperature range of 9-18˚C (Damon et al.&nbsp;2016). Based on <a href="https://github.com/Delta-Stewardship-Council/deltafish">historical monitoring data</a> from the past few years, first detection of larvae in the Central and South Delta has typically occurred by mid to late March. Based on historic data the migration is likely occurring now, and the onset of spawning has likely not yet occurred.</p></li>
-<li><p>After the onset of spawning, have the following conditions occurred: JPF &lt; 0, daily average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% entrainment of the Delta smelt population at facilities after 30 days?</p>
-<p>The onset of spawning is unlikely to have occurred and JPF is not &lt; 0 cfs.</p></li>
+<p>Upstream migration for Delta smelt occurs between September and December and in response to “first flush” conditions (Sommer et al.&nbsp;2011, Grimaldo et al.&nbsp;2009). Migration typically ranges one to four weeks after flow and turbidity increases, based on salvage data (Sommer et al.&nbsp;2011). Historically, detections of ripe Delta smelt began in January and peaked in February and March and the majority of Delta Smelt spawning occurs within a temperature range of 9-18˚C (Damon et al.&nbsp;2016). Based on <a href="https://github.com/Delta-Stewardship-Council/deltafish">historical monitoring data</a> from the past few years, first detection of larvae in the Central and South Delta has typically occurred by mid to late March. Because first flush conditions were met on December 23, spawning-related behaviors may begin occurring during the current assessment week, consistent with the typical one- to four-week response window following increased flow and turbidity.</p></li>
+<li><p>After the onset of spawning, have the following conditions occurred: <span class="math inline">\(\ge\)</span> 5% entrainment of the Delta smelt population at facilities after 30 days?</p>
+<p>Although spawning may begin during the current assessment period, JPF is above 0 cfs; therefore, the conditions required to evaluate larval and juvenile Delta smelt entrainment management are not met.</p></li>
 </ol>
 </section>
 </section>
@@ -332,8 +349,8 @@ Figure&nbsp;2: Time series of Delta smelt catch, WY 2026
 <section id="biological-1" class="level4">
 <h4 class="anchored" data-anchor-id="biological-1">Biological</h4>
 <ul>
-<li><p><strong>Longfin smelt life stages:</strong> Adult, Juvenile, NA, Larva</p></li>
-<li><p><strong>Longfin smelt count:</strong> 277 adult, 440 juvenile, and 10 larval longfin smelt have been detected this water year. See <a href="#tbl-lfs-recent-catch" class="quarto-xref">Table&nbsp;3</a> for recent detections, <a href="#fig-lfs-map" class="quarto-xref">Figure&nbsp;3</a> for spatial distribution, and <a href="#fig-lfs-catch" class="quarto-xref">Figure&nbsp;4</a> for temporal distribution.</p></li>
+<li><p><strong>Longfin smelt life stages:</strong> Adult, Juvenile</p></li>
+<li><p><strong>Longfin smelt count:</strong> 296 adult, 445 juvenile, and 0 larval longfin smelt have been detected this water year. See <a href="#tbl-lfs-recent-catch" class="quarto-xref">Table&nbsp;3</a> for recent detections, <a href="#fig-lfs-map" class="quarto-xref">Figure&nbsp;3</a> for spatial distribution, and <a href="#fig-lfs-catch" class="quarto-xref">Figure&nbsp;4</a> for temporal distribution.</p></li>
 <li><p><strong>Longfin smelt salvage:</strong> 0 longfin smelt have been salvaged, and the cumulative seasonal salvage is 0. <!--
 - Include plot of cumulative longfin salvage? [Salvage plot code](https://github.com/BDO-Science/smt/tree/main/daily_longfin_salvage)
 --></p></li>
@@ -487,27 +504,35 @@ Table&nbsp;3: Longfin smelt detections in the last 2 weeks. Fork Length &gt; 84m
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">sls</td>
-<td style="text-align: left;">2025-12-30</td>
-<td style="text-align: left;">Far West</td>
-<td style="text-align: left;">Western Delta</td>
-<td style="text-align: left;">Larva</td>
-<td style="text-align: right;">3</td>
+<td style="text-align: left;">EDSM</td>
+<td style="text-align: left;">2026-01-12</td>
+<td style="text-align: left;">West</td>
+<td style="text-align: left;">Cache Slough LI</td>
+<td style="text-align: left;">Adult</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">sls</td>
-<td style="text-align: left;">2025-12-30</td>
-<td style="text-align: left;">Far West</td>
-<td style="text-align: left;">Western Delta</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: left;">EDSM</td>
+<td style="text-align: left;">2026-01-12</td>
+<td style="text-align: left;">West</td>
+<td style="text-align: left;">Cache Slough LI</td>
+<td style="text-align: left;">Juvenile</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">sls</td>
-<td style="text-align: left;">2025-12-30</td>
+<td style="text-align: left;">EDSM</td>
+<td style="text-align: left;">2026-01-12</td>
 <td style="text-align: left;">West</td>
-<td style="text-align: left;">Lower San Joaquin</td>
-<td style="text-align: left;">Larva</td>
+<td style="text-align: left;">Lower Sacramento</td>
+<td style="text-align: left;">Adult</td>
+<td style="text-align: right;">18</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">EDSM</td>
+<td style="text-align: left;">2026-01-12</td>
+<td style="text-align: left;">West</td>
+<td style="text-align: left;">Lower Sacramento</td>
+<td style="text-align: left;">Juvenile</td>
 <td style="text-align: right;">4</td>
 </tr>
 </tbody>
@@ -583,13 +608,13 @@ Table&nbsp;4: Longfin smelt water year totals by life stage
 <td style="text-align: left;">EDSM</td>
 <td style="text-align: left;">West</td>
 <td style="text-align: left;">Adult</td>
-<td style="text-align: right;">22</td>
+<td style="text-align: right;">41</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">EDSM</td>
 <td style="text-align: left;">West</td>
 <td style="text-align: left;">Juvenile</td>
-<td style="text-align: right;">75</td>
+<td style="text-align: right;">80</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">baystudy</td>
@@ -619,24 +644,6 @@ Table&nbsp;4: Longfin smelt water year totals by life stage
 <td style="text-align: left;">baystudy</td>
 <td style="text-align: left;">West</td>
 <td style="text-align: left;">Juvenile</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">sls</td>
-<td style="text-align: left;">Far West</td>
-<td style="text-align: left;">Larva</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">sls</td>
-<td style="text-align: left;">North</td>
-<td style="text-align: left;">Larva</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">sls</td>
-<td style="text-align: left;">West</td>
-<td style="text-align: left;">Larva</td>
 <td style="text-align: right;">6</td>
 </tr>
 </tbody>
@@ -674,7 +681,7 @@ Figure&nbsp;4: Time series of longfin smelt catch, WY 2026
 <ul>
 <li><strong>Threshold:</strong> JPF &lt; 0 cfs, annual loss is on a trajectory to exceed 5% of the adult population abundance, and reduced exports will reduce entrainment in the south Delta
 <ul>
-<li>Daily average JPF: 18,657 cfs as of Jan 08, 2026</li>
+<li>Daily average JPF: 9,516 cfs as of Jan 11, 2026</li>
 <li>Water year total adult longfin smelt salvage = 0</li>
 </ul></li>
 </ul>
@@ -684,7 +691,7 @@ Figure&nbsp;4: Time series of longfin smelt catch, WY 2026
 <ul>
 <li><strong>Threshold:</strong> JPF &lt; 0 cfs AND population model demonstrates need to reduce entrainment to avoid population decline
 <ul>
-<li>Daily average JPF: 18,657 cfs as of Jan 08, 2026</li>
+<li>Daily average JPF: 9,516 cfs as of Jan 11, 2026</li>
 </ul></li>
 </ul>
 </section>
@@ -694,9 +701,9 @@ Figure&nbsp;4: Time series of longfin smelt catch, WY 2026
 <p><strong>Longfin smelt:</strong></p>
 <ol type="1">
 <li><p>If JPF &lt; 0, what is the trajectory of annual loss of adult longfin smelt and is it likely to exceed 5% of the adult population estimate? Is South Delta entrainment expected to decrease due to a reduction in export pumping?</p>
-<p>JPF is not &lt; 0 cfs and we have not detected any adult longfin smelt in salvage. The ZOI analysis indicates little change in the hydrodynamic footprint between current and forecasted flows this week. The analysis showed a 65 km difference in hydrodynamic footprint between OMRI of –3500 cfs and –5000 cfs, indicating a low risk of entrainment.</p></li>
+<p>JPF is not &lt; 0 cfs and no adult longfin smelt have been detected in salvage.</p></li>
 <li><p>For larval and juvenile longfin smelt, if JPF &lt; 0 cfs, do particle tracking models show a moderate to high difference in particle fates across different OMRI scenarios? Does Zone of Influence modeling show moderate to high changes in hydrodynamic footprint across different OMRI scenarios? Are these effects anticipated to cause a population decline?</p>
-<p>JPF is not less than zero. No PTM was run this week. ZOI modeling shows moderate changes in hydrodynamic footprint between OMRI scenarios.</p></li>
+<p>JPF is not less than zero. ZOI modeling shows moderate change in the hydrodynamic footprint between OMRI scenarios.</p></li>
 <li><p>Is there additional information or other analyses that should be considered in this evaluation?</p>
 <p>Additional information may be discussed if needed at the DAT call.</p></li>
 </ol>
@@ -710,6 +717,9 @@ Figure&nbsp;4: Time series of longfin smelt catch, WY 2026
 </section>
 <section id="references" class="level3">
 <h3 class="anchored" data-anchor-id="references">References</h3>
+<p>Damon, L. J., S. B. Slater, R. D. Baxter, and R. W. Fujimura. 2016. Fecundity and reproductive potential of wild female Delta smelt in the upper San Francisco Estuary, California. California Fish and Game 102(4):188–210.</p>
+<p>Grimaldo, L. F., T. Sommer, N. Van Ark, G. Jones, E. Holland, P. B. Moyle, B. Herbold &amp; P. Smith (2009) Factors Affecting Fish Entrainment into Massive Water Diversions in a Tidal Freshwater Estuary: Can Fish Losses be Managed? North American Journal of Fisheries Management, 29:5, 1253-1270, DOI: 10.1577/M08-062.1</p>
+<p>Sommer, T., F. Mejia, M. Nobriga, and L. Grimaldo. 2011. The Spawning Migration of Delta Smelt in the Upper San Francisco Estuary. San Francisco Estuary and Watershed Science 9(2).</p>
 </section>
 </section>
 
@@ -717,7 +727,7 @@ Figure&nbsp;4: Time series of longfin smelt catch, WY 2026
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
-    const icon = "";
+    const icon = "&#xE9CB;";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
       placement: 'right',
