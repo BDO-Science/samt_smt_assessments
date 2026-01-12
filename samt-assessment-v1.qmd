@@ -266,10 +266,16 @@ knitr::kable(sr_surrogate_table_clean, align = "lrrrrrrr")
 ### Evaluation
 
 1.  **What is the probability of exceeding natural or hatchery winter-run Chinook Salmon loss thresholds in the upcoming week?**
+    
+    `r risk_q1`
 
 2.  **What is the probability of spring-run hatchery Chinook Salmon loss thresholds in the upcoming week?**
+    
+    `r risk_q2`
 
-3.  **What is the probability of spring-run hatchery Chinook Salmon loss thresholds in the upcoming week?**
+3.  **What is the probability of hatchery Steelhead loss thresholds in the upcoming week?**
+    
+    `r risk_q3`
 
 
 ### References

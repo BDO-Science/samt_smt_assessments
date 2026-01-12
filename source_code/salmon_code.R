@@ -454,25 +454,43 @@ sr_surrogate <- read_html(sr_url) %>%
   html_nodes("table") %>%
   html_table(fill = T, header = TRUE) 
 
+# Clean the table data
 sr_surrogate_table <- sr_surrogate[[1]] %>%
-  select(1:5,7,10,11) %>%
-  mutate(`# of CWT Fish Released` = as.numeric(gsub(",", "", `# of CWT Fish Released`))) %>%
-  mutate('Loss Threshold (1% of CWT Released)' = `# of CWT Fish Released` * sr_surrogate_threshold) %>%
-  select(1:6,9,7,8)
+  select(1:5,7,10,11) %>% # Select relevant columns from source
+  mutate(`# of CWT Fish Released` = as.numeric(gsub(",", "", `# of CWT Fish Released`)))
 
+# Create the clean table for display (Removes per-row threshold columns)
 sr_surrogate_table_clean <- sr_surrogate_table %>%
-  mutate('Loss (% of threshold)' = paste0(`Confirmed Loss`,' (', `% Loss of CWT Number Released`,')')) %>%
-  select(-8,-9)
+  select(1:5, `# of CWT Fish Released`, `Confirmed Loss`) 
+# Note: This removes any columns implying individual thresholds
 
+# --- Aggregate Calculations for Text & Exec Summary ---
+# 1. Total Spring-run Surrogates Released
+total_sr_released <- sum(sr_surrogate_table$`# of CWT Fish Released`, na.rm = TRUE)
+
+# 2. Total Threshold (1% of Total Released)
+sr_surrogate_threshold_val <- total_sr_released * 0.01
+
+# 3. Total Confirmed Loss
+sr_surrogate_loss_total <- sum(sr_surrogate_table$`Confirmed Loss`, na.rm = TRUE)
+
+# 4. Percent of Threshold Used
+sr_surrogate_perc <- if(sr_surrogate_threshold_val > 0) {
+  paste0(sprintf("%.2f", (sr_surrogate_loss_total / sr_surrogate_threshold_val) * 100), "%")
+} else {
+  "0.00%"
+}
+
+# --- Summary Counts for Text ---
 yearling <- sr_surrogate_table %>%
   filter(Type == 'Yearling') %>%
-  summarize(sum(`# of CWT Fish Released`)) %>%
+  summarize(total = sum(`# of CWT Fish Released`, na.rm = TRUE)) %>%
   pull() %>%
   prettyNum(big.mark = ",")
 
 yoy <- sr_surrogate_table %>%
   filter(Type == 'Young-of-year') %>%
-  summarize(sum(`# of CWT Fish Released`)) %>%
+  summarize(total = sum(`# of CWT Fish Released`, na.rm = TRUE)) %>%
   pull() %>%
   prettyNum(big.mark = ",")
 
