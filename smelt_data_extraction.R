@@ -244,15 +244,18 @@ salvage_lfs_data <- salvage_lfs_data_raw %>%
 
 ## Other data ----------------------
 # manually update for DJFMP beach seines
-beachsn <- read_csv(here("data_raw/smelt/Beach_seines_2025-12-22.csv")) %>%
+beachsn <- read_csv(here("data_raw/smelt/Beach_seines_2026.csv")) %>%
   clean_names() %>% 
   mutate(date = mdy(date),
          date = date(ymd(date))) %>% 
-  filter(species == "DSM") %>% 
+  #filter(species == "DSM") %>% 
   mutate(source = "DJFMP") %>% 
-  mutate(region= "North") %>%  #fix this, obviously not true for all stations
+  #mutate(region= "North") %>%  #fix this, obviously not true for all stations
   select(region, station, source, date, latitude, longitude, species, mark, catch,
-         fork_length= fl, life_stage= stage)
+         fork_length= fl, life_stage= stage, stratum)
+
+beachsn_ds <- beachsn %>% filter(species == "DSM") %>% mutate(species= "Delta Smelt") %>% select(-species)
+beachsn_lfs <- beachsn %>% filter(species == "LFS") %>% mutate(species= "Longfin Smelt")%>% select(-species)
 
 # manually update for other DS data (random Broodstock, FRP)
 other_ds_data <- read_csv(here("data_raw/smelt/smelt_catch_test.csv")) %>%
@@ -366,7 +369,7 @@ smelt_release_table <- tables[[3]] %>% clean_names()
 # could filter by date for life stage here
 ds_latlon <- bind_rows(
   edsm_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
-  beachsn %>% select(source, date, catch, latitude, longitude, region, life_stage),
+  beachsn_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
   sls_ds %>% select(source, date, catch, latitude, longitude, region, life_stage)) %>% 
   #twmm_ds %>% select(source, date, catch, latitude, longitude, region, life_state), 
   #salvage_ds_data %>% select(source, date, catch, latitude, longitude, region)) %>%
@@ -382,7 +385,7 @@ ds_latlon <- bind_rows(
 # uncomment salvage once salvage is updated
 ds_detail <- bind_rows(
   edsm_ds %>% select(source, date, catch, mark_code, fork_length, latitude, longitude, region, stratum),
-  beachsn %>% select(source, date, catch, fork_length, latitude, longitude, region),
+  beachsn_ds %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   twmm_ds %>% select(source, date, catch, fork_length, latitude, longitude, region),
   sls_ds %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   salvage_ds_data %>% select(source, date, catch, fork_length, latitude, longitude, region)) %>%
@@ -398,6 +401,7 @@ ds_detail <- bind_rows(
 lfs_latlon <- bind_rows(
   edsm_lfs %>% select(source, date, catch, latitude, longitude, region),
   twmm_lfs %>% select(source, date, catch, latitude, longitude, region),
+  beachsn_lfs %>% select(source, date, catch, latitude, longitude, region),
   sls_lfs %>% select(source, date, catch, latitude, longitude, region),
   chipps_lfs %>% select(source, date, catch, latitude, longitude, region),
   sfbs_data %>% select(source, date, catch, latitude, longitude, region), 
@@ -415,6 +419,7 @@ lfs_detail <- bind_rows(
   edsm_lfs %>% select(source, date, catch, mark_code, fork_length, latitude, longitude, region, stratum),
   twmm_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region),
   sls_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
+  beachsn_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   chipps_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   sfbs_data %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   salvage_lfs_data %>% select(source, date, catch, fork_length, latitude, longitude, region)) %>%

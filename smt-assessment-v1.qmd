@@ -8,6 +8,7 @@ format:
     toc: true
     standalone: false
     title-block-style: none
+    ascii: true
   pdf:
     fig-dpi: 1000
     fig-pos: "H"
@@ -100,7 +101,7 @@ kable(ds_recent_display)
     scale_y_continuous(limits = c(37.8, 38.6)) +
      scale_shape_manual(values = c(1, 15, 17, 4))+
     # scale_size(range = c(2, 2), breaks = c(1,1)) + 
-    viridis::scale_fill_viridis(option = "turbo", discrete = TRUE) + 
+    viridis::scale_fill_viridis(option = "turbo", discrete = TRUE) +
     guides(fill = guide_legend(nrow = 3, byrow = TRUE)) +
     theme_bw() +
     theme(axis.title.x = element_blank(),
@@ -134,7 +135,7 @@ kable(
 ggplot(ds_wy) +
   geom_col(aes(date, total_catch, fill = source)) +
   labs(x = "Date", y = "Total Catch", fill = "Survey") + 
-  scale_fill_viridis(option = "turbo", discrete = TRUE) +
+  scale_fill_viridis(option = "viridis", discrete = TRUE) + #was turbo- hard to see
   theme_bw()
 ```
 
@@ -146,7 +147,7 @@ if (first_flush_status != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-**Threshold**: 3-day avg FPT flow ≥ 25,000 cfs and 3-day avg FPT turbidity ≥ 50 FNU
+**Threshold**: 3-day avg FPT flow $\\ge$ 25,000 cfs and 3-day avg FPT turbidity $\\ge$ 50 FNU
 
 - **FPT Flow (3-day average)**: {format(round(FPT_flow_avg), big.mark = ",")} cfs as of {format(env_last_date, '%b %d, %Y')}
 - **FPT Turbidity (3-day average)**: {FPT_turb_avg} FNU as of {format(env_last_date, '%b %d, %Y')}
@@ -170,7 +171,7 @@ if (adult_ent_status != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-**Threshold**: If daily average JPF < 0 AND turbidity ≥ 12 FNU at OBI, HOL and OSJ
+**Threshold**: If daily average JPF < 0 AND turbidity $\\ge$ 12 FNU at OBI, HOL and OSJ
 
 - **JPF**: {paste(formatC(JPF_1d, format = 'f', big.mark = ',', digits = 0), collapse = ', ')} cfs as of {format(JPF_1d_lastdate, '%b %d, %Y')}
 - **OBI Turbidity**: {paste(OBI_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
@@ -204,7 +205,7 @@ if (larval_ent_status != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-**Threshold**: After the onset of spawning, if JPF < 0 cfs AND turbidity is ≥ 12 FNU in the south Delta AND PTM modeling indicates the action would avoid ≥ 5% entrainment of Delta smelt population after 30 days
+**Threshold**: After the onset of spawning, if JPF < 0 cfs AND turbidity is $\\ge$ 12 FNU in the south Delta AND PTM modeling indicates the action would avoid $\\ge$ 5% entrainment of Delta smelt population after 30 days
 
   - **12-station South Delta Turbidity**: The most recent average turbidity was {sd_turb} FNU as of {format(sd_turb_date, '%b %d, %Y')}
 "))
@@ -215,7 +216,7 @@ if (larval_ent_status != "relevant") {
 
 **Delta smelt:**
 
-1. After the start of entrainment management, is JPF < 0 and is daily average turbidity ≥ 12 FNU in the OMR corridor (stations OBI, HOL, and OSJ)?
+1. After the start of entrainment management, is JPF < 0 and is daily average turbidity $\ge$ 12 FNU in the OMR corridor (stations OBI, HOL, and OSJ)?
 
     `r ds_eval_1`
 
@@ -227,7 +228,7 @@ if (larval_ent_status != "relevant") {
 
     `r ds_eval_3`
 
-4. After the onset of spawning, have the following conditions occurred: JPF < 0, daily average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% entrainment of the Delta smelt population at facilities after 30 days?
+4. After the onset of spawning, have the following conditions occurred: $\ge$ 5% entrainment of the Delta smelt population at facilities after 30 days?
 
     `r ds_eval_4`
   
@@ -267,8 +268,8 @@ kable(lfs_recent_display)
                            pad_x = unit(.1, "in"), pad_y = unit(0.2, "in"),
                            style = north_arrow_fancy_orienteering) +
     annotation_scale(location = "bl", bar_cols = c("black", "white", "black", "white")) +
-    scale_x_continuous(limits = c(-122.35, -121.3)) + 
-    scale_y_continuous(limits = c(37.8, 38.6)) +
+    scale_x_continuous(limits = c(-122.5, -121.3)) +  #(limits = c(-122.35, -121.3))
+    scale_y_continuous(limits = c(37.45, 38.6)) + #(limits = c(37.8, 38.6))
     scale_shape_manual(values = c(1, 15, 17, 4))+
     # scale_size(range = c(2, 2), breaks = c(1,1)) + 
     viridis::scale_fill_viridis(option = "turbo", discrete = TRUE) + 
@@ -306,7 +307,7 @@ kable(
 ggplot(lfs_wy) +
   geom_col(aes(date, total_catch, fill = source)) +
   labs(x = "Date", y = "Total Catch", fill = "Survey") + 
-  scale_fill_viridis(option = "turbo", discrete = TRUE) +
+  scale_fill_viridis(option = "viridis", discrete = TRUE) + #was turbo- hard to see
   theme_bw()
 ```
 
@@ -381,5 +382,5 @@ knitr::include_graphics(here("smelt_figures/clifton_court_temp.png"))
 
 ### References
 
-
+`r refs`
 
