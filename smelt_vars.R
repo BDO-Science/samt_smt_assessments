@@ -20,7 +20,7 @@ source("smelt_data_extraction.R")
 # 7. Need to render pdf separately from the html to get both to be updated (option in render in quarto doc)
 
 # Actions ---------------------
-first_flush_status = "relevant"
+first_flush_status = "not relevant"
 first_flush_lfs_status = "not relevant"
 adult_ent_status = "relevant"
 larval_ent_status = "relevant"
@@ -34,11 +34,10 @@ end_of_season = "not relevant"
 # - Summary of salvage and expectations of salvage
 
 narrative_text <- 
-"- First flush conditions were met on 12/23/25, and the action was implemented on 12/25/25.
-- The First flush action implementation period will end on 1/7/26, then other entrainment management actions will become active.
+"- The First flush action implementation period ended on 1/7/26. Entrainment management is currently active.
 - Delta smelt are primarily distributed west of the confluence, in Suisun Marsh
 - No Delta smelt or longfin smelt salvage has been observed this water year
-- Turbidity in the central/south Delta is high
+- Turbidity in the central/south Delta is moderate.
 "
 
 # Evaluation question responses ---------------------
@@ -63,32 +62,33 @@ Historically, detections of ripe Delta smelt began in January and peaked in Febr
 the majority of Delta Smelt spawning occurs within a temperature range of 9-18˚C (Damon et al. 2016). 
 Based on [historical monitoring data](https://github.com/Delta-Stewardship-Council/deltafish) from the past few years, 
 first detection of larvae in the Central and South Delta has typically occurred by mid to late March. 
-Based on historic data the migration is likely occurring now, and the onset of spawning has likely not yet occurred."
+Because first flush conditions were met on December 23, spawning-related behaviors may begin occurring during the 
+current assessment week, consistent with the typical one- to four-week response window following increased 
+flow and turbidity."
 
 # 4. After the onset of spawning, have the following conditions occurred: JPF < 0, 
 #daily average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 days?
-ds_eval_4 <- "The onset of spawning is unlikely to have occurred and JPF is not < 0 cfs."
+ds_eval_4 <- "Although spawning may begin during the current assessment period, JPF is  above 0 cfs; 
+therefore, the conditions required to evaluate larval and juvenile Delta smelt entrainment management are not met."
 
 # Longfin smelt
 
 # 1. If JPF < 0, what is the trajectory of annual loss of adult longfin smelt 
 #and is it likely to exceed 5% of the adult population estimate? 
 #Is South Delta entrainment expected to decrease due to a reduction in export pumping?
-lfs_eval_1 <- "JPF is not < 0 cfs and we have not detected any adult longfin 
-smelt in salvage. The ZOI analysis indicates little change in the hydrodynamic 
-footprint between current and forecasted flows this week. The analysis showed 
-a 65 km difference in hydrodynamic footprint between OMRI of –3500 cfs and –5000 
-cfs, indicating a low risk of entrainment."
+lfs_eval_1 <- "JPF is not < 0 cfs and no adult longfin smelt have been detected in salvage. 
+The ZOI analysis indicates no change in the hydrodynamic 
+footprint between current and forecasted flows this week."
 
 # 2. For larval and juvenile longfin smelt, if JPF < 0 cfs, do particle tracking 
 #models show a moderate to high difference in particle fates across different 
 #OMRI scenarios? Does Zone of Influence modeling show moderate to high changes 
 #in hydrodynamic footprint across different OMRI scenarios? Are these effects 
 #anticipated to cause a population decline?
-lfs_eval_2 <-  "JPF is not less than zero. No PTM was run this week. 
-ZOI modeling shows moderate changes in hydrodynamic footprint between OMRI scenarios."
+lfs_eval_2 <-  "JPF is not less than zero. ZOI modeling shows moderate change in the hydrodynamic footprint 
+between OMRI scenarios."
 
 # DONT NEED TO CHANGE UNLESS YOU WANT TO
 # 3. Is there additional information or other analyses that should be considered in this evaluation?
