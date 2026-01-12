@@ -78,9 +78,7 @@ therefore, the conditions required to evaluate larval and juvenile Delta smelt e
 # 1. If JPF < 0, what is the trajectory of annual loss of adult longfin smelt 
 #and is it likely to exceed 5% of the adult population estimate? 
 #Is South Delta entrainment expected to decrease due to a reduction in export pumping?
-lfs_eval_1 <- "JPF is not < 0 cfs and no adult longfin smelt have been detected in salvage. 
-The ZOI analysis indicates no change in the hydrodynamic 
-footprint between current and forecasted flows this week."
+lfs_eval_1 <- "JPF is not < 0 cfs and no adult longfin smelt have been detected in salvage."
 
 # 2. For larval and juvenile longfin smelt, if JPF < 0 cfs, do particle tracking 
 #models show a moderate to high difference in particle fates across different 
