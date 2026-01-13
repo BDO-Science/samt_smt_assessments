@@ -342,6 +342,8 @@ if (first_flush_lfs_status != "relevant") {
 
 - **Threshold:** JPF < 0 cfs, annual loss is on a trajectory to exceed 5% of the adult population abundance, and reduced exports will reduce entrainment in the south Delta
   - Daily average JPF: `r formatC(JPF_1d, format = 'f', big.mark = ',', digits = 0)` cfs as of `r format(JPF_1d_lastdate, "%b %d, %Y")`
+  - Adult abundance (Age 1+ LFS index): 2479.2 fish
+      - 5% of abundance + 1: 125.0
   - Water year total adult longfin smelt salvage = 0
   
 
