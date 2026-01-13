@@ -14,7 +14,7 @@ execute:
   warning: false
 ---
 
-## PRELIMINARY DATA: Assessment for Delta Operations on ESA and CESA-listed Salmonids
+## Assessment for Delta Operations on Salmonids
 
 Last updated: *`r format(Sys.Date(), "%B %d, %Y")`*
 
@@ -80,9 +80,8 @@ knitr::kable(wr_natural_timing, align = "lrrrrrr")
 #| label: fig-wr_loss
 #| echo: false
 #| message: false
-
-#| fig-cap: Cumulative loss of natural-origin winter-run for WY 2026.  Cumulative loss is based on genetically confirmed winter-run captured in salvage or length-at-date winter-run in which genetic confirmation was unable to be obtained
-#| fig-alt: Line chart of cumulative loss of natural-origin winter-run Chinook Salmon at Delta facilities where daily loss is tracked against the annual threshold.
+#| fig-cap: "Cumulative loss of natural-origin winter-run for WY 2026.  Cumulative loss is based on genetically confirmed winter-run captured in salvage or length-at-date winter-run in which genetic confirmation was unable to be obtained"
+#| fig-alt: "Line chart of cumulative loss of natural-origin winter-run Chinook Salmon at Delta facilities where daily loss is tracked against the annual threshold."
 #| fig-width: 10
 #| fig-height: 8
 #| out-width: "75%"
@@ -101,9 +100,8 @@ The Delta STARS Model is an individual-based simulation model that predicts surv
 #| label: fig-stars_survival
 #| echo: false
 #| message: false
-
-#| fig-cap: Estimated overall winter-run survival from Knights Landing to Chipps Island.  Black line indicates the current water-year, and other colored lines correspond to past water years.
-#| fig-alt: Line chart of estimated overall winter-run survival probability from Knights Landing to Chipps Island where the current water year is compared to historical years.
+#| fig-cap: "Estimated overall winter-run survival from Knights Landing to Chipps Island.  Black line indicates the current water-year, and other colored lines correspond to past water years."
+#| fig-alt: "Line chart of estimated overall winter-run survival probability from Knights Landing to Chipps Island where the current water year is compared to historical years."
 #| fig-width: 10
 #| fig-height: 8
 #| out-width: "75%"
@@ -116,9 +114,8 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 #| label: fig-stars_id_survival
 #| echo: false
 #| message: false
-
-#| fig-cap: Estimated survival from Knights Landing to Chipps Island of simulate winter-run cohorts that route through the interior delta.  Black line indicates the current water-year, and other colored lines correspond to past water years.
-#| fig-alt: Line chart of winter-run survival probability through the interior Delta where the current water year is compared to historical years.
+#| fig-cap: "Estimated survival from Knights Landing to Chipps Island of simulate winter-run cohorts that route through the interior delta.  Black line indicates the current water-year, and other colored lines correspond to past water years."
+#| fig-alt: "Line chart of winter-run survival probability through the interior Delta where the current water year is compared to historical years."
 #| fig-width: 10
 #| fig-height: 8
 #| out-width: "75%"
@@ -131,9 +128,8 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 #| label: fig-stars_id_routing
 #| echo: false
 #| message: false
-
-#| fig-cap: Estimated probability of winter-run routing into the interior delta.  Black line indicates the current water-year, and other colored lines correspond to past water years.
-#| fig-alt: Line chart of winter-run routing probability into the interior Delta where the current water year is compared to historical years.
+#| fig-cap: "Estimated probability of winter-run routing into the interior delta.  Black line indicates the current water-year, and other colored lines correspond to past water years."
+#| fig-alt: "Line chart of winter-run routing probability into the interior Delta where the current water year is compared to historical years."
 #| fig-width: 10
 #| fig-height: 8
 #| out-width: "75%"
@@ -183,9 +179,8 @@ As of `r format(Sys.Date()-1, '%B %d')`, cumulative loss of unclipped steelhead 
 #| label: fig-sh_loss
 #| echo: false
 #| message: false
-
-#| fig-cap: Cumulative loss of natural-origin steelhead for WY 2026.
-#| fig-alt: Line chart of cumulative loss of natural-origin Steelhead at Delta facilities where daily loss is tracked against the annual threshold.
+#| fig-cap: "Cumulative loss of natural-origin steelhead for WY 2026."
+#| fig-alt: "Line chart of cumulative loss of natural-origin Steelhead at Delta facilities where daily loss is tracked against the annual threshold."
 #| fig-width: 10
 #| fig-height: 8
 #| out-width: "75%"
@@ -216,9 +211,8 @@ Total loss of hatchery-origin steelhead is `r sh_clipped_loss_total` or `r sh_cl
 #| label: fig-sh_hatch_loss
 #| echo: false
 #| message: false
-
-#| fig-cap: Cumulative loss of hatchery steelhead for WY 2026.
-#| fig-alt: Line chart of cumulative loss of hatchery-origin Steelhead at Delta facilities where daily loss is tracked against the annual threshold.
+#| fig-cap: "Cumulative loss of hatchery steelhead for WY 2026."
+#| fig-alt: "Line chart of cumulative loss of hatchery-origin Steelhead at Delta facilities where daily loss is tracked against the annual threshold."
 #| fig-width: 10
 #| fig-height: 8
 #| out-width: "75%"
@@ -251,12 +245,12 @@ knitr::kable(sr_natural_timing, align = "lrrrrrr")
 
 #### Spring-run Surrogate Releases
 
-A total of `r total_sr_released_fmt` spring-run surrogate fish have been released in Water Year 2026. This includes `r coleman_total_fmt` Late-Fall Run Chinook Salmon (serving as production surrogates) released from Coleman National Fish Hatchery across `r coleman_n_groups` coded-wire tag groups, and `r fr_yearling_fmt` yearling and `r fr_yoy_fmt` young-of-year experimental surrogates from Feather River Hatchery (if applicable). See details in table below.
+A total of `r total_sr_released_fmt` spring-run surrogate fish have been released in Water Year 2026. See details in table below.
 
 ```{r}
 #| label: tbl-sr_surrogate_table
 #| results: asis
-#| tbl-cap: 'Spring-run Chinook Salmon Surrogate Releases (includes both production and experimental releases).'
+#| tbl-cap: 'Spring-run Chinook Salmon Surrogate Releases.'
 #| echo: false
 
 
@@ -266,7 +260,7 @@ knitr::kable(sr_surrogate_table_clean, align = "lrrrrl")
 
 #### Annual Loss
 
-The annual loss threshold is 1% of the total releases, which equals `r sr_threshold_fmt` fish. As of `r format(Sys.Date()-1, '%B %d')`, cumulative loss is `r sr_loss_total_fmt` fish or `r sr_loss_perc` of the annual loss threshold.
+The annual loss threshold is 1% of the total releases, which equals `r sr_threshold_fmt` fish. As of `r format(Sys.Date()-1, '%B %d')`, cumulative loss is `r sr_loss_total_fmt` fish or `r sr_surrogate_perc` of the annual loss threshold.
 
 ### Loss Prediction and Trajectories
 The following figures display the cumulative loss trajectories relative to historical years ("Spaghetti Plots") and the current loss predictor model outputs for Winter-run Chinook Salmon and Steelhead.
@@ -275,7 +269,7 @@ The following figures display the cumulative loss trajectories relative to histo
 #| label: fig-loss-eval
 #| echo: false
 #| message: false
-#| layout-ncol: 2
+#| layout-ncol: 1
 #| fig-cap: 
 #|   - "Natural LAD Winter-Run Chinook Salmon Loss Cumulative to Date with historical years and Single Year Loss Thresholds."
 #|   - "Natural Central Valley Steelhead Loss Cumulative to Date with historical years and Single Year Loss Thresholds."
@@ -296,11 +290,13 @@ image_read(paste0(base_url, 'LossUnclip_1_Winter_currhist.png'))
 # 2. Natural Steelhead Spaghetti Plot
 image_read(paste0(base_url, 'LossUnclip_2_Stlhd_currhist.png'))
 
-# 3. Winter-run Loss Predictor
-image_read(paste0(base_url, 'samt_lsp_winter.png'))
+# 3. Winter-run Loss Predictor (resize to match width of plots above)
+image_read(paste0(base_url, 'samt_lsp_winter.png')) %>%
+  image_scale("2000x")
 
-# 4. Steelhead Loss Predictor
-image_read(paste0(base_url, 'samt_lsp_stlhd.png'))
+# 4. Steelhead Loss Predictor (resize to match width of plots above)
+image_read(paste0(base_url, 'samt_lsp_stlhd.png')) %>%
+  image_scale("2000x")
 ```
 
 ### Evaluation
