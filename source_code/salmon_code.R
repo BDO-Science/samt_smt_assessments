@@ -411,11 +411,25 @@ url_sample_data <- data.frame(
 url_data <- bind_cols(url_sample_data, url_species_data)
 
 sample_list <- apply(url_data, 1, function(row){
-  read_csv(paste0('https://www.cbr.washington.edu/sacramento/data/php/rpt/sampling_graph.php?sc=1&outputFormat=csv&year=',by,'&species=',row['species'],'%3A',row['run'],'&loc=',row['sample'],'%3',row['site_code'],'&typeData=raw')) %>%
-    select(1, catch = 2) %>%
-    mutate(site = row['site_name'],
-           species = row['species'],
-           run = row['run'])
+  tryCatch({
+    read_csv(paste0('https://www.cbr.washington.edu/sacramento/data/php/rpt/sampling_graph.php?sc=1&outputFormat=csv&year=',by,'&species=',row['species'],'%3A',row['run'],'&loc=',row['sample'],'%3',row['site_code'],'&typeData=raw'), 
+             show_col_types = FALSE) %>%
+      select(1, catch = 2) %>%
+      mutate(site = row['site_name'],
+             species = row['species'],
+             run = row['run'])
+  }, error = function(e) {
+    message("Failed to fetch monitoring data for ", row['site_name'], " - ", row['run'], ": ", e$message)
+    # Return empty data frame with correct structure
+    data.frame(
+      Date = character(),
+      catch = numeric(),
+      site = row['site_name'],
+      species = row['species'],
+      run = row['run'],
+      stringsAsFactors = FALSE
+    )
+  })
 })
 
 all_sample <- bind_rows(sample_list) %>%
@@ -427,6 +441,7 @@ all_sample <- bind_rows(sample_list) %>%
   group_by(region, species, run) %>%
   summarize(catch = sum(catch, na.rm = TRUE),
             start_date = min(Date))
+
 ###########################################
 #pull in RBDD stuff
 ###########################################
@@ -446,53 +461,144 @@ sr_passage <- round(sum(sr_rbdd$passage_estimate, na.rm = TRUE)/1000000,2)
 sr_rbdd_date <- max(sr_rbdd$date, na.rm = TRUE)
 
 ###########################################
-#spring-run hatchery surrogates
+# spring-run hatchery surrogates
 ###########################################
-sr_url <- paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,'/cwt_spring_surrogates.html')
 
-sr_surrogate <- read_html(sr_url) %>% 
-  html_nodes("table") %>%
-  html_table(fill = T, header = TRUE) 
+# Per Action 5:
+# 1. Yearling: Coleman Late-Fall Production (Includes Experimental)
+# 2. Young of Year: Feather River Spring-Run Production (Includes Experimental)
 
-# Clean the table data
-sr_surrogate_table <- sr_surrogate[[1]] %>%
-  select(1:5,7,10,11) %>% # Select relevant columns from source
-  mutate(`# of CWT Fish Released` = as.numeric(gsub(",", "", `# of CWT Fish Released`)))
+cwt_url <- paste0('https://www.cbr.washington.edu/sacramento/data/delta_cwt_tables.html')
 
-# Create the clean table for display (Removes per-row threshold columns)
-sr_surrogate_table_clean <- sr_surrogate_table %>%
-  select(1:5, `# of CWT Fish Released`, `Confirmed Loss`) 
-# Note: This removes any columns implying individual thresholds
+# Initialize with empty data frame (Fallback)
+lfr_data_clean <- data.frame(
+  `Release ID`=character(), 
+  `Tag Code`=character(), 
+  `Hatchery`=character(), 
+  `Stock`=character(), 
+  `Release Date`=character(), 
+  `Type`=character(), 
+  `# of CWT Fish Released`=numeric(), 
+  `Confirmed Loss`=numeric(), 
+  check.names=FALSE
+)
 
-# --- Aggregate Calculations for Text & Exec Summary ---
-# 1. Total Spring-run Surrogates Released
-total_sr_released <- sum(sr_surrogate_table$`# of CWT Fish Released`, na.rm = TRUE)
+# Fetch and Process Data safely
+lfr_data_clean <- tryCatch({
+  cwt_page <- read_html(cwt_url)
+  tables <- cwt_page %>% html_table(fill = TRUE)
+  
+  all_surrogates <- data.frame()
+  
+  # Helper to process a raw table
+  process_cwt_table <- function(raw_table, has_loss_col = FALSE) {
+    if(is.null(raw_table) || nrow(raw_table) == 0) return(data.frame())
+    
+    df <- raw_table %>% clean_names()
+    
+    # Filter for Target Releases (Production + Experimental)
+    df_filtered <- df %>%
+      filter(
+        as.Date(release_start) >= as.Date(paste0(wy-1, "-10-01")),
+        grepl("Production|Experimental", release_type, ignore.case = TRUE),
+        ((grepl("Late-Fall", cwt_tag_race, ignore.case = TRUE) & 
+            grepl("Coleman", hatchery, ignore.case = TRUE)) |
+           (grepl("Spring", cwt_tag_race, ignore.case = TRUE) & 
+              grepl("Feather", hatchery, ignore.case = TRUE)))
+      )
+    
+    if(nrow(df_filtered) == 0) return(data.frame())
+    
+    df_filtered %>%
+      mutate(
+        release_date = release_start,
+        tag_codes_str = if(has_loss_col) confirmed_loss_cwt_tagcodes else cwt_tagcodes,
+        num_released = as.numeric(gsub(",", "", as.character(cwt_number_released))),
+        loss = if(has_loss_col) as.numeric(gsub(",", "", as.character(loss))) else 0,
+        race = cwt_tag_race,
+        hatch = hatchery
+      ) %>%
+      select(hatch, release_date, race, tag_codes_str, num_released, loss) %>%
+      filter(!is.na(num_released))
+  }
+  
+  # Get Confirmed Loss (Table 1) and No Loss (Table 3)
+  if (length(tables) >= 1) all_surrogates <- bind_rows(all_surrogates, process_cwt_table(tables[[1]], TRUE))
+  if (length(tables) >= 3) all_surrogates <- bind_rows(all_surrogates, process_cwt_table(tables[[3]], FALSE))
+  
+  if (nrow(all_surrogates) == 0) {
+    lfr_data_clean 
+  } else {
+    # Expand Multiple Tags and Format
+    all_surrogates %>%
+      rowwise() %>%
+      mutate(n_tags = if_else(is.na(tag_codes_str) | tag_codes_str == "" | tag_codes_str == "None", 0L, as.integer(length(strsplit(tag_codes_str, ", ")[[1]])))) %>%
+      ungroup() %>%
+      filter(n_tags > 0) %>%
+      separate_rows(tag_codes_str, sep = ", ") %>%
+      group_by(hatch, release_date, race, num_released, loss, n_tags) %>%
+      mutate(num_per_tag = num_released / n_tags, loss_per_tag = loss / n_tags) %>%
+      ungroup() %>%
+      mutate(
+        `Tag Code` = tag_codes_str, `Hatchery` = hatch, `Stock` = race, `Release Date` = release_date,
+        `Type` = if_else(grepl("Late-Fall", race, ignore.case = TRUE), "Yearling", "Young-of-year"),
+        `# of CWT Fish Released` = num_per_tag, `Confirmed Loss` = loss_per_tag
+      ) %>%
+      select(`Tag Code`, `Hatchery`, `Stock`, `Release Date`, `Type`, `# of CWT Fish Released`, `Confirmed Loss`) %>%
+      distinct()
+  }
+}, error = function(e) { lfr_data_clean })
 
-# 2. Total Threshold (1% of Total Released)
-sr_surrogate_threshold_val <- total_sr_released * 0.01
+# --- Metrics Calculation ---
+total_sr_released <- if(nrow(lfr_data_clean) > 0) sum(lfr_data_clean$`# of CWT Fish Released`, na.rm = TRUE) else 0
+sr_loss_total <- if(nrow(lfr_data_clean) > 0) sum(lfr_data_clean$`Confirmed Loss`, na.rm = TRUE) else 0
 
-# 3. Total Confirmed Loss
-sr_surrogate_loss_total <- sum(sr_surrogate_table$`Confirmed Loss`, na.rm = TRUE)
+sr_jpe <- total_sr_released
+sr_threshold_val <- sr_jpe * 0.01
 
-# 4. Percent of Threshold Used
-sr_surrogate_perc <- if(sr_surrogate_threshold_val > 0) {
-  paste0(sprintf("%.2f", (sr_surrogate_loss_total / sr_surrogate_threshold_val) * 100), "%")
+# --- Define Variables specifically required by your .qmd file ---
+total_sr_released_fmt <- prettyNum(total_sr_released, big.mark = ",")
+sr_threshold_fmt <- prettyNum(round(sr_threshold_val, 0), big.mark = ",")
+sr_loss_total_fmt <- prettyNum(sr_loss_total, big.mark = ",")
+sr_loss_perc <- if(sr_threshold_val > 0) paste0(sprintf("%.2f", (sr_loss_total / sr_threshold_val) * 100), "%") else "0.00%"
+
+# Coleman (Yearling) Variables
+coleman_releases <- if(nrow(lfr_data_clean) > 0) lfr_data_clean %>% filter(grepl("Coleman", Hatchery, ignore.case = TRUE)) else data.frame()
+coleman_total_fmt <- prettyNum(sum(coleman_releases$`# of CWT Fish Released`, na.rm=TRUE), big.mark = ",")
+coleman_n_groups <- nrow(coleman_releases)
+
+# Feather River (YOY) Variables
+fr_releases <- if(nrow(lfr_data_clean) > 0) lfr_data_clean %>% filter(grepl("Feather", Hatchery, ignore.case = TRUE)) else data.frame()
+fr_yearling_fmt <- prettyNum(sum(fr_releases[fr_releases$Type == 'Yearling',]$`# of CWT Fish Released`, na.rm=TRUE), big.mark = ",")
+fr_yoy_fmt <- prettyNum(sum(fr_releases[fr_releases$Type == 'Young-of-year',]$`# of CWT Fish Released`, na.rm=TRUE), big.mark = ",")
+
+# Legacy variables (just in case)
+sr_surrogate_threshold_val <- sr_threshold_val
+sr_surrogate_loss_total <- sr_loss_total
+sr_surrogate_perc <- sr_loss_perc
+
+# --- Clean Table for Display ---
+if(nrow(lfr_data_clean) > 0) {
+  sr_surrogate_table_clean <- lfr_data_clean %>%
+    group_by(`Hatchery`, `Release Date`, `Stock`, `Type`) %>%
+    summarize(
+      `# of CWT Fish Released` = sum(`# of CWT Fish Released`, na.rm = TRUE),
+      `Confirmed Loss` = sum(`Confirmed Loss`, na.rm = TRUE),
+      `CWT Codes` = paste(sort(unique(`Tag Code`)), collapse = ", "),
+      .groups = "drop"
+    ) %>%
+    mutate(
+      `# of CWT Fish Released` = round(`# of CWT Fish Released`, 0),
+      `Confirmed Loss` = round(`Confirmed Loss`, 1)
+    ) %>%
+    arrange(`Release Date`)
 } else {
-  "0.00%"
+  sr_surrogate_table_clean <- data.frame(
+    `Hatchery`=character(), `Release Date`=character(), `Type`=character(),
+    `# of CWT Fish Released`=numeric(), `Confirmed Loss`=numeric(), `CWT Codes`=character(),
+    check.names=FALSE
+  )
 }
-
-# --- Summary Counts for Text ---
-yearling <- sr_surrogate_table %>%
-  filter(Type == 'Yearling') %>%
-  summarize(total = sum(`# of CWT Fish Released`, na.rm = TRUE)) %>%
-  pull() %>%
-  prettyNum(big.mark = ",")
-
-yoy <- sr_surrogate_table %>%
-  filter(Type == 'Young-of-year') %>%
-  summarize(total = sum(`# of CWT Fish Released`, na.rm = TRUE)) %>%
-  pull() %>%
-  prettyNum(big.mark = ",")
 
 ###########################################
 #EXECUTIVE SUMMARY LOGIC
@@ -563,4 +669,3 @@ get_presence_status <- function(species_name, entry_pct, exit_pct, catch_keyword
     TRUE ~ paste0(species_name, " presence in the Delta is **low** (immigration has not peaked).")
   )
 }
-
