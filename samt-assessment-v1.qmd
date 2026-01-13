@@ -318,4 +318,3 @@ image_read(paste0(base_url, 'samt_lsp_stlhd.png'))
     `r risk_q3`
 
 
-### References
