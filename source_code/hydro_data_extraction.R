@@ -128,5 +128,9 @@ vns = flow_clean %>%
 # The data_triggers file needs to be updated manually
 triggers <- read_csv("data_raw/data_triggers.csv")
 triggers_clean <- triggers %>%
-  mutate(date = mdy(date_triggered))
+  mutate(date = mdy(date_triggered),
+         date_implemented= mdy(date_implemented),
+         implementation_end= mdy(implementation_end))
 
+triggers_shading <- triggers_clean %>% 
+  filter(!is.na(implementation_end))

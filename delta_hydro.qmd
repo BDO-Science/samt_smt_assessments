@@ -4,15 +4,20 @@ format:
     toc: true
     standalone: false
     title-block-style: none
+    ascii: true
   pdf:
     fig-dpi: 1000
     fig-pos: "H"
   docx:
     fig-dpi: 1000
+execute:
+  echo: false
+  warning: false
+  error: false
 engine: knitr
 ---
 
-## PRELIMINARY DATA: Current Delta Hydrologic Conditions
+## Current Delta Hydrologic Conditions
 
 Last updated: *`r format(Sys.Date(), "%B %d, %Y")`*
 
@@ -86,6 +91,8 @@ flow_plot
 #| include: false
 omr_plot <- 
   ggplot() +
+  geom_rect(data= triggers_shading, aes(xmin= date_implemented, xmax= implementation_end), ymin=-Inf, ymax= Inf, 
+            fill= "gray70", alpha= 0.5, inherit.aes = FALSE)+
   geom_line(data = omr_clean, aes(x = date, y = value, color = measure), linewidth = 1) +
   geom_vline(data = triggers_clean, aes(xintercept = date), linewidth = 1.5, linetype = 'dashed', color = '#888888')+
   geom_text(data = triggers_clean, aes(x = date-2, y = -9500, label = plot_label), size = 5, fontface = 'bold')+
@@ -105,7 +112,7 @@ omr_plot
 ```{r}
 #| label: fig-triggers
 #| warning: false
-#| fig-cap: "Operations and Action Summary, WY 2026. The colors in the OMRI plot indicate different types of triggers (see Table 1). OMRI data calculated by SacPAS, Freeport (FPT) and Vernalis (VNS) flow data from CDEC, and CVP (TRP) and SWP (HRO) exports data from CDEC."
+#| fig-cap: "Operations and Action Summary, WY 2026. The numbers and dashed lines in the OMRI plot indicate different triggers (see Table 1), with shading representing specific action periods. OMRI data (colored lines) calculated by SacPAS, Freeport (FPT) and Vernalis (VNS) flow data from CDEC, and CVP (TRP) and SWP (HRO) exports data from CDEC."
 #| fig-width: 9
 #| fig-height: 7
 #| echo: false
