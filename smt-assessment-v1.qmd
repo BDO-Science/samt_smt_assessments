@@ -33,6 +33,12 @@ library(viridis)
 source("smelt_data_extraction.R")
 source("smelt_functions.R")
 source("smelt_vars.R")
+
+# Setting up shortcuts to use for less than/equal to, greater than/equal to, and degree symbol that can be used inside
+# R strings/glue()
+GE  <- "$\\ge$"
+LE  <- "$\\le$"
+DEG <- "$^{\\circ}$"
 ```
 
 ## Weekly Assessment for Delta Operations on ESA and CESA-listed Osmerids
@@ -147,7 +153,7 @@ if (first_flush_status != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-**Threshold**: 3-day avg FPT flow $\\ge$ 25,000 cfs and 3-day avg FPT turbidity $\\ge$ 50 FNU
+**Threshold**: 3-day avg FPT flow {GE} 25,000 cfs and 3-day avg FPT turbidity {GE} 50 FNU
 
 - **FPT Flow (3-day average)**: {format(round(FPT_flow_avg), big.mark = ",")} cfs as of {format(env_last_date, '%b %d, %Y')}
 - **FPT Turbidity (3-day average)**: {FPT_turb_avg} FNU as of {format(env_last_date, '%b %d, %Y')}
@@ -171,16 +177,16 @@ if (adult_ent_status != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-**Threshold**: If daily average JPF < 0 AND turbidity $\\ge$ 12 FNU at OBI, HOL and OSJ
+**Threshold**: If daily average JPF < 0 AND turbidity {GE} 12 FNU at OBI, HOL and OSJ
 
 - **JPF**: {paste(formatC(JPF_1d, format = 'f', big.mark = ',', digits = 0), collapse = ', ')} cfs as of {format(JPF_1d_lastdate, '%b %d, %Y')}
 - **OBI Turbidity**: {paste(OBI_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 - **HOL Turbidity**: {paste(HOL_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 - **OSJ Turbidity**: {paste(OSJ_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 
-<u>**Offramp Adult/Onramp Larval and Juvenile Protections** when RVB or SJJ > 12°C</u>
+<u>**Offramp Adult Protections** when RVB or SJJ > 12{DEG}C </u>
 
-- **RVB temperature (3-day average)**: {RVB_temp}°C as of {format(env_last_date, '%b %d, %Y')}
+- **RVB temperature (3-day average)**: {RVB_temp}{DEG}C as of {format(env_last_date, '%b %d, %Y')}
 "))
 }
 
@@ -205,7 +211,7 @@ if (larval_ent_status != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-**Threshold**: After the onset of spawning, if JPF < 0 cfs AND turbidity is $\\ge$ 12 FNU in the south Delta AND PTM modeling indicates the action would avoid $\\ge$ 5% entrainment of Delta smelt population after 30 days
+**Threshold**: After the onset of spawning, if JPF < 0 cfs AND turbidity is {GE} 12 FNU in the south Delta AND PTM modeling indicates the action would avoid {GE} 5% entrainment of Delta smelt population after 30 days
 
   - **12-station South Delta Turbidity**: The most recent average turbidity was {sd_turb} FNU as of {format(sd_turb_date, '%b %d, %Y')}
 "))
@@ -220,7 +226,7 @@ if (larval_ent_status != "relevant") {
 
     `r ds_eval_1`
 
-2. Has the average water temperature at Jersey Point or Rio Vista not exceeded 53.6°F (12°C) for 3 consecutive days and/or has this action already been taken during WY 2026?
+2. Has the average water temperature at Jersey Point or Rio Vista not exceeded 53.6$^{\circ}$F (12$^{\circ}$C) for 3 consecutive days and/or has this action already been taken during WY 2026?
 
     `r ds_eval_2`
 
@@ -367,9 +373,9 @@ if (end_of_season != "relevant") {
   cat("- Not relevant\n")
 } else {
   cat(glue("
-**Threshold**: CLC > 25° for 3 consecutive days OR June 30
+**Threshold**: CLC {GE} 25{DEG}C (77{DEG}F) for 3 consecutive days OR June 30
 
-- Clifton Court Temperature: {paste(CLC_temp, collapse = ', ')}°C as of {format(env_last_date, '%b %d, %Y')}
+- Clifton Court Temperature: {paste(CLC_temp, collapse = ', ')}{DEG}C as of {format(env_last_date, '%b %d, %Y')}
 "))
 }
 ```
