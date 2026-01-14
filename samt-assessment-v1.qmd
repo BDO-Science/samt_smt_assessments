@@ -245,22 +245,22 @@ knitr::kable(sr_natural_timing, align = "lrrrrrr")
 
 #### Spring-run Surrogate Releases
 
-A total of `r total_sr_released_fmt` spring-run surrogate fish have been released in Water Year 2026. See details in table below.
+A total of `r total_sr_released_fmt` spring-run surrogate fish have been released in Water Year 2026, with an estimated Juvenile Production Estimate (JPE) of `r total_sr_jpe_fmt` fish entering the Delta. This includes `r coleman_total_fmt` Coleman Late-Fall Run Chinook (JPE: `r coleman_jpe_fmt`) released from Coleman National Fish Hatchery across `r coleman_n_groups` coded-wire tag groups. See details in table below.
 
 ```{r}
 #| label: tbl-sr_surrogate_table
 #| results: asis
-#| tbl-cap: 'Spring-run Chinook Salmon Surrogate Releases.'
+#| tbl-cap: 'Spring-run Chinook Salmon Surrogate Releases (all Coleman Late-Fall releases, both production and experimental).'
 #| echo: false
 
 
-knitr::kable(sr_surrogate_table_clean, align = "lrrrrl")
+knitr::kable(sr_surrogate_table_clean, align = "lrrccrl")
 
 ```
 
 #### Annual Loss
 
-The annual loss threshold is 1% of the total releases, which equals `r sr_threshold_fmt` fish. As of `r format(Sys.Date()-1, '%B %d')`, cumulative loss is `r sr_loss_total_fmt` fish or `r sr_surrogate_perc` of the annual loss threshold.
+The annual loss threshold is 1% of the JPE entering the Delta, which equals `r sr_threshold_fmt` fish. As of `r format(Sys.Date()-1, '%B %d')`, cumulative loss is `r sr_loss_total_fmt` fish or `r sr_loss_perc` of the annual loss threshold.
 
 ### Loss Prediction and Trajectories
 The following figures display the cumulative loss trajectories relative to historical years ("Spaghetti Plots") and the current loss predictor model outputs for Winter-run Chinook Salmon and Steelhead.
