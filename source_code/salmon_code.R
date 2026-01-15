@@ -303,48 +303,128 @@ sj_table <- read.table(text = sj_valley_data,
 wy_types_all <- bind_rows(sac_table, sj_table)
 
 ###Steelhead JPE data calculation
-surv <- read_csv(here(project, 'input_data/sh_hatchery_survival.csv'))
 
-releases <- read_csv(here(project, 'input_data/wy_2026_sh_releases.csv')) %>%
-  mutate(date = mdy(date),
-         basin = if_else(hatchery == 'MKFH', 'sj', 'sac'),
-         month = month(date)) %>%
-  left_join(wy_types_all, by = c('month', 'basin')) %>%
-  mutate(type = if_else(is.na(type), lead(type, 1), type)) %>%
-  mutate(type = 'BN') %>%
-  left_join(surv, by = c('hatchery', 'type' = 'wy_type')) %>%
-  mutate(jpe = round(stocked * survival,0))
+# Try to fetch from SacPAS HTML table first
+sh_jpe_url <- paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,'/hatch_stlhd_jpe.html')
+
+steelhead_jpe_data <- tryCatch({
+  message("Attempting to fetch steelhead JPE from SacPAS...")
+  sh_page <- read_html(sh_jpe_url)
+  sh_tables <- sh_page %>% html_table(fill = TRUE)
+  
+  if (length(sh_tables) > 0) {
+    message("Found ", length(sh_tables), " table(s) on steelhead JPE page")
+    
+    # Get the main table and clean it
+    sh_table <- sh_tables[[1]] %>%
+      clean_names()
+    
+    message("Steelhead JPE table has ", nrow(sh_table), " rows and columns: ",
+            paste(names(sh_table), collapse = ", "))
+    
+    # Process the table - column names from SacPAS:
+    # start_date, end_date, hatchery, mark_type, marked, total_released, release_type,
+    # wsi_basin, wsi_prob_exceedance_percent, wsi_rel_month_forecast, 
+    # wsi_water_year_type, wy_type_applied_survival_estimate, 
+    # juvenile_production_estimate, surv_est_range_source
+    sh_processed <- sh_table %>%
+      filter(!is.na(hatchery), hatchery != "", hatchery != "Hatchery") %>%
+      mutate(
+        hatchery = as.character(hatchery),
+        date = as.character(start_date),
+        stocked = as.numeric(gsub(",", "", as.character(total_released))),
+        survival = as.numeric(wy_type_applied_survival_estimate),
+        jpe = as.numeric(gsub(",", "", as.character(juvenile_production_estimate)))
+      ) %>%
+      select(hatchery, date, stocked, survival, jpe) %>%
+      filter(!is.na(stocked), stocked > 0)
+    
+    message("Successfully processed ", nrow(sh_processed), " steelhead releases from SacPAS")
+    
+    # Return the data
+    list(
+      data = sh_processed,
+      source = "SacPAS HTML"
+    )
+  } else {
+    message("No tables found on steelhead JPE page, falling back to CSV")
+    NULL
+  }
+}, error = function(e) {
+  message("Failed to fetch steelhead JPE from SacPAS: ", e$message)
+  message("Falling back to manual CSV files")
+  NULL
+})
+
+# If SacPAS fetch succeeded, use that data; otherwise fall back to CSV
+if (!is.null(steelhead_jpe_data)) {
+  releases <- steelhead_jpe_data$data
+  message("Using steelhead JPE data from ", steelhead_jpe_data$source)
+} else {
+  # Fall back to original CSV-based approach
+  message("Using manual CSV files for steelhead JPE calculation")
+  surv <- read_csv(here(project, 'input_data/sh_hatchery_survival.csv'))
+  
+  releases <- read_csv(here(project, 'input_data/wy_2026_sh_releases.csv')) %>%
+    mutate(date = mdy(date),
+           basin = if_else(hatchery == 'MKFH', 'sj', 'sac'),
+           month = month(date)) %>%
+    left_join(wy_types_all, by = c('month', 'basin')) %>%
+    mutate(type = if_else(is.na(type), lead(type, 1), type)) %>%
+    mutate(type = 'BN') %>%
+    left_join(surv, by = c('hatchery', 'type' = 'wy_type')) %>%
+    mutate(jpe = round(stocked * survival,0))
+}
 
 release_table <- releases %>%
-  select(1:4, 10:11)
+  select(hatchery, date, stocked, survival, jpe)
 
-new_column_names <- c('Hatchery', 'Date of Release', 'Mean Fork Length (mm)', 'Number Released', 'Estimated Survival', 'Juvenile Production Estimate')
+new_column_names <- c('Hatchery', 'Date of Release', 'Number Released', 'Estimated Survival', 'Juvenile Production Estimate')
 
 release_table_print <- release_table %>% 
-  mutate(hatchery = factor(hatchery, levels = c('CNFH', 'NMFH', 'FRFH', 'MKFH'),
-                           labels = c('Coleman', 'Nimbus', 'Feather River', 'Mokelumne River')),
-         survival = paste0(round(survival * 100, 0),'%'),
-         stocked = prettyNum(stocked, big.mark = ","),
-         jpe = prettyNum(jpe, big.mark = ","))
+  mutate(
+    hatchery = case_when(
+      grepl("CNFH|Coleman", hatchery, ignore.case = TRUE) ~ "Coleman",
+      grepl("NMFH|Nimbus", hatchery, ignore.case = TRUE) ~ "Nimbus",
+      grepl("FRFH|Feather", hatchery, ignore.case = TRUE) ~ "Feather River",
+      grepl("MKFH|Mokelumne", hatchery, ignore.case = TRUE) ~ "Mokelumne River",
+      TRUE ~ hatchery
+    ),
+    survival = paste0(round(survival * 100, 0),'%'),
+    stocked = prettyNum(stocked, big.mark = ","),
+    jpe = prettyNum(jpe, big.mark = ",")
+  )
 
 colnames(release_table_print) <- new_column_names
 
 ###numbers for text
-sh_stocked <- sum(release_table$stocked) %>% prettyNum(big.mark = ",")
-sh_jpe <- sum(release_table$jpe) %>% prettyNum(big.mark = ",")
-sh_survival <- paste0(round(mean(release_table$survival)*100,0),'%')
-sh_clipped_threshold <- round(sum(release_table$jpe) * 0.01,0)
-n_releases <- nrow(release_table)
+sh_stocked <- sum(releases$stocked, na.rm = TRUE) %>% prettyNum(big.mark = ",")
+sh_jpe <- sum(releases$jpe, na.rm = TRUE) %>% prettyNum(big.mark = ",")
+sh_survival <- paste0(round(mean(releases$survival, na.rm = TRUE)*100,0),'%')
+sh_clipped_threshold <- round(sum(releases$jpe, na.rm = TRUE) * 0.01,0)
+n_releases <- nrow(releases)
 
 sh_clipped_loss_total <- loss_summary_table %>%
   select(hatchery_steelhead) %>%
   slice(3) %>%
   pull()
+
+# Convert to numeric safely
+sh_clipped_loss_total <- as.numeric(gsub(",", "", as.character(sh_clipped_loss_total)))
+if (is.na(sh_clipped_loss_total)) sh_clipped_loss_total <- 0
+
 sh_7d <- loss_summary_table %>%
   select(hatchery_steelhead) %>%
   slice(1) %>%
   pull()
-sh_clipped_perc_threshold <- paste0(round((sh_clipped_loss_total/(sum(release_table$jpe) * .01))*100,2),'%')
+
+# Calculate percentage of threshold
+sh_jpe_total <- sum(releases$jpe, na.rm = TRUE)
+if (sh_jpe_total > 0 && sh_clipped_loss_total >= 0) {
+  sh_clipped_perc_threshold <- paste0(round((sh_clipped_loss_total / (sh_jpe_total * 0.01)) * 100, 2), '%')
+} else {
+  sh_clipped_perc_threshold <- "0.00%"
+}
 
 
 ###########################################
@@ -399,7 +479,9 @@ all_sampling <- bind_rows(sample_list) %>%
          `Date End` = if_else(is.infinite(`Date End`), NA, `Date End`),
          mutate(across(4:10, as.numeric)))
 
-####pull in annual monitoring data
+###########################################
+#pull in annual monitoring data
+###########################################
 url_species_data = data.frame(species = rep(c('CHN', 'CHN', 'RBT'),5), run = rep(c('Winter', 'Spring', 'NA'),5)) %>%
   arrange(species, run)
 url_sample_data <- data.frame(
@@ -420,13 +502,13 @@ sample_list <- apply(url_data, 1, function(row){
              run = row['run'])
   }, error = function(e) {
     message("Failed to fetch monitoring data for ", row['site_name'], " - ", row['run'], ": ", e$message)
-    # Return empty data frame with correct structure
+    # FIX: Return empty data frame with ALL columns set to length 0
     data.frame(
       Date = character(),
       catch = numeric(),
-      site = row['site_name'],
-      species = row['species'],
-      run = row['run'],
+      site = character(),     # Changed from row['site_name'] to character()
+      species = character(),  # Changed from row['species'] to character()
+      run = character(),      # Changed from row['run'] to character()
       stringsAsFactors = FALSE
     )
   })
@@ -441,6 +523,7 @@ all_sample <- bind_rows(sample_list) %>%
   group_by(region, species, run) %>%
   summarize(catch = sum(catch, na.rm = TRUE),
             start_date = min(Date))
+
 ###########################################
 #pull in RBDD stuff
 ###########################################
@@ -582,38 +665,36 @@ sr_all_releases <- lfr_data_clean %>%
 
 # 4. Calculate JPE (Juvenile Production Estimate) for Spring-Run Surrogates
 # JPE = Number Released × Survival Rate
-# Load survival estimates from data file
+# Per regulations: "The JPE shall be determined by the historical average survival"
 
-# Read spring-run hatchery survival data
-sr_survival <- read.csv(here(project, 'input_data/sr_hatchery_survival.csv'))
+# Survival lookup table - ONLY values from sr_hatchery_survival.csv
+surv_lookup <- tibble(
+  Hatchery     = c(rep("Feather River Hatchery", 6), rep("Coleman NFH", 4)),
+  run          = c(rep("Spring", 6), rep("Late-Fall", 4)),
+  WY           = c(2025, 2024, 2023, 2021, 2020, 2019, 2026, 2021, 2020, 2019),
+  survival_est = c(40.5, 30.8, 40.6, 49.4, 26.8, 28.6, 11.5, 14.3, 60.4, 23.0)
+)
 
-# For WY2026, use:
-# - CNFH 2026 data if available (Coleman Late-Fall as surrogate)
-# - FRFH most recent year data (Feather River Spring-Run if available)
-cnfh_survival <- sr_survival %>%
-  filter(hatchery == 'CNFH', year == wy) %>%
-  pull(survival)
+# Calculate historical average survival rates
+# Use ALL years including current year (2026) per scenario 1
+cnfh_survival <- surv_lookup %>%
+  filter(Hatchery == "Coleman NFH") %>%
+  summarise(mean_survival = mean(survival_est, na.rm = TRUE)) %>%
+  pull(mean_survival)
 
-# If no 2026 Coleman data, use most recent
-if (length(cnfh_survival) == 0) {
-  cnfh_survival <- sr_survival %>%
-    filter(hatchery == 'CNFH') %>%
-    arrange(desc(year)) %>%
-    slice(1) %>%
-    pull(survival)
-}
-
-frfh_survival <- sr_survival %>%
-  filter(hatchery == 'FRFH') %>%
-  arrange(desc(year)) %>%
-  slice(1) %>%
-  pull(survival)
+# Feather River - use historical average (all years available)
+frfh_survival <- surv_lookup %>%
+  filter(Hatchery == "Feather River Hatchery") %>%
+  summarise(mean_survival = mean(survival_est, na.rm = TRUE)) %>%
+  pull(mean_survival)
 
 # Convert to proportions (from percentages)
 cnfh_survival_prop <- cnfh_survival / 100
 frfh_survival_prop <- frfh_survival / 100
 
-message("Using survival rates: Coleman = ", cnfh_survival, "%, Feather River = ", frfh_survival, "%")
+message("Using survival rates: Coleman Late-Fall = ", round(cnfh_survival, 1), 
+        "% (all years 2019-2021, 2026 from sr_hatchery_survival.csv), Feather River Spring = ", 
+        round(frfh_survival, 1), "% (all years from sr_hatchery_survival.csv)")
 
 # Apply survival rates to surrogate releases
 sr_all_releases_jpe <- sr_all_releases %>%
@@ -629,7 +710,7 @@ sr_all_releases_jpe <- sr_all_releases %>%
 # 5. Calculate Combined Metrics using JPE
 total_sr_released <- sum(sr_all_releases$`# of CWT Fish Released`, na.rm = TRUE)
 total_sr_jpe <- sum(sr_all_releases_jpe$jpe, na.rm = TRUE)
-sr_threshold_val <- total_sr_jpe * 0.01  # 1% of JPE (not releases)
+sr_threshold_val <- total_sr_jpe * 0.01  # 1% of JPE
 sr_loss_total <- sum(sr_all_releases$`Confirmed Loss`, na.rm = TRUE)
 
 sr_loss_perc <- if(sr_threshold_val > 0) {
@@ -671,33 +752,48 @@ coleman_jpe_fmt <- prettyNum(coleman_jpe_total, big.mark = ",")
 
 # 7. Clean Table for Report Display
 # Group by release date and hatchery since individual CWT codes don't matter for assessment
-sr_surrogate_table_clean <- sr_all_releases_jpe %>%
-  # Final validation - remove any remaining bad rows
-  filter(
-    !is.na(`Tag Code`),
-    `Tag Code` != "",
-    !is.na(`# of CWT Fish Released`),
-    `# of CWT Fish Released` > 0
-  ) %>%
-  # Group by release event (date + hatchery + type)
-  group_by(`Hatchery`, `Release Date`, `Stock`, `Type`) %>%
-  summarize(
-    `# of CWT Fish Released` = sum(`# of CWT Fish Released`, na.rm = TRUE),
-    `JPE` = sum(jpe, na.rm = TRUE),
-    `Confirmed Loss` = sum(`Confirmed Loss`, na.rm = TRUE),
-    `CWT Codes` = paste(sort(unique(`Tag Code`)), collapse = ", "),
-    .groups = "drop"
-  ) %>%
-  # Format numbers for display
-  mutate(
-    `# of CWT Fish Released` = prettyNum(round(`# of CWT Fish Released`, 0), big.mark = ","),
-    `JPE` = prettyNum(round(JPE, 0), big.mark = ","),
-    `Confirmed Loss` = round(`Confirmed Loss`, 1)
-  ) %>%
-  # Select and order columns
-  select(`Hatchery`, `Release Date`, `Type`, `# of CWT Fish Released`, `JPE`, `Confirmed Loss`, `CWT Codes`) %>%
-  # Sort by release date
-  arrange(`Release Date`)
+# 6. Create Clean Table for Report Display
+sr_surrogate_table_clean <- if(nrow(sr_all_releases_jpe) > 0) {
+  sr_all_releases_jpe %>%
+    # Final validation - remove any remaining bad rows
+    filter(
+      !is.na(`Tag Code`),
+      `Tag Code` != "",
+      !is.na(`# of CWT Fish Released`),
+      `# of CWT Fish Released` > 0
+    ) %>%
+    # Group by release event (date + hatchery + type)
+    group_by(`Hatchery`, `Release Date`, `Stock`, `Type`) %>%
+    summarize(
+      `# of CWT Fish Released` = sum(`# of CWT Fish Released`, na.rm = TRUE),
+      `JPE` = sum(jpe, na.rm = TRUE),
+      `Confirmed Loss` = sum(`Confirmed Loss`, na.rm = TRUE),
+      `CWT Codes` = paste(sort(unique(`Tag Code`)), collapse = ", "),
+      .groups = "drop"
+    ) %>%
+    # Format numbers for display
+    mutate(
+      `# of CWT Fish Released` = prettyNum(round(`# of CWT Fish Released`, 0), big.mark = ","),
+      `JPE` = prettyNum(round(JPE, 0), big.mark = ","),
+      `Confirmed Loss` = round(`Confirmed Loss`, 1)
+    ) %>%
+    # Select and order columns
+    select(`Hatchery`, `Release Date`, `Type`, `# of CWT Fish Released`, `JPE`, `Confirmed Loss`, `CWT Codes`) %>%
+    # Sort by release date
+    arrange(`Release Date`)
+} else {
+  # Return empty data frame with correct structure
+  data.frame(
+    `Hatchery` = character(),
+    `Release Date` = character(),
+    `Type` = character(),
+    `# of CWT Fish Released` = character(),
+    `JPE` = character(),
+    `Confirmed Loss` = numeric(),
+    `CWT Codes` = character(),
+    check.names = FALSE
+  )
+}
 
 # Legacy variable names for compatibility
 sr_surrogate_threshold_val <- sr_threshold_val

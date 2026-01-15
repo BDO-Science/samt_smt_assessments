@@ -252,10 +252,13 @@ A total of `r total_sr_released_fmt` spring-run surrogate fish have been release
 #| results: asis
 #| tbl-cap: 'Spring-run Chinook Salmon Surrogate Releases (all Coleman Late-Fall releases, both production and experimental).'
 #| echo: false
+#| warning: false
 
-
-knitr::kable(sr_surrogate_table_clean, align = "lrrccrl")
-
+# Using kableExtra to fix column widths and prevent wrapping
+knitr::kable(sr_surrogate_table_clean, align = "lrrccrl") %>%
+  kable_styling(full_width = FALSE, position = "left") %>%
+  column_spec(2, width_min = "8em") %>%  # Forces 'Release Date' to be wide enough
+  column_spec(7, width_max = "20em")     # Optional: Prevents CWT Codes from getting too wide
 ```
 
 #### Annual Loss

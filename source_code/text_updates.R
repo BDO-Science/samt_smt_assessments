@@ -32,7 +32,7 @@ salvage_status <- if(total_loss > 0) {
          loss_hatch_wr, "** (", wr_hatch_perc, " of threshold) Hatchery Winter-run, **", 
          loss_nat_sh, "** (", sh_perc, " of threshold) Natural Steelhead, **", 
          loss_hatch_sh, "** (", sh_clipped_perc_threshold, " of threshold) Hatchery Steelhead, and **",
-         sr_surrogate_loss_total, "** (", sr_surrogate_perc, " of threshold) Spring-run Surrogates.")
+         sr_loss_total, "** (", sr_loss_perc, " of threshold) Spring-run Surrogates.")
 } else {
   "No salmonid loss has been recorded this season."
 }
@@ -80,20 +80,20 @@ wr_threshold <- if(is.na(jpe)) {
                prettyNum(round(jpe*wr_loss_threshold, 2), big.mark = ","), 
                ' fish.'))
 }
-  
+
 wr_hatchery_releases <- if(nrow(wr_hatch) == 0) {
-   print(paste0('To date, no winter-run Livingstone hatchery releases have occurred in WY ',wy))
-  } else {
-     print(paste0('A total of xx fish were released from Livingston Stone National Fish Hatchery on xx'))
-   }
+  print(paste0('To date, no winter-run Livingstone hatchery releases have occurred in WY ',wy))
+} else {
+  print(paste0('A total of xx fish were released from Livingston Stone National Fish Hatchery on xx'))
+}
 
 wr_hatchery_loss <- if(nrow(wr_hatch) == 0) {
   print('To date, no loss has occurred as no hatchery winter-run have been released.')
 } else {
-    print(paste0('As of ',format(Sys.Date(), '%B %d'), ' cumulative loss of Livingston Stone hatchery fish is ', 
-                 wr_hatch_loss, ' or ', wr_hatch_perc, 
-                 ' of the annual loss threshold. Cumulative loss in the past 7 days has been ', wr_hatch_7d, '.'))
-  }
+  print(paste0('As of ',format(Sys.Date(), '%B %d'), ' cumulative loss of Livingston Stone hatchery fish is ', 
+               wr_hatch_loss, ' or ', wr_hatch_perc, 
+               ' of the annual loss threshold. Cumulative loss in the past 7 days has been ', wr_hatch_7d, '.'))
+}
 
 
 #####################################################
@@ -166,8 +166,8 @@ wr_delta_catch <- if(nrow(delta_sampling) == 0){
   print('No catch has been reported at delta monitoring loactions (Sacramento Tralws and Beach Seines) in the past two weeks.')
 } else {
   print(paste0("Total catch at Sacramento Trawl and Beach Seines in the delta between ",
-                        format(min(all_sampling[4:5, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
-                        format(max(all_sampling[4:5, 3, drop = TRUE], na.rm = TRUE), '%b %d'), ' is ', sum(all_sampling[4:5,4]), ' individuals.'))
+               format(min(all_sampling[4:5, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
+               format(max(all_sampling[4:5, 3, drop = TRUE], na.rm = TRUE), '%b %d'), ' is ', sum(all_sampling[4:5,4]), ' individuals.'))
 }
 
 sr_delta_catch <- if(nrow(delta_sampling) == 0){
@@ -191,8 +191,8 @@ wr_exit_catch <- if(nrow(exit_sampling) == 0){
   print('No catch has been reported at Delta Exit at Chipps Island Trawls in the past two weeks.')
 } else {
   print(paste0('Total catch at Delta Exit at Chipps Island between ',
-                        format(min(all_sampling[6, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
-                        format(max(all_sampling[6, 3, drop = TRUE], na.rm = TRUE), '%b %d'), ' is ', sum(all_sampling[6,4]), ' individuals.'))
+               format(min(all_sampling[6, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
+               format(max(all_sampling[6, 3, drop = TRUE], na.rm = TRUE), '%b %d'), ' is ', sum(all_sampling[6,4]), ' individuals.'))
 }
 sr_exit_catch <- if(nrow(exit_sampling) == 0){
   print('No catch has been reported at Delta Exit at Chipps Island Trawls in the past two weeks.')
@@ -250,9 +250,9 @@ current_wr_7d <- if(exists("wr_7d")) wr_7d else 0
 risk_q1 <- get_risk_assessment("Natural Winter-run", loss_dna_wr, current_wr_7d, wr_threshold_val)
 
 # Spring-run Surrogates
-sr_thresh_safe <- if(exists("sr_surrogate_threshold_val")) sr_surrogate_threshold_val else 0
-sr_loss_safe   <- if(exists("sr_surrogate_loss_total")) sr_surrogate_loss_total else 0
-sr_recent_safe <- if(exists("wr_hatch_7d")) wr_hatch_7d else 0 
+sr_thresh_safe <- if(exists("sr_threshold_val")) sr_threshold_val else 0
+sr_loss_safe   <- if(exists("sr_loss_total")) sr_loss_total else 0
+sr_recent_safe <- 0  # No 7-day tracking for spring-run surrogates
 risk_q2 <- get_risk_assessment("Spring-run Surrogates", sr_loss_safe, sr_recent_safe, sr_thresh_safe)
 
 # Hatchery Steelhead
@@ -288,4 +288,3 @@ risk_q3 <- get_risk_assessment("Hatchery Steelhead", sh_loss_safe, sh_recent_saf
 #####################################################
 ##setting language for RBDD passage estimates
 #####################################################
-
