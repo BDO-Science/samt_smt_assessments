@@ -323,24 +323,61 @@ doc <- doc %>%
   ), style = "Normal") %>%
   body_add_par("", style = "Normal") %>%
   body_add_par(paste0(
-    "Based on this language emphasizing 'historical average survival,' the recommended method is:"
+    "Based on this language and current practice, the recommended method is:"
   ), style = "Normal") %>%
   body_add_par("", style = "Normal") %>%
   body_add_par(paste0(
-    "Scenario 2: All Releases + Historical Mean (Historical Years Only) = ", round(survival_historical_only, 1), "%"
+    "Scenario 1: All Releases + Historical Mean (All Years) = ", round(survival_all_years, 1), "%"
   ), style = "Normal") %>%
   body_add_par("", style = "Normal") %>%
   body_add_par(paste0(
     "This approach: (1) aligns with the regulatory language to use historical averages, ",
-    "(2) uses only the years in sr_hatchery_survival.csv that represent historical baseline (2019-2021), ",
-    "(3) excludes the current year 2026 which is still being observed, and ",
-    "(4) matches the original calculation approach used in previous analyses."
+    "(2) uses all available years in sr_hatchery_survival.csv (2019-2021, 2026), ",
+    "(3) includes both historical baseline and current year observations, and ",
+    "(4) provides the most comprehensive survival estimate from available telemetry data."
   ), style = "Normal") %>%
   body_add_par("", style = "Normal") %>%
   body_add_par(paste0(
-    "Alternative: Scenario 1 (All Years average = ", round(survival_all_years, 1), "%) ",
-    "could be used for a more conservative approach that includes the current year's estimate."
-  ), style = "Normal")
+    "Alternative: Scenario 2 (Historical Years Only = ", round(survival_historical_only, 1), "%) ",
+    "excludes the current year 2026 and uses only the historical baseline (2019-2021)."
+  ), style = "Normal") %>%
+  body_add_par("", style = "Normal")
+
+# Add copy-paste section for weekly assessment
+doc <- doc %>%
+  body_add_par("Summary for Weekly Assessment", style = "heading 2") %>%
+  body_add_par(paste0(
+    "The following text can be copied into the weekly salmon assessment report:"
+  ), style = "Normal") %>%
+  body_add_par("", style = "Normal")
+
+# Calculate the recommended scenario values (using ALL YEARS approach)
+recommended_releases <- sum(release_summary$total_released)
+recommended_jpe <- round(recommended_releases * (survival_all_years / 100), 0)
+recommended_threshold <- round(recommended_jpe * 0.01, 0)
+recommended_current_loss <- sum(release_summary$total_loss)
+recommended_pct <- round((recommended_current_loss / recommended_threshold) * 100, 1)
+
+# Add boxed copy-paste text
+copy_paste_text <- paste0(
+  "Spring-Run Chinook Salmon Surrogate Releases (WY", wy, "):\n\n",
+  "A total of ", prettyNum(recommended_releases, big.mark = ","), " Coleman Late-Fall Chinook salmon ",
+  "(yearling surrogates) have been released from production and experimental groups. ",
+  "Using the historical average survival rate (", round(survival_all_years, 1), "% from all available years 2019-2021, 2026), ",
+  "the Juvenile Production Estimate (JPE) entering the Delta is approximately ",
+  prettyNum(recommended_jpe, big.mark = ","), " fish.\n\n",
+  "The annual loss threshold for spring-run surrogates is 1% of the JPE, which equals ",
+  prettyNum(recommended_threshold, big.mark = ","), " fish. ",
+  "As of [INSERT DATE], cumulative loss is ", prettyNum(round(recommended_current_loss, 1), big.mark = ","), 
+  " fish or ", recommended_pct, "% of the annual loss threshold.\n\n",
+  "JPE Calculation Method: Historical average survival (", round(survival_all_years, 1), 
+  "%) applied to all Coleman Late-Fall releases ",
+  "(both production and experimental), consistent with Biological Opinion requirements to track spring-run ",
+  "loss using Coleman Late-Fall as yearling surrogates."
+)
+
+doc <- doc %>%
+  body_add_par(copy_paste_text, style = "Normal")
 
 # Save document
 output_file <- "springrun_threshold_comparison.docx"
