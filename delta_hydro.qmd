@@ -113,6 +113,7 @@ omr_plot
 #| label: fig-triggers
 #| warning: false
 #| fig-cap: "Operations and Action Summary, WY 2026. The numbers and dashed lines in the OMRI plot indicate different triggers (see Table 1), with shading representing specific action periods. OMRI data (colored lines) calculated by SacPAS, Freeport (FPT) and Vernalis (VNS) flow data from CDEC, and CVP (TRP) and SWP (HRO) exports data from CDEC."
+#| fig-alt: "Three part plot showing hydrologic conditions over time. Top plot shows a time series of flow at Vernalis and Freeport. The middle plot shows a time series of daily, weekly, and 14-day average OMRI, with vertical lines and shading to show when actions were taken. The lower plot is a column chart showing combined exports from both CVP and SWP."
 #| fig-width: 9
 #| fig-height: 7
 #| echo: false
@@ -160,7 +161,8 @@ Change in altered channel length between OMR levels is `r channel_filter_current
 #| include: true
 #| out-width: "100%"
 #| results: asis
-#| fig-cap: Modeled Zone of Influence at different OMRI scenarios based on current inflow hydrology (left) and forecasted inflow hydrology (right) from the Sacramento River and San Joaquin River
+#| fig-cap: "Modeled Zone of Influence at different OMRI scenarios based on current inflow hydrology (left) and forecasted inflow hydrology (right) from the Sacramento River and San Joaquin River"
+#| fig-alt: "Two-part figure showing results for current hydrology (left) and forecasted hydrology (right). Each map of the Delta shows contour lines for the extent of the hydrologic footprint for different OMRI scenarios (colors)."
 
 map_file_current <- grep(hydrology_current, mapList, value = TRUE)
 map_file_forecast <- grep(hydrology_forecast, mapList, value = TRUE)
