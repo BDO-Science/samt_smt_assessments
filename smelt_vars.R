@@ -34,7 +34,7 @@ end_of_season = "not relevant"
 # - Summary of salvage and expectations of salvage
 
 narrative_text <- 
-"- The First flush action implementation period ended on 1/7/26. Entrainment management is currently active.
+"- Entrainment management is currently active.
 - Delta smelt are primarily distributed west of the confluence, in Suisun Marsh
 - No Delta smelt or longfin smelt salvage has been observed this water year
 - Turbidity in the central/south Delta is moderate.
