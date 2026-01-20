@@ -62,7 +62,7 @@ Historically, detections of ripe Delta smelt began in January and peaked in Febr
 the majority of Delta Smelt spawning occurs within a temperature range of 9-18˚C (Damon et al. 2016). 
 Based on [historical monitoring data](https://github.com/Delta-Stewardship-Council/deltafish) from the past few years, 
 first detection of larvae in the Central and South Delta has typically occurred by mid to late March. 
-Because first flush conditions were met on December 23, spawning-related behaviors may begin occurring during the 
+Because first flush conditions were met on December 23, 2025, spawning may begin occurring during the 
 current assessment week, consistent with the typical one- to four-week response window following increased 
 flow and turbidity."
 
@@ -70,7 +70,7 @@ flow and turbidity."
 #daily average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 days?
-ds_eval_4 <- "Although spawning may begin during the current assessment period, JPF is  above 0 cfs; 
+ds_eval_4 <- "Although spawning may begin during the current assessment period, JPF is above 0 cfs; 
 therefore, the conditions required to evaluate larval and juvenile Delta smelt entrainment management are not met."
 
 # Longfin smelt
@@ -85,8 +85,8 @@ lfs_eval_1 <- "JPF is not < 0 cfs and no adult longfin smelt have been detected 
 #OMRI scenarios? Does Zone of Influence modeling show moderate to high changes 
 #in hydrodynamic footprint across different OMRI scenarios? Are these effects 
 #anticipated to cause a population decline?
-lfs_eval_2 <-  "JPF is not less than zero. ZOI modeling shows moderate change in the hydrodynamic footprint 
-between OMRI scenarios."
+lfs_eval_2 <-  "JPF is not < 0 cfs. ZOI modeling shows moderate change in the hydrodynamic footprint 
+between OMRI scenarios, but no change between current and forecasted conditions."
 
 # DONT NEED TO CHANGE UNLESS YOU WANT TO
 # 3. Is there additional information or other analyses that should be considered in this evaluation?
