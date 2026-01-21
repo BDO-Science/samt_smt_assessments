@@ -33,6 +33,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="samt-assessment-v1_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="samt-assessment-v1_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="samt-assessment-v1_files/libs/bootstrap/bootstrap-c08d41e4f07cd8822b1e4e5b85fd8082.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="samt-assessment-v1_files/libs/tabwid-1.1.3/tabwid.css" rel="stylesheet">
+
+<script src="samt-assessment-v1_files/libs/tabwid-1.1.3/tabwid.js"></script>
+
 
 
 </head>
@@ -52,9 +56,10 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#hatchery-winter-run-chinook" id="toc-hatchery-winter-run-chinook" class="nav-link" data-scroll-target="#hatchery-winter-run-chinook">Hatchery Winter-run Chinook</a></li>
   <li><a href="#natural-origin-central-valley-steelhead" id="toc-natural-origin-central-valley-steelhead" class="nav-link" data-scroll-target="#natural-origin-central-valley-steelhead">Natural-origin Central Valley Steelhead</a></li>
   <li><a href="#hatchery-origin-central-valley-steelhead" id="toc-hatchery-origin-central-valley-steelhead" class="nav-link" data-scroll-target="#hatchery-origin-central-valley-steelhead">Hatchery-origin Central Valley Steelhead</a></li>
-  <li><a href="#spring-run" id="toc-spring-run" class="nav-link" data-scroll-target="#spring-run">Spring-run</a></li>
+  <li><a href="#spring-run-chinook" id="toc-spring-run-chinook" class="nav-link" data-scroll-target="#spring-run-chinook">Spring-run Chinook</a></li>
   <li><a href="#loss-prediction-and-trajectories" id="toc-loss-prediction-and-trajectories" class="nav-link" data-scroll-target="#loss-prediction-and-trajectories">Loss Prediction and Trajectories</a></li>
   <li><a href="#evaluation" id="toc-evaluation" class="nav-link" data-scroll-target="#evaluation">Evaluation</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="samt-assessment-v1.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="samt-assessment-v1.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
@@ -64,17 +69,39 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<div class="cell">
+<style type="text/css">
+/* Left-align figure captions */
+.figure figcaption, 
+.quarto-figure figcaption,
+caption {
+  text-align: left !important;
+  font-style: italic;
+  margin-top: 0.5em;
+}
+
+/* Consistent font throughout */
+body {
+  font-family: 'Calibri', 'Arial', sans-serif;
+  font-size: 11pt;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Calibri', 'Arial', sans-serif;
+}
+</style>
+</div>
 <section id="assessment-for-delta-operations-on-salmonids" class="level2">
 <h2 class="anchored" data-anchor-id="assessment-for-delta-operations-on-salmonids">Assessment for Delta Operations on Salmonids</h2>
-<p>Last updated: <em>January 15, 2026</em></p>
+<p>Last updated: <em>January 21, 2026</em></p>
 <p>For more detailed data on salmonid conditions in the Delta see corresponding webpage on <a href="https://www.cbr.washington.edu/sacramento/workgroups/salmon_monitoring.html">SacPAS</a>.</p>
 <section id="executive-summary" class="level3">
 <h3 class="anchored" data-anchor-id="executive-summary">Executive Summary</h3>
 <ul>
 <li><p>Entrainment management season is <strong>active</strong>.</p></li>
-<li><p>Season Loss: <strong>0</strong> (0.00% of threshold) DNA Winter-run, <strong>0</strong> (0.00% of threshold) Hatchery Winter-run, <strong>43.91</strong> (0.83% of threshold) Natural Steelhead, <strong>148.05</strong> (2.5% of threshold) Hatchery Steelhead, and <strong>988.16</strong> (44.95% of threshold) Spring-run Surrogates.</p></li>
+<li><p>Season Loss: <strong>0</strong> (0.00% of threshold) DNA Winter-run, <strong>0</strong> (0.00% of threshold) Hatchery Winter-run, <strong>43.91</strong> (0.83% of threshold) Natural Steelhead, <strong>148.05</strong> (2.5% of threshold) Hatchery Steelhead, and <strong>992.49</strong> (45.14% of threshold) Spring-run Surrogates.</p></li>
 <li><p>Winter-run presence in the Delta is <strong>decreasing</strong> (winding down).</p></li>
-<li><p>Steelhead presence in the Delta is <strong>increasing</strong>.</p></li>
+<li><p>Steelhead presence in the Delta is <strong>high</strong> (historical peak).</p></li>
 </ul>
 </section>
 <section id="natural-winter-run-chinook" class="level3">
@@ -85,63 +112,33 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="current-status" class="level4">
 <h4 class="anchored" data-anchor-id="current-status">Current Status</h4>
-<p><em>Entry Timing</em> - Historically, as of Jan 14, 76% of length-at-date (LAD) winter-run have entered the delta based on Knights Landing RST catch, 2% have exited the delta based on Chipps Island Trawl Catch, and 0% of DNA confirmed winter-run have been salvaged.</p>
-<div id="tbl-wr_timing_table" class="cell anchored">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 31%">
-<col style="width: 15%">
-<col style="width: 7%">
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 5%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Species</th>
-<th style="text-align: right;">Red Bluff Diversion Dam</th>
-<th style="text-align: right;">Tisdale RST</th>
-<th style="text-align: right;">Knights Landing RST</th>
-<th style="text-align: right;">Sac Trawl (Sherwood)</th>
-<th style="text-align: right;">Chipps Island Trawl</th>
-<th style="text-align: right;">Salvage</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Chinook, LAD Winter-run, Unclipped</td>
-<td style="text-align: right;">98%</td>
-<td style="text-align: right;">80%</td>
-<td style="text-align: right;">76%</td>
-<td style="text-align: right;">39%</td>
-<td style="text-align: right;">2%</td>
-<td style="text-align: right;">17%</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Chinook, DNA Winter-run, Unclipped (Water Year)</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">0%</td>
-</tr>
-</tbody>
-</table>
+<p><em>Delta Entry Timing</em> - Historically, as of Jan 20, 79% of length-at-date (LAD) winter-run have entered the Delta based on Knights Landing RST catch, 2% have exited the Delta based on Chipps Island Trawl Catch, and 2% of DNA confirmed winter-run have been salvaged.</p>
+<div class="cell">
+<div id="tbl-wr_timing_table" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-wr_timing_table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Average percent of annual emigrating population for unclipped LAD winter-run captured at monitoring locations and salvaged at Delta facilities for the past 10 years
+</figcaption>
+<div aria-describedby="tbl-wr_timing_table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div class="tabwid"><style>.cl-6773935a{}.cl-676c97c6{font-family:'Calibri';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-676f757c{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-676f8b7a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-676f8b84{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-676f8b85{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-6773935a"><thead><tr style="overflow-wrap:break-word;"><th class="cl-676f8b7a"><p class="cl-676f757c"><span class="cl-676c97c6">Species</span></p></th><th class="cl-676f8b7a"><p class="cl-676f757c"><span class="cl-676c97c6">Red Bluff Diversion Dam</span></p></th><th class="cl-676f8b7a"><p class="cl-676f757c"><span class="cl-676c97c6">Tisdale RST</span></p></th><th class="cl-676f8b7a"><p class="cl-676f757c"><span class="cl-676c97c6">Knights Landing RST</span></p></th><th class="cl-676f8b7a"><p class="cl-676f757c"><span class="cl-676c97c6">Sac Trawl (Sherwood)</span></p></th><th class="cl-676f8b7a"><p class="cl-676f757c"><span class="cl-676c97c6">Chipps Island Trawl</span></p></th><th class="cl-676f8b7a"><p class="cl-676f757c"><span class="cl-676c97c6">Salvage</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-676f8b84"><p class="cl-676f757c"><span class="cl-676c97c6">Chinook, LAD Winter-run, Unclipped</span></p></td><td class="cl-676f8b84"><p class="cl-676f757c"><span class="cl-676c97c6">98%</span></p></td><td class="cl-676f8b84"><p class="cl-676f757c"><span class="cl-676c97c6">85%</span></p></td><td class="cl-676f8b84"><p class="cl-676f757c"><span class="cl-676c97c6">79%</span></p></td><td class="cl-676f8b84"><p class="cl-676f757c"><span class="cl-676c97c6">43%</span></p></td><td class="cl-676f8b84"><p class="cl-676f757c"><span class="cl-676c97c6">2%</span></p></td><td class="cl-676f8b84"><p class="cl-676f757c"><span class="cl-676c97c6">19%</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-676f8b85"><p class="cl-676f757c"><span class="cl-676c97c6">Chinook, DNA Winter-run, Unclipped (Water Year)</span></p></td><td class="cl-676f8b85"><p class="cl-676f757c"><span class="cl-676c97c6"></span></p></td><td class="cl-676f8b85"><p class="cl-676f757c"><span class="cl-676c97c6"></span></p></td><td class="cl-676f8b85"><p class="cl-676f757c"><span class="cl-676c97c6"></span></p></td><td class="cl-676f8b85"><p class="cl-676f757c"><span class="cl-676c97c6"></span></p></td><td class="cl-676f8b85"><p class="cl-676f757c"><span class="cl-676c97c6"></span></p></td><td class="cl-676f8b85"><p class="cl-676f757c"><span class="cl-676c97c6">2%</span></p></td></tr></tbody></table></div>
 </div>
-<p><em>Red Bluff Diversion Dam Passage Estimate</em> - As of Dec 31 estimated passage to date of LAD winter run at Red Bluff Diversion is approximately 4.16 million fish. * <em>Note that outmigration timing overlaps with spring run migrating fish, and true winter-run abundance likely differs from these estimates.</em></p>
-<p><em>Delta Monitoring</em> - Total catch of LAD winter run at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River) between Jan 01 and Jan 12 is 184 individuals. Total catch at Sacramento Trawl and Beach Seines in the delta between Jan 02 and Jan 14 is 3 individuals. Total catch at Delta Exit at Chipps Island between Jan 05 and Jan 08 is 1 individuals.</p>
+</div>
+</figure>
+</div>
+</div>
+<p><em>Red Bluff Diversion Dam Passage Estimate</em> - As of Jan 14 estimated passage to date of LAD winter-run at Red Bluff Diversion is approximately 4.16 million fish. <em>Note that outmigration timing overlaps with spring-run migrating fish, and true winter-run abundance likely differs from these estimates.</em></p>
+<p><em>Delta Monitoring</em> - Total catch of LAD winter run at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River) between Jan 07 and Jan 19 is 137 individuals. Total catch at Sacramento Trawl and Beach Seines in the delta between Jan 07 and Jan 20 is 3 individuals. Total catch at Delta Exit at Chipps Island between Jan 08 and Jan 20 is 0 individuals.</p>
 </section>
 <section id="annual-loss" class="level4">
 <h4 class="anchored" data-anchor-id="annual-loss">Annual Loss</h4>
-<p>The annual Loss threshold for natural winter-run is 1% of the jpe or 10,574.52 fish. As of January 14, cumulative loss of genetically confirmed winter-run is 0 or 0.00% of the annual loss threshold. Cumulative loss in the past 7 days has been 0.</p>
+<p>The annual Loss threshold for natural winter-run is 1% of the jpe or 10,575 fish. As of January 20, cumulative loss of genetically confirmed winter-run is 0 or 0.00% of the annual loss threshold. Cumulative loss in the past 7 days has been 0.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-wr_loss" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Line chart of cumulative loss of natural-origin winter-run Chinook Salmon at Delta facilities where daily loss is tracked against the annual threshold.">
+<div id="fig-wr_loss" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Line chart of cumulative loss of natural-origin winter-run Chinook salmon at Delta facilities where daily loss is tracked against the annual threshold">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-wr_loss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="samt-assessment-v1_files/figure-html/fig-wr_loss-1.png" class="img-fluid figure-img" style="width:75.0%" alt="Line chart of cumulative loss of natural-origin winter-run Chinook Salmon at Delta facilities where daily loss is tracked against the annual threshold.">
+<img src="samt-assessment-v1_files/figure-html/fig-wr_loss-1.png" class="img-fluid figure-img" style="width:75.0%" alt="Line chart of cumulative loss of natural-origin winter-run Chinook salmon at Delta facilities where daily loss is tracked against the annual threshold">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wr_loss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: Cumulative loss of natural-origin winter-run for WY 2026. Cumulative loss is based on genetically confirmed winter-run captured in salvage or length-at-date winter-run in which genetic confirmation was unable to be obtained
@@ -154,16 +151,16 @@ Figure&nbsp;1: Cumulative loss of natural-origin winter-run for WY 2026. Cumulat
 <section id="stars" class="level4">
 <h4 class="anchored" data-anchor-id="stars">STARS</h4>
 <p>The Delta STARS Model is an individual-based simulation model that predicts survival, travel time, and routing of juvenile salmon migrating through the Sacramento–San Joaquin River Delta. This model gives insight into survival and routing patterns of winter-run based on most current conditions.</p>
-<p>As of January 14, overall through delta STARS estimated survival probability (with 80% credible intervals) is 0.71 (0.64-0.77) placing it in the 90th percentile of historical STARS survival estimates for the month of January (WYs 2018-2025). STARS estimated routing and survival probabilities (with 80% credible intervals) into the interior delta are 0.11 (0.09-0.13) and 0.51 (0.34-0.68), respectively, corresponding to the 14th and 87th percentiles of historical January estimates (WYs 2018-2025).</p>
+<p>As of January 20, overall through delta STARS estimated survival probability (with 80% credible intervals) is 0.64 (0.58-0.7) placing it in the 79th percentile of historical STARS survival estimates for the month of January (WYs 2018-2025). STARS estimated routing and survival probabilities (with 80% credible intervals) into the interior delta are 0.12 (0.1-0.13) and 0.37 (0.22-0.52), respectively, corresponding to the 23rd and 77th percentiles of historical January estimates (WYs 2018-2025).</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-stars_survival" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Line chart of estimated overall winter-run survival probability from Knights Landing to Chipps Island where the current water year is compared to historical years.">
+<div id="fig-stars_survival" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Line chart of estimated overall winter-run survival probability from Knights Landing to Chipps Island where the current water year is compared to historical years">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-stars_survival-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="samt-assessment-v1_files/figure-html/fig-stars_survival-1.png" class="img-fluid figure-img" style="width:75.0%" alt="Line chart of estimated overall winter-run survival probability from Knights Landing to Chipps Island where the current water year is compared to historical years.">
+<img src="samt-assessment-v1_files/figure-html/fig-stars_survival-1.png" class="img-fluid figure-img" style="width:75.0%" alt="Line chart of estimated overall winter-run survival probability from Knights Landing to Chipps Island where the current water year is compared to historical years">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stars_survival-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Estimated overall winter-run survival from Knights Landing to Chipps Island. Black line indicates the current water-year, and other colored lines correspond to past water years.
+Figure&nbsp;2: Estimated overall winter-run survival from Knights Landing to Chipps Island. Black line indicates the current water-year, and other colored lines correspond to past water years
 </figcaption>
 </figure>
 </div>
@@ -171,13 +168,13 @@ Figure&nbsp;2: Estimated overall winter-run survival from Knights Landing to Chi
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-stars_id_survival" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Line chart of winter-run survival probability through the interior Delta where the current water year is compared to historical years.">
+<div id="fig-stars_id_survival" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Line chart of winter-run survival probability through the interior Delta where the current water year is compared to historical years">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-stars_id_survival-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="samt-assessment-v1_files/figure-html/fig-stars_id_survival-1.png" class="img-fluid figure-img" style="width:75.0%" alt="Line chart of winter-run survival probability through the interior Delta where the current water year is compared to historical years.">
+<img src="samt-assessment-v1_files/figure-html/fig-stars_id_survival-1.png" class="img-fluid figure-img" style="width:75.0%" alt="Line chart of winter-run survival probability through the interior Delta where the current water year is compared to historical years">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stars_id_survival-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Estimated survival from Knights Landing to Chipps Island of simulate winter-run cohorts that route through the interior delta. Black line indicates the current water-year, and other colored lines correspond to past water years.
+Figure&nbsp;3: Estimated survival from Knights Landing to Chipps Island of simulated winter-run cohorts that route through the interior Delta. Black line indicates the current water-year, and other colored lines correspond to past water years
 </figcaption>
 </figure>
 </div>
@@ -185,13 +182,13 @@ Figure&nbsp;3: Estimated survival from Knights Landing to Chipps Island of simul
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-stars_id_routing" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Line chart of winter-run routing probability into the interior Delta where the current water year is compared to historical years.">
+<div id="fig-stars_id_routing" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Line chart of winter-run routing probability into the interior Delta where the current water year is compared to historical years">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-stars_id_routing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="samt-assessment-v1_files/figure-html/fig-stars_id_routing-1.png" class="img-fluid figure-img" style="width:75.0%" alt="Line chart of winter-run routing probability into the interior Delta where the current water year is compared to historical years.">
+<img src="samt-assessment-v1_files/figure-html/fig-stars_id_routing-1.png" class="img-fluid figure-img" style="width:75.0%" alt="Line chart of winter-run routing probability into the interior Delta where the current water year is compared to historical years">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stars_id_routing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Estimated probability of winter-run routing into the interior delta. Black line indicates the current water-year, and other colored lines correspond to past water years.
+Figure&nbsp;4: Estimated probability of winter-run routing into the interior Delta. Black line indicates the current water-year, and other colored lines correspond to past water years
 </figcaption>
 </figure>
 </div>
@@ -207,7 +204,7 @@ Figure&nbsp;4: Estimated probability of winter-run routing into the interior del
 </section>
 <section id="juvenile-production-estimate-1" class="level4">
 <h4 class="anchored" data-anchor-id="juvenile-production-estimate-1">Juvenile Production Estimate</h4>
-<p>The Juvenile Production Estimate for hatchery winter-run is 130,096 for Livingston Stone releases.</p>
+<p>The Juvenile Production Estimate for hatchery winter-run is 130,096 based on current Livingston Stone production estimates. <strong>Note: Physical releases have not yet occurred in WY 2026.</strong></p>
 </section>
 <section id="annual-loss-1" class="level4">
 <h4 class="anchored" data-anchor-id="annual-loss-1">Annual Loss</h4>
@@ -218,63 +215,35 @@ Figure&nbsp;4: Estimated probability of winter-run routing into the interior del
 <h3 class="anchored" data-anchor-id="natural-origin-central-valley-steelhead">Natural-origin Central Valley Steelhead</h3>
 <section id="current-status-1" class="level4">
 <h4 class="anchored" data-anchor-id="current-status-1">Current Status</h4>
-<p><em>Delta Entry Timing</em> - Historically, as of Jan 14, 16% of CCV steelhead have entered the delta based on Knights Landing RST catch, 1% have exited the delta based on Chipps Island Trawl Catch, and 6% have been salvaged.</p>
+<p><em>Delta Entry Timing</em> - Historically, as of Jan 20, 26% of CCV steelhead have entered the Delta based on Knights Landing RST catch, 2% have exited the Delta based on Chipps Island Trawl Catch, and 7% have been salvaged.</p>
+<div class="cell">
 <div id="tbl-sh_timing_table" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sh_timing_table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Average Percent of annual emigrating population for unclipped CCV steelhead captured at the following locations and salvaged at SWP and CVP Delta facilities for the past 10 years.
+Table&nbsp;2: Average percent of annual emigrating population for unclipped CCV steelhead captured at monitoring locations and salvaged at Delta facilities for the past 10 years
 </figcaption>
 <div aria-describedby="tbl-sh_timing_table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="cell caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 16%">
-<col style="width: 19%">
-<col style="width: 9%">
-<col style="width: 15%">
-<col style="width: 16%">
-<col style="width: 15%">
-<col style="width: 6%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Species</th>
-<th style="text-align: right;">Red Bluff Diversion Dam</th>
-<th style="text-align: right;">Tisdale RST</th>
-<th style="text-align: right;">Knights Landing RST</th>
-<th style="text-align: right;">Sac Trawl (Sherwood)</th>
-<th style="text-align: right;">Chipps Island Trawl</th>
-<th style="text-align: right;">Salvage</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Steelhead, Unclipped</td>
-<td style="text-align: right;">1%</td>
-<td style="text-align: right;">17%</td>
-<td style="text-align: right;">16%</td>
-<td style="text-align: right;">2%</td>
-<td style="text-align: right;">1%</td>
-<td style="text-align: right;">6%</td>
-</tr>
-</tbody>
-</table>
+<div class="cell-output-display">
+<div class="tabwid"><style>.cl-69de43ec{}.cl-69d36738{font-family:'Calibri';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-69d91836{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-69d94a9a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-69d94aa4{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-69de43ec"><thead><tr style="overflow-wrap:break-word;"><th class="cl-69d94a9a"><p class="cl-69d91836"><span class="cl-69d36738">Species</span></p></th><th class="cl-69d94a9a"><p class="cl-69d91836"><span class="cl-69d36738">Red Bluff Diversion Dam</span></p></th><th class="cl-69d94a9a"><p class="cl-69d91836"><span class="cl-69d36738">Tisdale RST</span></p></th><th class="cl-69d94a9a"><p class="cl-69d91836"><span class="cl-69d36738">Knights Landing RST</span></p></th><th class="cl-69d94a9a"><p class="cl-69d91836"><span class="cl-69d36738">Sac Trawl (Sherwood)</span></p></th><th class="cl-69d94a9a"><p class="cl-69d91836"><span class="cl-69d36738">Chipps Island Trawl</span></p></th><th class="cl-69d94a9a"><p class="cl-69d91836"><span class="cl-69d36738">Salvage</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-69d94aa4"><p class="cl-69d91836"><span class="cl-69d36738">Steelhead, Unclipped</span></p></td><td class="cl-69d94aa4"><p class="cl-69d91836"><span class="cl-69d36738">1%</span></p></td><td class="cl-69d94aa4"><p class="cl-69d91836"><span class="cl-69d36738">20%</span></p></td><td class="cl-69d94aa4"><p class="cl-69d91836"><span class="cl-69d36738">26%</span></p></td><td class="cl-69d94aa4"><p class="cl-69d91836"><span class="cl-69d36738">2%</span></p></td><td class="cl-69d94aa4"><p class="cl-69d91836"><span class="cl-69d36738">2%</span></p></td><td class="cl-69d94aa4"><p class="cl-69d91836"><span class="cl-69d36738">7%</span></p></td></tr></tbody></table></div>
+</div>
 </div>
 </figure>
 </div>
-<p><em>Delta Monitoring</em> - Total catch of LAD winter run at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River) between Jan 01 and Jan 12 is 0 individuals. Total catch at Sacramento Trawl and Beach Seines in the delta between Jan 02 and Jan 14 is 0 individuals. Total catch at Delta Exit at Chipps Island between Jan 05 and Jan 08 is 0 individuals.</p>
+</div>
+<p><em>Delta Monitoring</em> - Total catch of LAD winter run at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River) between Jan 07 and Jan 19 is 1 individuals. Total catch at Sacramento Trawl and Beach Seines in the delta between Jan 07 and Jan 20 is 0 individuals. Total catch at Delta Exit at Chipps Island between Jan 08 and Jan 20 is 0 individuals.</p>
 </section>
 <section id="annual-loss-2" class="level4">
 <h4 class="anchored" data-anchor-id="annual-loss-2">Annual Loss</h4>
-<p>As of January 14, cumulative loss of unclipped steelhead is 43.91 or 0.83% of the incidental take limit in the NMFS Biological Opinion. Cumulative loss in the past 7 days has been 78.05.</p>
+<p>As of January 20, cumulative loss of unclipped steelhead is 44 or 0.83% of the annual loss threshold. Cumulative loss in the past 7 days has been 4.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-sh_loss" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Line chart of cumulative loss of natural-origin Steelhead at Delta facilities where daily loss is tracked against the annual threshold.">
+<div id="fig-sh_loss" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Line chart of cumulative loss of natural-origin steelhead at Delta facilities where daily loss is tracked against the annual threshold">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-sh_loss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="samt-assessment-v1_files/figure-html/fig-sh_loss-1.png" class="img-fluid figure-img" style="width:75.0%" alt="Line chart of cumulative loss of natural-origin Steelhead at Delta facilities where daily loss is tracked against the annual threshold.">
+<img src="samt-assessment-v1_files/figure-html/fig-sh_loss-1.png" class="img-fluid figure-img" style="width:75.0%" alt="Line chart of cumulative loss of natural-origin steelhead at Delta facilities where daily loss is tracked against the annual threshold">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sh_loss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Cumulative loss of natural-origin steelhead for WY 2026.
+Figure&nbsp;5: Cumulative loss of natural-origin steelhead for WY 2026
 </figcaption>
 </figure>
 </div>
@@ -286,81 +255,45 @@ Figure&nbsp;5: Cumulative loss of natural-origin steelhead for WY 2026.
 <h3 class="anchored" data-anchor-id="hatchery-origin-central-valley-steelhead">Hatchery-origin Central Valley Steelhead</h3>
 <section id="surrogate-releases" class="level4">
 <h4 class="anchored" data-anchor-id="surrogate-releases">Surrogate Releases</h4>
-<p>There have been a total of 5 releases totaling 1,373,848 steelhead in Water Year 2026. JPE for the hatchery releases as of today is 591,419 based on estimated survivals using forecasted water year types (see details in table below). The annual loss threshold, equal to 1% of the JPE, is currently 5914, but is subject to change with additional steelhead releases.</p>
+<p>There have been a total of 5 releases totaling 1,373,848 steelhead in Water Year 2026. JPE for the hatchery releases as of today is 591,419 based on estimated survivals using forecasted water year types (see details in table below). The annual loss threshold, equal to 1% of the JPE, is currently 5,914, but is subject to change with additional steelhead releases.</p>
+<div class="cell">
 <div id="tbl-sh_clipped_table" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sh_clipped_table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Summary of steelhead hatchery releases in Water Year 2026
+Table&nbsp;3: Summary of steelhead hatchery releases in Water Year 2026. JPE calculated using hatchery-specific survival estimates to Delta entry from release location
 </figcaption>
 <div aria-describedby="tbl-sh_clipped_table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="cell caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 10%">
-<col style="width: 17%">
-<col style="width: 17%">
-<col style="width: 21%">
-<col style="width: 32%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Hatchery</th>
-<th style="text-align: right;">Date of Release</th>
-<th style="text-align: right;">Number Released</th>
-<th style="text-align: right;">Estimated Survival</th>
-<th style="text-align: right;">Juvenile Production Estimate</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">NIM</td>
-<td style="text-align: right;">2025-11-10</td>
-<td style="text-align: right;">233,109</td>
-<td style="text-align: right;">72%</td>
-<td style="text-align: right;">167,838</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Coleman</td>
-<td style="text-align: right;">2025-12-15</td>
-<td style="text-align: right;">555,720</td>
-<td style="text-align: right;">38%</td>
-<td style="text-align: right;">211,174</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Coleman</td>
-<td style="text-align: right;">2025-12-17</td>
-<td style="text-align: right;">90,019</td>
-<td style="text-align: right;">38%</td>
-<td style="text-align: right;">34,207</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">FRH</td>
-<td style="text-align: right;">2026-01-06</td>
-<td style="text-align: right;">371,250</td>
-<td style="text-align: right;">36%</td>
-<td style="text-align: right;">133,650</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">FRH</td>
-<td style="text-align: right;">2026-01-09</td>
-<td style="text-align: right;">123,750</td>
-<td style="text-align: right;">36%</td>
-<td style="text-align: right;">44,550</td>
-</tr>
-</tbody>
-</table>
+<div class="cell-output-display">
+<div class="tabwid"><style>.cl-6a40c0a8{}.cl-6a355f6a{font-family:'Calibri';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-6a3aeb06{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-6a3b1504{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-6a3b150e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-6a3b1518{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-6a40c0a8"><thead><tr style="overflow-wrap:break-word;"><th class="cl-6a3b1504"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">Hatchery</span></p></th><th class="cl-6a3b1504"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">Date of Release</span></p></th><th class="cl-6a3b1504"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">Number Released</span></p></th><th class="cl-6a3b1504"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">Estimated Survival</span></p></th><th class="cl-6a3b1504"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">Juvenile Production Estimate</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">NIM</span></p></td><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">2025-11-10</span></p></td><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">233,109</span></p></td><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">72%</span></p></td><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">167,838</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">Coleman</span></p></td><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">2025-12-15</span></p></td><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">555,720</span></p></td><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">38%</span></p></td><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">211,174</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">Coleman</span></p></td><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">2025-12-17</span></p></td><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">90,019</span></p></td><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">38%</span></p></td><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">34,207</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">FRH</span></p></td><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">2026-01-06</span></p></td><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">371,250</span></p></td><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">36%</span></p></td><td class="cl-6a3b150e"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">133,650</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-6a3b1518"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">FRH</span></p></td><td class="cl-6a3b1518"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">2026-01-09</span></p></td><td class="cl-6a3b1518"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">123,750</span></p></td><td class="cl-6a3b1518"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">36%</span></p></td><td class="cl-6a3b1518"><p class="cl-6a3aeb06"><span class="cl-6a355f6a">44,550</span></p></td></tr></tbody></table></div>
+</div>
 </div>
 </figure>
 </div>
-<p>Total loss of hatchery-origin steelhead is 148.05 or 2.5% of the threshold. *Note that hatchery origin of salvaged fish can not be determined at this time and salvage is based on the assumption of similar routing and survival probabilities of individual hatchery releases.</p>
+</div>
+<div class="cell">
+<div id="tbl-survival_estimates" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-survival_estimates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Hatchery-specific survival estimates used for JPE calculations
+</figcaption>
+<div aria-describedby="tbl-survival_estimates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div class="tabwid"><style>.cl-6a564d4c{}.cl-6a4bcdcc{font-family:'Calibri';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-6a4e374c{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-6a4e3756{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-6a4e5be6{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-6a4e5bf0{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-6a4e5bfa{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-6a4e5bfb{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-6a4e5c04{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-6a4e5c0e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-6a564d4c"><thead><tr style="overflow-wrap:break-word;"><th class="cl-6a4e5be6"><p class="cl-6a4e374c"><span class="cl-6a4bcdcc">Hatchery</span></p></th><th class="cl-6a4e5bf0"><p class="cl-6a4e3756"><span class="cl-6a4bcdcc">Survival Estimate</span></p></th><th class="cl-6a4e5be6"><p class="cl-6a4e374c"><span class="cl-6a4bcdcc">Source</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-6a4e5bfa"><p class="cl-6a4e374c"><span class="cl-6a4bcdcc">Coleman NFH</span></p></td><td class="cl-6a4e5bfb"><p class="cl-6a4e3756"><span class="cl-6a4bcdcc">0.205 – 0.433</span></p></td><td class="cl-6a4e5bfa"><p class="cl-6a4e374c"><span class="cl-6a4bcdcc">Sandstrom et al. 2020</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-6a4e5bfa"><p class="cl-6a4e374c"><span class="cl-6a4bcdcc">Feather River Hatchery</span></p></td><td class="cl-6a4e5bfb"><p class="cl-6a4e3756"><span class="cl-6a4bcdcc">0.09 – 0.45</span></p></td><td class="cl-6a4e5bfa"><p class="cl-6a4e374c"><span class="cl-6a4bcdcc">Kurth 2013</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-6a4e5bfa"><p class="cl-6a4e374c"><span class="cl-6a4bcdcc">Nimbus Hatchery</span></p></td><td class="cl-6a4e5bfb"><p class="cl-6a4e3756"><span class="cl-6a4bcdcc">0.62 – 0.83</span></p></td><td class="cl-6a4e5bfa"><p class="cl-6a4e374c"><span class="cl-6a4bcdcc">Brodsky et al. 2020</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-6a4e5c04"><p class="cl-6a4e374c"><span class="cl-6a4bcdcc">Mokelumne River Hatchery</span></p></td><td class="cl-6a4e5c0e"><p class="cl-6a4e3756"><span class="cl-6a4bcdcc">0.25 – 0.33</span></p></td><td class="cl-6a4e5c04"><p class="cl-6a4e374c"><span class="cl-6a4bcdcc">Del Real et al. 2012</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Total loss of hatchery-origin steelhead is 148 or 2.5% of the annual loss threshold. <em>Note that hatchery origin of salvaged fish can not be determined at this time and salvage is based on the assumption of similar routing and survival probabilities of individual hatchery releases.</em></p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-sh_hatch_loss" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Line chart of cumulative loss of hatchery-origin Steelhead at Delta facilities where daily loss is tracked against the annual threshold.">
+<div id="fig-sh_hatch_loss" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Line chart of cumulative loss of hatchery-origin steelhead at Delta facilities where daily loss is tracked against the annual threshold">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-sh_hatch_loss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="samt-assessment-v1_files/figure-html/fig-sh_hatch_loss-1.png" class="img-fluid figure-img" style="width:75.0%" alt="Line chart of cumulative loss of hatchery-origin Steelhead at Delta facilities where daily loss is tracked against the annual threshold.">
+<img src="samt-assessment-v1_files/figure-html/fig-sh_hatch_loss-1.png" class="img-fluid figure-img" style="width:75.0%" alt="Line chart of cumulative loss of hatchery-origin steelhead at Delta facilities where daily loss is tracked against the annual threshold">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sh_hatch_loss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: Cumulative loss of hatchery steelhead for WY 2026.
+Figure&nbsp;6: Cumulative loss of hatchery steelhead for WY 2026
 </figcaption>
 </figure>
 </div>
@@ -368,159 +301,67 @@ Figure&nbsp;6: Cumulative loss of hatchery steelhead for WY 2026.
 </div>
 </section>
 </section>
-<section id="spring-run" class="level3">
-<h3 class="anchored" data-anchor-id="spring-run">Spring-run</h3>
+<section id="spring-run-chinook" class="level3">
+<h3 class="anchored" data-anchor-id="spring-run-chinook">Spring-run Chinook</h3>
 <section id="current-status-2" class="level4">
 <h4 class="anchored" data-anchor-id="current-status-2">Current Status</h4>
-<p><em>Delta Entry Timing</em>- Historically, as of Jan 14, 26% of LAD spring run have entered the delta based on Knights Landing RST catch, 0% have exited the delta based on Chipps Island Trawl Catch, and 0% have been salvaged.</p>
+<p><em>Delta Entry Timing</em> - Historically, as of Jan 20, 27% of LAD spring-run have entered the Delta based on Knights Landing RST catch, 0% have exited the Delta based on Chipps Island Trawl Catch, and 0% have been salvaged.</p>
+<div class="cell">
 <div id="tbl-sr_timing_table" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sr_timing_table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Average Percent of annual emigrating population for LAD Spring-run Chinook Salmon captured at the following locations and salvaged at SWP and CVP Delta facilities for the past 10 years.
+Table&nbsp;5: Average percent of annual emigrating population for LAD spring-run Chinook salmon captured at monitoring locations and salvaged at Delta facilities for the past 10 years
 </figcaption>
 <div aria-describedby="tbl-sr_timing_table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="cell caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 17%">
-<col style="width: 8%">
-<col style="width: 14%">
-<col style="width: 15%">
-<col style="width: 14%">
-<col style="width: 5%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Species</th>
-<th style="text-align: right;">Red Bluff Diversion Dam</th>
-<th style="text-align: right;">Tisdale RST</th>
-<th style="text-align: right;">Knights Landing RST</th>
-<th style="text-align: right;">Sac Trawl (Sherwood)</th>
-<th style="text-align: right;">Chipps Island Trawl</th>
-<th style="text-align: right;">Salvage</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Chinook, LAD Spring-run, Unclipped</td>
-<td style="text-align: right;">13%</td>
-<td style="text-align: right;">14%</td>
-<td style="text-align: right;">26%</td>
-<td style="text-align: right;">2%</td>
-<td style="text-align: right;">0%</td>
-<td style="text-align: right;">0%</td>
-</tr>
-</tbody>
-</table>
+<div class="cell-output-display">
+<div class="tabwid"><style>.cl-6ab3a74e{}.cl-6aac25d2{font-family:'Calibri';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-6aaf9028{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-6aafa5b8{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-6aafa5b9{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-6ab3a74e"><thead><tr style="overflow-wrap:break-word;"><th class="cl-6aafa5b8"><p class="cl-6aaf9028"><span class="cl-6aac25d2">Species</span></p></th><th class="cl-6aafa5b8"><p class="cl-6aaf9028"><span class="cl-6aac25d2">Red Bluff Diversion Dam</span></p></th><th class="cl-6aafa5b8"><p class="cl-6aaf9028"><span class="cl-6aac25d2">Tisdale RST</span></p></th><th class="cl-6aafa5b8"><p class="cl-6aaf9028"><span class="cl-6aac25d2">Knights Landing RST</span></p></th><th class="cl-6aafa5b8"><p class="cl-6aaf9028"><span class="cl-6aac25d2">Sac Trawl (Sherwood)</span></p></th><th class="cl-6aafa5b8"><p class="cl-6aaf9028"><span class="cl-6aac25d2">Chipps Island Trawl</span></p></th><th class="cl-6aafa5b8"><p class="cl-6aaf9028"><span class="cl-6aac25d2">Salvage</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-6aafa5b9"><p class="cl-6aaf9028"><span class="cl-6aac25d2">Chinook, LAD Spring-run, Unclipped</span></p></td><td class="cl-6aafa5b9"><p class="cl-6aaf9028"><span class="cl-6aac25d2">13%</span></p></td><td class="cl-6aafa5b9"><p class="cl-6aaf9028"><span class="cl-6aac25d2">16%</span></p></td><td class="cl-6aafa5b9"><p class="cl-6aaf9028"><span class="cl-6aac25d2">27%</span></p></td><td class="cl-6aafa5b9"><p class="cl-6aaf9028"><span class="cl-6aac25d2">2%</span></p></td><td class="cl-6aafa5b9"><p class="cl-6aaf9028"><span class="cl-6aac25d2">0%</span></p></td><td class="cl-6aafa5b9"><p class="cl-6aaf9028"><span class="cl-6aac25d2">0%</span></p></td></tr></tbody></table></div>
+</div>
 </div>
 </figure>
 </div>
-<p><em>Red Bluff Diversion Dam Passage Estimate</em> - As of Dec 31 estimated passage to date of LAD spring run at Red Bluff Diversion is approximately 0.02 million fish. * <em>Note that outmigration timing overlaps with winter run and fall run outmigration, and true spring run abundance likely differs from these estimates.</em></p>
-<p><em>Delta Monitoring</em>- Total catch of LAD winter run at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River) between Jan 01 and Jan 12 is 152 individuals. Total catch at Sacramento Trawl and Beach Seines in the delta between Jan 02 and Jan 14 is 0 individuals. Total catch at Delta Exit at Chipps Island between Jan 05 and Jan 08 is 0 individuals.</p>
+</div>
+<p><em>Red Bluff Diversion Dam Passage Estimate</em> - As of Jan 14 estimated passage to date of LAD spring-run at Red Bluff Diversion is approximately 0.02 million fish. <em>Note that outmigration timing overlaps with winter-run and fall-run outmigration, and true spring-run abundance likely differs from these estimates.</em></p>
+<p><em>Delta Monitoring</em> - Total catch of LAD winter run at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River) between Jan 07 and Jan 19 is 126 individuals. Total catch at Sacramento Trawl and Beach Seines in the delta between Jan 07 and Jan 20 is 0 individuals. Total catch at Delta Exit at Chipps Island between Jan 08 and Jan 20 is 0 individuals.</p>
 </section>
 <section id="spring-run-surrogate-releases" class="level4">
 <h4 class="anchored" data-anchor-id="spring-run-surrogate-releases">Spring-run Surrogate Releases</h4>
 <p>A total of 805,323 spring-run surrogate fish have been released in Water Year 2026, with an estimated Juvenile Production Estimate (JPE) of 219,852 fish entering the Delta. This includes 805,323 Coleman Late-Fall Run Chinook (JPE: 219,852) released from Coleman National Fish Hatchery across 12 coded-wire tag groups. See details in table below.</p>
+<div class="cell">
 <div id="tbl-sr_surrogate_table" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sr_surrogate_table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4: Spring-run Chinook Salmon Surrogate Releases (all Coleman Late-Fall releases, both production and experimental).
+Table&nbsp;6: Spring-run Chinook salmon surrogate releases (all Coleman Late-Fall releases, both production and experimental)
 </figcaption>
 <div aria-describedby="tbl-sr_surrogate_table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="cell caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 8%">
-<col style="width: 9%">
-<col style="width: 9%">
-<col style="width: 17%">
-<col style="width: 6%">
-<col style="width: 10%">
-<col style="width: 39%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Hatchery</th>
-<th style="text-align: right;">Release Date</th>
-<th style="text-align: right;">Type</th>
-<th style="text-align: center;"># of CWT Fish Released</th>
-<th style="text-align: center;">JPE</th>
-<th style="text-align: right;">Confirmed Loss</th>
-<th style="text-align: left;">CWT Codes</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Coleman NFH</td>
-<td style="text-align: right;">2025-11-13</td>
-<td style="text-align: right;">Production</td>
-<td style="text-align: center;">143,346</td>
-<td style="text-align: center;">39,134</td>
-<td style="text-align: right;">8.7</td>
-<td style="text-align: left;">056808, 056809</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Coleman NFH</td>
-<td style="text-align: right;">2025-11-17</td>
-<td style="text-align: right;">Experimental</td>
-<td style="text-align: center;">75,119</td>
-<td style="text-align: center;">20,507</td>
-<td style="text-align: right;">0.0</td>
-<td style="text-align: left;">056810</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Coleman NFH</td>
-<td style="text-align: right;">2025-12-17</td>
-<td style="text-align: right;">Production</td>
-<td style="text-align: center;">468,876</td>
-<td style="text-align: center;">128,002</td>
-<td style="text-align: right;">729.4</td>
-<td style="text-align: left;">053700, 056806, 056811, 056812, 056814, 056815, 056817</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Coleman NFH</td>
-<td style="text-align: right;">2025-12-22</td>
-<td style="text-align: right;">Experimental</td>
-<td style="text-align: center;">60,873</td>
-<td style="text-align: center;">16,618</td>
-<td style="text-align: right;">250.1</td>
-<td style="text-align: left;">056813</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Coleman NFH</td>
-<td style="text-align: right;">2026-01-08</td>
-<td style="text-align: right;">Experimental</td>
-<td style="text-align: center;">57,109</td>
-<td style="text-align: center;">15,591</td>
-<td style="text-align: right;">0.0</td>
-<td style="text-align: left;">056816</td>
-</tr>
-</tbody>
-</table>
+<div class="cell-output-display">
+<div class="tabwid"><style>.cl-6aca20fa{}.cl-6ac086a8{font-family:'Calibri';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-6ac4e22a{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-6ac4e23e{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-6ac51c86{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-6ac51c90{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-6ac51c9a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-6ac51c9b{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-6ac51ca4{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-6ac51ca5{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-6aca20fa"><thead><tr style="overflow-wrap:break-word;"><th class="cl-6ac51c86"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">Hatchery</span></p></th><th class="cl-6ac51c86"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">Release Date</span></p></th><th class="cl-6ac51c86"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">Type</span></p></th><th class="cl-6ac51c86"><p class="cl-6ac4e22a"><span class="cl-6ac086a8"># of CWT Fish Released</span></p></th><th class="cl-6ac51c86"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">JPE</span></p></th><th class="cl-6ac51c90"><p class="cl-6ac4e23e"><span class="cl-6ac086a8">Confirmed Loss</span></p></th><th class="cl-6ac51c86"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">CWT Codes</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">Coleman NFH</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">2025-11-13</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">Production</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">143,346</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">39,134</span></p></td><td class="cl-6ac51c9b"><p class="cl-6ac4e23e"><span class="cl-6ac086a8">8.7</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">056808, 056809</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">Coleman NFH</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">2025-11-17</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">Experimental</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">75,119</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">20,507</span></p></td><td class="cl-6ac51c9b"><p class="cl-6ac4e23e"><span class="cl-6ac086a8">0.0</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">056810</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">Coleman NFH</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">2025-12-17</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">Production</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">468,876</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">128,002</span></p></td><td class="cl-6ac51c9b"><p class="cl-6ac4e23e"><span class="cl-6ac086a8">729.4</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">053700, 056806, 056811, 056812, 056814, 056815, 056817</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">Coleman NFH</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">2025-12-22</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">Experimental</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">60,873</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">16,618</span></p></td><td class="cl-6ac51c9b"><p class="cl-6ac4e23e"><span class="cl-6ac086a8">254.4</span></p></td><td class="cl-6ac51c9a"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">056813</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-6ac51ca4"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">Coleman NFH</span></p></td><td class="cl-6ac51ca4"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">2026-01-08</span></p></td><td class="cl-6ac51ca4"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">Experimental</span></p></td><td class="cl-6ac51ca4"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">57,109</span></p></td><td class="cl-6ac51ca4"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">15,591</span></p></td><td class="cl-6ac51ca5"><p class="cl-6ac4e23e"><span class="cl-6ac086a8">0.0</span></p></td><td class="cl-6ac51ca4"><p class="cl-6ac4e22a"><span class="cl-6ac086a8">056816</span></p></td></tr></tbody></table></div>
+</div>
 </div>
 </figure>
+</div>
 </div>
 </section>
 <section id="annual-loss-3" class="level4">
 <h4 class="anchored" data-anchor-id="annual-loss-3">Annual Loss</h4>
-<p>The annual loss threshold is 1% of the JPE entering the Delta, which equals 2,199 fish. As of January 14, cumulative loss is 988.16 fish or 44.95% of the annual loss threshold.</p>
+<p>The annual loss threshold is 1% of the JPE entering the Delta, which equals 2,199 fish. As of January 20, cumulative loss is 992 fish or 45.14% of the annual loss threshold.</p>
 </section>
 </section>
 <section id="loss-prediction-and-trajectories" class="level3">
 <h3 class="anchored" data-anchor-id="loss-prediction-and-trajectories">Loss Prediction and Trajectories</h3>
-<p>The following figures display the cumulative loss trajectories relative to historical years (“Spaghetti Plots”) and the current loss predictor model outputs for Winter-run Chinook Salmon and Steelhead.</p>
+<p>The following figures display the cumulative loss trajectories relative to historical years (“Spaghetti Plots”) and the current loss predictor model outputs for winter-run Chinook salmon and steelhead.</p>
 <div>
 
 </div>
 <div class="cell quarto-layout-panel" data-layout-ncol="1">
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div id="fig-loss-eval-1" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Line chart showing cumulative loss of natural LAD winter-run Chinook Salmon for the current water year (black line) compared to historical years (gray lines) with annual loss threshold indicated as a horizontal dashed line.">
+<div id="fig-loss-eval-1" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Line chart showing cumulative loss of natural LAD winter-run Chinook salmon for the current water year (black line) compared to historical years (gray lines) with annual loss threshold indicated as a horizontal dashed line">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-loss-eval-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="samt-assessment-v1_files/figure-html/fig-loss-eval-1.png" class="img-fluid figure-img" alt="Line chart showing cumulative loss of natural LAD winter-run Chinook Salmon for the current water year (black line) compared to historical years (gray lines) with annual loss threshold indicated as a horizontal dashed line." width="825">
+<img src="samt-assessment-v1_files/figure-html/fig-loss-eval-1.png" class="img-fluid figure-img" alt="Line chart showing cumulative loss of natural LAD winter-run Chinook salmon for the current water year (black line) compared to historical years (gray lines) with annual loss threshold indicated as a horizontal dashed line" width="825">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-loss-eval-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: Natural LAD Winter-Run Chinook Salmon Loss Cumulative to Date with historical years and Single Year Loss Thresholds.
+Figure&nbsp;7: Natural LAD winter-run Chinook salmon loss cumulative to date with historical years and annual loss threshold
 </figcaption>
 </figure>
 </div>
@@ -528,13 +369,13 @@ Figure&nbsp;7: Natural LAD Winter-Run Chinook Salmon Loss Cumulative to Date wit
 </div>
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div id="fig-loss-eval-2" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Line chart showing cumulative loss of natural Central Valley steelhead for the current water year (black line) compared to historical years (gray lines) with annual loss threshold indicated as a horizontal dashed line.">
+<div id="fig-loss-eval-2" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Line chart showing cumulative loss of natural Central Valley steelhead for the current water year (black line) compared to historical years (gray lines) with annual loss threshold indicated as a horizontal dashed line">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-loss-eval-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="samt-assessment-v1_files/figure-html/fig-loss-eval-2.png" class="img-fluid figure-img" alt="Line chart showing cumulative loss of natural Central Valley steelhead for the current water year (black line) compared to historical years (gray lines) with annual loss threshold indicated as a horizontal dashed line." width="825">
+<img src="samt-assessment-v1_files/figure-html/fig-loss-eval-2.png" class="img-fluid figure-img" alt="Line chart showing cumulative loss of natural Central Valley steelhead for the current water year (black line) compared to historical years (gray lines) with annual loss threshold indicated as a horizontal dashed line" width="825">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-loss-eval-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Natural Central Valley Steelhead Loss Cumulative to Date with historical years and Single Year Loss Thresholds.
+Figure&nbsp;8: Natural Central Valley steelhead loss cumulative to date with historical years and annual loss threshold
 </figcaption>
 </figure>
 </div>
@@ -542,13 +383,13 @@ Figure&nbsp;8: Natural Central Valley Steelhead Loss Cumulative to Date with his
 </div>
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div id="fig-loss-eval-3" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Graph showing observed cumulative loss of winter-run Chinook Salmon (points) with predicted future loss trajectories including mean predictions (line) and 80% credible intervals (shaded area).">
+<div id="fig-loss-eval-3" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Graph showing observed cumulative loss of winter-run Chinook salmon (points) with predicted future loss trajectories including mean predictions (line) and 80% credible intervals (shaded area)">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-loss-eval-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="samt-assessment-v1_files/figure-html/fig-loss-eval-3.png" class="img-fluid figure-img" alt="Graph showing observed cumulative loss of winter-run Chinook Salmon (points) with predicted future loss trajectories including mean predictions (line) and 80% credible intervals (shaded area)." width="1000">
+<img src="samt-assessment-v1_files/figure-html/fig-loss-eval-3.png" class="img-fluid figure-img" alt="Graph showing observed cumulative loss of winter-run Chinook salmon (points) with predicted future loss trajectories including mean predictions (line) and 80% credible intervals (shaded area)" width="1000">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-loss-eval-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9: Estimates of Winter-run Chinook Loss generated by Loss and Salvage Predictor tool.
+Figure&nbsp;9: Estimates of winter-run Chinook loss generated by Loss and Salvage Predictor tool
 </figcaption>
 </figure>
 </div>
@@ -556,13 +397,13 @@ Figure&nbsp;9: Estimates of Winter-run Chinook Loss generated by Loss and Salvag
 </div>
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div id="fig-loss-eval-4" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Graph showing observed cumulative loss of steelhead (points) with predicted future loss trajectories including mean predictions (line) and 80% credible intervals (shaded area).">
+<div id="fig-loss-eval-4" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Graph showing observed cumulative loss of steelhead (points) with predicted future loss trajectories including mean predictions (line) and 80% credible intervals (shaded area)">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-loss-eval-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="samt-assessment-v1_files/figure-html/fig-loss-eval-4.png" class="img-fluid figure-img" alt="Graph showing observed cumulative loss of steelhead (points) with predicted future loss trajectories including mean predictions (line) and 80% credible intervals (shaded area)." width="1000">
+<img src="samt-assessment-v1_files/figure-html/fig-loss-eval-4.png" class="img-fluid figure-img" alt="Graph showing observed cumulative loss of steelhead (points) with predicted future loss trajectories including mean predictions (line) and 80% credible intervals (shaded area)" width="1000">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-loss-eval-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10: Estimates of Steelhead Loss generated by Loss and Salvage Predictor tool.
+Figure&nbsp;10: Estimates of steelhead loss generated by Loss and Salvage Predictor tool
 </figcaption>
 </figure>
 </div>
@@ -573,13 +414,20 @@ Figure&nbsp;10: Estimates of Steelhead Loss generated by Loss and Salvage Predic
 <section id="evaluation" class="level3">
 <h3 class="anchored" data-anchor-id="evaluation">Evaluation</h3>
 <ol type="1">
-<li><p><strong>What is the probability of exceeding natural or hatchery winter-run Chinook Salmon loss thresholds in the upcoming week?</strong></p>
+<li><p><strong>What is the probability of exceeding natural or hatchery winter-run Chinook salmon loss thresholds in the upcoming week?</strong></p>
 <p><strong>LOW RISK:</strong> Cumulative loss is currently 0% of the threshold. Current trajectory suggests the threshold is unlikely to be exceeded in the upcoming week.</p></li>
-<li><p><strong>What is the probability of spring-run hatchery Chinook Salmon loss thresholds in the upcoming week?</strong></p>
-<p><strong>LOW RISK:</strong> Cumulative loss is currently 44.9% of the threshold. Current trajectory suggests the threshold is unlikely to be exceeded in the upcoming week.</p></li>
-<li><p><strong>What is the probability of hatchery Steelhead loss thresholds in the upcoming week?</strong></p>
-<p><strong>INCREASING RISK:</strong> While cumulative loss is currently low (2.5%), recent salvage indicates a sharp upward trend.</p></li>
+<li><p><strong>What is the probability of spring-run hatchery Chinook salmon loss thresholds in the upcoming week?</strong></p>
+<p><strong>LOW RISK:</strong> Cumulative loss is currently 45.1% of the threshold. Current trajectory suggests the threshold is unlikely to be exceeded in the upcoming week.</p></li>
+<li><p><strong>What is the probability of hatchery steelhead loss thresholds in the upcoming week?</strong></p>
+<p><strong>LOW RISK:</strong> Cumulative loss is currently 2.5% of the threshold. Current trajectory suggests the threshold is unlikely to be exceeded in the upcoming week.</p></li>
 </ol>
+</section>
+<section id="references" class="level3">
+<h3 class="anchored" data-anchor-id="references">References</h3>
+<p>Brodsky, Annie, Steven C. Zeug, Jonathan Nelson, John Hannon, Paul J. Anders, and Bradley J. Cavallo. “Does Broodstock Source Affect Post-Release Survival of Steelhead? Implications of Replacing a Non-Native Hatchery Stock for Recovery.” <em>Environmental Biology of Fishes</em> 103, no. 5 (2020): 437–53. https://doi.org/10.1007/s10641-020-00951-2.</p>
+<p>Del Real, S. Casey, Michelle Workman, and Joseph Merz. “Migration Characteristics of Hatchery and Natural-Origin Oncorhynchus Mykiss from the Lower Mokelumne River, California.” <em>Environmental Biology of Fishes</em> 94, no. 2 (2012): 363–75. https://doi.org/10.1007/s10641-011-9967-z.</p>
+<p>Kurth, R. 2013. Downstream migration success of Feather River Fish Hatchery steelhead smolts under different release strategies. Presentation at Steelhead Management Meeting, California Department of Fish and Wildlife.</p>
+<p>Sandstrom, Philip Thomas, Arnold J. Ammann, Cyril Michel, et al.&nbsp;“Low River Survival of Juvenile Steelhead in the Sacramento River Watershed.” <em>Environmental Biology of Fishes</em> 103, no. 5 (2020): 531–41. https://doi.org/10.1007/s10641-020-00954-z.</p>
 </section>
 </section>
 
