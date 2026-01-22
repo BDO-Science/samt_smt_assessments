@@ -14,27 +14,6 @@ execute:
   warning: false
 ---
 
-```{css, echo=FALSE, eval=knitr::is_html_output()}
-/* Left-align figure captions */
-.figure figcaption, 
-.quarto-figure figcaption,
-caption {
-  text-align: left !important;
-  font-style: italic;
-  margin-top: 0.5em;
-}
-
-/* Consistent font throughout */
-body {
-  font-family: 'Calibri', 'Arial', sans-serif;
-  font-size: 11pt;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Calibri', 'Arial', sans-serif;
-}
-```
-
 ## Assessment for Delta Operations on Salmonids
 
 Last updated: *`r format(Sys.Date(), "%B %d, %Y")`*
