@@ -62,7 +62,7 @@ source(here(project, 'source_code/salmon_code_rounding_fix.R'), echo = FALSE)
 #| tbl-cap: 'Average percent of annual emigrating population for unclipped LAD winter-run captured at monitoring locations and salvaged at Delta facilities for the past 10 years'
 
 flextable(wr_natural_timing) %>%
-  font(fontname = "Calibri", part = "all") %>%
+  font(fontname = "Carlito", part = "all") %>%
   fontsize(size = 11, part = "all") %>%
   theme_booktabs() %>%
   fit_to_width(max_width = 6.5)
@@ -160,7 +160,7 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 #| echo: false
 
 flextable(sh_natural_timing) %>%
-  font(fontname = "Calibri", part = "all") %>%
+  font(fontname = "Carlito", part = "all") %>%
   fontsize(size = 11, part = "all") %>%
   theme_booktabs() %>%
   fit_to_width(max_width = 6.5)
@@ -197,7 +197,7 @@ There have been a total of `r n_releases` releases totaling `r sh_stocked` steel
 #| echo: false
 
 flextable(release_table_print) %>%
-  font(fontname = "Calibri", part = "all") %>%
+  font(fontname = "Carlito", part = "all") %>%
   fontsize(size = 11, part = "all") %>%
   theme_booktabs() %>%
   fit_to_width(max_width = 6.5)
@@ -217,7 +217,7 @@ survival_table <- data.frame(
 )
 
 flextable(survival_table) %>%
-  font(fontname = "Calibri", part = "all") %>%
+  font(fontname = "Carlito", part = "all") %>%
   fontsize(size = 11, part = "all") %>%
   theme_booktabs() %>%
   align(align = "left", j = 1, part = "all") %>%
@@ -253,7 +253,7 @@ image_read(paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_
 #| echo: false
 
 flextable(sr_natural_timing) %>%
-  font(fontname = "Calibri", part = "all") %>%
+  font(fontname = "Carlito", part = "all") %>%
   fontsize(size = 11, part = "all") %>%
   theme_booktabs() %>%
   fit_to_width(max_width = 6.5)
@@ -274,7 +274,7 @@ A total of `r total_sr_released_fmt` spring-run surrogate fish have been release
 #| warning: false
 
 flextable(sr_surrogate_table_clean) %>%
-  font(fontname = "Calibri", part = "all") %>%
+  font(fontname = "Carlito", part = "all") %>%
   fontsize(size = 11, part = "all") %>%
   theme_booktabs() %>%
   fit_to_width(max_width = 6.5)
