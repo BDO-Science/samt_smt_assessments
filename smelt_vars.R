@@ -1,7 +1,7 @@
 # smelt_vars.R 
 # User inputs for Assessment - this is the doc you would modify
 # Aim to make any needed updates here for manual entries
-# Last updated 11/13/2025
+# Last updated 11/26/2025
 
 # Packages ---------------------
 library(dplyr)
@@ -71,7 +71,7 @@ with an upstream spawning migration into tidal freshwater habitats."
 #daily average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 days?
-ds_eval_4 <- "Although spawning may begin during the current assessment period, JPF is above 0 cfs; 
+ds_eval_4 <- "Although spawning may occur during the current assessment period, JPF is above 0 cfs; 
 therefore, the conditions required to evaluate larval and juvenile Delta smelt entrainment management are not met."
 
 # Longfin smelt
