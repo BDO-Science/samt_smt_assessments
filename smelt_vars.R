@@ -1,7 +1,7 @@
 # smelt_vars.R 
 # User inputs for Assessment - this is the doc you would modify
 # Aim to make any needed updates here for manual entries
-# Last updated 11/13/2025
+# Last updated 11/26/2025
 
 # Packages ---------------------
 library(dplyr)
@@ -35,8 +35,8 @@ end_of_season = "not relevant"
 
 narrative_text <- 
 "- Entrainment management is currently active.
-- Delta smelt are primarily distributed west of the confluence, in Suisun Marsh
-- No Delta smelt or longfin smelt salvage has been observed this water year
+- Delta smelt were detected at Chipps Island and the Sacramento Deep Water Ship Channel. 
+- No Delta smelt or longfin smelt salvage has been observed this water year.
 - Turbidity in the central/south Delta is moderate.
 "
 
@@ -64,13 +64,14 @@ Based on [historical monitoring data](https://github.com/Delta-Stewardship-Counc
 first detection of larvae in the Central and South Delta has typically occurred by mid to late March. 
 Because first flush conditions were met on December 23, 2025, spawning may begin occurring during the 
 current assessment week, consistent with the typical one- to four-week response window following increased 
-flow and turbidity."
+flow and turbidity.Recent captures at Chipps Island and the Sacramento Deep Water Ship Channel are consistent 
+with an upstream spawning migration into tidal freshwater habitats."
 
 # 4. After the onset of spawning, have the following conditions occurred: JPF < 0, 
 #daily average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 days?
-ds_eval_4 <- "Although spawning may begin during the current assessment period, JPF is above 0 cfs; 
+ds_eval_4 <- "Although spawning may occur during the current assessment period, JPF is above 0 cfs; 
 therefore, the conditions required to evaluate larval and juvenile Delta smelt entrainment management are not met."
 
 # Longfin smelt
@@ -127,9 +128,15 @@ ds_recent_display <- ds_recent %>%
 
 ## EDIT: South Delta conditions (turbidity and secchi depth-currently by email)-------------------------
 sd_secchi_depth <- 0.76
+<<<<<<< HEAD
 sd_secchi_date <- ymd("2026-05-01")
 sd_turb <- 12.2
 sd_turb_date <- ymd("2025-01-20")
+=======
+sd_secchi_date <- ymd("2026-01-13")
+sd_turb <- 12.2
+sd_turb_date <- ymd("2025-01-13")
+>>>>>>> 3787be84f7a673735d48c95645bd814aef8482d1
 
 ## Abundance ------------------------------
 # pull abundance estimate

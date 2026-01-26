@@ -28,11 +28,11 @@ lad_wr_pct <- if(!is.na(lad_wr_threshold_val) & lad_wr_threshold_val > 0) {
 
 #status of the salmonid loss
 salvage_status <- if(total_loss > 0) {
-  paste0("Season Loss: **", loss_dna_wr, "** (", wr_perc, " of threshold) DNA Winter-run, **", 
-         loss_hatch_wr, "** (", wr_hatch_perc, " of threshold) Hatchery Winter-run, **", 
-         loss_nat_sh, "** (", sh_perc, " of threshold) Natural Steelhead, **", 
-         loss_hatch_sh, "** (", sh_clipped_perc_threshold, " of threshold) Hatchery Steelhead, and **",
-         sr_loss_total, "** (", sr_loss_perc, " of threshold) Spring-run Surrogates.")
+  paste0("Season Loss: **", round(as.numeric(loss_dna_wr), 0), "** (", wr_perc, " of threshold) DNA Winter-run, **", 
+         round(as.numeric(loss_hatch_wr), 0), "** (", wr_hatch_perc, " of threshold) Hatchery Winter-run, **", 
+         round(as.numeric(loss_nat_sh), 0), "** (", sh_perc, " of threshold) Natural Steelhead, **", 
+         round(as.numeric(loss_hatch_sh), 0), "** (", sh_clipped_perc_threshold, " of threshold) Hatchery Steelhead, and **",
+         round(as.numeric(sr_loss_total), 0), "** (", sr_loss_perc, " of threshold) Spring-run Surrogates.")
 } else {
   "No salmonid loss has been recorded this season."
 }
@@ -66,6 +66,11 @@ wr_jpe <- if(is.na(jpe)) {
 
 wr_hatch_jpe <- if(is.na(livingston_jpe)) {
   print('The Juvenile Production Estimate for Livingstone Stone hatchery winter-run has not been established for the current water year.')
+} else if(nrow(wr_hatch) == 0) {
+  # JPE exists but no releases yet - based on current hatchery production
+  print(paste0('The Juvenile Production Estimate for hatchery winter-run is ', 
+               prettyNum(livingston_jpe, big.mark = ","), 
+               ' based on current Livingston Stone production estimates. **Note: Physical releases have not yet occurred in WY ', wy, '.**'))
 } else {
   # Added prettyNum here
   print(paste0('The Juvenile Production Estimate for hatchery winter-run is ', 
@@ -77,7 +82,7 @@ wr_threshold <- if(is.na(jpe)) {
   print('Thresholds are included from the previous water year.')
 } else {
   print(paste0('The annual Loss threshold for natural winter-run is 1% of the jpe or ', 
-               prettyNum(round(jpe*wr_loss_threshold, 2), big.mark = ","), 
+               prettyNum(round(jpe*wr_loss_threshold, 0), big.mark = ","), 
                ' fish.'))
 }
 
@@ -219,10 +224,17 @@ wr_threshold_val <- if(exists("jpe") & exists("wr_loss_threshold")) jpe * wr_los
 
 if (!exists("sh_clipped_threshold")) {
   if (exists("sh_hatch_loss_threshold") & exists("total_sh_released")) { 
-    sh_clipped_threshold <- total_sh_released * sh_hatch_loss_threshold 
+    sh_clipped_threshold <- round(total_sh_released * sh_hatch_loss_threshold, 0)
   } else {
     sh_clipped_threshold <- NA 
   }
+}
+
+# Format sh_clipped_threshold with commas for display
+sh_clipped_threshold_fmt <- if(!is.na(sh_clipped_threshold)) {
+  prettyNum(sh_clipped_threshold, big.mark = ",")
+} else {
+  "NA"
 }
 
 # 2. Risk Assessment Helper Function
