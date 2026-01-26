@@ -35,8 +35,8 @@ end_of_season = "not relevant"
 
 narrative_text <- 
 "- Entrainment management is currently active.
-- Delta smelt are primarily distributed west of the confluence, in Suisun Marsh
-- No Delta smelt or longfin smelt salvage has been observed this water year
+- Delta smelt were detected at Chipps Island and the Sacramento Deep Water Ship Channel. 
+- No Delta smelt or longfin smelt salvage has been observed this water year.
 - Turbidity in the central/south Delta is moderate.
 "
 
@@ -64,7 +64,8 @@ Based on [historical monitoring data](https://github.com/Delta-Stewardship-Counc
 first detection of larvae in the Central and South Delta has typically occurred by mid to late March. 
 Because first flush conditions were met on December 23, 2025, spawning may begin occurring during the 
 current assessment week, consistent with the typical one- to four-week response window following increased 
-flow and turbidity."
+flow and turbidity.Recent captures at Chipps Island and the Sacramento Deep Water Ship Channel are consistent 
+with an upstream spawning migration into tidal freshwater habitats."
 
 # 4. After the onset of spawning, have the following conditions occurred: JPF < 0, 
 #daily average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
