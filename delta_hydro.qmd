@@ -46,7 +46,7 @@ Entrainment management is the current controlling factor. See most recent weekly
 
 ### Current Conditions
 
-Most recent inflow at Freeport in the Sacramento River and Vernalis in the San Joaquin River is `r fpt` and `r vns` cfs respectively.  Most recent 1-day, 5-day, and 14-day OMRI measurements were `r omr_text`, `r omr5D_text`, and `r omr14D_text` respectively, and most recent export data were `r cvp` for Jones Pumping Plant and `r swp` for Henry O. Banks Pumping Plant.
+Most recent inflow at Freeport in the Sacramento River and Vernalis in the San Joaquin River is `r fpt` and `r vns` cfs respectively.  Most recent 1-day, 5-day, and 14-day OMRI measurements were `r omr_text`, `r omr5D_text`, and `r omr14D_text` cfs respectively, and most recent export data were `r cvp` cfs for Jones Pumping Plant and `r swp` cfs for Henry O. Banks Pumping Plant.
 ```{r}
 #| include: false
 export_plot <- pumping_clean %>%
@@ -147,7 +147,7 @@ Zone of Influence (ZOI) analysis is discussed in detail in the December 22 asses
 
 Current conditions at Freeport and Vernalis indicate that delta hydrology falls within the `r paste0("'",hydrology_current, "'")` category.  Forecasted conditions averaged across the next 7 days falls within the `r paste0("'",hydrology_forecast, "'")` category.
 
-The altered channel length for the current `r paste0('"', hydrology_current, '"')` hydrology is `r length_current` kilometers (km) across OMR bins of `r omr_current` respectively. The altered channel length for forecasted `r paste0('"', hydrology_forecast, '"')` hydrology is `r length_forecast` kilometeres (km) across OMR bins of `r omr_forecast` respectively.
+The altered channel length for the current `r paste0('"', hydrology_current, '"')` hydrology is `r length_current` kilometers (km) across OMR bins of `r omr_current` respectively. The altered channel length for forecasted `r paste0('"', hydrology_forecast, '"')` hydrology is `r length_forecast` kilometers (km) across OMR bins of `r omr_forecast` respectively.
 
 Change in altered channel length between OMR levels is `r channel_filter_current$length_change` km for current conditions and `r channel_filter_forecast$length_change` km for forecasted conditions indicating that ZOI impacts across OMR scenarios `r difference` between current and forecasted conditions.  Across the nine hydrology bins, `r channel_length_text`
 
