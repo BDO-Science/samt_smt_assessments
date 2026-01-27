@@ -369,6 +369,7 @@ smelt_release_table <- tables[[3]] %>% clean_names()
 # could filter by date for life stage here
 ds_latlon <- bind_rows(
   edsm_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
+  chipps_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
   beachsn_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
   sls_ds %>% select(source, date, catch, latitude, longitude, region, life_stage)) %>% 
   #twmm_ds %>% select(source, date, catch, latitude, longitude, region, life_state), 
@@ -385,6 +386,7 @@ ds_latlon <- bind_rows(
 # uncomment salvage once salvage is updated
 ds_detail <- bind_rows(
   edsm_ds %>% select(source, date, catch, mark_code, fork_length, latitude, longitude, region, stratum),
+  chipps_ds %>% select(source, date, catch, mark_code, fork_length, latitude, longitude, region, stratum),
   beachsn_ds %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   twmm_ds %>% select(source, date, catch, fork_length, latitude, longitude, region),
   sls_ds %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
