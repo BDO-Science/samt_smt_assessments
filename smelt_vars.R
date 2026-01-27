@@ -86,8 +86,13 @@ lfs_eval_1 <- "JPF is not < 0 cfs and no adult longfin smelt have been detected 
 #OMRI scenarios? Does Zone of Influence modeling show moderate to high changes 
 #in hydrodynamic footprint across different OMRI scenarios? Are these effects 
 #anticipated to cause a population decline?
-lfs_eval_2 <-  "JPF is not < 0 cfs. ZOI modeling shows moderate change in the hydrodynamic footprint 
-between OMRI scenarios, but no change between current and forecasted conditions."
+lfs_eval_2 <-  "JPF is not currently less than 0 cfs; however, it may drop below 0 cfs this 
+weekend. Even if JPF becomes negative, Zone of Influence modeling indicates only moderate 
+differences in hydrodynamic footprint across OMRI scenarios, with no change between current
+and forecasted conditions. Consistent with this, our Longfin Smelt Larval Population and 
+Particle Tracking Analysis (Table 5) demonstrates very low larval longfin smelt 
+entrainment across all OMRI levels this week (less than 0.1%), so a population-level 
+decline is not expected."
 
 # DONT NEED TO CHANGE UNLESS YOU WANT TO
 # 3. Is there additional information or other analyses that should be considered in this evaluation?
