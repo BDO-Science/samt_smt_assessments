@@ -37,7 +37,7 @@ narrative_text <-
 "- Entrainment management is currently active.
 - Delta smelt were detected at Chipps Island and the Sacramento Deep Water Ship Channel. 
 - No Delta smelt or longfin smelt salvage has been observed this water year.
-- Turbidity in the central/south Delta is moderate.
+- Turbidity in the central/south Delta is low-moderate.
 "
 
 # Evaluation question responses ---------------------

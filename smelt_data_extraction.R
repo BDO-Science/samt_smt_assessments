@@ -388,11 +388,13 @@ ds_detail <- bind_rows(
   beachsn_ds %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   twmm_ds %>% select(source, date, catch, fork_length, latitude, longitude, region),
   sls_ds %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
-  salvage_ds_data %>% select(source, date, catch, fork_length, latitude, longitude, region)) %>%
-  filter(!is.na(catch),
-         !is.na(latitude)) %>%
-  mutate(life_stage = ifelse(fork_length>58, "Adult", ifelse(fork_length>=20, "Juvenile", "Larva"))) %>% 
+  chipps_ds %>% select(source, date, catch, fork_length, latitude, longitude, region),
+  salvage_ds_data %>% select(source, date, catch, fork_length, latitude, longitude, region)
+) %>%
+  filter(!is.na(catch), !is.na(latitude)) %>%
+  mutate(life_stage = ifelse(fork_length>58,"Adult",ifelse(fork_length>=20,"Juvenile","Larva"))) %>%
   arrange(date)
+
 
 
 ### LFS ------------------
