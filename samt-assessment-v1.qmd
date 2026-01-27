@@ -293,6 +293,7 @@ The following figures display the cumulative loss trajectories relative to histo
 #| echo: false
 #| message: false
 #| layout-ncol: 1
+#| fig-pos: "H"
 #| fig-cap: 
 #|   - "Natural LAD winter-run Chinook salmon loss cumulative to date with historical years and annual loss threshold"
 #|   - "Natural Central Valley steelhead loss cumulative to date with historical years and annual loss threshold"
@@ -336,12 +337,15 @@ image_read(paste0(base_url, 'samt_lsp_stlhd.png')) %>%
     
     `r risk_q3`
 
+\newpage
 ### References
 
-Brodsky, Annie, Steven C. Zeug, Jonathan Nelson, John Hannon, Paul J. Anders, and Bradley J. Cavallo. "Does Broodstock Source Affect Post-Release Survival of Steelhead? Implications of Replacing a Non-Native Hatchery Stock for Recovery." *Environmental Biology of Fishes* 103, no. 5 (2020): 437–53. https://doi.org/10.1007/s10641-020-00951-2.
+::: {style="padding-left: 30px; text-indent: -30px;"}
+\hangpara{2em}{1} Brodsky, Annie, Steven C. Zeug, Jonathan Nelson, John Hannon, Paul J. Anders, and Bradley J. Cavallo. "Does Broodstock Source Affect Post-Release Survival of Steelhead? Implications of Replacing a Non-Native Hatchery Stock for Recovery." *Environmental Biology of Fishes* 103, no. [cite_start]5 (2020): 437–53. https://doi.org/10.1007/s10641-020-00951-2. [cite: 52, 53]
 
-Del Real, S. Casey, Michelle Workman, and Joseph Merz. "Migration Characteristics of Hatchery and Natural-Origin Oncorhynchus Mykiss from the Lower Mokelumne River, California." *Environmental Biology of Fishes* 94, no. 2 (2012): 363–75. https://doi.org/10.1007/s10641-011-9967-z.
+\hangpara{2em}{1} Del Real, S. Casey, Michelle Workman, and Joseph Merz. "Migration Characteristics of Hatchery and Natural-Origin Oncorhynchus Mykiss from the Lower Mokelumne River, California." *Environmental Biology of Fishes* 94, no. [cite_start]2 (2012): 363–75. https://doi.org/10.1007/s10641-011-9967-z. [cite: 54, 55]
 
-Kurth, R. 2013. Downstream migration success of Feather River Fish Hatchery steelhead smolts under different release strategies. Presentation at Steelhead Management Meeting, California Department of Fish and Wildlife.
+\hangpara{2em}{1} Kurth, R. 2013. Downstream migration success of Feather River Fish Hatchery steelhead smolts under different release strategies. [cite_start]Presentation at Steelhead Management Meeting, California Department of Fish and Wildlife. [cite: 56]
 
-Sandstrom, Philip Thomas, Arnold J. Ammann, Cyril Michel, et al. "Low River Survival of Juvenile Steelhead in the Sacramento River Watershed." *Environmental Biology of Fishes* 103, no. 5 (2020): 531–41. https://doi.org/10.1007/s10641-020-00954-z.
+\hangpara{2em}{1} Sandstrom, Philip Thomas, Arnold J. Ammann, Cyril Michel, et al. "Low River Survival of Juvenile Steelhead in the Sacramento River Watershed." *Environmental Biology of Fishes* 103, no. [cite_start]5 (2020): 531–41. https://doi.org/10.1007/s10641-020-00954-z. [cite: 57, 58, 59]
+:::
