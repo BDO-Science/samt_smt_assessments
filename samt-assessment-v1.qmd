@@ -354,33 +354,10 @@ knitr::include_graphics(paste0(base_url, 'samt_lsp_stlhd.png'))
 \newpage
 ### References
 
-::: {style="text-indent: -2em; padding-left: 2em;"}
-
-```{=latex}
-\noindent
-\hangindent=2em \hangafter=1
-```
 Brodsky, Annie, Steven C. Zeug, Jonathan Nelson, John Hannon, Paul J. Anders, and Bradley J. Cavallo. "Does Broodstock Source Affect Post-Release Survival of Steelhead? Implications of Replacing a Non-Native Hatchery Stock for Recovery." *Environmental Biology of Fishes* 103, no. 5 (2020): 437–53.
 
-```{=latex}
-\vspace{0.5em}
-\noindent
-\hangindent=2em \hangafter=1
-```
 Del Real, S. Casey, Michelle Workman, and Joseph Merz. "Migration Characteristics of Hatchery and Natural-Origin Oncorhynchus Mykiss from the Lower Mokelumne River, California." *Environmental Biology of Fishes* 94, no. 2 (2012): 363–75.
 
-```{=latex}
-\vspace{0.5em}
-\noindent
-\hangindent=2em \hangafter=1
-```
-Kurth, R. 2013. Downstream migration success of Feather River Fish Hatchery steelhead smolts under different release strategies. Presentation at Steelhead Management Meeting, California Department of Fish and Wildlife. 
+Kurth, R. 2013. Downstream migration success of Feather River Fish Hatchery steelhead smolts under different release strategies. Presentation at Steelhead Management Meeting, California Department of Fish and Wildlife.
 
-```{=latex}
-\vspace{0.5em}
-\noindent
-\hangindent=2em \hangafter=1
-```
-Sandstrom, Philip Thomas, Arnold J. Ammann, Cyril Michel, et al. "Low River Survival of Juvenile Steelhead in the Sacramento River Watershed." *Environmental Biology of Fishes* 103, no. 5 (2020): 531–41. 
-
-:::
+Sandstrom, Philip Thomas, Arnold J. Ammann, Cyril Michel, et al. "Low River Survival of Juvenile Steelhead in the Sacramento River Watershed." *Environmental Biology of Fishes* 103, no. 5 (2020): 531–41.
