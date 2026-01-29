@@ -3,15 +3,15 @@ format:
   html:
     toc: true
     standalone: false
-    title-block-style: none
   pdf:
     fig-dpi: 750
-    fig-pos: "H"
   docx:
+    reference-doc: reference.docx 
     fig-dpi: 750
-engine: knitr
-execute:
-  warning: false
+bibliography: references.bib
+csl: apa.csl 
+nocite: |
+  @*
 ---
 
 ## Assessment for Delta Operations on Salmonids
@@ -84,9 +84,9 @@ flextable(wr_natural_timing) %>%
 #| fig-alt: "Line chart of cumulative loss of natural-origin winter-run Chinook salmon at Delta facilities where daily loss is tracked against the annual threshold"
 #| fig-width: 10
 #| fig-height: 8
-#| out-width: "75%"
+#| out-width: "100%"
 
-image_read(paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,'/LossUnclip_1_DNAWinter_WY.png'))
+knitr::include_graphics(paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,'/LossUnclip_1_DNAWinter_WY.png'))
 ```
 
 #### STARS
@@ -103,7 +103,7 @@ The Delta STARS Model is an individual-based simulation model that predicts surv
 #| fig-alt: "Line chart of estimated overall winter-run survival probability from Knights Landing to Chipps Island where the current water year is compared to historical years"
 #| fig-width: 10
 #| fig-height: 8
-#| out-width: "75%"
+#| out-width: "100%"
 
 image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_plot_02-1.png')
 ```
@@ -116,7 +116,7 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 #| fig-alt: "Line chart of winter-run survival probability through the interior Delta where the current water year is compared to historical years"
 #| fig-width: 10
 #| fig-height: 8
-#| out-width: "75%"
+#| out-width: "100%"
 
 image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_plot_02-2.png')
 ```
@@ -129,7 +129,7 @@ image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_pl
 #| fig-alt: "Line chart of winter-run routing probability into the interior Delta where the current water year is compared to historical years"
 #| fig-width: 10
 #| fig-height: 8
-#| out-width: "75%"
+#| out-width: "100%"
 
 image_read('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_plot_02-3.png')
 ```
@@ -180,9 +180,9 @@ As of `r format(Sys.Date()-1, '%B %d')`, cumulative loss of unclipped steelhead 
 #| fig-alt: "Line chart of cumulative loss of natural-origin steelhead at Delta facilities where daily loss is tracked against the annual threshold"
 #| fig-width: 10
 #| fig-height: 8
-#| out-width: "75%"
+#| out-width: "100%"
 
-image_read(paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,'/LossUnclip_2_Stlhd_WY.png'))
+knitr::include_graphics(paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,'/LossUnclip_2_Stlhd_WY.png'))
 ```
 
 ### Hatchery-origin Central Valley Steelhead
@@ -236,9 +236,9 @@ Total loss of hatchery-origin steelhead is `r sh_clipped_loss_total` or `r sh_cl
 #| fig-alt: "Line chart of cumulative loss of hatchery-origin steelhead at Delta facilities where daily loss is tracked against the annual threshold"
 #| fig-width: 10
 #| fig-height: 8
-#| out-width: "75%"
+#| out-width: "100%"
 
-image_read(paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,'/LossClipped_2_StlhdHatch_WY.png'))
+knitr::include_graphics(paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY',wy,'/LossClipped_2_StlhdHatch_WY.png'))
 ```
 
 ### Spring-run Chinook
@@ -351,51 +351,6 @@ knitr::include_graphics(paste0(base_url, 'samt_lsp_stlhd.png'))
     
     `r risk_q3`
 
-Back to the "SacPAS Fiasco" setup for the `test` branch. You want the **Multi-Format Block** that uses CSS for the HTML/Word layout and Raw Attribute blocks to hide the LaTeX from everyone but the PDF engine. This is the version that keeps the formatting "leaks" (like the `=2em`) out of your HTML render.
-
-### The `test` Branch Reference Block
-
-Copy this exactly into your `samt-assessment-v1.qmd` on the `test` branch. It wraps the citations in a CSS-styled Div and uses ````{=latex}` to gatekeep the formatting for the server.
-
 \newpage
 ### References
-
-::: {style="text-indent: -2em; padding-left: 2em;"}
-
-```{=latex}
-\noindent
-\hangindent=2em \hangafter=1 
-
-```
-
-Brodsky, Annie, Steven C. Zeug, Jonathan Nelson, John Hannon, Paul J. Anders, and Bradley J. Cavallo. "Does Broodstock Source Affect Post-Release Survival of Steelhead? Implications of Replacing a Non-Native Hatchery Stock for Recovery." *Environmental Biology of Fishes* 103, no. 5 (2020): 437–53.
-
-```{=latex}
-\vspace{0.5em}
-\noindent
-\hangindent=2em \hangafter=1 
-
-```
-
-Del Real, S. Casey, Michelle Workman, and Joseph Merz. "Migration Characteristics of Hatchery and Natural-Origin Oncorhynchus Mykiss from the Lower Mokelumne River, California." *Environmental Biology of Fishes* 94, no. 2 (2012): 363–75.
-
-```{=latex}
-\vspace{0.5em}
-\noindent
-\hangindent=2em \hangafter=1 
-
-```
-
-Kurth, R. 2013. Downstream migration success of Feather River Fish Hatchery steelhead smolts under different release strategies. Presentation at Steelhead Management Meeting, California Department of Fish and Wildlife.
-
-```{=latex}
-\vspace{0.5em}
-\noindent
-\hangindent=2em \hangafter=1 
-
-```
-
-Sandstrom, Philip Thomas, Arnold J. Ammann, Cyril Michel, et al. "Low River Survival of Juvenile Steelhead in the Sacramento River Watershed." *Environmental Biology of Fishes* 103, no. 5 (2020): 531–41.
-
-:::
 
