@@ -4,10 +4,10 @@ format:
     toc: true
     standalone: false
   pdf:
-    fig-dpi: 750
+    fig-dpi: 1000
   docx:
-    reference-doc: apa-template.docx
-    fig-dpi: 750
+    reference-doc: custom-reference-doc.docx
+    fig-dpi: 1000
 bibliography: references.bib
 csl: apa.csl
 nocite: |
