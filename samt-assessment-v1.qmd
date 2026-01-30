@@ -42,6 +42,10 @@ source(here(project, 'source_code/salmon_code_rounding_fix.R'), echo = FALSE)
 
 -   `r salvage_status`
 
+-   `r itl_status`
+
+-   `r sr_yearling_itl_summary`
+
 -   `r wr_presence_status`
 
 -   `r sh_presence_status`
@@ -59,7 +63,7 @@ source(here(project, 'source_code/salmon_code_rounding_fix.R'), echo = FALSE)
 ```{r}
 #| label: tbl-wr_timing_table
 #| echo: false
-#| tbl-cap: 'Average percent of annual emigrating population for unclipped LAD winter-run captured at monitoring locations and salvaged at Delta facilities for the past 10 years'
+#| tbl-cap: 'Average percent of annual emigrating population for unclipped LAD winter-run captured at monitoring locations and salvaged at Delta facilities for the past 10 years.'
 
 flextable(wr_natural_timing) %>%
   #font(fontname = "Carlito", part = "all") %>%
@@ -80,7 +84,7 @@ flextable(wr_natural_timing) %>%
 #| label: fig-wr_loss
 #| echo: false
 #| message: false
-#| fig-cap: "Cumulative loss of natural-origin winter-run for WY 2026. Cumulative loss is based on genetically confirmed winter-run captured in salvage or length-at-date winter-run in which genetic confirmation was unable to be obtained"
+#| fig-cap: "Cumulative loss of natural-origin winter-run for WY 2026. Cumulative loss is based on genetically confirmed winter-run captured in salvage or length-at-date winter-run in which genetic confirmation was unable to be obtained."
 #| fig-alt: "Line chart of cumulative loss of natural-origin winter-run Chinook salmon at Delta facilities where daily loss is tracked against the annual threshold"
 #| fig-width: 10
 #| fig-height: 8
@@ -99,7 +103,7 @@ The Delta STARS Model is an individual-based simulation model that predicts surv
 #| label: fig-stars_survival
 #| echo: false
 #| message: false
-#| fig-cap: "Estimated overall winter-run survival from Knights Landing to Chipps Island. Black line indicates the current water-year, and other colored lines correspond to past water years"
+#| fig-cap: "Estimated overall winter-run survival from Knights Landing to Chipps Island. Black line indicates the current water-year, and other colored lines correspond to past water years."
 #| fig-alt: "Line chart of estimated overall winter-run survival probability from Knights Landing to Chipps Island where the current water year is compared to historical years"
 #| fig-width: 10
 #| fig-height: 8
@@ -112,7 +116,7 @@ knitr::include_graphics(paste0('https://www.cbr.washington.edu/sacramento/cohort
 #| label: fig-stars_id_survival
 #| echo: false
 #| message: false
-#| fig-cap: "Estimated survival from Knights Landing to Chipps Island of simulated winter-run cohorts that route through the interior Delta. Black line indicates the current water-year, and other colored lines correspond to past water years"
+#| fig-cap: "Estimated survival from Knights Landing to Chipps Island of simulated winter-run cohorts that route through the interior Delta. Black line indicates the current water-year, and other colored lines correspond to past water years."
 #| fig-alt: "Line chart of winter-run survival probability through the interior Delta where the current water year is compared to historical years"
 #| fig-width: 10
 #| fig-height: 8
@@ -125,7 +129,7 @@ knitr::include_graphics(paste0('https://www.cbr.washington.edu/sacramento/cohort
 #| label: fig-stars_id_routing
 #| echo: false
 #| message: false
-#| fig-cap: "Estimated probability of winter-run routing into the interior Delta. Black line indicates the current water-year, and other colored lines correspond to past water years"
+#| fig-cap: "Estimated probability of winter-run routing into the interior Delta. Black line indicates the current water-year, and other colored lines correspond to past water years."
 #| fig-alt: "Line chart of winter-run routing probability into the interior Delta where the current water year is compared to historical years"
 #| fig-width: 10
 #| fig-height: 8
@@ -156,7 +160,7 @@ knitr::include_graphics(paste0('https://www.cbr.washington.edu/sacramento/cohort
 
 ```{r}
 #| label: tbl-sh_timing_table
-#| tbl-cap: 'Average percent of annual emigrating population for unclipped CCV steelhead captured at monitoring locations and salvaged at Delta facilities for the past 10 years'
+#| tbl-cap: 'Average percent of annual emigrating population for unclipped CCV steelhead captured at monitoring locations and salvaged at Delta facilities for the past 10 years.'
 #| echo: false
 
 flextable(sh_natural_timing) %>%
@@ -170,14 +174,14 @@ flextable(sh_natural_timing) %>%
 
 #### Annual Loss
 
-As of `r format(Sys.Date()-1, '%B %d')`, cumulative loss of unclipped steelhead is `r sh_loss` or `r sh_perc` of the annual loss threshold. Cumulative loss in the past 7 days has been `r sh_7d`.
+As of `r format(Sys.Date()-1, '%B %d')`, cumulative loss of unclipped steelhead is `r sh_loss` or `r sh_perc` of the single-year incidental take limit (ITL). There is no annual loss threshold for natural steelhead. The single-year ITL is 5,294 juveniles or 2,319 juveniles as a 3-year rolling average (BiOp Table 184). Cumulative loss in the past 7 days has been `r sh_7d`.
 
 ```{r}
 #| label: fig-sh_loss
 #| echo: false
 #| message: false
-#| fig-cap: "Cumulative loss of natural-origin steelhead for WY 2026"
-#| fig-alt: "Line chart of cumulative loss of natural-origin steelhead at Delta facilities where daily loss is tracked against the annual threshold"
+#| fig-cap: "Cumulative loss of natural-origin steelhead for WY 2026. The 5,294 line represents the single-year incidental take limit (ITL), not a loss threshold."
+#| fig-alt: "Line chart of cumulative loss of natural-origin steelhead at Delta facilities where daily loss is tracked against the single-year ITL of 5,294."
 #| fig-width: 10
 #| fig-height: 8
 #| out-width: "100%"
@@ -193,7 +197,7 @@ There have been a total of `r n_releases` releases totaling `r sh_stocked` steel
 
 ```{r}
 #| label: tbl-sh_clipped_table
-#| tbl-cap: 'Summary of steelhead hatchery releases in Water Year 2026. JPE calculated using hatchery-specific survival estimates to Delta entry from release location'
+#| tbl-cap: 'Summary of steelhead hatchery releases in Water Year 2026. JPE calculated using hatchery-specific survival estimates to Delta entry from release location.'
 #| echo: false
 
 flextable(release_table_print) %>%
@@ -205,7 +209,7 @@ flextable(release_table_print) %>%
 
 ```{r}
 #| label: tbl-survival_estimates
-#| tbl-cap: 'Hatchery-specific survival estimates used for JPE calculations'
+#| tbl-cap: 'Hatchery-specific survival estimates used for JPE calculations.'
 #| echo: false
 
 # Create the survival estimates table 
@@ -226,13 +230,13 @@ flextable(survival_table) %>%
   fit_to_width(max_width = 6.5)
 ```
 
-Total loss of hatchery-origin steelhead is `r sh_clipped_loss_total` or `r sh_clipped_perc_threshold` of the annual loss threshold. *Note that hatchery origin of salvaged fish can not be determined at this time and salvage is based on the assumption of similar routing and survival probabilities of individual hatchery releases.*
+Total loss of hatchery-origin steelhead is `r sh_clipped_loss_total` or `r sh_clipped_perc_threshold` of the annual loss threshold. *Note that hatchery origin of salvaged fish cannot be determined at this time and salvage is based on the assumption of similar routing and survival probabilities of individual hatchery releases.*
 
 ```{r}
 #| label: fig-sh_hatch_loss
 #| echo: false
 #| message: false
-#| fig-cap: "Cumulative loss of hatchery steelhead for WY 2026"
+#| fig-cap: "Cumulative loss of hatchery steelhead for WY 2026."
 #| fig-alt: "Line chart of cumulative loss of hatchery-origin steelhead at Delta facilities where daily loss is tracked against the annual threshold"
 #| fig-width: 10
 #| fig-height: 8
@@ -249,7 +253,7 @@ knitr::include_graphics(paste0('https://www.cbr.washington.edu/sacramento/workgr
 
 ```{r}
 #| label: tbl-sr_timing_table
-#| tbl-cap: 'Average percent of annual emigrating population for LAD spring-run Chinook salmon captured at monitoring locations and salvaged at Delta facilities for the past 10 years'
+#| tbl-cap: 'Average percent of annual emigrating population for LAD spring-run Chinook salmon captured at monitoring locations and salvaged at Delta facilities for the past 10 years.'
 #| echo: false
 
 flextable(sr_natural_timing) %>%
@@ -269,7 +273,7 @@ A total of `r total_sr_released_fmt` spring-run surrogate fish have been release
 
 ```{r}
 #| label: tbl-sr_surrogate_table
-#| tbl-cap: 'Spring-run Chinook salmon surrogate releases (all Coleman Late-Fall releases, both production and experimental)'
+#| tbl-cap: 'Spring-run Chinook salmon surrogate releases (all Coleman Late-Fall releases, both production and experimental).'
 #| echo: false
 #| warning: false
 
@@ -282,7 +286,7 @@ flextable(sr_surrogate_table_clean) %>%
 
 #### Annual Loss
 
-The annual loss threshold is 1% of the JPE entering the Delta, which equals `r sr_threshold_fmt` fish. As of `r format(Sys.Date()-1, '%B %d')`, cumulative loss is `r sr_loss_total_fmt` fish or `r sr_loss_perc` of the annual loss threshold.
+The annual loss threshold is 1% of the JPE entering the Delta, which equals `r sr_threshold_fmt` fish. As of `r format(Sys.Date()-1, '%B %d')`, cumulative loss is `r sr_loss_total_fmt` fish or `r sr_loss_perc` of the annual loss threshold. The single-year incidental take limit (ITL) is 0.5% of the estimated number of each surrogate release group (BiOp Table 184). ITL status by experimental release group: `r sr_itl_text`
 
 ### Loss Prediction and Trajectories
 
@@ -292,7 +296,7 @@ The following figures display the cumulative loss trajectories relative to histo
 #| label: fig-wr-spaghetti
 #| echo: false
 #| message: false
-#| fig-cap: "Natural LAD winter-run Chinook salmon loss cumulative to date with historical years and annual loss threshold"
+#| fig-cap: "Natural LAD winter-run Chinook salmon loss cumulative to date with historical years and annual loss threshold."
 #| fig-alt: "Line chart showing cumulative loss of natural LAD winter-run Chinook salmon for the current water year (black line) compared to historical years (gray lines) with annual loss threshold indicated as a horizontal dashed line"
 #| out-width: "100%"
 ##| fig-pos: "H"
@@ -305,7 +309,7 @@ knitr::include_graphics(paste0(base_url, 'LossUnclip_1_Winter_currhist.png'))
 #| label: fig-sh-spaghetti
 #| echo: false
 #| message: false
-#| fig-cap: "Natural Central Valley steelhead loss cumulative to date with historical years and annual loss threshold"
+#| fig-cap: "Natural Central Valley steelhead loss cumulative to date with historical years and single-year ITL (5,294). There is no annual loss threshold for natural steelhead."
 #| fig-alt: "Line chart showing cumulative loss of natural Central Valley steelhead for the current water year (black line) compared to historical years (gray lines) with annual loss threshold indicated as a horizontal dashed line"
 #| out-width: "100%"
 ##| fig-pos: "H"
@@ -317,7 +321,7 @@ knitr::include_graphics(paste0(base_url, 'LossUnclip_2_Stlhd_currhist.png'))
 #| label: fig-wr-lsp
 #| echo: false
 #| message: false
-#| fig-cap: "Estimates of winter-run Chinook loss generated by Loss and Salvage Predictor tool"
+#| fig-cap: "Estimates of winter-run Chinook loss generated by Loss and Salvage Predictor tool."
 #| fig-alt: "Graph showing observed cumulative loss of winter-run Chinook salmon (points) with predicted future loss trajectories including mean predictions (line) and 80% credible intervals (shaded area)"
 #| out-width: "100%"
 ##| fig-pos: "H"
@@ -329,7 +333,7 @@ knitr::include_graphics(paste0(base_url, 'samt_lsp_winter.png'))
 #| label: fig-sh-lsp
 #| echo: false
 #| message: false
-#| fig-cap: "Estimates of steelhead loss generated by Loss and Salvage Predictor tool"
+#| fig-cap: "Estimates of steelhead loss generated by Loss and Salvage Predictor tool."
 #| fig-alt: "Graph showing observed cumulative loss of steelhead (points) with predicted future loss trajectories including mean predictions (line) and 80% credible intervals (shaded area)"
 #| out-width: "100%"
 ##| fig-pos: "H"
@@ -339,15 +343,17 @@ knitr::include_graphics(paste0(base_url, 'samt_lsp_stlhd.png'))
 
 ### Evaluation
 
-1. **What is the probability of exceeding natural or hatchery winter-run Chinook salmon loss thresholds in the upcoming week?**
+**Single-Year Incidental Take Limits (BiOp Table 184):** Natural winter-run: `r prettyNum(round(jpe * itl_wr_natural_single, 0), big.mark = ",")` fish; Hatchery winter-run (Sacramento River): `r prettyNum(round(livingston_jpe * itl_wr_hatch_single, 0), big.mark = ",")` fish; Natural steelhead: 5,294 fish; Yearling spring-run surrogates (0.5% of each experimental release group): `r sr_itl_text`
+
+1. **What is the probability of exceeding natural or hatchery winter-run Chinook salmon loss thresholds or ITLs in the upcoming week?**
     
     `r risk_q1`
 
-2. **What is the probability of spring-run hatchery Chinook salmon loss thresholds in the upcoming week?**
+2. **What is the probability of exceeding spring-run Chinook salmon surrogate yearling loss thresholds or ITLs in the upcoming week?**
     
     `r risk_q2`
 
-3. **What is the probability of hatchery steelhead loss thresholds in the upcoming week?**
+3. **What is the probability of exceeding natural steelhead ITL or hatchery steelhead loss thresholds in the upcoming week?**
     
     `r risk_q3`
 
