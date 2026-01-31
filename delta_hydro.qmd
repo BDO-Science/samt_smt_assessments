@@ -118,7 +118,7 @@ omr_plot
 #| fig-height: 7
 #| echo: false
  
-flow_plot +omr_plot + export_plot + plot_layout(nrow = 3)
+flow_plot + omr_plot + export_plot + plot_layout(nrow = 3) #add in JPF plot when data are posted
 ```
 
 ```{r}

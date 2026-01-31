@@ -3,6 +3,7 @@
 #lrm 1/26/26
 
 library(pdftools)
+library(slider)
 
 ## Jersey Point Flow ---------------------------------
 
@@ -189,20 +190,51 @@ write_csv(JPF_hist, "JPF_historic_WY26.csv")
 #set up variables
 hydro_test <- hydro_rec %>%
   mutate(
-    QXGEO = 0.133 * SR_at_Freeport_SRWTP + 829,
-    Delta_precip = Stockton_rain_in / 12/ 5 * 682230 * 0.5041666604 *0.65,
-    Delta_div = Delta_GCD_cfs *0.65 , 
-    pumps = CCF_cfs + Tracy_cfs #updated to use CCF- Bogdon says a better gage for what the pump is taking
+    QXGEO = ((0.133 * SR_at_Freeport_SRWTP) + 829),
+    #Delta_precip = Stockton_rain_in / 12/ 5 * 682230 * 0.5041666604 *0.65,
+    Delta_precip = (Stockton_rain_in * 679000 ) / ( 12 * 1.9835 *5),
+    Delta_prec5d = slide_dbl(Delta_precip, ~sum(.x), .before = 5, .after = -1,
+                             .complete= TRUE),
+    Delta_div = Delta_GCD_cfs, 
+    pumps = CCF_cfs + Tracy_cfs #updated to use CCF- Bogdon says a better gauge for what the pump is taking
   )
 
 #calc JPF
+
 hydro_test <- hydro_test %>%
   mutate(JPF_calc =
-      SJR_a_Vernalis +
-      E_side_streams +
-      QXGEO +
-      Delta_precip -
-      Delta_div -
-      pumps)
+           SJR_a_Vernalis +
+           E_side_streams +
+           QXGEO +
+           (0.65* Delta_prec5d) -
+           (0.65 * Delta_div) - 
+           pumps)
 
 
+
+# hydro_test <- hydro_test %>%
+#   mutate(JPF_calc =
+#       SJR_a_Vernalis +
+#       E_side_streams +
+#       QXGEO +
+#       Delta_precip -
+#       Delta_div -
+#       pumps)
+
+
+# Practice figure
+#ann_start_jpf <- JPF_hist %>% filter(Date == date(start)) %>% pull(JPF_cfs)
+
+jpf_plot <- JPF_hist %>%
+  ggplot(aes(x = Date)) +
+  labs(y = 'Flow (cfs)') +
+  annotate("label", x = date(start)+10, y = 15000, label = "Jersey Point Flow", color = "darkturquoise")+
+  geom_hline(yintercept = 0, linetype = 'dashed', color = '#888888', linewidth= 1)+
+  geom_line(aes(y = JPF_cfs), color= "darkturquoise", linewidth = 1) +
+  #scale_color_manual(values = c("#43a419", "gray15")) +
+  scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
+  theme_bw() +
+  theme(legend.position = "none",
+        axis.title.x = element_blank(),
+        axis.text = element_text(size = 15),
+        axis.title= element_text(size = 15))
