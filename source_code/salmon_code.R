@@ -13,11 +13,22 @@ season_start <- ymd(paste0(wy-1,'-10-01'))
 season_end <- ymd(paste0(wy,'-06-30'))
 jpe <- 1057452
 livingston_jpe <- 130096
-# regulatory thresholds
-wr_loss_threshold <- 0.01
-wr_hatch_loss_threshold <- 0.01
-sh_hatch_loss_threshold <- 0.01
-sr_surrogate_threshold <- 0.01
+
+# OPERATIONAL LOSS THRESHOLDS (trigger management actions)
+wr_loss_threshold <- 0.01        # 1% of JPE for natural winter-run
+wr_hatch_loss_threshold <- 0.01  # 1% of JPE for hatchery winter-run
+sh_hatch_loss_threshold <- 0.01  # 1% of JPE for hatchery steelhead
+sr_surrogate_threshold <- 0.01   # 1% of JPE for spring-run surrogates
+
+# INCIDENTAL TAKE LIMITS (BiOp Table 184) - for reporting/compliance
+# These are the maximum anticipated annual amount and extent of take
+itl_wr_natural_single <- 0.0056      # 0.56% of JPE single year
+itl_wr_natural_3yr <- 0.0036         # 0.36% of JPE 3-year rolling
+itl_wr_hatch_single <- 0.01          # 1.0% of JPE single year
+itl_wr_hatch_3yr <- 0.008            # 0.8% of JPE 3-year rolling
+itl_sr_surrogate <- 0.005            # 0.5% of each surrogate release group
+itl_sh_natural_single <- 5294        # 5,294 juveniles single year
+itl_sh_natural_3yr <- 2319           # 2,319 juveniles 3-year rolling
 
 #########################################################
 #pull in latest salmon and steelhead files from CDFW ftp
@@ -168,7 +179,9 @@ timing_table <- timing[[1]] %>%
 wr_natural_timing <- timing_table %>%
   slice(1,4)
 
-delta_entry_wr <- wr_natural_timing[1,4] %>%
+# Delta entry based on Sac Trawl (Sherwood) - column 5
+# Delta exit based on Chipps Island Trawl - column 6
+delta_entry_wr <- wr_natural_timing[1,5] %>%
   pull()
 delta_exit_wr <- wr_natural_timing[1,6] %>%
   pull()
@@ -178,7 +191,9 @@ salvage_wr <- wr_natural_timing[2,7] %>%
 sr_natural_timing <- timing_table %>%
   slice(2)
 
-delta_entry_sr <- sr_natural_timing[1,4] %>%
+# Delta entry based on Sac Trawl (Sherwood) - column 5
+# Delta exit based on Chipps Island Trawl - column 6
+delta_entry_sr <- sr_natural_timing[1,5] %>%
   pull()
 delta_exit_sr <- sr_natural_timing[1,6] %>%
   pull()
@@ -191,17 +206,21 @@ sh_natural_timing <- timing_table %>%
   pivot_longer(names_to = 'measure',
                values_to = 'value', -1) %>%
   group_by(Species, measure) %>%
-  summarize(value = max(value, na.rm = TRUE)) %>%
+  summarize(value = max(value, na.rm = TRUE), .groups = "drop") %>%
   pivot_wider(names_from = 'measure',
-              values_from = 'value') %>%
-  select(4,7,3,5,2,6)
+              values_from = 'value')
 
-delta_entry_sh <- sh_natural_timing[1,4] %>%
-  pull()
-delta_exit_sh <- sh_natural_timing[1,6] %>%
-  pull()
-salvage_sh <- sh_natural_timing[1,7] %>%
-  pull()
+# Delta entry based on Sac Trawl (Sherwood)
+# Delta exit based on Chipps Island Trawl
+delta_entry_sh <- sh_natural_timing %>%
+  pull(`Sac Trawl (Sherwood)`)
+delta_exit_sh <- sh_natural_timing %>%
+  pull(`Chipps Island Trawl`)
+salvage_sh <- if("Salvage" %in% names(sh_natural_timing)) {
+  sh_natural_timing %>% pull(Salvage)
+} else {
+  sh_natural_timing %>% pull(7)
+}
 
 
 #######################################
@@ -710,8 +729,11 @@ sr_all_releases_jpe <- sr_all_releases %>%
 # 5. Calculate Combined Metrics using JPE
 total_sr_released <- sum(sr_all_releases$`# of CWT Fish Released`, na.rm = TRUE)
 total_sr_jpe <- sum(sr_all_releases_jpe$jpe, na.rm = TRUE)
-sr_threshold_val <- total_sr_jpe * 0.01  # 1% of JPE
+sr_threshold_val <- total_sr_jpe * 0.01  # 1% of JPE (operational threshold)
 sr_loss_total <- sum(sr_all_releases$`Confirmed Loss`, na.rm = TRUE)
+
+# Calculate ITL comparison (0.5% per BiOp Table 184)
+sr_itl_val <- total_sr_jpe * 0.005  # 0.5% ITL per BiOp Table 184
 
 sr_loss_perc <- if(sr_threshold_val > 0) {
   paste0(sprintf("%.2f", (sr_loss_total / sr_threshold_val) * 100), "%")
@@ -750,9 +772,41 @@ coleman_total_fmt <- prettyNum(coleman_total, big.mark = ",")
 coleman_loss_fmt <- prettyNum(coleman_loss, big.mark = ",")
 coleman_jpe_fmt <- prettyNum(coleman_jpe_total, big.mark = ",")
 
-# 7. Clean Table for Report Display
+# 7. Calculate ITLs by experimental release group (0.5% of each group per BiOp Table 184)
+# ITL applies to experimental releases: groups released on 2025-11-17, 2025-12-22, 2026-01-08
+sr_experimental_itl <- if(nrow(sr_all_releases_jpe) > 0) {
+  sr_all_releases_jpe %>%
+    filter(Type == "Experimental") %>%
+    group_by(`Release Date`) %>%
+    summarize(
+      fish_released = sum(`# of CWT Fish Released`, na.rm = TRUE),
+      confirmed_loss = sum(`Confirmed Loss`, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    mutate(
+      itl = round(fish_released * 0.005, 0),  # 0.5% ITL
+      itl_perc = round((confirmed_loss / itl) * 100, 2)
+    ) %>%
+    arrange(`Release Date`)
+} else {
+  data.frame(`Release Date` = character(), fish_released = numeric(), 
+             confirmed_loss = numeric(), itl = numeric(), itl_perc = numeric())
+}
+
+# Create ITL summary text for experimental groups
+sr_itl_text <- if(nrow(sr_experimental_itl) > 0) {
+  itl_lines <- sr_experimental_itl %>%
+    mutate(text = paste0("Release Group ", row_number(), " (", `Release Date`, "): ",
+                         round(confirmed_loss, 1), " loss of ", prettyNum(itl, big.mark = ","), 
+                         " ITL (", itl_perc, "%)")) %>%
+    pull(text)
+  paste(itl_lines, collapse = "; ")
+} else {
+  "No experimental release groups available."
+}
+
+# 8. Clean Table for Report Display
 # Group by release date and hatchery since individual CWT codes don't matter for assessment
-# 6. Create Clean Table for Report Display
 sr_surrogate_table_clean <- if(nrow(sr_all_releases_jpe) > 0) {
   sr_all_releases_jpe %>%
     # Final validation - remove any remaining bad rows
@@ -765,20 +819,21 @@ sr_surrogate_table_clean <- if(nrow(sr_all_releases_jpe) > 0) {
     # Group by release event (date + hatchery + type)
     group_by(`Hatchery`, `Release Date`, `Stock`, `Type`) %>%
     summarize(
-      `# of CWT Fish Released` = sum(`# of CWT Fish Released`, na.rm = TRUE),
+      fish_released_raw = sum(`# of CWT Fish Released`, na.rm = TRUE),
       `JPE` = sum(jpe, na.rm = TRUE),
       `Confirmed Loss` = sum(`Confirmed Loss`, na.rm = TRUE),
       `CWT Codes` = paste(sort(unique(`Tag Code`)), collapse = ", "),
       .groups = "drop"
     ) %>%
-    # Format numbers for display
+    # Add ITL column (0.5% for experimental groups)
     mutate(
-      `# of CWT Fish Released` = prettyNum(round(`# of CWT Fish Released`, 0), big.mark = ","),
+      `ITL (0.5%)` = if_else(Type == "Experimental", round(fish_released_raw * 0.005, 0), NA_real_),
+      `# of CWT Fish Released` = prettyNum(round(fish_released_raw, 0), big.mark = ","),
       `JPE` = prettyNum(round(JPE, 0), big.mark = ","),
       `Confirmed Loss` = round(`Confirmed Loss`, 1)
     ) %>%
     # Select and order columns
-    select(`Hatchery`, `Release Date`, `Type`, `# of CWT Fish Released`, `JPE`, `Confirmed Loss`, `CWT Codes`) %>%
+    select(`Hatchery`, `Release Date`, `Type`, `# of CWT Fish Released`, `JPE`, `ITL (0.5%)`, `Confirmed Loss`, `CWT Codes`) %>%
     # Sort by release date
     arrange(`Release Date`)
 } else {
@@ -789,6 +844,7 @@ sr_surrogate_table_clean <- if(nrow(sr_all_releases_jpe) > 0) {
     `Type` = character(),
     `# of CWT Fish Released` = character(),
     `JPE` = character(),
+    `ITL (0.5%)` = numeric(),
     `Confirmed Loss` = numeric(),
     `CWT Codes` = character(),
     check.names = FALSE
@@ -843,33 +899,96 @@ loss_hatch_sh  <- get_loss_val("hatchery_steelhead")
 
 total_loss <- sum(loss_dna_wr, loss_lad_wr, loss_hatch_wr, loss_nat_sh, loss_hatch_sh, na.rm = TRUE)
 
-# --- 3. Presence Logic Helper Function (UPDATED) ---
+# --- 3. Presence Logic Helper Function ---
+# Delta entry: based on historical cumulative catch at Sac Trawl (Sherwood Harbor)
+# Delta exit: based on historical cumulative catch at Chipps Island Trawl
+# For LAD winter-run and steelhead
 get_presence_status <- function(species_name, entry_pct, exit_pct, catch_keyword) {
-  real_catch <- 0
-  if(exists("all_sampling")) {
-    real_catch <- all_sampling %>% 
-      filter(Location %in% c('Sac Trawl (Sherwood)', 'Sac Seine')) %>% 
-      select(contains(catch_keyword)) %>% 
-      as.matrix() %>% sum(na.rm = TRUE)
-  }
   
+  # Presence status is determined by historical cumulative catch percentages:
+  # - entry_pct = cumulative % at Sac Trawl (Sherwood) - delta entry
+  # - exit_pct = cumulative % at Chipps Island Trawl - delta exit
   case_when(
-    # 1. Emigration Complete (>95% Exited)
-    exit_pct >= 95 ~ paste0(species_name, " presence in the Delta is **low** (emigration nearly complete)."),
+    # Decreasing: >=50% of fish historically have passed Chipps Island Trawl (delta exit)
+    exit_pct >= 50 ~ paste0(species_name, " presence in the Delta is decreasing based on historical Chipps Island Trawl monitoring."),
     
-    # 2. Peak Presence (25% - 75% Entry)
-    entry_pct >= 25 & entry_pct <= 75 ~ paste0(species_name, " presence in the Delta is **high** (historical peak)."),
+    # High/Peak: significant proportion entering (>=25% at Sac Trawl) but <50% exiting at Chipps
+    entry_pct >= 25 & exit_pct < 50 ~ paste0(species_name, " presence in the Delta is high based on historical monitoring."),
     
-    # 3. Decreasing Presence (>75% Entry, but still in system)
-    entry_pct > 75 & exit_pct < 95 ~ paste0(species_name, " presence in the Delta is **decreasing** (winding down)."),
+    # Increasing: fish entering at Sac Trawl (5-25%) but few exiting at Chipps yet (<10%)
+    entry_pct >= 5 & entry_pct < 25 & exit_pct < 10 ~ paste0(species_name, " presence in the Delta is increasing based on historical monitoring."),
     
-    # 4. Increasing Presence (5% - 25% Entry)
-    entry_pct >= 5 & entry_pct < 25 ~ paste0(species_name, " presence in the Delta is **increasing**."),
-    
-    # 5. Early Detection (Low Hist < 5%, but Real Fish Caught)
-    entry_pct < 5 & real_catch > 0 ~ paste0(species_name, " presence in the Delta is **low**, but fish have been **detected** (", real_catch, " captured in Delta monitoring)."),
-    
-    # 6. Low/Inactive
-    TRUE ~ paste0(species_name, " presence in the Delta is **low** (immigration has not peaked).")
+    # Low: minimal entry and exit based on historical timing
+    TRUE ~ paste0(species_name, " presence in the Delta is low based on historical monitoring.")
   )
 }
+
+# salmon_code_rounding_fix.R
+# Source this AFTER salmon_code.R to round all fish counts to whole numbers
+
+# Round all loss values to whole numbers
+if(exists("loss_dna_wr")) loss_dna_wr <- round(as.numeric(loss_dna_wr), 0)
+if(exists("loss_lad_wr")) loss_lad_wr <- round(as.numeric(loss_lad_wr), 0)
+if(exists("loss_hatch_wr")) loss_hatch_wr <- round(as.numeric(loss_hatch_wr), 0)
+if(exists("loss_nat_sh")) loss_nat_sh <- round(as.numeric(loss_nat_sh), 0)
+if(exists("loss_hatch_sh")) loss_hatch_sh <- round(as.numeric(loss_hatch_sh), 0)
+if(exists("total_loss")) total_loss <- round(as.numeric(total_loss), 0)
+
+# Round cumulative loss values shown in document
+if(exists("wr_loss")) wr_loss <- round(as.numeric(wr_loss), 0)
+if(exists("wr_hatch_loss")) wr_hatch_loss <- round(as.numeric(wr_hatch_loss), 0)
+if(exists("sh_loss")) sh_loss <- round(as.numeric(sh_loss), 0)
+
+# Round 7-day loss values
+if(exists("wr_7d")) wr_7d <- round(as.numeric(wr_7d), 0)
+if(exists("wr_hatch_7d")) wr_hatch_7d <- round(as.numeric(wr_hatch_7d), 0)
+if(exists("sh_7d")) sh_7d <- round(as.numeric(sh_7d), 0)
+
+# Round hatchery loss totals
+if(exists("sh_clipped_loss_total")) sh_clipped_loss_total <- round(as.numeric(sh_clipped_loss_total), 0)
+
+# Round spring-run values (check if they exist first)
+if(exists("total_sr_released")) {
+  total_sr_released <- round(total_sr_released, 0)
+  total_sr_released_fmt <- prettyNum(total_sr_released, big.mark = ",")
+}
+
+if(exists("sr_loss_total")) {
+  sr_loss_total <- round(sr_loss_total, 0)
+  sr_loss_total_fmt <- prettyNum(sr_loss_total, big.mark = ",")
+}
+
+if(exists("coleman_total")) {
+  coleman_total <- round(coleman_total, 0)
+  coleman_total_fmt <- prettyNum(coleman_total, big.mark = ",")
+}
+
+if(exists("coleman_loss")) {
+  coleman_loss <- round(coleman_loss, 0)
+  coleman_loss_fmt <- prettyNum(coleman_loss, big.mark = ",")
+}
+
+if(exists("total_sr_jpe")) {
+  total_sr_jpe <- round(total_sr_jpe, 0)
+  total_sr_jpe_fmt <- prettyNum(total_sr_jpe, big.mark = ",")
+}
+
+if(exists("coleman_jpe")) {
+  coleman_jpe <- round(coleman_jpe, 0)
+  coleman_jpe_fmt <- prettyNum(coleman_jpe, big.mark = ",")
+}
+
+# Round JPE values
+if(exists("jpe")) jpe <- round(jpe, 0)
+if(exists("livingston_jpe")) livingston_jpe <- round(livingston_jpe, 0)
+
+# Round threshold values
+if(exists("sr_threshold_val")) {
+  sr_threshold_val <- round(sr_threshold_val, 0)
+  sr_threshold_fmt <- prettyNum(sr_threshold_val, big.mark = ",")
+}
+
+# Round passage estimates (keep at 2 decimals for millions)
+# wr_passage and sr_passage are already in millions with 2 decimals - leave as is
+
+print("All fish counts rounded to whole numbers")

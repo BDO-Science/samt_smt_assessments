@@ -10,35 +10,66 @@ source(here(project, 'source_code/salmon_code.R'), echo = FALSE)
 
 # Triggered if in date range OR if >5% of target species have entered
 entrainment_status <- if(is_season_date_range | (pct_wr_in_delta > 5 | pct_sh_in_delta > 5)) {
-  "Entrainment management season is **active**."
+  "Entrainment management season is active."
 } else {
-  "Entrainment management season is **not active** at this time."
+  "Entrainment management season is not active at this time."
 }
 
-#status of the salmonid loss
-
-# Calculate LAD percent (using Natural Winter-run Threshold)
-# Matches logic from salmon_code.R: jpe * wr_loss_threshold
-lad_wr_threshold_val <- if(exists("jpe") & exists("wr_loss_threshold")) jpe * wr_loss_threshold else NA
-lad_wr_pct <- if(!is.na(lad_wr_threshold_val) & lad_wr_threshold_val > 0) {
-  paste0(sprintf("%.2f", (loss_lad_wr / lad_wr_threshold_val) * 100), "%")
-} else {
-  "NA%"
-}
-
-#status of the salmonid loss
+# Status of the salmonid loss relative to annual loss thresholds
 salvage_status <- if(total_loss > 0) {
-  paste0("Season Loss: **", round(as.numeric(loss_dna_wr), 0), "** (", wr_perc, " of threshold) DNA Winter-run, **", 
-         round(as.numeric(loss_hatch_wr), 0), "** (", wr_hatch_perc, " of threshold) Hatchery Winter-run, **", 
-         round(as.numeric(loss_nat_sh), 0), "** (", sh_perc, " of threshold) Natural Steelhead, **", 
-         round(as.numeric(loss_hatch_sh), 0), "** (", sh_clipped_perc_threshold, " of threshold) Hatchery Steelhead, and **",
-         round(as.numeric(sr_loss_total), 0), "** (", sr_loss_perc, " of threshold) Spring-run Surrogates.")
+  paste0("Season Loss: ", round(as.numeric(loss_dna_wr), 0), " (", wr_perc, " of annual loss threshold) natural winter-run, ", 
+         round(as.numeric(loss_hatch_wr), 0), " (", wr_hatch_perc, " of annual loss threshold) hatchery winter-run, ", 
+         round(as.numeric(loss_nat_sh), 2), " natural steelhead, ", 
+         round(as.numeric(loss_hatch_sh), 2), " (", sh_clipped_perc_threshold, " of annual loss threshold) hatchery steelhead, and ",
+         round(as.numeric(sr_loss_total), 2), " (", sr_loss_perc, " of annual loss threshold) spring-run surrogates.")
 } else {
   "No salmonid loss has been recorded this season."
 }
 
+# Calculate ITL percentages
+# Single-year ITLs: WR DNA 5,922; WR Hatchery Sac River 1,301; Steelhead 5,294
+# Spring-run surrogate yearlings: 0.5% of each experimental release group
+itl_wr_dna_val <- round(jpe * itl_wr_natural_single, 0)  # 5,922
+itl_wr_hatch_sac_val <- round(livingston_jpe * itl_wr_hatch_single, 0)  # 1,301
+
+wr_dna_itl_perc <- if(itl_wr_dna_val > 0) {
+  paste0(sprintf("%.2f", (as.numeric(loss_dna_wr) / itl_wr_dna_val) * 100), "%")
+} else { "0.00%" }
+
+wr_hatch_itl_perc <- if(itl_wr_hatch_sac_val > 0) {
+  paste0(sprintf("%.2f", (as.numeric(loss_hatch_wr) / itl_wr_hatch_sac_val) * 100), "%")
+} else { "0.00%" }
+
+sh_nat_itl_perc <- if(itl_sh_natural_single > 0) {
+  paste0(sprintf("%.2f", (as.numeric(loss_nat_sh) / itl_sh_natural_single) * 100), "%")
+} else { "0.00%" }
+
+# Create spring-run surrogate yearling ITL summary for executive summary
+# These are the experimental late-fall releases with 0.5% ITL per release group
+sr_yearling_itl_summary <- if(exists("sr_experimental_itl") && nrow(sr_experimental_itl) > 0) {
+  itl_lines <- sr_experimental_itl %>%
+    mutate(text = paste0("Group ", row_number(), ": ", 
+                         round(confirmed_loss, 1), " (", itl_perc, "% of ", 
+                         prettyNum(itl, big.mark = ","), " ITL)")) %>%
+    pull(text)
+  paste0("Spring-run surrogate yearlings (0.5% ITL per experimental release group): ", 
+         paste(itl_lines, collapse = "; "), ".")
+} else {
+  "Spring-run surrogate yearlings: No experimental releases to date."
+}
+
+# ITL status as separate bullet
+itl_status <- paste0("Single-year Incidental Take Limit (ITL) Status: ", 
+                     round(as.numeric(loss_dna_wr), 0), " (", wr_dna_itl_perc, " of ", 
+                     prettyNum(itl_wr_dna_val, big.mark = ","), " ITL) natural winter-run; ",
+                     round(as.numeric(loss_hatch_wr), 0), " (", wr_hatch_itl_perc, " of ",
+                     prettyNum(itl_wr_hatch_sac_val, big.mark = ","), " ITL) hatchery winter-run; ",
+                     round(as.numeric(loss_nat_sh), 2), " (", sh_nat_itl_perc, " of ",
+                     prettyNum(itl_sh_natural_single, big.mark = ","), " ITL) natural steelhead.")
+
 # Generate Delta status for each run
-wr_presence_status <- get_presence_status("Winter-run", safe_parse("delta_entry_wr"), safe_parse("delta_exit_wr"), "Winter")
+# Based on historical cumulative catch at Chipps Island Trawl (delta exit)
+wr_presence_status <- get_presence_status("LAD winter-run", safe_parse("delta_entry_wr"), safe_parse("delta_exit_wr"), "Winter")
 sh_presence_status <- get_presence_status("Steelhead", safe_parse("delta_entry_sh"), safe_parse("delta_exit_sh"), "Steelhead")
 
 #####################################################
@@ -70,34 +101,40 @@ wr_hatch_jpe <- if(is.na(livingston_jpe)) {
   # JPE exists but no releases yet - based on current hatchery production
   print(paste0('The Juvenile Production Estimate for hatchery winter-run is ', 
                prettyNum(livingston_jpe, big.mark = ","), 
-               ' based on current Livingston Stone production estimates. **Note: Physical releases have not yet occurred in WY ', wy, '.**'))
+               ' based on current Livingston Stone production estimates. The annual loss threshold is 1% of the JPE (',
+               prettyNum(round(livingston_jpe * wr_hatch_loss_threshold, 0), big.mark = ","),
+               ' fish), which is the same as the single-year ITL (BiOp Table 184). Note: Physical releases have not yet occurred in WY ', wy, '.'))
 } else {
   # Added prettyNum here
   print(paste0('The Juvenile Production Estimate for hatchery winter-run is ', 
                prettyNum(livingston_jpe, big.mark = ","), 
-               ' for Livingston Stone releases.'))
+               ' for Livingston Stone releases. The annual loss threshold is 1% of the JPE (',
+               prettyNum(round(livingston_jpe * wr_hatch_loss_threshold, 0), big.mark = ","),
+               ' fish), which is the same as the single-year ITL (BiOp Table 184).'))
 }
 
 wr_threshold <- if(is.na(jpe)) {
   print('Thresholds are included from the previous water year.')
 } else {
-  print(paste0('The annual Loss threshold for natural winter-run is 1% of the jpe or ', 
+  print(paste0('The annual loss threshold for natural winter-run is 1% of the JPE or ', 
                prettyNum(round(jpe*wr_loss_threshold, 0), big.mark = ","), 
-               ' fish.'))
+               ' fish. The single-year incidental take limit (ITL) is 0.56% of the JPE (',
+               prettyNum(round(jpe*itl_wr_natural_single, 0), big.mark = ","),
+               ' fish) or 0.36% on a 3-year rolling average (BiOp Table 184).'))
 }
 
 wr_hatchery_releases <- if(nrow(wr_hatch) == 0) {
-  print(paste0('To date, no winter-run Livingstone hatchery releases have occurred in WY ',wy))
+  print(paste0('To date, no winter-run Livingston Stone hatchery releases have occurred in WY ',wy,'.'))
 } else {
-  print(paste0('A total of xx fish were released from Livingston Stone National Fish Hatchery on xx'))
+  print(paste0('A total of xx fish were released from Livingston Stone National Fish Hatchery on xx.'))
 }
 
 wr_hatchery_loss <- if(nrow(wr_hatch) == 0) {
   print('To date, no loss has occurred as no hatchery winter-run have been released.')
 } else {
-  print(paste0('As of ',format(Sys.Date(), '%B %d'), ' cumulative loss of Livingston Stone hatchery fish is ', 
+  print(paste0('As of ',format(Sys.Date(), '%B %d'), ', cumulative loss of Livingston Stone hatchery fish is ', 
                wr_hatch_loss, ' or ', wr_hatch_perc, 
-               ' of the annual loss threshold. Cumulative loss in the past 7 days has been ', wr_hatch_7d, '.'))
+               ' of the annual loss threshold (which equals the single-year ITL). Cumulative loss in the past 7 days has been ', wr_hatch_7d, '.'))
 }
 
 
@@ -144,7 +181,7 @@ exit_sampling <- all_sampling %>%
 wr_entry_catch <- if(nrow(entry_sampling) == 0){
   print('No catch has been reported at Delta Entry RSTs (Tisdale, Knights Landing, Lower Sacramento River) in the past two weeks.')
 } else {
-  print(paste0("Total catch of LAD winter run at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River) between ",
+  print(paste0("Total catch of LAD winter-run at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River) between ",
                format(min(all_sampling[1:3, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
                format(max(all_sampling[1:3, 3, drop = TRUE], na.rm = TRUE), '%b %d'),' is ',sum(all_sampling[1:3,4]) ,' individuals.'))
 }
@@ -152,7 +189,7 @@ wr_entry_catch <- if(nrow(entry_sampling) == 0){
 sr_entry_catch <- if(nrow(entry_sampling) == 0){
   print('No catch has been reported at Delta Entry RSTs (Tisdale, Knights Landing, Lower Sacramento River) in the past two weeks.')
 } else {
-  print(paste0("Total catch of LAD winter run at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River) between ",
+  print(paste0("Total catch of LAD spring-run at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River) between ",
                format(min(all_sampling[1:3, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
                format(max(all_sampling[1:3, 3, drop = TRUE], na.rm = TRUE), '%b %d'),' is ',sum(all_sampling[1:3,5]) ,' individuals.'))
 }
@@ -160,7 +197,7 @@ sr_entry_catch <- if(nrow(entry_sampling) == 0){
 sh_entry_catch <- if(nrow(entry_sampling) == 0){
   print('No catch has been reported at Delta Entry RSTs (Tisdale, Knights Landing, Lower Sacramento River) in the past two weeks.')
 } else {
-  print(paste0("Total catch of LAD winter run at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River) between ",
+  print(paste0("Total catch of unclipped steelhead at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River) between ",
                format(min(all_sampling[1:3, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
                format(max(all_sampling[1:3, 3, drop = TRUE], na.rm = TRUE), '%b %d'),' is ',sum(all_sampling[1:3,6]) ,' individuals.'))
 }
@@ -168,7 +205,7 @@ sh_entry_catch <- if(nrow(entry_sampling) == 0){
 
 ##delta catch
 wr_delta_catch <- if(nrow(delta_sampling) == 0){
-  print('No catch has been reported at delta monitoring loactions (Sacramento Tralws and Beach Seines) in the past two weeks.')
+  print('No catch has been reported at delta monitoring locations (Sacramento Trawls and Beach Seines) in the past two weeks.')
 } else {
   print(paste0("Total catch at Sacramento Trawl and Beach Seines in the delta between ",
                format(min(all_sampling[4:5, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
@@ -176,7 +213,7 @@ wr_delta_catch <- if(nrow(delta_sampling) == 0){
 }
 
 sr_delta_catch <- if(nrow(delta_sampling) == 0){
-  print('No catch has been reported at delta monitoring loactions (Sacramento Tralws and Beach Seines) in the past two weeks.')
+  print('No catch has been reported at delta monitoring locations (Sacramento Trawls and Beach Seines) in the past two weeks.')
 } else {
   print(paste0("Total catch at Sacramento Trawl and Beach Seines in the delta between ",
                format(min(all_sampling[4:5, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
@@ -184,7 +221,7 @@ sr_delta_catch <- if(nrow(delta_sampling) == 0){
 }
 
 sh_delta_catch <- if(nrow(delta_sampling) == 0){
-  print('No catch has been reported at delta monitoring loactions (Sacramento Tralws and Beach Seines) in the past two weeks.')
+  print('No catch has been reported at delta monitoring locations (Sacramento Trawls and Beach Seines) in the past two weeks.')
 } else {
   print(paste0("Total catch at Sacramento Trawl and Beach Seines in the delta between ",
                format(min(all_sampling[4:5, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
@@ -237,40 +274,70 @@ sh_clipped_threshold_fmt <- if(!is.na(sh_clipped_threshold)) {
   "NA"
 }
 
-# 2. Risk Assessment Helper Function
-get_risk_assessment <- function(species_name, cum_loss, recent_loss, threshold) {
+# 2. Risk Assessment Helper Function - evaluates risk based on current loss and 7-day trajectory
+get_risk_level_with_projection <- function(cum_loss, recent_7d_loss, threshold, species_label) {
+  if(is.na(threshold) | threshold == 0) return(paste0(species_label, ": Threshold not established."))
   
-  if(is.na(threshold) | threshold == 0) return("Threshold not established.")
-  
-  pct_used <- (cum_loss / threshold) * 100
-  if(is.na(recent_loss)) recent_loss <- 0
+  pct_used <- round((cum_loss / threshold) * 100, 1)
+  projected_loss <- cum_loss + recent_7d_loss
   
   if (cum_loss >= threshold) {
-    return(paste0("**CRITICAL:** The annual loss threshold for ", species_name, " has been **exceeded**."))
+    return(paste0("CRITICAL: ", species_label, " cumulative loss has exceeded the threshold."))
+  } else if (projected_loss >= threshold) {
+    return(paste0("ELEVATED RISK: ", species_label, " cumulative loss is currently ", pct_used, 
+                  "% of the threshold. If recent 7-day loss (", round(recent_7d_loss, 1), 
+                  ") continues, the threshold may be exceeded in the upcoming week."))
   } else if (pct_used > 75) {
-    return(paste0("**ELEVATED RISK:** Cumulative loss is at ", round(pct_used, 1), "% of the limit. Continued salvage at recent rates may trigger the threshold."))
-  } else if (recent_loss > (threshold * 0.10)) {
-    return(paste0("**INCREASING RISK:** While cumulative loss is currently low (", round(pct_used, 1), "%), recent salvage indicates a sharp upward trend."))
+    return(paste0("ELEVATED RISK: ", species_label, " cumulative loss is at ", pct_used, 
+                  "% of the threshold."))
+  } else if (recent_7d_loss > (threshold * 0.10)) {
+    return(paste0("INCREASING RISK: ", species_label, " cumulative loss is currently ", pct_used, 
+                  "% of the threshold, but recent 7-day loss (", round(recent_7d_loss, 1), 
+                  ") indicates a sharp upward trend."))
   } else {
-    return(paste0("**LOW RISK:** Cumulative loss is currently ", round(pct_used, 1), "% of the threshold. Current trajectory suggests the threshold is unlikely to be exceeded in the upcoming week."))
+    return(paste0("LOW RISK: ", species_label, " cumulative loss is currently ", pct_used, 
+                  "% of the threshold."))
   }
 }
 
 # 3. Generate Evaluation Texts
-# Natural Winter-run
-current_wr_7d <- if(exists("wr_7d")) wr_7d else 0
-risk_q1 <- get_risk_assessment("Natural Winter-run", loss_dna_wr, current_wr_7d, wr_threshold_val)
 
-# Spring-run Surrogates
+# Question 1: Natural AND Hatchery Winter-run
+wr_nat_loss <- as.numeric(loss_dna_wr)
+wr_nat_thresh <- wr_threshold_val
+wr_nat_7d <- if(exists("wr_7d")) as.numeric(gsub("[^0-9.]", "", wr_7d)) else 0
+if(is.na(wr_nat_7d)) wr_nat_7d <- 0
+
+wr_hatch_loss <- as.numeric(loss_hatch_wr)
+wr_hatch_thresh <- round(livingston_jpe * wr_hatch_loss_threshold, 0)
+wr_hatch_7d <- if(exists("wr_hatch_7d")) as.numeric(gsub("[^0-9.]", "", wr_hatch_7d)) else 0
+if(is.na(wr_hatch_7d)) wr_hatch_7d <- 0
+
+risk_q1_nat <- get_risk_level_with_projection(wr_nat_loss, wr_nat_7d, wr_nat_thresh, "Natural winter-run")
+risk_q1_hatch <- get_risk_level_with_projection(wr_hatch_loss, wr_hatch_7d, wr_hatch_thresh, "Hatchery winter-run")
+risk_q1 <- paste0(risk_q1_nat, " ", risk_q1_hatch)
+
+# Question 2: Spring-run Surrogates
 sr_thresh_safe <- if(exists("sr_threshold_val")) sr_threshold_val else 0
 sr_loss_safe   <- if(exists("sr_loss_total")) sr_loss_total else 0
-sr_recent_safe <- 0  # No 7-day tracking for spring-run surrogates
-risk_q2 <- get_risk_assessment("Spring-run Surrogates", sr_loss_safe, sr_recent_safe, sr_thresh_safe)
+sr_7d_safe <- 0  # No 7-day tracking for spring-run surrogates
 
-# Hatchery Steelhead
-sh_loss_safe   <- if(exists("sh_clipped_loss_total")) sh_clipped_loss_total else 0 
-sh_recent_safe <- if(exists("sh_7d")) sh_7d else 0
-risk_q3 <- get_risk_assessment("Hatchery Steelhead", sh_loss_safe, sh_recent_safe, sh_clipped_threshold)
+risk_q2 <- get_risk_level_with_projection(sr_loss_safe, sr_7d_safe, sr_thresh_safe, "Spring-run surrogates")
+
+# Question 3: Natural AND Hatchery Steelhead
+sh_nat_loss_safe <- if(exists("loss_nat_sh")) as.numeric(loss_nat_sh) else 0
+sh_nat_7d <- if(exists("sh_7d")) as.numeric(gsub("[^0-9.]", "", sh_7d)) else 0
+if(is.na(sh_nat_7d)) sh_nat_7d <- 0
+
+sh_hatch_loss_safe <- if(exists("sh_clipped_loss_total")) as.numeric(sh_clipped_loss_total) else 0 
+sh_hatch_thresh_safe <- if(exists("sh_clipped_threshold")) sh_clipped_threshold else 0
+sh_hatch_7d <- if(exists("sh_clipped_7d")) as.numeric(gsub("[^0-9.]", "", sh_clipped_7d)) else 0
+if(is.na(sh_hatch_7d)) sh_hatch_7d <- 0
+
+# Natural steelhead uses ITL (5,294) since there is no loss threshold
+risk_q3_nat <- get_risk_level_with_projection(sh_nat_loss_safe, sh_nat_7d, itl_sh_natural_single, "Natural steelhead (vs ITL)")
+risk_q3_hatch <- get_risk_level_with_projection(sh_hatch_loss_safe, sh_hatch_7d, sh_hatch_thresh_safe, "Hatchery steelhead")
+risk_q3 <- paste0(risk_q3_nat, " ", risk_q3_hatch)
 
 
 # wr_delta_catch <- print(paste0("Total catch of LAD winter run at RSTs at Delta Entry (Tisdale, Knights Landing, Lower Sacramento River) between ",

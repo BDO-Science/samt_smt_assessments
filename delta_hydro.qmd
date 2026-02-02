@@ -9,6 +9,7 @@ format:
     fig-dpi: 1000
     fig-pos: "H"
   docx:
+    reference-doc: custom-reference-doc.docx
     fig-dpi: 1000
 execute:
   echo: false
