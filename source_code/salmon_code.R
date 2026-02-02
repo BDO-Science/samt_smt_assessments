@@ -179,7 +179,9 @@ timing_table <- timing[[1]] %>%
 wr_natural_timing <- timing_table %>%
   slice(1,4)
 
-delta_entry_wr <- wr_natural_timing[1,4] %>%
+# Delta entry based on Sac Trawl (Sherwood) - column 5
+# Delta exit based on Chipps Island Trawl - column 6
+delta_entry_wr <- wr_natural_timing[1,5] %>%
   pull()
 delta_exit_wr <- wr_natural_timing[1,6] %>%
   pull()
@@ -189,7 +191,9 @@ salvage_wr <- wr_natural_timing[2,7] %>%
 sr_natural_timing <- timing_table %>%
   slice(2)
 
-delta_entry_sr <- sr_natural_timing[1,4] %>%
+# Delta entry based on Sac Trawl (Sherwood) - column 5
+# Delta exit based on Chipps Island Trawl - column 6
+delta_entry_sr <- sr_natural_timing[1,5] %>%
   pull()
 delta_exit_sr <- sr_natural_timing[1,6] %>%
   pull()
@@ -202,17 +206,21 @@ sh_natural_timing <- timing_table %>%
   pivot_longer(names_to = 'measure',
                values_to = 'value', -1) %>%
   group_by(Species, measure) %>%
-  summarize(value = max(value, na.rm = TRUE)) %>%
+  summarize(value = max(value, na.rm = TRUE), .groups = "drop") %>%
   pivot_wider(names_from = 'measure',
-              values_from = 'value') %>%
-  select(4,7,3,5,2,6)
+              values_from = 'value')
 
-delta_entry_sh <- sh_natural_timing[1,4] %>%
-  pull()
-delta_exit_sh <- sh_natural_timing[1,6] %>%
-  pull()
-salvage_sh <- sh_natural_timing[1,7] %>%
-  pull()
+# Delta entry based on Sac Trawl (Sherwood)
+# Delta exit based on Chipps Island Trawl
+delta_entry_sh <- sh_natural_timing %>%
+  pull(`Sac Trawl (Sherwood)`)
+delta_exit_sh <- sh_natural_timing %>%
+  pull(`Chipps Island Trawl`)
+salvage_sh <- if("Salvage" %in% names(sh_natural_timing)) {
+  sh_natural_timing %>% pull(Salvage)
+} else {
+  sh_natural_timing %>% pull(7)
+}
 
 
 #######################################
@@ -892,23 +900,95 @@ loss_hatch_sh  <- get_loss_val("hatchery_steelhead")
 total_loss <- sum(loss_dna_wr, loss_lad_wr, loss_hatch_wr, loss_nat_sh, loss_hatch_sh, na.rm = TRUE)
 
 # --- 3. Presence Logic Helper Function ---
-# Based on historical Chipps Island Trawl catch (delta exit monitoring)
+# Delta entry: based on historical cumulative catch at Sac Trawl (Sherwood Harbor)
+# Delta exit: based on historical cumulative catch at Chipps Island Trawl
 # For LAD winter-run and steelhead
 get_presence_status <- function(species_name, entry_pct, exit_pct, catch_keyword) {
   
-  # Presence status is determined by historical cumulative catch at Chipps Island Trawl
-  # which represents delta exit timing
+  # Presence status is determined by historical cumulative catch percentages:
+  # - entry_pct = cumulative % at Sac Trawl (Sherwood) - delta entry
+  # - exit_pct = cumulative % at Chipps Island Trawl - delta exit
   case_when(
-    # Emigration nearly complete - most fish have passed through delta
+    # Decreasing: >=50% of fish historically have passed Chipps Island Trawl (delta exit)
     exit_pct >= 50 ~ paste0(species_name, " presence in the Delta is decreasing based on historical Chipps Island Trawl monitoring."),
     
-    # Peak emigration period - significant proportion entering but not yet exiting
+    # High/Peak: significant proportion entering (>=25% at Sac Trawl) but <50% exiting at Chipps
     entry_pct >= 25 & exit_pct < 50 ~ paste0(species_name, " presence in the Delta is high based on historical monitoring."),
     
-    # Early/increasing presence - fish entering but few exiting yet
+    # Increasing: fish entering at Sac Trawl (5-25%) but few exiting at Chipps yet (<10%)
     entry_pct >= 5 & entry_pct < 25 & exit_pct < 10 ~ paste0(species_name, " presence in the Delta is increasing based on historical monitoring."),
     
-    # Low presence - minimal entry and exit
+    # Low: minimal entry and exit based on historical timing
     TRUE ~ paste0(species_name, " presence in the Delta is low based on historical monitoring.")
   )
 }
+
+# salmon_code_rounding_fix.R
+# Source this AFTER salmon_code.R to round all fish counts to whole numbers
+
+# Round all loss values to whole numbers
+if(exists("loss_dna_wr")) loss_dna_wr <- round(as.numeric(loss_dna_wr), 0)
+if(exists("loss_lad_wr")) loss_lad_wr <- round(as.numeric(loss_lad_wr), 0)
+if(exists("loss_hatch_wr")) loss_hatch_wr <- round(as.numeric(loss_hatch_wr), 0)
+if(exists("loss_nat_sh")) loss_nat_sh <- round(as.numeric(loss_nat_sh), 0)
+if(exists("loss_hatch_sh")) loss_hatch_sh <- round(as.numeric(loss_hatch_sh), 0)
+if(exists("total_loss")) total_loss <- round(as.numeric(total_loss), 0)
+
+# Round cumulative loss values shown in document
+if(exists("wr_loss")) wr_loss <- round(as.numeric(wr_loss), 0)
+if(exists("wr_hatch_loss")) wr_hatch_loss <- round(as.numeric(wr_hatch_loss), 0)
+if(exists("sh_loss")) sh_loss <- round(as.numeric(sh_loss), 0)
+
+# Round 7-day loss values
+if(exists("wr_7d")) wr_7d <- round(as.numeric(wr_7d), 0)
+if(exists("wr_hatch_7d")) wr_hatch_7d <- round(as.numeric(wr_hatch_7d), 0)
+if(exists("sh_7d")) sh_7d <- round(as.numeric(sh_7d), 0)
+
+# Round hatchery loss totals
+if(exists("sh_clipped_loss_total")) sh_clipped_loss_total <- round(as.numeric(sh_clipped_loss_total), 0)
+
+# Round spring-run values (check if they exist first)
+if(exists("total_sr_released")) {
+  total_sr_released <- round(total_sr_released, 0)
+  total_sr_released_fmt <- prettyNum(total_sr_released, big.mark = ",")
+}
+
+if(exists("sr_loss_total")) {
+  sr_loss_total <- round(sr_loss_total, 0)
+  sr_loss_total_fmt <- prettyNum(sr_loss_total, big.mark = ",")
+}
+
+if(exists("coleman_total")) {
+  coleman_total <- round(coleman_total, 0)
+  coleman_total_fmt <- prettyNum(coleman_total, big.mark = ",")
+}
+
+if(exists("coleman_loss")) {
+  coleman_loss <- round(coleman_loss, 0)
+  coleman_loss_fmt <- prettyNum(coleman_loss, big.mark = ",")
+}
+
+if(exists("total_sr_jpe")) {
+  total_sr_jpe <- round(total_sr_jpe, 0)
+  total_sr_jpe_fmt <- prettyNum(total_sr_jpe, big.mark = ",")
+}
+
+if(exists("coleman_jpe")) {
+  coleman_jpe <- round(coleman_jpe, 0)
+  coleman_jpe_fmt <- prettyNum(coleman_jpe, big.mark = ",")
+}
+
+# Round JPE values
+if(exists("jpe")) jpe <- round(jpe, 0)
+if(exists("livingston_jpe")) livingston_jpe <- round(livingston_jpe, 0)
+
+# Round threshold values
+if(exists("sr_threshold_val")) {
+  sr_threshold_val <- round(sr_threshold_val, 0)
+  sr_threshold_fmt <- prettyNum(sr_threshold_val, big.mark = ",")
+}
+
+# Round passage estimates (keep at 2 decimals for millions)
+# wr_passage and sr_passage are already in millions with 2 decimals - leave as is
+
+print("All fish counts rounded to whole numbers")
