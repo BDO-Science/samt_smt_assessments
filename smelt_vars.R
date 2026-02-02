@@ -35,9 +35,9 @@ end_of_season = "not relevant"
 
 narrative_text <- 
 "- Entrainment management is currently active.
-- Delta smelt were detected at Chipps Island and the Sacramento Deep Water Ship Channel. 
+- Delta smelt were recently detected at Suisun Marsh, Chipps Island, and the Sacramento Deep Water Ship Channel. 
 - No Delta smelt or longfin smelt salvage has been observed this water year.
-- Turbidity in the central/south Delta is low-moderate.
+- Turbidity in the central/south Delta is low.
 "
 
 # Evaluation question responses ---------------------
@@ -64,7 +64,7 @@ Based on [historical monitoring data](https://github.com/Delta-Stewardship-Counc
 first detection of larvae in the Central and South Delta has typically occurred by mid to late March. 
 Because first flush conditions were met on December 23, 2025, spawning may begin occurring during the 
 current assessment week, consistent with the typical one- to four-week response window following increased 
-flow and turbidity.Recent captures at Chipps Island and the Sacramento Deep Water Ship Channel are consistent 
+flow and turbidity. Recent captures at Chipps Island and the Sacramento Deep Water Ship Channel are consistent 
 with an upstream spawning migration into tidal freshwater habitats."
 
 # 4. After the onset of spawning, have the following conditions occurred: JPF < 0, 
@@ -72,22 +72,22 @@ with an upstream spawning migration into tidal freshwater habitats."
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 days?
 ds_eval_4 <- "Although spawning may occur during the current assessment period, JPF is above 0 cfs; 
-therefore, the conditions required to evaluate larval and juvenile Delta smelt entrainment management are not met."
+therefore, the conditions required to trigger larval and juvenile Delta smelt entrainment management are not met."
 
 # Longfin smelt
 
 # 1. If JPF < 0, what is the trajectory of annual loss of adult longfin smelt 
 #and is it likely to exceed 5% of the adult population estimate? 
 #Is South Delta entrainment expected to decrease due to a reduction in export pumping?
-lfs_eval_1 <- "JPF is not < 0 cfs and no adult longfin smelt have been detected in salvage."
+lfs_eval_1 <- "JPF is > 0 cfs and no adult longfin smelt have been detected in salvage."
 
 # 2. For larval and juvenile longfin smelt, if JPF < 0 cfs, do particle tracking 
 #models show a moderate to high difference in particle fates across different 
 #OMRI scenarios? Does Zone of Influence modeling show moderate to high changes 
 #in hydrodynamic footprint across different OMRI scenarios? Are these effects 
 #anticipated to cause a population decline?
-lfs_eval_2 <-  "JPF is not currently less than 0 cfs; however, it may drop below 0 cfs this 
-weekend. Even if JPF becomes negative, Zone of Influence modeling indicates only moderate 
+lfs_eval_2 <-  "JPF is not less than 0 cfs and is not predicted to go below 0 cfs this week. 
+Even if JPF becomes negative, Zone of Influence modeling indicates moderate 
 differences in hydrodynamic footprint across OMRI scenarios, with no change between current
 and forecasted conditions. Consistent with this, our Longfin Smelt Larval Population and 
 Particle Tracking Analysis (Table 5) demonstrates very low larval longfin smelt 

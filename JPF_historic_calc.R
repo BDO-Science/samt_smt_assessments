@@ -203,12 +203,11 @@ hydro_test <- hydro_rec %>%
 
 hydro_test <- hydro_test %>%
   mutate(JPF_calc =
-           SJR_a_Vernalis +
-           E_side_streams +
-           QXGEO +
-           (0.65* Delta_prec5d) -
-           (0.65 * Delta_div) - 
-           pumps)
+           SJR_a_Vernalis + # need to switch to day lagged
+           E_side_streams + # need to switch to day lagged
+           QXGEO - # day lagged
+           (0.65* (Delta_div - Delta_prec5d)) - #Delta div needs to be day lagged
+           pumps) # day of
 
 
 
