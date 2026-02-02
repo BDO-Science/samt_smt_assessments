@@ -1,4 +1,4 @@
-# Quarto/RStudio outputs
+# Quarto/RStudio outputs - IGNORE THESE
 *.html
 *.pdf
 *.docx
@@ -8,5 +8,5 @@
 .Rhistory
 .RData
 
-# Data files (optional, but prevents large file issues)
-input_data/forecasts/zip/*.zip
+# Ensure input data is ALWAYS tracked
+!input_data/
