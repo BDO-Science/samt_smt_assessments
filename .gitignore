@@ -1,4 +1,12 @@
-.Rproj.user
+# Quarto/RStudio outputs
+*.html
+*.pdf
+*.docx
+*_files/
+*_cache/
+.Rproj.user/
 .Rhistory
 .RData
-.Ruserdata
+
+# Data files (optional, but prevents large file issues)
+input_data/forecasts/zip/*.zip
