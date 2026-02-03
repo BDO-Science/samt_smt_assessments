@@ -87,12 +87,8 @@ lfs_eval_1 <- "JPF is > 0 cfs and no adult longfin smelt have been detected in s
 #in hydrodynamic footprint across different OMRI scenarios? Are these effects 
 #anticipated to cause a population decline?
 lfs_eval_2 <-  "JPF is not less than 0 cfs and is not predicted to go below 0 cfs this week. 
-Even if JPF becomes negative, Zone of Influence modeling indicates moderate 
-differences in hydrodynamic footprint across OMRI scenarios, with no change between current
-and forecasted conditions. Consistent with this, our Longfin Smelt Larval Population and 
-Particle Tracking Analysis (Table 5) demonstrates very low larval longfin smelt 
-entrainment across all OMRI levels this week (less than 0.1%), so a population-level 
-decline is not expected."
+The Zone of Influence modeling indicates moderate differences in hydrodynamic 
+footprint across OMRI scenarios, with no change between current and forecasted conditions."
 
 # DONT NEED TO CHANGE UNLESS YOU WANT TO
 # 3. Is there additional information or other analyses that should be considered in this evaluation?
@@ -134,8 +130,8 @@ ds_recent_display <- ds_recent %>%
 ## EDIT: South Delta conditions (turbidity and secchi depth-currently by email)-------------------------
 sd_secchi_depth <- 0.76
 sd_secchi_date <- ymd("2026-01-13")
-sd_turb <- 12.2
-sd_turb_date <- ymd("2025-01-13")
+sd_turb <- 6.4
+sd_turb_date <- ymd("2025-01-26")
 
 ## Abundance ------------------------------
 # pull abundance estimate
