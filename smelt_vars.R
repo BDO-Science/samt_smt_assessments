@@ -95,17 +95,17 @@ footprint across OMRI scenarios, with no change between current and forecasted c
 lfs_eval_3 <- "Additional information may be discussed if needed at the DAT call."
 
 # REFERENCES- check to make sure are the same based on answers to questions
-refs <- "Damon, L. J., S. B. Slater, R. D. Baxter, and R. W. Fujimura. 2016. 
-Fecundity and reproductive potential of wild female Delta smelt in the upper San 
-Francisco Estuary, California. California Fish and Game 102(4):188–210. 
-
-Grimaldo, L. F., T. Sommer, N. Van Ark, G. Jones, E. Holland, P. B. Moyle, 
-B. Herbold & P. Smith (2009) Factors Affecting Fish Entrainment into Massive Water 
-Diversions in a Tidal Freshwater Estuary: Can Fish Losses be Managed? North 
-American Journal of Fisheries Management, 29:5, 1253-1270, DOI: 10.1577/M08-062.1  
-
-Sommer, T., F. Mejia, M. Nobriga, and L. Grimaldo. 2011. The Spawning Migration 
-of Delta Smelt in the Upper San Francisco Estuary. San Francisco Estuary and Watershed Science 9(2)."
+# refs <- "Damon, L. J., S. B. Slater, R. D. Baxter, and R. W. Fujimura. 2016. 
+# Fecundity and reproductive potential of wild female Delta smelt in the upper San 
+# Francisco Estuary, California. California Fish and Game 102(4):188–210. 
+# 
+# Grimaldo, L. F., T. Sommer, N. Van Ark, G. Jones, E. Holland, P. B. Moyle, 
+# B. Herbold & P. Smith (2009) Factors Affecting Fish Entrainment into Massive Water 
+# Diversions in a Tidal Freshwater Estuary: Can Fish Losses be Managed? North 
+# American Journal of Fisheries Management, 29:5, 1253-1270, DOI: 10.1577/M08-062.1  
+# 
+# Sommer, T., F. Mejia, M. Nobriga, and L. Grimaldo. 2011. The Spawning Migration 
+# of Delta Smelt in the Upper San Francisco Estuary. San Francisco Estuary and Watershed Science 9(2)."
 
 # Delta Smelt ---------------------------
 

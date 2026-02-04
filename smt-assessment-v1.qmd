@@ -16,6 +16,10 @@ format:
     reference-doc: custom-reference-doc.docx
     fig-dpi: 1000
 engine: knitr
+bibliography: smelt.refs.bib
+csl: apa.csl
+nocite: |
+  @*
 ---
 
 ```{r}
@@ -391,5 +395,4 @@ knitr::include_graphics(here("smelt_figures/clifton_court_temp.png"))
 
 ### References
 
-`r refs`
 
