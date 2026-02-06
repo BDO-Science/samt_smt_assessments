@@ -330,5 +330,6 @@ knitr::include_graphics(paste0(base_url, 'samt_lsp_stlhd.png'))
     
     `r risk_q3`
 
-\newpage
+{{< pagebreak >}}
+
 ### References
