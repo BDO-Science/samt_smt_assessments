@@ -49,7 +49,7 @@ OBI_turb <- as.numeric(tail(env_table$water_turbidity_1_day_old_river_at_bacon_i
 OSJ_turb <- as.numeric(tail(env_table$water_turbidity_1_day_old_river_at_franks_tract_fnu_cdec_osj, 3))
 HOL_turb <- as.numeric(tail(env_table$water_turbidity_1_day_sjr_holland_cut_fnu_cdec_hol, 3))
 
-# Start of Larval Entrainment
+# End of turbidity bridge
 # Get the most recent value in the column
 # Also add SJJ when available
 RVB_temp <- as.numeric(tail(env_table$water_temperature_3_day_sr_at_rio_vista_br_c_cdec_rvb,1))

@@ -35,7 +35,7 @@ end_of_season = "not relevant"
 
 narrative_text <- 
 "- Entrainment management is currently active.
-- Delta smelt were recently detected at Suisun Marsh, Chipps Island, and the Sacramento Deep Water Ship Channel. 
+- Delta smelt were recently detected at Suisun Marsh. 
 - No Delta smelt or longfin smelt salvage has been observed this water year.
 - Turbidity in the central/south Delta is low.
 "
@@ -62,9 +62,8 @@ Historically, detections of ripe Delta smelt began in January and peaked in Febr
 the majority of Delta Smelt spawning occurs within a temperature range of 9-18˚C (Damon et al. 2016). 
 Based on [historical monitoring data](https://github.com/Delta-Stewardship-Council/deltafish) from the past few years, 
 first detection of larvae in the Central and South Delta has typically occurred by mid to late March. 
-Because first flush conditions were met on December 23, 2025, spawning may begin occurring during the 
-current assessment week, consistent with the typical one- to four-week response window following increased 
-flow and turbidity. Recent captures at Chipps Island and the Sacramento Deep Water Ship Channel are consistent 
+Because first flush conditions were met on December 23, 2025, spawning is likely occurring, consistent with the typical one- to four-week response window following increased 
+flow and turbidity. EDSM captures at Chipps Island and the Sacramento Deep Water Ship Channel are consistent 
 with an upstream spawning migration into tidal freshwater habitats."
 
 # 4. After the onset of spawning, have the following conditions occurred: JPF < 0, 
