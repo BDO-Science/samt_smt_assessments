@@ -19,9 +19,9 @@ entrainment_status <- if(is_season_date_range | (pct_wr_in_delta > 5 | pct_sh_in
 salvage_status <- if(total_loss > 0) {
   paste0("Season Loss: ", round(as.numeric(loss_dna_wr), 0), " (", wr_perc, " of annual loss threshold) natural winter-run, ", 
          round(as.numeric(loss_hatch_wr), 0), " (", wr_hatch_perc, " of annual loss threshold) hatchery winter-run, ", 
-         round(as.numeric(loss_nat_sh), 2), " natural steelhead, ", 
-         round(as.numeric(loss_hatch_sh), 2), " (", sh_clipped_perc_threshold, " of annual loss threshold) hatchery steelhead, and ",
-         round(as.numeric(sr_loss_total), 2), " (", sr_loss_perc, " of annual loss threshold) spring-run surrogates.")
+         round(as.numeric(loss_nat_sh), 0), " natural steelhead, ",  # Changed 2 to 0
+         round(as.numeric(loss_hatch_sh), 0), " (", sh_clipped_perc_threshold, " of annual loss threshold) hatchery steelhead, and ", # Changed 2 to 0
+         round(as.numeric(sr_loss_total), 0), " (", sr_loss_perc, " of annual loss threshold) spring-run surrogates.") # Changed 2 to 0
 } else {
   "No salmonid loss has been recorded this season."
 }
@@ -49,7 +49,7 @@ sh_nat_itl_perc <- if(itl_sh_natural_single > 0) {
 sr_yearling_itl_summary <- if(exists("sr_experimental_itl") && nrow(sr_experimental_itl) > 0) {
   itl_lines <- sr_experimental_itl %>%
     mutate(text = paste0("Group ", row_number(), ": ", 
-                         round(confirmed_loss, 1), " (", itl_perc, "% of ", 
+                         round(confirmed_loss, 0), " (", itl_perc, "% of ",  # Changed 1 to 0
                          prettyNum(itl, big.mark = ","), " ITL)")) %>%
     pull(text)
   paste0("Spring-run surrogate yearlings (0.5% ITL per experimental release group): ", 
@@ -64,7 +64,7 @@ itl_status <- paste0("Single-year Incidental Take Limit (ITL) Status: ",
                      prettyNum(itl_wr_dna_val, big.mark = ","), " ITL) natural winter-run; ",
                      round(as.numeric(loss_hatch_wr), 0), " (", wr_hatch_itl_perc, " of ",
                      prettyNum(itl_wr_hatch_sac_val, big.mark = ","), " ITL) hatchery winter-run; ",
-                     round(as.numeric(loss_nat_sh), 2), " (", sh_nat_itl_perc, " of ",
+                     round(as.numeric(loss_nat_sh), 0), " (", sh_nat_itl_perc, " of ", # Changed 2 to 0
                      prettyNum(itl_sh_natural_single, big.mark = ","), " ITL) natural steelhead.")
 
 # Generate Delta status for each run
@@ -285,14 +285,14 @@ get_risk_level_with_projection <- function(cum_loss, recent_7d_loss, threshold, 
     return(paste0("CRITICAL: ", species_label, " cumulative loss has exceeded the threshold."))
   } else if (projected_loss >= threshold) {
     return(paste0("ELEVATED RISK: ", species_label, " cumulative loss is currently ", pct_used, 
-                  "% of the threshold. If recent 7-day loss (", round(recent_7d_loss, 1), 
+                  "% of the threshold. If recent 7-day loss (", round(recent_7d_loss, 0), # Changed 1 to 0
                   ") continues, the threshold may be exceeded in the upcoming week."))
   } else if (pct_used > 75) {
     return(paste0("ELEVATED RISK: ", species_label, " cumulative loss is at ", pct_used, 
                   "% of the threshold."))
   } else if (recent_7d_loss > (threshold * 0.10)) {
     return(paste0("INCREASING RISK: ", species_label, " cumulative loss is currently ", pct_used, 
-                  "% of the threshold, but recent 7-day loss (", round(recent_7d_loss, 1), 
+                  "% of the threshold, but recent 7-day loss (", round(recent_7d_loss, 0), # Changed 1 to 0
                   ") indicates a sharp upward trend."))
   } else {
     return(paste0("LOW RISK: ", species_label, " cumulative loss is currently ", pct_used, 

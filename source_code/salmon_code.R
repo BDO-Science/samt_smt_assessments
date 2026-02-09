@@ -797,7 +797,7 @@ sr_experimental_itl <- if(nrow(sr_all_releases_jpe) > 0) {
 sr_itl_text <- if(nrow(sr_experimental_itl) > 0) {
   itl_lines <- sr_experimental_itl %>%
     mutate(text = paste0("Release Group ", row_number(), " (", `Release Date`, "): ",
-                         round(confirmed_loss, 1), " loss of ", prettyNum(itl, big.mark = ","), 
+                         round(confirmed_loss, 0), " loss of ", prettyNum(itl, big.mark = ","), # Changed 1 to 0
                          " ITL (", itl_perc, "%)")) %>%
     pull(text)
   paste(itl_lines, collapse = "; ")
@@ -830,7 +830,7 @@ sr_surrogate_table_clean <- if(nrow(sr_all_releases_jpe) > 0) {
       `ITL (0.5%)` = if_else(Type == "Experimental", round(fish_released_raw * 0.005, 0), NA_real_),
       `# of CWT Fish Released` = prettyNum(round(fish_released_raw, 0), big.mark = ","),
       `JPE` = prettyNum(round(JPE, 0), big.mark = ","),
-      `Confirmed Loss` = round(`Confirmed Loss`, 1)
+      `Confirmed Loss` = round(`Confirmed Loss`, 0) # Changed 1 to 0
     ) %>%
     # Select and order columns
     select(`Hatchery`, `Release Date`, `Type`, `# of CWT Fish Released`, `JPE`, `ITL (0.5%)`, `Confirmed Loss`, `CWT Codes`) %>%
