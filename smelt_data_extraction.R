@@ -52,7 +52,8 @@ HOL_turb <- as.numeric(tail(env_table$water_turbidity_1_day_sjr_holland_cut_fnu_
 # End of turbidity bridge
 # Get the most recent value in the column
 # Also add SJJ when available
-RVB_temp <- as.numeric(tail(env_table$water_temperature_3_day_sr_at_rio_vista_br_c_cdec_rvb,1))
+RVB_temp <- as.numeric(tail(env_table$water_temperature_3_day_sr_at_rio_vista_br_c_cdec_rvb,3))
+SJW_temp <- as.numeric(tail(env_table$water_temperature_3_day_jersey_point_c_cdec_sjw,3))
 
 # End of OMR Season
 # Get the most recent three values in the column
@@ -243,7 +244,7 @@ salvage_lfs_data <- salvage_lfs_data_raw %>%
   left_join(sta_salvage)
 
 ## Other data ----------------------
-# manually update for DJFMP beach seines
+# DJFMP beach seines (manually update)
 beachsn <- read_csv(here("data_raw/smelt/Beach_seines_2026.csv")) %>%
   clean_names() %>% 
   mutate(date = mdy(date),
@@ -256,6 +257,20 @@ beachsn <- read_csv(here("data_raw/smelt/Beach_seines_2026.csv")) %>%
 
 beachsn_ds <- beachsn %>% filter(species == "DSM") %>% mutate(species= "Delta Smelt") %>% select(-species)
 beachsn_lfs <- beachsn %>% filter(species == "LFS") %>% mutate(species= "Longfin Smelt")%>% select(-species)
+
+# FMWT (manually update)
+fmwt <- read_csv(here("data_raw/smelt/FMWT_LFS_Oct-Dec_2025.csv")) %>%
+  clean_names() %>% 
+  mutate(station = as.character(station)) %>% 
+  mutate(date = mdy(sample_date)) %>% 
+  mutate(species= "Longfin smelt") %>% 
+  mutate(source = "FMWT") %>% 
+  left_join(station_region, by = "station")%>%
+  left_join(station_stratum, by = "station")%>%
+  select(source, station, date, catch=length_frequency, fork_length, latitude, longitude, species, region, stratum)
+
+
+fmwt_lfs <- fmwt %>% filter(species == "Longfin smelt") %>% select(-species)
 
 # manually update for other DS data (random Broodstock, FRP)
 other_ds_data <- read_csv(here("data_raw/smelt/smelt_catch_test.csv")) %>%
@@ -404,6 +419,7 @@ lfs_latlon <- bind_rows(
   edsm_lfs %>% select(source, date, catch, latitude, longitude, region),
   twmm_lfs %>% select(source, date, catch, latitude, longitude, region),
   beachsn_lfs %>% select(source, date, catch, latitude, longitude, region),
+  fmwt_lfs %>% select(source, date, catch, latitude, longitude, region),
   sls_lfs %>% select(source, date, catch, latitude, longitude, region),
   chipps_lfs %>% select(source, date, catch, latitude, longitude, region),
   sfbs_data %>% select(source, date, catch, latitude, longitude, region), 
@@ -422,6 +438,7 @@ lfs_detail <- bind_rows(
   twmm_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region),
   sls_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   beachsn_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
+  fmwt_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   chipps_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   sfbs_data %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   salvage_lfs_data %>% select(source, date, catch, fork_length, latitude, longitude, region)) %>%

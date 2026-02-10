@@ -189,14 +189,14 @@ if (adult_ent_status != "relevant") {
 - **HOL Turbidity**: {paste(HOL_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 - **OSJ Turbidity**: {paste(OSJ_turb, collapse = ', ')} FNU as of {format(env_last_date, '%b %d, %Y')}
 
-<u>**Offramp Adult Protections** when RVB or SJJ > 12{DEG}C </u>
+<u>**Offramp Adult Protections** when RVB or SJW > 12{DEG} C for 3 consecutive days</u>
 
-- **RVB temperature (3-day average)**: {RVB_temp}{DEG}C as of {format(env_last_date, '%b %d, %Y')}
+- **RVB (Rio Vista) temperature (3-day average)**: {paste(RVB_temp, collapse = ', ')}{DEG} C as of {format(env_last_date, '%b %d, %Y')}
+- **SJW (Jersey Point) temperature (3-day average)**: {paste(SJW_temp, collapse = ', ')} {DEG} C as of {format(env_last_date, '%b %d, %Y')}
 "))
 }
 
 # round to nearest 2 decimals only: {paste(sprintf('%.2f', JPF_7d), collapse = ', ')} 
-#need to add SJJ temp to cutoff
 ```
 
 ```{r, echo = FALSE, eval = adult_ent_status == "relevant", out.width = "85%"}
@@ -281,7 +281,7 @@ kable(lfs_recent_display)
     annotation_scale(location = "bl", bar_cols = c("black", "white", "black", "white")) +
     scale_x_continuous(limits = c(-122.5, -121.3)) +  #(limits = c(-122.35, -121.3))
     scale_y_continuous(limits = c(37.45, 38.6)) + #(limits = c(37.8, 38.6))
-    scale_shape_manual(values = c(1, 15, 17, 4))+
+    scale_shape_manual(values = c(1, 15, 17, 4, 5))+
     # scale_size(range = c(2, 2), breaks = c(1,1)) + 
     viridis::scale_fill_viridis(option = "turbo", discrete = TRUE) + 
     guides(fill = guide_legend(nrow = 3, byrow = TRUE)) +

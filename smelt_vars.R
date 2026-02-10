@@ -47,11 +47,13 @@ narrative_text <-
 # 1. After the start of entrainment management, is JPF < 0, is daily average turbidity ≥ 12 FNU 
 #in the OMR corridor (stations OBI, HOL, and OSJ), and has the average water temperature 
 #at Jersey Point or Rio Vista not exceeded 53.6\(^{\circ}\)F (12\(^{\circ}\)C) for 3 consecutive days?
-ds_eval_1 <- "No, these conditions will not be met this week."
+ds_eval_1 <- "The turbidity in the OMR corridor is not likely to be exceeded this week, 
+and JPF is predicted to stay above 0 cfs."
 
 # 2. Has the average water temperature at Jersey Point or Rio Vista not exceeded 
 #53.6\(^{\circ}\)F (12\(^{\circ}\)C) for 3 consecutive days and/or has this action already been taken during WY 2026?
-ds_eval_2 <- "Temperature at Rio Vista or Jersey Point has not exceeded the threshold. The Delta smelt adult 
+ds_eval_2 <- "Temperature at Rio Vista or Jersey Point has not exceeded the threshold 
+to date, but the temperature threshold may be exceeded this week. The Delta smelt adult 
 entrainment management action has not yet been taken in WY 2026."
 
 # 3. What is the evidence for the onset of Delta smelt spawning?
@@ -62,7 +64,8 @@ Historically, detections of ripe Delta smelt began in January and peaked in Febr
 the majority of Delta Smelt spawning occurs within a temperature range of 9-18˚C (Damon et al. 2016). 
 Based on [historical monitoring data](https://github.com/Delta-Stewardship-Council/deltafish) from the past few years, 
 first detection of larvae in the Central and South Delta has typically occurred by mid to late March. 
-Because first flush conditions were met on December 23, 2025, spawning is likely occurring, consistent with the typical one- to four-week response window following increased 
+Because first flush conditions were met on December 23, 2025, spawning is likely occurring, 
+consistent with the typical one- to four-week response window following increased 
 flow and turbidity. EDSM captures at Chipps Island and the Sacramento Deep Water Ship Channel are consistent 
 with an upstream spawning migration into tidal freshwater habitats."
 
@@ -70,8 +73,9 @@ with an upstream spawning migration into tidal freshwater habitats."
 #daily average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 days?
-ds_eval_4 <- "Although spawning may occur during the current assessment period, JPF is above 0 cfs; 
-therefore, the conditions required to trigger larval and juvenile Delta smelt entrainment management are not met."
+ds_eval_4 <- "Although spawning may occur during the current assessment period, JPF is above 0 cfs
+and average turbidity in the South Delta is low; therefore, the conditions required 
+to trigger larval and juvenile Delta smelt entrainment management are not met."
 
 # Longfin smelt
 
@@ -94,6 +98,7 @@ footprint across OMRI scenarios, with no change between current and forecasted c
 lfs_eval_3 <- "Additional information may be discussed if needed at the DAT call."
 
 # REFERENCES- check to make sure are the same based on answers to questions
+# Any changes to references need to be made in the smelt.refs.bib file
 # refs <- "Damon, L. J., S. B. Slater, R. D. Baxter, and R. W. Fujimura. 2016. 
 # Fecundity and reproductive potential of wild female Delta smelt in the upper San 
 # Francisco Estuary, California. California Fish and Game 102(4):188–210. 
