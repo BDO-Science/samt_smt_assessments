@@ -199,7 +199,7 @@ edsm_data <- edsm_data_raw %>%
 edsm_ds <- edsm_data %>% filter(species == "Delta Smelt") %>% select(-species)
 edsm_lfs <- edsm_data %>% filter(species == "Longfin Smelt") %>% select(-species)
 
-#test code for chipps island trawl catch
+#Chipps island trawl catch
 chipps_data_raw <- read_csv("https://www.cbr.washington.edu/sacramento/data/generated/WY2026_smeltcatch_chipps.csv")
 chipps_data <- chipps_data_raw %>%
   clean_names() %>%
@@ -385,6 +385,7 @@ smelt_release_table <- tables[[3]] %>% clean_names()
 ds_latlon <- bind_rows(
   edsm_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
   beachsn_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
+  chipps_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
   sls_ds %>% select(source, date, catch, latitude, longitude, region, life_stage)) %>% 
   #twmm_ds %>% select(source, date, catch, latitude, longitude, region, life_state), 
   #salvage_ds_data %>% select(source, date, catch, latitude, longitude, region)) %>%

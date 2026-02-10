@@ -66,7 +66,7 @@ Based on [historical monitoring data](https://github.com/Delta-Stewardship-Counc
 first detection of larvae in the Central and South Delta has typically occurred by mid to late March. 
 Because first flush conditions were met on December 23, 2025, spawning is likely occurring, 
 consistent with the typical one- to four-week response window following increased 
-flow and turbidity. EDSM captures at Chipps Island and the Sacramento Deep Water Ship Channel are consistent 
+flow and turbidity. Survey captures at Chipps Island and the Sacramento Deep Water Ship Channel are consistent 
 with an upstream spawning migration into tidal freshwater habitats."
 
 # 4. After the onset of spawning, have the following conditions occurred: JPF < 0, 
