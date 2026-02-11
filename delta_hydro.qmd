@@ -43,7 +43,7 @@ mapList <- list.files(here(project, 'zoi_maps/'), full.names = TRUE)
 
 ### Operational and Regulatory Conditions
 
-Entrainment management is the current controlling factor. See most recent weekly outlook for more information.
+The current controlling factor is Delta Outflow X2. See most recent weekly outlook for more information.
 
 ### Current Conditions
 
