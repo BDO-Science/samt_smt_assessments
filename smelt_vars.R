@@ -134,8 +134,8 @@ ds_recent_display <- ds_recent %>%
 ## EDIT: South Delta conditions (turbidity and secchi depth-currently by email)-------------------------
 sd_secchi_depth <- 0.76
 sd_secchi_date <- ymd("2026-01-13")
-sd_turb <- 6.4
-sd_turb_date <- ymd("2025-01-26")
+sd_turb <- 5.7
+sd_turb_date <- ymd("2025-02-11")
 
 ## Abundance ------------------------------
 # pull abundance estimate
