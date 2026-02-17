@@ -53,8 +53,8 @@ and JPF is predicted to stay above 0 cfs."
 # 2. Has the average water temperature at Jersey Point or Rio Vista not exceeded 
 #53.6\(^{\circ}\)F (12\(^{\circ}\)C) for 3 consecutive days and/or has this action already been taken during WY 2026?
 ds_eval_2 <- "Temperature at Jersey Point exceeded the threshold on February 12th, 2025. Jersey
-Point 3 day average temperature was (12.05\(^{\circ}\)C) on February 10th, (12.09\(^{\circ}\)C) on February 11th
-and (12.13\(^{\circ}\)C) on February 12th."
+Point 3 day average temperature was (12.05°C) on February 10th, (12.09°C) on February 11th
+and (12.13°C) on February 12th."
 
 # 3. What is the evidence for the onset of Delta smelt spawning?
 ds_eval_3 <- "Upstream migration for Delta smelt occurs between September and December and in response 
