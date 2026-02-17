@@ -17,7 +17,7 @@ entrainment_status <- if(is_season_date_range | (pct_wr_in_delta > 5 | pct_sh_in
 
 # Status of the salmonid loss relative to annual loss thresholds
 salvage_status <- if(total_loss > 0) {
-  paste0("Season Loss: ", round(as.numeric(loss_dna_wr), 0), " (", wr_perc, " of annual loss threshold) natural winter-run, ", 
+  paste0("Annual Loss: ", round(as.numeric(loss_dna_wr), 0), " (", wr_perc, " of annual loss threshold) natural winter-run, ", 
          round(as.numeric(loss_hatch_wr), 0), " (", wr_hatch_perc, " of annual loss threshold) hatchery winter-run, ", 
          round(as.numeric(loss_nat_sh), 0), " natural steelhead, ",  # Changed 2 to 0
          round(as.numeric(loss_hatch_sh), 0), " (", sh_clipped_perc_threshold, " of annual loss threshold) hatchery steelhead, and ", # Changed 2 to 0
@@ -217,7 +217,7 @@ sr_delta_catch <- if(nrow(delta_sampling) == 0){
 } else {
   print(paste0("Total catch at Sacramento Trawl and Beach Seines in the delta between ",
                format(min(all_sampling[4:5, 2, drop = TRUE], na.rm = TRUE), '%b %d'), ' and ',
-               format(max(all_sampling[4:5, 3, drop = TRUE], na.rm = TRUE), '%b %d'), ' is ', sum(all_sampling[4:5,6]), ' individuals.'))
+               format(max(all_sampling[4:5, 3, drop = TRUE], na.rm = TRUE), '%b %d'), ' is ', sum(all_sampling[4:5,5]), ' individuals.'))
 }
 
 sh_delta_catch <- if(nrow(delta_sampling) == 0){
@@ -275,68 +275,78 @@ sh_clipped_threshold_fmt <- if(!is.na(sh_clipped_threshold)) {
 }
 
 # 2. Risk Assessment Helper Function - evaluates risk based on current loss and 7-day trajectory
-get_risk_level_with_projection <- function(cum_loss, recent_7d_loss, threshold, species_label) {
-  if(is.na(threshold) | threshold == 0) return(paste0(species_label, ": Threshold not established."))
+get_risk_level_with_projection <- function(cum_loss, recent_7d_loss, threshold, species_label, limit_label = "threshold", display_pct = NULL) {
+  if(is.na(threshold) | threshold == 0) return(paste0(species_label, ": ", tools::toTitleCase(limit_label), " not established."))
   
-  pct_used <- round((cum_loss / threshold) * 100, 1)
+  # Use pre-computed display percentage if provided (ensures consistency with summary/body text)
+  # Otherwise calculate locally as fallback
+  if(!is.null(display_pct)) {
+    pct_used <- as.numeric(gsub("[^0-9.]", "", display_pct))
+  } else {
+    pct_used <- round((cum_loss / threshold) * 100, 2)
+  }
+  
   projected_loss <- cum_loss + recent_7d_loss
+  pct_fmt <- sprintf("%.2f", pct_used)
   
   if (cum_loss >= threshold) {
-    return(paste0("CRITICAL: ", species_label, " cumulative loss has exceeded the threshold."))
+    return(paste0("CRITICAL: ", species_label, " cumulative loss has exceeded the ", limit_label, "."))
   } else if (projected_loss >= threshold) {
-    return(paste0("ELEVATED RISK: ", species_label, " cumulative loss is currently ", pct_used, 
-                  "% of the threshold. If recent 7-day loss (", round(recent_7d_loss, 0), # Changed 1 to 0
-                  ") continues, the threshold may be exceeded in the upcoming week."))
+    return(paste0("ELEVATED RISK: ", species_label, " cumulative loss is currently ", pct_fmt, 
+                  "% of the ", limit_label, ". If recent 7-day loss (", round(recent_7d_loss, 0),
+                  ") continues, the ", limit_label, " may be exceeded in the upcoming week."))
   } else if (pct_used > 75) {
-    return(paste0("ELEVATED RISK: ", species_label, " cumulative loss is at ", pct_used, 
-                  "% of the threshold."))
+    return(paste0("ELEVATED RISK: ", species_label, " cumulative loss is at ", pct_fmt, 
+                  "% of the ", limit_label, "."))
   } else if (recent_7d_loss > (threshold * 0.10)) {
-    return(paste0("INCREASING RISK: ", species_label, " cumulative loss is currently ", pct_used, 
-                  "% of the threshold, but recent 7-day loss (", round(recent_7d_loss, 0), # Changed 1 to 0
+    return(paste0("INCREASING RISK: ", species_label, " cumulative loss is currently ", pct_fmt, 
+                  "% of the ", limit_label, ", but recent 7-day loss (", round(recent_7d_loss, 0),
                   ") indicates a sharp upward trend."))
   } else {
-    return(paste0("LOW RISK: ", species_label, " cumulative loss is currently ", pct_used, 
-                  "% of the threshold."))
+    return(paste0("LOW RISK: ", species_label, " cumulative loss is currently ", pct_fmt, 
+                  "% of the ", limit_label, "."))
   }
 }
 
 # 3. Generate Evaluation Texts
+# Use the same loss/threshold values already computed for the summary and body text
 
 # Question 1: Natural AND Hatchery Winter-run
 wr_nat_loss <- as.numeric(loss_dna_wr)
-wr_nat_thresh <- wr_threshold_val
-wr_nat_7d <- if(exists("wr_7d")) as.numeric(gsub("[^0-9.]", "", wr_7d)) else 0
+wr_nat_thresh <- round(jpe * wr_loss_threshold, 0)
+wr_nat_7d <- as.numeric(wr_7d)
 if(is.na(wr_nat_7d)) wr_nat_7d <- 0
 
-wr_hatch_loss <- as.numeric(loss_hatch_wr)
+wr_hatch_loss_val <- as.numeric(loss_hatch_wr)
 wr_hatch_thresh <- round(livingston_jpe * wr_hatch_loss_threshold, 0)
-wr_hatch_7d <- if(exists("wr_hatch_7d")) as.numeric(gsub("[^0-9.]", "", wr_hatch_7d)) else 0
-if(is.na(wr_hatch_7d)) wr_hatch_7d <- 0
+wr_hatch_7d_val <- as.numeric(wr_hatch_7d)
+if(is.na(wr_hatch_7d_val)) wr_hatch_7d_val <- 0
 
-risk_q1_nat <- get_risk_level_with_projection(wr_nat_loss, wr_nat_7d, wr_nat_thresh, "Natural winter-run")
-risk_q1_hatch <- get_risk_level_with_projection(wr_hatch_loss, wr_hatch_7d, wr_hatch_thresh, "Hatchery winter-run")
+risk_q1_nat <- get_risk_level_with_projection(wr_nat_loss, wr_nat_7d, wr_nat_thresh, "Natural winter-run", display_pct = wr_perc)
+risk_q1_hatch <- get_risk_level_with_projection(wr_hatch_loss_val, wr_hatch_7d_val, wr_hatch_thresh, "Hatchery winter-run", display_pct = wr_hatch_perc)
 risk_q1 <- paste0(risk_q1_nat, " ", risk_q1_hatch)
 
 # Question 2: Spring-run Surrogates
-sr_thresh_safe <- if(exists("sr_threshold_val")) sr_threshold_val else 0
-sr_loss_safe   <- if(exists("sr_loss_total")) sr_loss_total else 0
+sr_thresh_safe <- if(exists("sr_threshold_val") && !is.na(sr_threshold_val)) sr_threshold_val else 0
+sr_loss_safe   <- if(exists("sr_loss_total") && !is.na(sr_loss_total)) as.numeric(sr_loss_total) else 0
 sr_7d_safe <- 0  # No 7-day tracking for spring-run surrogates
 
-risk_q2 <- get_risk_level_with_projection(sr_loss_safe, sr_7d_safe, sr_thresh_safe, "Spring-run surrogates")
+risk_q2 <- get_risk_level_with_projection(sr_loss_safe, sr_7d_safe, sr_thresh_safe, "Spring-run surrogates", display_pct = sr_loss_perc)
 
 # Question 3: Natural AND Hatchery Steelhead
-sh_nat_loss_safe <- if(exists("loss_nat_sh")) as.numeric(loss_nat_sh) else 0
-sh_nat_7d <- if(exists("sh_7d")) as.numeric(gsub("[^0-9.]", "", sh_7d)) else 0
-if(is.na(sh_nat_7d)) sh_nat_7d <- 0
+sh_nat_loss_safe <- as.numeric(loss_nat_sh)
+sh_nat_7d_val <- as.numeric(sh_7d)
+if(is.na(sh_nat_7d_val)) sh_nat_7d_val <- 0
 
-sh_hatch_loss_safe <- if(exists("sh_clipped_loss_total")) as.numeric(sh_clipped_loss_total) else 0 
-sh_hatch_thresh_safe <- if(exists("sh_clipped_threshold")) sh_clipped_threshold else 0
-sh_hatch_7d <- if(exists("sh_clipped_7d")) as.numeric(gsub("[^0-9.]", "", sh_clipped_7d)) else 0
-if(is.na(sh_hatch_7d)) sh_hatch_7d <- 0
+sh_hatch_loss_safe <- as.numeric(sh_clipped_loss_total)
+if(is.na(sh_hatch_loss_safe)) sh_hatch_loss_safe <- 0
+sh_hatch_thresh_safe <- if(exists("sh_clipped_threshold") && !is.na(sh_clipped_threshold)) sh_clipped_threshold else 0
+sh_hatch_7d_val <- as.numeric(sh_7d)
+if(is.na(sh_hatch_7d_val)) sh_hatch_7d_val <- 0
 
 # Natural steelhead uses ITL (5,294) since there is no loss threshold
-risk_q3_nat <- get_risk_level_with_projection(sh_nat_loss_safe, sh_nat_7d, itl_sh_natural_single, "Natural steelhead (vs ITL)")
-risk_q3_hatch <- get_risk_level_with_projection(sh_hatch_loss_safe, sh_hatch_7d, sh_hatch_thresh_safe, "Hatchery steelhead")
+risk_q3_nat <- get_risk_level_with_projection(sh_nat_loss_safe, sh_nat_7d_val, itl_sh_natural_single, "Natural steelhead", limit_label = "single-year ITL", display_pct = sh_perc)
+risk_q3_hatch <- get_risk_level_with_projection(sh_hatch_loss_safe, sh_hatch_7d_val, sh_hatch_thresh_safe, "Hatchery steelhead", display_pct = sh_clipped_perc_threshold)
 risk_q3 <- paste0(risk_q3_nat, " ", risk_q3_hatch)
 
 
