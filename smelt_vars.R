@@ -22,7 +22,7 @@ source("smelt_data_extraction.R")
 # Actions ---------------------
 first_flush_status = "not relevant"
 first_flush_lfs_status = "not relevant"
-adult_ent_status = "relevant"
+adult_ent_status = "not relevant"
 larval_ent_status = "relevant"
 lfs_adult_ent_status = "relevant"
 lfs_larval_ent_status = "relevant"
@@ -52,9 +52,9 @@ and JPF is predicted to stay above 0 cfs."
 
 # 2. Has the average water temperature at Jersey Point or Rio Vista not exceeded 
 #53.6\(^{\circ}\)F (12\(^{\circ}\)C) for 3 consecutive days and/or has this action already been taken during WY 2026?
-ds_eval_2 <- "Temperature at Rio Vista or Jersey Point has not exceeded the threshold 
-to date, but the temperature threshold may be exceeded this week. The Delta smelt adult 
-entrainment management action has not yet been taken in WY 2026."
+ds_eval_2 <- "Temperature at Jersey Point exceeded the threshold on February 12th, 2025. Jersey
+Point 3 day average temperature was (12.05\(^{\circ}\)C) on February 10th, (12.09\(^{\circ}\)C) on February 11th
+and (12.13\(^{\circ}\)C) on February 12th."
 
 # 3. What is the evidence for the onset of Delta smelt spawning?
 ds_eval_3 <- "Upstream migration for Delta smelt occurs between September and December and in response 
