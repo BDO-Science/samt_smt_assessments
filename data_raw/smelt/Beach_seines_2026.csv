@@ -1,3 +1,4 @@
 ﻿RegionCode,Location,Station,Date,Time,Method,latitude,longitude,GearConditionCode,Volume,DO,WaterTemp,Turbidity,SpecificConductance,Substrate,Weather,Species,Mark,Catch,FL,Stage,Expression,RaceByLength,SummerGroup,WinterGroup,Region,Stratum
-2,Sandy Beach Boat Ramp,SR012B,12/18/2025,09:10:00,SEIN,38.13977,-121.69468,1,44,10.6,9.7,4.72,241.6,PV,CLD,DSM,None,1,53,J,n/p,n/p,,CDSein,North,Lower Sacramento
+2,Sandy Beach Boat Ramp,SR012B,12/18/2025,9:10:00,SEIN,38.13977,-121.69468,1,44,10.6,9.7,4.72,241.6,PV,CLD,DSM,None,1,53,J,n/p,n/p,,CDSein,North,Lower Sacramento
 6,McNears Beach,SP000W,1/5/2026,0.4375,SEIN,37.99504183,-122.4550107,1,45.5,10.01,11.3,211.99,26256,GR,RAN,LFS,None,1,77,J,n/p,n/p,BayW,BayW,Bay,Bay
+2,Rio Vista City Boat Ramp,SR013W,2/12/2026,08:40:00,SEIN,38.15463,-121.69025,1,27.50,10.75,11.7,8.6,191.7,PV,CLR,LFS,None,1,85,A,n/p,n/p,,CDSein,,
