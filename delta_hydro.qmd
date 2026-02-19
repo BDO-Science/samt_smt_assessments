@@ -95,11 +95,14 @@ omr_plot <-
   geom_rect(data= triggers_shading, aes(xmin= date_implemented, xmax= implementation_end), ymin=-Inf, ymax= Inf, 
             fill= "gray70", alpha= 0.5, inherit.aes = FALSE)+
   geom_line(data = omr_clean, aes(x = date, y = value, color = measure), linewidth = 1) +
-  geom_vline(data = triggers_clean, aes(xintercept = date), linewidth = 1.5, linetype = 'dashed', color = '#888888')+
+  #geom_vline(data = triggers_clean, aes(xintercept = date), linewidth = 1.5, linetype = 'dashed', color = '#888888')+
+  geom_vline(data = triggers_clean, aes(xintercept = date, linewidth = type, linetype = type), color = '#888888')+
   geom_text(data = triggers_clean, aes(x = date-2, y = -9500, label = plot_label), size = 5, fontface = 'bold')+
   labs(y = 'Daily OMRI (cfs)') +
   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
   scale_color_manual(values = c("#0173B2", "#DE8F05", "#CC78BC"))+
+  scale_linetype_manual(values = c("trigger"= "dashed", "threshold"= "dotted"))+
+  scale_linewidth_manual(values = c("trigger"= 1.5, "threshold"= 1))+
   scale_y_reverse() +
   theme_bw() +
   theme(legend.position = "bottom",
@@ -113,8 +116,8 @@ omr_plot
 ```{r}
 #| label: fig-triggers
 #| warning: false
-#| fig-cap: "Operations and Action Summary, WY 2026. The numbers and dashed lines in the OMRI plot indicate different triggers (see Table 1), with shading representing specific action periods. OMRI data (colored lines) calculated by SacPAS, Freeport (FPT) and Vernalis (VNS) flow data from CDEC, and CVP (TRP) and SWP (HRO) exports data from CDEC."
-#| fig-alt: "Three part plot showing hydrologic conditions over time. Top plot shows a time series of flow at Vernalis and Freeport. The middle plot shows a time series of daily, weekly, and 14-day average OMRI, with vertical lines and shading to show when actions were taken. The lower plot is a column chart showing combined exports from both CVP and SWP."
+#| fig-cap: "Operations and Action Summary, WY 2026. The numbers and lines in the OMRI plot indicate different triggers and thresholds (see Table 1), with shading representing specific action periods. Dashed and dotted vertical lines represent triggered actions and thresholds, respectively. OMRI data (colored lines) calculated by SacPAS, Freeport (FPT) and Vernalis (VNS) flow data from CDEC, and CVP (TRP) and SWP (HRO) exports data from CDEC."
+#| fig-alt: "Three part plot showing hydrologic conditions over time. Top plot shows a time series of flow at Vernalis and Freeport. The middle plot shows a time series of daily, weekly, and 14-day average OMRI, with vertical lines and shading to show when actions were taken or thresholds were reached. The lower plot is a column chart showing combined exports from both CVP and SWP."
 #| fig-width: 9
 #| fig-height: 7
 #| echo: false

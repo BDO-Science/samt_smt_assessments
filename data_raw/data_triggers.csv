@@ -1,3 +1,4 @@
-﻿date_triggered,date_implemented,days_implemented,action,regulation,plot_label,description,implementation_end
-10/28/2025,10/30/2025,Ongoing,DCC Gate Closure,DCC gates,1,Delta entry winter-run catch indices exceeded,
-12/24/2025,12/25/2025,14 days,First Flush,Entrainment Management,2,First Flush conditions exceeded,1/7/2026
+﻿date_triggered,date_implemented,days_implemented,action,regulation,plot_label,description,implementation_end,type
+10/28/2025,10/30/2025,Ongoing,DCC Gate Closure,DCC gates,1,Delta entry winter-run catch indices exceeded,,trigger
+12/24/2025,12/25/2025,14 days,First Flush,Entrainment Management,2,First Flush conditions exceeded,1/7/2026,trigger
+2/12/2026,,3 consecutive days,Offramp temperature threshold,"Delta Smelt Adult Entrainment, no action taken WY26",3,Temperature threshold reached,,threshold

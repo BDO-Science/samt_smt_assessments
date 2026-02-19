@@ -130,7 +130,9 @@ triggers <- read_csv("data_raw/data_triggers.csv")
 triggers_clean <- triggers %>%
   mutate(date = mdy(date_triggered),
          date_implemented= mdy(date_implemented),
-         implementation_end= mdy(implementation_end))
+         implementation_end= mdy(implementation_end),
+         type= as.factor(type),
+         type= ordered(type, levels= c("trigger", "threshold")))
 
 triggers_shading <- triggers_clean %>% 
   filter(!is.na(implementation_end))
