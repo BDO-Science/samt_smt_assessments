@@ -90,6 +90,25 @@ flow_plot
 
 ```{r}
 #| include: false
+jpf_plot <- jpf_all %>%
+  ggplot(aes(x = date)) +
+  labs(y = 'Flow (cfs)') +
+  annotate("label", x = date(start)+10, y = 15000, label = "Jersey Point Flow", color = "darkturquoise")+
+  geom_hline(yintercept = 0, linetype = 'dashed', color = '#888888', linewidth= 1)+
+  geom_line(aes(y = jpf_cfs), color= "darkturquoise", linewidth = 1) +
+  #scale_color_manual(values = c("#43a419", "gray15")) +
+  scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
+  theme_bw() +
+  theme(legend.position = "none",
+        axis.title.x = element_blank(),
+        axis.text = element_text(size = 15),
+        axis.title= element_text(size = 15))
+jpf_plot
+```
+
+
+```{r}
+#| include: false
 omr_plot <- 
   ggplot() +
   geom_rect(data= triggers_shading, aes(xmin= date_implemented, xmax= implementation_end), ymin=-Inf, ymax= Inf, 
@@ -116,13 +135,13 @@ omr_plot
 ```{r}
 #| label: fig-triggers
 #| warning: false
-#| fig-cap: "Operations and Action Summary, WY 2026. The numbers and lines in the OMRI plot indicate different triggers and thresholds (see Table 1), with shading representing specific action periods. Dashed and dotted vertical lines represent triggered actions and thresholds, respectively. OMRI data (colored lines) calculated by SacPAS, Freeport (FPT) and Vernalis (VNS) flow data from CDEC, and CVP (TRP) and SWP (HRO) exports data from CDEC."
-#| fig-alt: "Three part plot showing hydrologic conditions over time. Top plot shows a time series of flow at Vernalis and Freeport. The middle plot shows a time series of daily, weekly, and 14-day average OMRI, with vertical lines and shading to show when actions were taken or thresholds were reached. The lower plot is a column chart showing combined exports from both CVP and SWP."
+#| fig-cap: "Operations and Action Summary, WY 2026. The numbers and lines in the OMRI plot indicate different triggers and thresholds (see Table 1), with shading representing specific action periods. Dashed and dotted vertical lines represent triggered actions and thresholds, respectively. OMRI data (colored lines) calculated by SacPAS, Freeport (FPT) and Vernalis (VNS) flow data from CDEC, Jersey Point Flow (JPF) from DWR, and CVP (TRP) and SWP (HRO) exports data from CDEC."
+#| fig-alt: "Four-part plot showing hydrologic conditions over time. Top plot shows a time series of flow at Vernalis and Freeport. The upper middle plot shows a time series of Jersey Point Flow, with a horizontal line at 0 cfs. The middle plot shows a time series of daily, weekly, and 14-day average OMRI, with vertical lines and shading to show when actions were taken or thresholds were reached. The lower plot is a column chart showing combined exports from both CVP and SWP."
 #| fig-width: 9
 #| fig-height: 7
 #| echo: false
  
-flow_plot + omr_plot + export_plot + plot_layout(nrow = 3) #add in JPF plot when data are posted
+flow_plot + jpf_plot + omr_plot + export_plot + plot_layout(nrow = 4) #add in JPF plot when data are posted
 ```
 
 ```{r}
@@ -156,7 +175,7 @@ Current conditions at Freeport and Vernalis indicate that delta hydrology falls 
 
 The altered channel length for the current `r paste0('"', hydrology_current, '"')` hydrology is `r length_current` kilometers (km) across OMR bins of `r omr_current` respectively. The altered channel length for forecasted `r paste0('"', hydrology_forecast, '"')` hydrology is `r length_forecast` kilometers (km) across OMR bins of `r omr_forecast` respectively.
 
-Change in altered channel length between OMR levels is `r channel_filter_current$length_change` km for current conditions and `r channel_filter_forecast$length_change` km for forecasted conditions indicating that ZOI impacts across OMR scenarios `r difference` between current and forecasted conditions. Across the nine hydrology bins, `r channel_length_text`
+Change in altered channel length between OMR levels is `r channel_filter_current$length_change` km for current conditions and `r channel_filter_forecast$length_change` km for forecasted conditions indicating that ZOI impacts across OMR scenarios `r difference` between current and forecasted conditions. Across the nine hydrology bins, `r channel_length_text`.
 
 ```{r}
 #| label: fig-zoi_graph

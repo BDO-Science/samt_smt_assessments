@@ -136,3 +136,8 @@ triggers_clean <- triggers %>%
 
 triggers_shading <- triggers_clean %>% 
   filter(!is.na(implementation_end))
+
+# Read in JPF historical data
+jpf_all <- read_csv("https://www.cbr.washington.edu/sacramento/data/generated/WY2026_JPF.csv") %>% 
+  clean_names() %>%
+  mutate(date = ymd(date))

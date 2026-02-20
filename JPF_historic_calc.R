@@ -224,12 +224,12 @@ hydro_test <- hydro_test %>%
 # Practice figure
 #ann_start_jpf <- JPF_hist %>% filter(Date == date(start)) %>% pull(JPF_cfs)
 
-jpf_plot <- JPF_hist %>%
-  ggplot(aes(x = Date)) +
+jpf_plot <- jpf_all %>%
+  ggplot(aes(x = date)) +
   labs(y = 'Flow (cfs)') +
   annotate("label", x = date(start)+10, y = 15000, label = "Jersey Point Flow", color = "darkturquoise")+
   geom_hline(yintercept = 0, linetype = 'dashed', color = '#888888', linewidth= 1)+
-  geom_line(aes(y = JPF_cfs), color= "darkturquoise", linewidth = 1) +
+  geom_line(aes(y = jpf_cfs), color= "darkturquoise", linewidth = 1) +
   #scale_color_manual(values = c("#43a419", "gray15")) +
   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
   theme_bw() +
