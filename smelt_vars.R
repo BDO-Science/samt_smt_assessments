@@ -35,7 +35,7 @@ end_of_season = "not relevant"
 
 narrative_text <- 
 "- Entrainment management is currently active.
-- Adult Delta smelt action no longer active.
+- Adult Delta smelt action is no longer active.
 - Delta smelt were recently detected at Suisun Marsh. 
 - No Delta smelt or longfin smelt salvage has been observed this water year.
 - Turbidity in the central/south Delta is low.
@@ -45,58 +45,57 @@ narrative_text <-
 
 # Delta smelt
 
-# 1. After the start of entrainment management, is JPF < 0, is daily average turbidity ≥ 12 FNU 
+# NOT IN USE After the start of entrainment management, is JPF < 0, is daily average turbidity ≥ 12 FNU 
 #in the OMR corridor (stations OBI, HOL, and OSJ), and has the average water temperature 
 #at Jersey Point or Rio Vista not exceeded 53.6\(^{\circ}\)F (12\(^{\circ}\)C) for 3 consecutive days?
-ds_eval_1 <- "The turbidity in the OMR corridor is not likely to be exceeded this week, 
-and JPF is predicted to stay above 0 cfs."
 
-# 2. Has the average water temperature at Jersey Point or Rio Vista not exceeded 
+
+# 1. After the start of entrainment management, is JPF < 0, is daily average turbidity ≥ 12 FNU 
+#in the OMR corridor (stations OBI, HOL, and OSJ)? Has the average water temperature at Jersey Point or Rio Vista not exceeded 
 #53.6\(^{\circ}\)F (12\(^{\circ}\)C) for 3 consecutive days and/or has this action already been taken during WY 2026?
-ds_eval_2 <- "Temperature at Jersey Point exceeded the threshold on February 12th, 2025. Jersey
-Point 3 day average temperature was (12.05°C) on February 10th, (12.09°C) on February 11th
-and (12.13°C) on February 12th."
+ds_eval_1 <- "The adult Delta smelt entrainment action is not active and no action was taken in WY26. 
+Temperature at Jersey Point exceeded the threshold on February 12th, 2025. Jersey
+Point 3-day average temperature was 12.05°C on February 10th, 12.09°C on February 11th,
+and 12.13°C on February 12th."
 
-# 3. What is the evidence for the onset of Delta smelt spawning?
-ds_eval_3 <- "Upstream migration for Delta smelt occurs between September and December and in response 
-to “first flush” conditions (Sommer et al. 2011, Grimaldo et al. 2009). Migration typically ranges one 
-to four weeks after flow and turbidity increases, based on salvage data (Sommer et al. 2011). 
-Historically, detections of ripe Delta smelt began in January and peaked in February and March and 
-the majority of Delta Smelt spawning occurs within a temperature range of 9-18˚C (Damon et al. 2016). 
+# 2. What is the evidence for the onset of Delta smelt spawning?
+ds_eval_2 <- "Upstream migration for Delta smelt occurs between December and March and in response 
+to “first flush” conditions (Sommer et al., 2011; Grimaldo et al. 2009; 2021). Historically, detections 
+of ripe Delta smelt began in January and peaked in February and March and 
+the majority of Delta Smelt spawning occurs at 11-15˚C (but can occur from 8-18˚C) (Damon et al. 2016). 
 Based on [historical monitoring data](https://github.com/Delta-Stewardship-Council/deltafish) from the past few years, 
 first detection of larvae in the Central and South Delta has typically occurred by mid to late March. 
-Because first flush conditions were met on December 23, 2025, spawning is likely occurring, 
-consistent with the typical one- to four-week response window following increased 
-flow and turbidity. Survey captures at Chipps Island and the Sacramento Deep Water Ship Channel are consistent 
-with an upstream spawning migration into tidal freshwater habitats."
+The large majority of Delta smelt recaptures continue to be from Suisun Marsh, close to
+where supplemental fish were released in the fall."
 
-# 4. After the onset of spawning, have the following conditions occurred: JPF < 0, 
+# 3. After the onset of spawning, have the following conditions occurred: JPF < 0, 
 #daily average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 days?
-ds_eval_4 <- "Although spawning may occur during the current assessment period, JPF is above 0 cfs
+ds_eval_3 <- "Although spawning may be occurring, JPF is above 0 cfs
 and average turbidity in the South Delta is low; therefore, the conditions required 
-to trigger larval and juvenile Delta smelt entrainment management are not met."
+to trigger larval and juvenile Delta smelt entrainment management are not currently met."
 
 # Longfin smelt
 
 # 1. If JPF < 0, what is the trajectory of annual loss of adult longfin smelt 
 #and is it likely to exceed 5% of the adult population estimate? 
 #Is South Delta entrainment expected to decrease due to a reduction in export pumping?
-lfs_eval_1 <- "JPF is > 0 cfs and no adult longfin smelt have been detected in salvage."
+lfs_eval_1 <- "JPF is > 0 cfs and no adult longfin smelt have been detected in 
+salvage, indicating annual loss has not begun to approach the 5% regulatory threshold."
 
 # 2. For larval and juvenile longfin smelt, if JPF < 0 cfs, do particle tracking 
 #models show a moderate to high difference in particle fates across different 
 #OMRI scenarios? Does Zone of Influence modeling show moderate to high changes 
 #in hydrodynamic footprint across different OMRI scenarios? Are these effects 
 #anticipated to cause a population decline?
-lfs_eval_2 <-  "JPF is not less than 0 cfs and is not predicted to go below 0 cfs this week. 
+lfs_eval_2 <-  "JPF is currently not less than 0 cfs and is not predicted to drop below 0 cfs this week. 
 The Zone of Influence modeling indicates moderate differences in hydrodynamic 
 footprint across OMRI scenarios, with no change between current and forecasted conditions."
 
 # DONT NEED TO CHANGE UNLESS YOU WANT TO
 # 3. Is there additional information or other analyses that should be considered in this evaluation?
-lfs_eval_3 <- "Additional information may be discussed if needed at the DAT call."
+lfs_eval_3 <- "Please see Appendix A for additional information."
 
 # REFERENCES- check to make sure are the same based on answers to questions
 # Any changes to references need to be made in the smelt.refs.bib file
@@ -108,7 +107,9 @@ lfs_eval_3 <- "Additional information may be discussed if needed at the DAT call
 # B. Herbold & P. Smith (2009) Factors Affecting Fish Entrainment into Massive Water 
 # Diversions in a Tidal Freshwater Estuary: Can Fish Losses be Managed? North 
 # American Journal of Fisheries Management, 29:5, 1253-1270, DOI: 10.1577/M08-062.1  
-# 
+#
+# Grimaldo et al. 2021
+#
 # Sommer, T., F. Mejia, M. Nobriga, and L. Grimaldo. 2011. The Spawning Migration 
 # of Delta Smelt in the Upper San Francisco Estuary. San Francisco Estuary and Watershed Science 9(2)."
 

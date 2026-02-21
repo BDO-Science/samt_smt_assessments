@@ -155,7 +155,7 @@ ggplot(ds_wy) +
 ##### First Flush
 ```{r, echo = FALSE, results='asis'}
 if (first_flush_status != "relevant") {
-  cat("- Not relevant\n")
+  cat("- Implemented 12/25/25-01/7/26\n") #change this text to show implementation dates
 } else {
   cat(glue("
 **Threshold**: 3-day avg FPT flow {GE} 25,000 cfs and 3-day avg FPT turbidity {GE} 50 FNU
@@ -179,7 +179,8 @@ knitr::include_graphics(here("smelt_figures/freeport_flow.png"))
  
 ```{r, echo = FALSE, results='asis'}
 if (adult_ent_status != "relevant") {
-  cat("- Not relevant\n")
+  cat("- Adult Delta smelt action offramped on 02/12/2026\n
+      - No adult Delta smelt action was taken in WY26\n")
 } else {
   cat(glue("
 **Threshold**: If daily average JPF < 0 AND turbidity {GE} 12 FNU at OBI, HOL and OSJ
@@ -213,7 +214,7 @@ knitr::include_graphics(here("smelt_figures/freeport_turbidity.png"))
 
 ```{r, echo = FALSE, results='asis'}
 if (larval_ent_status != "relevant") {
-  cat("- Not relevant\n")
+  cat("- Not active\n")
 } else {
   cat(glue("
 **Threshold**: After the onset of spawning, if JPF < 0 cfs AND turbidity is {GE} 12 FNU in the south Delta AND PTM modeling indicates the action would avoid {GE} 5% entrainment of Delta smelt population after 30 days
@@ -227,21 +228,17 @@ if (larval_ent_status != "relevant") {
 
 **Delta smelt:**
 
-1. After the start of entrainment management, is JPF < 0 and is daily average turbidity $\ge$ 12 FNU in the OMR corridor (stations OBI, HOL, and OSJ)?
+1. After the start of entrainment management, is JPF < 0, is daily average turbidity ≥ 12 FNU in the OMR corridor (stations OBI, HOL, and OSJ)? Has the average water temperature at Jersey Point or Rio Vista not exceeded 53.6$^{\circ}$F (12$^{\circ}$C) for 3 consecutive days and/or has this action already been taken during WY 2026?
 
     `r ds_eval_1`
 
-2. Has the average water temperature at Jersey Point or Rio Vista not exceeded 53.6$^{\circ}$F (12$^{\circ}$C) for 3 consecutive days and/or has this action already been taken during WY 2026?
+2. What is the evidence for the onset of Delta smelt spawning?
 
     `r ds_eval_2`
 
-3. What is the evidence for the onset of Delta smelt spawning?
+3. After the onset of spawning, have the following conditions occurred: JPF < 0 cfs, turbidity is $\ge$ 12 FNU in the south Delta, and PTM modeling indicates the action would avoid $\ge$ 5% entrainment of the Delta smelt population at facilities after 30 days?
 
     `r ds_eval_3`
-
-4. After the onset of spawning, have the following conditions occurred: $\ge$ 5% entrainment of the Delta smelt population at facilities after 30 days?
-
-    `r ds_eval_4`
   
 
 ### Longfin smelt
@@ -328,7 +325,7 @@ ggplot(lfs_wy) +
 ##### Start of Entrainment Management (Adult Longfin Smelt)
 ```{r, echo = FALSE, results='asis'}
 if (first_flush_lfs_status != "relevant") {
-  cat("- Not relevant\n")
+  cat("- This action was not taken in WY26\n")
 } else {
   cat(glue("
 **Threshold**: If daily average JPF < 0 cfs AND salvage of adult longfin exceeds 5% of FMWT Index + 1
