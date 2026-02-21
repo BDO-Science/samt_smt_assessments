@@ -43,11 +43,11 @@ mapList <- list.files(here(project, 'zoi_maps/'), full.names = TRUE)
 
 ### Operational and Regulatory Conditions
 
-The current controlling factor is Delta Outflow X2. See most recent weekly outlook for more information.
+The current controlling factor is OMRI restrictions to no more negative than -5,000 cfs. See most recent weekly outlook for more information.
 
 ### Current Conditions
 
-Most recent inflow at Freeport in the Sacramento River and Vernalis in the San Joaquin River is `r fpt` and `r vns` cfs respectively.  Most recent 1-day, 5-day, and 14-day OMRI measurements were `r omr_text`, `r omr5D_text`, and `r omr14D_text` cfs respectively, and most recent export data were `r cvp` cfs for Jones Pumping Plant and `r swp` cfs for Henry O. Banks Pumping Plant.
+Most recent inflow at Freeport in the Sacramento River and Vernalis in the San Joaquin River is `r fpt` and `r vns` cfs respectively. Most recent Jersey Point Flow (JPF) is `r formatC(jpf_daily, format = 'f', big.mark = ',', digits = 0)` cfs. Most recent 1-day, 5-day, and 14-day OMRI measurements were `r omr_text`, `r omr5D_text`, and `r omr14D_text` cfs, respectively, and most recent export data were `r cvp` cfs for Jones Pumping Plant and `r swp` cfs for Henry O. Banks Pumping Plant.
 ```{r}
 #| include: false
 export_plot <- pumping_clean %>%

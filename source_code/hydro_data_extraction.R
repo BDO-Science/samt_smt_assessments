@@ -4,6 +4,7 @@ library(readr)
 library(here)
 library(janitor)
 library(tidyverse)
+library(rvest)
 
 # Define start and end date
 start <- "2025-10-01"
@@ -141,3 +142,17 @@ triggers_shading <- triggers_clean %>%
 jpf_all <- read_csv("https://www.cbr.washington.edu/sacramento/data/generated/WY2026_JPF.csv") %>% 
   clean_names() %>%
   mutate(date = ymd(date))
+
+# Read in current JPF from SacPAS
+
+url <- "https://www.cbr.washington.edu/sacramento/workgroups/delta_smelt.html"
+page <- read_html(url)
+tables <- html_table(page, fill = TRUE)
+
+## Pull Environmental Table ----------------------------
+hydro_table_raw <- tables[[1]][-1,]
+hydro_table <- hydro_table_raw %>% clean_names()
+
+# JPF
+# Get the most recent value in the column
+jpf_daily <- as.numeric(tail(hydro_table$jpf_cfs_dwr,1))
