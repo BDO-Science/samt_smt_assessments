@@ -180,7 +180,7 @@ knitr::include_graphics(here("smelt_figures/freeport_flow.png"))
 ```{r, echo = FALSE, results='asis'}
 if (adult_ent_status != "relevant") {
   cat("- Adult Delta smelt action offramped on 02/12/2026\n
-      - No adult Delta smelt action was taken in WY26\n")
+- No adult Delta smelt action was taken in WY26\n")
 } else {
   cat(glue("
 **Threshold**: If daily average JPF < 0 AND turbidity {GE} 12 FNU at OBI, HOL and OSJ
