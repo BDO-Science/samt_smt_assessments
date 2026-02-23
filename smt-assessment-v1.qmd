@@ -236,7 +236,7 @@ if (larval_ent_status != "relevant") {
 
     `r ds_eval_2`
 
-3. After the onset of spawning, have the following conditions occurred: JPF < 0 cfs, turbidity is $\ge$ 12 FNU in the south Delta, and PTM modeling indicates the action would avoid $\ge$ 5% entrainment of the Delta smelt population at facilities after 30 days?
+3. After the onset of spawning, have the following conditions occurred: JPF < 0 cfs, average turbidity is $\ge$ 12 FNU in the south Delta, and PTM modeling indicates the action would avoid $\ge$ 5% entrainment of the Delta smelt population at facilities after 30 days?
 
     `r ds_eval_3`
   
