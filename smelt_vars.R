@@ -36,7 +36,7 @@ end_of_season = "not relevant"
 narrative_text <- 
 "- Entrainment management is currently active.
 - Adult Delta smelt action is no longer active.
-- Delta smelt were recently detected at Suisun Marsh. 
+- Delta smelt were most recently detected at Suisun Marsh. 
 - No Delta smelt or longfin smelt salvage has been observed this water year.
 - Turbidity in the central/south Delta is low.
 "
