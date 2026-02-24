@@ -106,13 +106,21 @@ read_excel_by_pattern <- function(pattern, folder_path = ".", combine_survey_she
             sheet_data <- read_excel(selected_file, sheet = .)
             message(paste("Read sheet:", ., 
                           "-", nrow(sheet_data), "rows x", ncol(sheet_data), "cols"))
-            if (!"SLS Station" %in% names(sheet_data)) { # added this to fix the characters in station col
+            # Standardize name first
+            if ("Station" %in% names(sheet_data)) {
+              sheet_data <- sheet_data %>%
+                rename(`SLS Station` = Station)
+            }
+            
+            # Ensure column exists and is character
+            if (!"SLS Station" %in% names(sheet_data)) {
               sheet_data <- sheet_data %>%
                 mutate(`SLS Station` = NA_character_)
             } else {
               sheet_data <- sheet_data %>%
                 mutate(`SLS Station` = as.character(`SLS Station`))
             }
+            
             sheet_data
           })
       }
