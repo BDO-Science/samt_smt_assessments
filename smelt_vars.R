@@ -76,7 +76,7 @@ ds_eval_3 <- "Although spawning may be occurring, JPF is above 0 cfs. SLS 5 is o
 week and will provide an updated average south Delta turbidity. Due to JPF > 0 this week, the conditions required 
 to trigger larval and juvenile Delta smelt entrainment management will not be met. No Delta smelt larvae
 have been captured in SLS surveys in WY26 to date. Therefore, if a Storm Flex were to be implemented this week, fates of particles
-injected at Chipps Island or Cache Slough would be most relevent for larvae, as those locations are closest to recent adult distribution. 
+injected at Chipps Island or Cache Slough would be most relevant for larvae, as those locations are closest to recent adult distribution. 
 PTM with neutrally buoyant particles injected at Chipps Island and Cache Slough show 0% of particles entrained for the week ending 2/23/2026
 for all OMR levels (-2,000, -3,500, -5,000, and -6,500 cfs). For week 2 (ending 3/02/2026), 0.1 and 0.3% of particles 
 were entrained at CVP and SWP, respectively, at OMRI of -6,500 cfs, and 0% for OMRI of -5,000 cfs (see Appendix A for details). 
