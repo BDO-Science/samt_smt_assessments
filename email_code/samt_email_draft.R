@@ -110,7 +110,8 @@ email_body <- paste0(
   "<p style='font-family:Arial; font-size:10pt;'>",
   "Please see the DAT pre-FAWOG summary and assessment as of ",
   "<strong>", format(Sys.Date() - 1, "%B %d, %Y"), "</strong>. ",
-  "Data are preliminary and subject to change.</p>",
+  "Data are preliminary and subject to change. Full assessment available on ",
+  "<a href='https://www.cbr.washington.edu/sacramento/workgroups/salmon_monitoring.html'>SacPAS</a>.</p>",
   
   # ---- STATUS OVERVIEW ----
   "<h3 style='font-family:Arial; font-size:11pt; margin-bottom:4px;'>Status Overview</h3>",
@@ -123,75 +124,30 @@ email_body <- paste0(
   "<li>", sh_presence_status, "</li>",
   "</ul>",
   
-  # ---- NATURAL WINTER-RUN ----
-  # Threshold (1% JPE) differs from ITL (0.56% single-yr / 0.36% 3-yr) -- report both
-  "<h3 style='font-family:Arial; font-size:11pt; margin-bottom:4px;'>",
-  "Natural Winter-run Chinook Salmon</h3>",
-  "<ul style='font-family:Arial; font-size:10pt;'>",
-  "<li>JPE: <em>", prettyNum(jpe, big.mark = ","), " fish</em></li>",
-  "<li>Cumulative loss: <strong>", loss_dna_wr, "</strong> (", wr_perc, " of annual loss threshold)</li>",
-  "<li>Loss in past 7 days: <strong>", wr_7d, "</strong></li>",
-  "<li>Annual loss threshold (1% of JPE): <strong>", wr_nat_threshold_val, " fish</strong></li>",
-  "<li>Single-year ITL (0.56% of JPE): <strong>", wr_nat_itl_single_val,
-  " fish</strong> &nbsp;|&nbsp; ",
-  "3-year rolling ITL (0.36% of JPE): <strong>", wr_nat_itl_3yr_val,
-  " fish</strong> (BiOp Table 184)</li>",
-  "</ul>",
+  # ---- HATCHERY RELEASE NOTE (Livingston Stone only) ----
+  if(exists("wr_hatch_lsnfh") && nrow(wr_hatch_lsnfh) > 0) {
+    paste0(
+      "<p style='font-family:Arial; font-size:10pt;'>",
+      "<strong>Hatchery Winter-run Release (Livingston Stone NFH):</strong> ",
+      prettyNum(sum(wr_hatch_lsnfh$cwt_number_released, na.rm = TRUE), big.mark = ","),
+      " fish released (100% CWT-marked production fish). ",
+      "See <a href='https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2026/hatch_winter.html'>SacPAS release table</a> for details.",
+      "</p>"
+    )
+  } else { "" },
   
-  # ---- HATCHERY WINTER-RUN ----
-  # Threshold = ITL = 1% JPE -- report once, note equivalence
-  "<h3 style='font-family:Arial; font-size:11pt; margin-bottom:4px;'>",
-  "Hatchery Winter-run Chinook Salmon (Livingston Stone NFH)</h3>",
-  "<ul style='font-family:Arial; font-size:10pt;'>",
-  "<li>JPE: <em>", prettyNum(livingston_jpe, big.mark = ","), " fish</em></li>",
-  "<li>Cumulative loss: <strong>", loss_hatch_wr, "</strong> (", wr_hatch_perc,
-  " of annual loss threshold / ITL)</li>",
-  "<li>Loss in past 7 days: <strong>", wr_hatch_7d, "</strong></li>",
-  "<li>Annual loss threshold = Single-year ITL (1% of JPE): <strong>",
-  wr_hatch_threshold_val, " fish</strong> (BiOp Table 184)</li>",
-  "</ul>",
-  
-  # ---- NATURAL STEELHEAD ----
-  # Has annual loss threshold AND ITL -- report both
-  "<h3 style='font-family:Arial; font-size:11pt; margin-bottom:4px;'>",
-  "Natural-origin Central Valley Steelhead</h3>",
-  "<ul style='font-family:Arial; font-size:10pt;'>",
-  "<li>Cumulative loss: <strong>", loss_nat_sh, "</strong> (", sh_perc,
-  " of annual loss threshold)</li>",
-  "<li>Loss in past 7 days: <strong>", sh_7d, "</strong></li>",
-  "<li>Annual loss threshold: <strong>", prettyNum(itl_sh_natural_single, big.mark = ","),
-  " fish</strong> (single-year) &nbsp;|&nbsp; <strong>",
-  prettyNum(itl_sh_natural_3yr, big.mark = ","),
-  " fish</strong> (3-year rolling average) (BiOp Table 184)</li>",
-  "</ul>",
-  
-  # ---- HATCHERY STEELHEAD ----
-  # Threshold = ITL = 1% JPE -- report once
-  "<h3 style='font-family:Arial; font-size:11pt; margin-bottom:4px;'>",
-  "Hatchery-origin Central Valley Steelhead</h3>",
-  "<ul style='font-family:Arial; font-size:10pt;'>",
-  "<li>Cumulative loss: <strong>", sh_clipped_loss_total, "</strong> (",
-  sh_clipped_perc_threshold, " of annual loss threshold / ITL)</li>",
-  "<li>Annual loss threshold = Single-year ITL (1% of JPE): <strong>",
-  sh_clipped_threshold_fmt, " fish</strong> (BiOp Table 184)</li>",
-  "</ul>",
-  
-  # ---- SPRING-RUN SURROGATES ----
-  # Threshold = 1% JPE (production); ITL = 0.5% per experimental group -- report both
-  "<h3 style='font-family:Arial; font-size:11pt; margin-bottom:4px;'>",
-  "Spring-run Chinook Salmon Surrogates (Coleman Late-Fall)</h3>",
-  "<ul style='font-family:Arial; font-size:10pt;'>",
-  "<li>Total releases: <strong>", total_sr_released_fmt, "</strong> fish &nbsp;|&nbsp; ",
-  "JPE: <strong>", total_sr_jpe_fmt, "</strong></li>",
-  "<li>Cumulative confirmed loss: <strong>", sr_loss_total_fmt, "</strong> (",
-  sr_loss_perc, " of annual loss threshold)</li>",
-  "<li>Annual loss threshold (1% of JPE): <strong>", sr_threshold_fmt, " fish</strong></li>",
-  "<li>ITL per experimental release group (0.5% of each group, BiOp Table 184): ",
-  sr_itl_text, "</li>",
-  "</ul>",
+  # ---- LOSS SUMMARY TABLE ----
+  "<h3 style='font-family:Arial; font-size:11pt; margin-bottom:4px;'>Loss Summary</h3>",
+  "<p style='font-family:Arial; font-size:9pt; margin-top:0;'>",
+  "Thresholds: Natural WR = 1% of JPE (", prettyNum(round(jpe * wr_loss_threshold, 0), big.mark = ","), " fish); ",
+  "Hatchery WR = 1% of JPE (", wr_hatch_threshold_val, " fish); ",
+  "Natural SH ITL = ", prettyNum(itl_sh_natural_single, big.mark = ","), " fish (single-yr); ",
+  "Spring-run = 1% of JPE (", sr_threshold_fmt, " fish).",
+  "</p>",
+  weekly_html,
   
   # ---- RISK EVALUATION ----
-  "<h3 style='font-family:Arial; font-size:11pt; margin-bottom:4px; margin-top:12px;'>",
+  "<h3 style='font-family:Arial; font-size:11pt; margin-bottom:4px; margin-top:16px;'>",
   "Risk Evaluation</h3>",
   "<ol style='font-family:Arial; font-size:10pt;'>",
   "<li><strong>Natural and hatchery winter-run Chinook:</strong> ", risk_q1, "</li>",
@@ -205,11 +161,6 @@ email_body <- paste0(
           "Figure 1. Estimates of winter-run Chinook loss generated by the Loss and Salvage Predictor tool."),
   img_tag(img_sh_lsp, "Steelhead Loss Predictor",
           "Figure 2. Estimates of steelhead loss generated by the Loss and Salvage Predictor tool."),
-  
-  "<p style='font-family:Arial; font-size:9pt;'>",
-  "For more detailed data on salmonid conditions in the Delta see ",
-  "<a href='https://www.cbr.washington.edu/sacramento/workgroups/salmon_monitoring.html'>SacPAS</a>.",
-  "</p>",
   
   "<p style='font-family:Arial; font-size:10pt;'>Best regards,<br>SaMT Team</p>"
 )

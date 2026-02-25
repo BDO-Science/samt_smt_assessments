@@ -143,6 +143,21 @@ knitr::include_graphics(paste0('https://www.cbr.washington.edu/sacramento/cohort
 
 `r wr_hatchery_releases`
 
+```{r}
+#| label: tbl-wr_hatch_releases
+#| echo: false
+#| tbl-cap: 'Livingston Stone NFH winter-run Chinook salmon releases in Water Year 2026. Data sourced from SacPAS.'
+
+if (!is.null(wr_hatch_release_table)) {
+  flextable(wr_hatch_release_table) %>%
+    fontsize(size = 11, part = "all") %>%
+    theme_booktabs() %>%
+    fit_to_width(max_width = 6.5)
+} else {
+  cat("No hatchery releases to display for the current water year.")
+}
+```
+
 #### Juvenile Production Estimate
 
 `r wr_hatch_jpe`

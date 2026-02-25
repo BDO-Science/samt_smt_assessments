@@ -123,10 +123,43 @@ wr_threshold <- if(is.na(jpe)) {
                ' fish) or 0.36% on a 3-year rolling average (BiOp Table 184).'))
 }
 
-wr_hatchery_releases <- if(nrow(wr_hatch) == 0) {
-  print(paste0('To date, no winter-run Livingston Stone hatchery releases have occurred in WY ',wy,'.'))
+# Regulatory releases: Livingston Stone NFH only (excludes Coleman jumpstart/experimental)
+wr_hatch_lsnfh <- wr_hatch %>%
+  filter(grepl('livingston', hatchery, ignore.case = TRUE))
+
+wr_hatchery_releases <- if(nrow(wr_hatch_lsnfh) == 0) {
+  print(paste0('To date, no winter-run Livingston Stone hatchery releases have occurred in WY ', wy, '.'))
 } else {
-  print(paste0('A total of xx fish were released from Livingston Stone National Fish Hatchery on xx.'))
+  total_wr_hatch_released <- prettyNum(sum(wr_hatch_lsnfh$cwt_number_released, na.rm = TRUE), big.mark = ",")
+  date_range <- if(min(as.Date(wr_hatch_lsnfh$release_start), na.rm = TRUE) == max(as.Date(wr_hatch_lsnfh$release_end), na.rm = TRUE)) {
+    format(min(as.Date(wr_hatch_lsnfh$release_start), na.rm = TRUE), '%B %d')
+  } else {
+    paste0(format(min(as.Date(wr_hatch_lsnfh$release_start), na.rm = TRUE), '%B %d'), ' \u2013 ',
+           format(max(as.Date(wr_hatch_lsnfh$release_end),   na.rm = TRUE), '%B %d'))
+  }
+  print(paste0('Livingston Stone National Fish Hatchery released a total of ', total_wr_hatch_released,
+               ' winter-run Chinook salmon (', date_range, '). ',
+               'All fish were 100% CWT-marked production fish released at the Sacramento River at John F. Reginato River Access. ',
+               'Release details are shown in the table below and available on ',
+               '<a href="https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2026/hatch_winter.html">SacPAS</a>.'))
+}
+
+# Build a clean display table for use in the QMD (Livingston Stone only)
+wr_hatch_release_table <- if(nrow(wr_hatch_lsnfh) == 0) {
+  NULL
+} else {
+  wr_hatch_lsnfh %>%
+    mutate(
+      `Release Date`  = format(as.Date(release_start), '%B %d, %Y'),
+      `Hatchery`      = hatchery,
+      `Release Site`  = release_site,
+      `Release Type`  = release_type,
+      `Fish Released` = prettyNum(cwt_number_released, big.mark = ","),
+      `% CWT Marked`  = paste0(round(percent_cwt_marked_of_total_number_released, 1), "%"),
+      `CWT Tagcodes`  = cwt_tagcodes
+    ) %>%
+    select(`Release Date`, `Hatchery`, `Release Site`, `Release Type`,
+           `Fish Released`, `% CWT Marked`, `CWT Tagcodes`)
 }
 
 wr_hatchery_loss <- if(nrow(wr_hatch) == 0) {
