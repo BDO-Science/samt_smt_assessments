@@ -35,7 +35,6 @@ end_of_season = "not relevant"
 
 narrative_text <- 
 "- Entrainment management is currently active.
-- Adult Delta smelt action is no longer active.
 - Delta smelt were most recently detected at Suisun Marsh. 
 - No Delta smelt or longfin smelt salvage has been observed this water year.
 - Turbidity in the central/south Delta is low to moderate.
@@ -72,14 +71,22 @@ where supplemental fish were released in the fall."
 #12-station average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 days?
-ds_eval_3 <- "Although spawning may be occurring, JPF is above 0 cfs. SLS 5 is on the water this
-week and will provide an updated average south Delta turbidity. Due to JPF > 0 this week, the conditions required 
-to trigger larval and juvenile Delta smelt entrainment management will not be met. No Delta smelt larvae
-have been captured in SLS surveys in WY26 to date. Therefore, if a Storm Flex were to be implemented this week, fates of particles
-injected at Chipps Island or Cache Slough would be most relevant for larvae, as those locations are closest to recent adult distribution. 
-PTM with neutrally buoyant particles injected at Chipps Island and Cache Slough show 0% of particles entrained for the week ending 2/23/2026
-for all OMR levels (-2,000, -3,500, -5,000, and -6,500 cfs). For week 2 (ending 3/02/2026), 0.1 and 0.3% of particles 
-were entrained at CVP and SWP, respectively, at OMRI of -6,500 cfs, and 0% for OMRI of -5,000 cfs (see Appendix A for details). 
+ds_eval_3 <- "Although spawning may be occurring, JPF is above 0 cfs. SLS 5 was on the water last week and will provide an updated average 
+south Delta turbidity. Due to JPF > 0 this week, the conditions required to trigger larval and juvenile Delta smelt entrainment management
+will not be met. No Delta smelt larvae have been captured in SLS surveys in WY26 to date.
+
+If a Storm Flex operation were implemented during the forecast week ending March 9, 2026, particle fate modeling at Chipps Island and Cache 
+Slough would be most relevant, as these locations are closest to recent adult distribution.
+
+For particles injected at Chipps Island, Particle Tracking Model (PTM) results indicate 0% entrainment at both CVP and SWP across all evaluated
+OMRI levels (−6,500, −5,000, −3,500, and −2,000 cfs) for both the week ending March 9, 2026 and the week ending March 16, 2026.
+
+For particles injected at Cache Slough, low levels of entrainment are modeled at more negative OMRI levels. For the week ending March 9, 2026,
+entrainment is 0.0% at CVP across all evaluated OMRI levels, and SWP entrainment is 0.1% at OMRI −6,500 cfs and 0.1% at OMRI −5,000 cfs, with
+0.0% at OMRI −3,500 cfs and −2,000 cfs. For the forecast week ending March 16, 2026, entrainment is again 0.0% at CVP across all evaluated OMRI
+levels, and SWP entrainment is 0.3% at OMRI −6,500 cfs and 0.1% at OMRI −5,000 cfs and −3,500 cfs, with 0.0% at OMRI −2,000 cfs 
+(see Appendix A for details).
+
 These results indicate that if Delta smelt larvae were present, the risk of entrainment under potential Stormflex operations would be low."
 
 # Longfin smelt
@@ -95,15 +102,13 @@ salvage, indicating annual loss has not begun to approach the 5% regulatory thre
 #OMRI scenarios? Does Zone of Influence modeling show moderate to high changes 
 #in hydrodynamic footprint across different OMRI scenarios? Are these effects 
 #anticipated to cause a population decline?
-lfs_eval_2 <-  "JPF is currently not less than 0 cfs and is not predicted to drop below 0 cfs this week. 
-Zone of Influence modeling indicates low differences in the hydrodynamic 
-footprint across OMRI scenarios, with no change between current and forecasted conditions. 
-If a Stormflex action were implemented, population-based PTM results, summarized in 
-Appendix A, project low larval entrainment relative to estimated abundance. 
-Modeled losses are approximately <0.1% under OMRI of both –5,000 and –6,500 cfs 
-this week. For the week ending in 3/02/2026, larval entrainment is projected to be 0.2% and 0.3% of the
-larval LFS population at an OMRI of -5,000 and -6,500 cfs, respectively. These projected losses 
-remain below levels suggesting population decline."
+lfs_eval_2 <-  "JPF is currently not less than 0 cfs and is not predicted to drop below 0 cfs this week. Zone of Influence modeling indicates 
+low differences in the hydrodynamic footprint across OMRI scenarios, with no change between current and forecasted conditions. If a Stormflex
+action were implemented, population-based PTM results, summarized in Appendix A, project low larval entrainment relative to estimated abundance
+r the week ending 03/09/2026, projected larval entrainment is 1.3% at OMRI –6,500 cfs, 0.9% at OMRI –5,000 cfs, 0.6% at OMRI –3,500 cfs,
+and 0.4% at OMRI –2,000 cfs. For the forecast week ending 03/16/2026, projected larval entrainment is 1.7% at OMRI –6,500 cfs, 1.2% at 
+OMRI –5,000 cfs, 0.8% at OMRI –3,500 cfs, and 0.5% at OMRI –2,000 cfs. These projected losses remain below levels suggesting significant
+population decline."
 
 # DONT NEED TO CHANGE UNLESS YOU WANT TO
 # 3. Is there additional information or other analyses that should be considered in this evaluation?
