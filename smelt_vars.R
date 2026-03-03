@@ -70,10 +70,10 @@ where supplemental fish were released in the fall."
 # 3. After the onset of spawning, have the following conditions occurred: JPF < 0, 
 #12-station average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
-#entrainment of the Delta smelt population at facilities after 30 days?
-ds_eval_3 <- "Although spawning may be occurring, JPF is above 0 cfs. SLS 5 was on the water last week and will provide an updated average 
-south Delta turbidity. Due to JPF > 0 this week, the conditions required to trigger larval and juvenile Delta smelt entrainment management
-will not be met. No Delta smelt larvae have been captured in SLS surveys in WY26 to date.
+#entrainment of the Delta smelt population at facilities after 30 dayst
+ds_eval_3 <- "Although spawning may be occurring, JPF is above 0 cfs. SLS 5 was on the water last week, and the most recent 12 station 
+average turbidity in the south delta was 12.5 FNU on 2/23/26. Due to JPF > 0 this week, the conditions required to trigger larval and 
+juvenile Delta smelt entrainment management will not be met. No Delta smelt larvae have been captured in SLS surveys in WY26 to date.
 
 If a Storm Flex operation were implemented during the forecast week ending March 9, 2026, particle fate modeling at Chipps Island and Cache 
 Slough would be most relevant, as these locations are closest to recent adult distribution.
@@ -105,7 +105,7 @@ salvage, indicating annual loss has not begun to approach the 5% regulatory thre
 lfs_eval_2 <-  "JPF is currently not less than 0 cfs and is not predicted to drop below 0 cfs this week. Zone of Influence modeling indicates 
 low differences in the hydrodynamic footprint across OMRI scenarios, with no change between current and forecasted conditions. If a Stormflex
 action were implemented, population-based PTM results, summarized in Appendix A, project low larval entrainment relative to estimated abundance
-r the week ending 03/09/2026, projected larval entrainment is 1.3% at OMRI –6,500 cfs, 0.9% at OMRI –5,000 cfs, 0.6% at OMRI –3,500 cfs,
+the week ending 03/09/2026, projected larval entrainment is 1.3% at OMRI –6,500 cfs, 0.9% at OMRI –5,000 cfs, 0.6% at OMRI –3,500 cfs,
 and 0.4% at OMRI –2,000 cfs. For the forecast week ending 03/16/2026, projected larval entrainment is 1.7% at OMRI –6,500 cfs, 1.2% at 
 OMRI –5,000 cfs, 0.8% at OMRI –3,500 cfs, and 0.5% at OMRI –2,000 cfs. These projected losses remain below levels suggesting significant
 population decline."
@@ -153,8 +153,8 @@ ds_recent_display <- ds_recent %>%
 ## EDIT: South Delta conditions (turbidity and secchi depth-currently by email)-------------------------
 sd_secchi_depth <- 0.76
 sd_secchi_date <- ymd("2026-01-13")
-sd_turb <- 5.7
-sd_turb_date <- ymd("2025-02-11")
+sd_turb <- 12.5
+sd_turb_date <- ymd("2025-02-23")
 
 ## Abundance ------------------------------
 # pull abundance estimate
