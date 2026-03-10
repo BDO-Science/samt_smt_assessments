@@ -215,7 +215,7 @@ chipps_lfs <- chipps_data %>% filter(species == "Longfin Smelt") %>% select(-spe
 # reading from SacPAS which is connected to the Salvage database 
 # Will need to change the read to 2026 once salvage starts. 
 # Get the new link here (probably just change 2025 to 2026 below): https://www.cbr.washington.edu/sacramento/data/query_loss_detail.html
-salvage_ds_data_raw <- read_csv("https://www.cbr.washington.edu/sacramento/data/php/rpt/juv_loss_detail.php?sc=1&outputFormat=csv&year=2025&species=26%3Aall&dnaOnly=no&age=no")  %>%
+salvage_ds_data_raw <- read_csv("https://www.cbr.washington.edu/sacramento/data/php/rpt/juv_loss_detail.php?sc=1&outputFormat=csv&year=2026&species=26%3Aall&dnaOnly=no&age=no")  %>%
   filter(!is.na(Species)) %>%
   clean_names()
 salvage_ds_data <- salvage_ds_data_raw %>%
@@ -386,9 +386,9 @@ ds_latlon <- bind_rows(
   edsm_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
   beachsn_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
   chipps_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
-  sls_ds %>% select(source, date, catch, latitude, longitude, region, life_stage)) %>% 
+  sls_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
   #twmm_ds %>% select(source, date, catch, latitude, longitude, region, life_state), 
-  #salvage_ds_data %>% select(source, date, catch, latitude, longitude, region)) %>%
+  salvage_ds_data %>% select(source, date, catch, latitude, longitude, region)) %>%
   filter(!is.na(catch),
          !is.na(latitude)) %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326, remove = FALSE) %>%

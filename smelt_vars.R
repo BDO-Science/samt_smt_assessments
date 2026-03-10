@@ -176,10 +176,11 @@ ds_larvae_count_wy <- ds_detail %>% filter(date > ymd("2025-10-01")) %>%
 
 ## Salvage ----------------------
 # Once 2026 starts updating go back to this code
-# ds_salvage_count <- ds_recent %>% filter(source == "salvage") %>% pull(catch)%>% sum()
-# ds_cumsalvage <- salvage_ds_data %>% pull(salvage) %>% sum()
-ds_salvage_count <- 1
-ds_cumsalvage <- 4
+ds_salvage_count <- ds_recent %>% filter(source == "salvage") %>% pull(catch)%>% sum()
+ds_cumsalvage <- salvage_ds_data %>% pull(salvage) %>% sum()
+#Before salvage for WY starts, use this code
+#ds_salvage_count <- 0
+#ds_cumsalvage <- 0
 
 ## Releases ----------------------- 
 # releases <- read_csv(here("data_raw/smelt/smelt_release_table_2026.csv")) 
