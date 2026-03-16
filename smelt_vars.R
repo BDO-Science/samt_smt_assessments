@@ -76,7 +76,8 @@ water last week, and the most recent 12 station average turbidity in the south
 delta was 12.5 FNU on 2/23/26. Due to JPF > 0 this week, the conditions required to trigger larval and 
 juvenile Delta smelt entrainment management will not be met. 
 
-      No Delta smelt larvae have been captured in SLS surveys in WY26 to date. PTM results for this week for neutrally buoyant particles injected at Chipps Island (most recent adult detections used as a proxy
+  No Delta smelt larvae have been captured in SLS surveys in WY26 to date. PTM results 
+for this week for neutrally buoyant particles injected at Chipps Island (most recent adult detections used as a proxy
 for potential larval locations) showed 0% particle entrainment at both facilities for all OMRI levels 
 (−6,500, −5,000, −3,500, and −2,000 cfs). These results indicate that if Delta 
 smelt larvae were present, the risk of entrainment is low."
@@ -95,9 +96,9 @@ salvage, indicating annual loss has not begun to approach the 5% regulatory thre
 #in hydrodynamic footprint across different OMRI scenarios? Are these effects 
 #anticipated to cause a population decline?
 lfs_eval_2 <-  "JPF is currently not less than 0 cfs and is not predicted to drop below 0 cfs this week. Zone of Influence modeling indicates 
-low differences in the hydrodynamic footprint across OMRI scenarios, with no change between current and forecasted conditions. 
+moderate differences in the hydrodynamic footprint across OMRI scenarios, with no change between current and forecasted conditions. 
 Population-based PTM results, summarized in Appendix A, project low larval entrainment relative to estimated abundance
-the week ending 03/15/2026. Projected larval entrainment is 0.1% for OMRI of -6,500 cfs, and <0.1% for all other
+the week ending 03/23/2026. Projected larval entrainment is <0.1%  for OMRI of -6,500 and -5,000 cfs, and 0% for all other
 modeled OMRI levels. These projected losses remain below levels suggesting significant population decline."
 
 # DONT NEED TO CHANGE UNLESS YOU WANT TO
