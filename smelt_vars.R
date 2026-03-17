@@ -71,9 +71,9 @@ where supplemental fish were released in the fall."
 #12-station average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 dayst
-ds_eval_3 <- "Although spawning may be occurring, JPF is above 0 cfs. SLS 5 was on the 
+ds_eval_3 <- "Although spawning may be occurring, JPF is above 0 cfs. SLS 6 was on the 
 water last week, and the most recent 12 station average turbidity in the south 
-delta was 12.5 FNU on 2/23/26. Due to JPF > 0 this week, the conditions required to trigger larval and 
+delta was 11.2 FNU on 3/9/26. Due to JPF > 0 this week, the conditions required to trigger larval and 
 juvenile Delta smelt entrainment management will not be met. 
 
   No Delta smelt larvae have been captured in SLS surveys in WY26 to date. PTM results 
@@ -144,8 +144,8 @@ ds_recent_display <- ds_recent %>%
 ## EDIT: South Delta conditions (turbidity and secchi depth-currently by email)-------------------------
 sd_secchi_depth <- 0.76
 sd_secchi_date <- ymd("2026-01-13")
-sd_turb <- 12.5
-sd_turb_date <- ymd("2025-02-23")
+sd_turb <- 11.2
+sd_turb_date <- ymd("2026-03-9")
 
 ## Abundance ------------------------------
 # pull abundance estimate
