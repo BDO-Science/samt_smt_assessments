@@ -98,7 +98,7 @@ salvage, indicating annual loss has not begun to approach the 5% regulatory thre
 lfs_eval_2 <-  "JPF is currently not less than 0 cfs and is not predicted to drop below 0 cfs this week. Zone of Influence modeling indicates 
 moderate differences in the hydrodynamic footprint across OMRI scenarios, with no change between current and forecasted conditions. 
 Population-based PTM results, summarized in Appendix A, project low larval entrainment relative to estimated abundance
-the week ending 03/23/2026. Projected larval entrainment is <0.1%  for OMRI of -6,500 and -5,000 cfs, and 0% for all other
+the week ending 03/23/2026. Projected larval entrainment is 0.1%  for OMRI of -6,500, and <0.1% for all other
 modeled OMRI levels. These projected losses remain below levels suggesting significant population decline."
 
 # DONT NEED TO CHANGE UNLESS YOU WANT TO
