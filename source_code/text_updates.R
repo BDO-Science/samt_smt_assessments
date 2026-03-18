@@ -187,16 +187,14 @@ wr_hatchery_loss <- if(nrow(wr_hatch_sacriver) == 0) {
 wr_batt_jpe_text <- if(battle_jpe == 0 | batt_n_groups == 0) {
   print(paste0('No winter-run from Livingston Stone NFH have been released into Battle Creek in WY ', wy, 
                '. The incidental take limit (ITL) for Battle Creek releases is 1.0% of the hatchery JPE (fish surviving to the Delta) ',
-               'in a single year or 0.8% on a 3-year rolling average (BiOp Table 184). ',
-               'Battle Creek releases are not subject to Action 5 operational loss thresholds.'))
+               'in a single year or 0.8% on a 3-year rolling average (BiOp Table 184).'))
 } else {
   print(paste0('The Juvenile Production Estimate for hatchery winter-run released into Battle Creek is ',
                prettyNum(battle_jpe, big.mark = ","),
                ' based on ', prettyNum(batt_released, big.mark = ","), ' fish released. ',
                'The single-year incidental take limit (ITL) is 1.0% of the JPE (',
                prettyNum(batt_itl_val, big.mark = ","),
-               ' fish) or 0.8% on a 3-year rolling average (BiOp Table 184). ',
-               'Battle Creek releases are not subject to Action 5 operational loss thresholds.'))
+               ' fish) or 0.8% on a 3-year rolling average (BiOp Table 184).'))
 }
 
 wr_batt_releases_text <- if(batt_n_groups == 0) {
@@ -416,8 +414,6 @@ get_risk_level_with_projection <- function(cum_loss, recent_7d_loss, threshold, 
 # Use the same loss/threshold values already computed for the summary and body text
 
 # Question 1: Natural AND Hatchery Winter-run (Sac River AND Battle Creek)
-# Natural and Sac River hatchery: assessed against 1% JPE Action 5 operational thresholds
-# Battle Creek: assessed against ITL only (not subject to Action 5)
 wr_nat_loss <- as.numeric(loss_dna_wr)
 wr_nat_thresh <- round(jpe * wr_loss_threshold, 0)
 wr_nat_7d <- as.numeric(wr_7d)
@@ -434,31 +430,7 @@ if(is.na(wr_batt_7d_val)) wr_batt_7d_val <- 0
 
 risk_q1_nat <- get_risk_level_with_projection(wr_nat_loss, wr_nat_7d, wr_nat_thresh, "Natural winter-run", display_pct = wr_perc)
 risk_q1_hatch <- get_risk_level_with_projection(wr_hatch_loss_val, wr_hatch_7d_val, wr_hatch_thresh, "Hatchery winter-run (Sac River)", display_pct = wr_hatch_perc)
-
-# Battle Creek: report against ITL (not Action 5 threshold)
-risk_q1_batt <- if(battle_jpe > 0 & batt_itl_val > 0) {
-  batt_itl_pct_num <- round((wr_batt_loss_val / batt_itl_val) * 100, 2)
-  projected_batt <- wr_batt_loss_val + wr_batt_7d_val
-  if(wr_batt_loss_val >= batt_itl_val) {
-    paste0("CRITICAL: Hatchery winter-run (Battle Creek) cumulative loss has exceeded the single-year ITL (",
-           prettyNum(batt_itl_val, big.mark = ","), " fish). Battle Creek is not subject to Action 5 operational thresholds.")
-  } else if(projected_batt >= batt_itl_val) {
-    paste0("ELEVATED RISK: Hatchery winter-run (Battle Creek) cumulative loss is at ", batt_itl_pct_num,
-           "% of the single-year ITL (", prettyNum(batt_itl_val, big.mark = ","), 
-           " fish). If recent 7-day loss (", round(wr_batt_7d_val, 0),
-           ") continues, the ITL may be exceeded. Note: Battle Creek is not subject to Action 5 operational thresholds.")
-  } else if(batt_itl_pct_num > 75) {
-    paste0("ELEVATED RISK: Hatchery winter-run (Battle Creek) cumulative loss is at ", batt_itl_pct_num,
-           "% of the single-year ITL (", prettyNum(batt_itl_val, big.mark = ","), 
-           " fish). Battle Creek is not subject to Action 5 operational thresholds.")
-  } else {
-    paste0("Hatchery winter-run (Battle Creek) cumulative loss is at ", batt_itl_pct_num,
-           "% of the single-year ITL (", prettyNum(batt_itl_val, big.mark = ","), 
-           " fish). Battle Creek is not subject to Action 5 operational thresholds.")
-  }
-} else {
-  "Hatchery winter-run (Battle Creek): No releases to date; ITL not established."
-}
+risk_q1_batt <- get_risk_level_with_projection(wr_batt_loss_val, wr_batt_7d_val, batt_itl_val, "Hatchery winter-run (Battle Creek)", display_pct = batt_itl_perc)
 
 risk_q1 <- paste0(risk_q1_nat, " ", risk_q1_hatch, " ", risk_q1_batt)
 
