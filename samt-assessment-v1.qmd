@@ -137,7 +137,7 @@ knitr::include_graphics(paste0('https://www.cbr.washington.edu/sacramento/cohort
 knitr::include_graphics(paste0('https://www.cbr.washington.edu/sacramento/cohort/include_wrc/load_plot_02-3.png'))
 ```
 
-### Hatchery Winter-run Chinook
+### Hatchery Winter-run Chinook – Sacramento River
 
 #### Hatchery Releases
 
@@ -146,7 +146,7 @@ knitr::include_graphics(paste0('https://www.cbr.washington.edu/sacramento/cohort
 ```{r}
 #| label: tbl-wr_hatch_releases
 #| echo: false
-#| tbl-cap: 'Livingston Stone NFH winter-run Chinook salmon releases in Water Year 2026. Data sourced from SacPAS.'
+#| tbl-cap: 'Livingston Stone NFH winter-run Chinook salmon releases into the Sacramento River in Water Year 2026. Data sourced from SacPAS.'
 
 if (!is.null(wr_hatch_release_table)) {
   flextable(wr_hatch_release_table) %>%
@@ -154,7 +154,7 @@ if (!is.null(wr_hatch_release_table)) {
     theme_booktabs() %>%
     fit_to_width(max_width = 6.5)
 } else {
-  cat("No hatchery releases to display for the current water year.")
+  cat("No Sacramento River hatchery releases to display for the current water year.")
 }
 ```
 
@@ -165,6 +165,35 @@ if (!is.null(wr_hatch_release_table)) {
 #### Annual Loss
 
 `r wr_hatchery_loss`
+
+### Hatchery Winter-run Chinook – Battle Creek
+
+#### Hatchery Releases
+
+`r wr_batt_releases_text`
+
+```{r}
+#| label: tbl-wr_batt_releases
+#| echo: false
+#| tbl-cap: 'Livingston Stone NFH winter-run Chinook salmon releases into Battle Creek in Water Year 2026. Data sourced from SacPAS.'
+
+if (!is.null(wr_batt_release_table)) {
+  flextable(wr_batt_release_table) %>%
+    fontsize(size = 11, part = "all") %>%
+    theme_booktabs() %>%
+    fit_to_width(max_width = 6.5)
+} else {
+  cat("No Battle Creek hatchery releases to display for the current water year.")
+}
+```
+
+#### Juvenile Production Estimate
+
+`r wr_batt_jpe_text`
+
+#### Incidental Take
+
+`r wr_batt_loss_text`
 
 ### Natural-origin Central Valley Steelhead
 

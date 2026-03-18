@@ -14,9 +14,11 @@ season_end <- ymd(paste0(wy,'-06-30'))
 jpe <- 1057452
 livingston_jpe <- 130096
 
-# OPERATIONAL LOSS THRESHOLDS (trigger management actions)
+# OPERATIONAL LOSS THRESHOLDS (trigger Action 5 management actions)
+# Note: Action 5 only tracks natural WR and Livingston Stone Sac River releases
+# Battle Creek releases are NOT subject to Action 5 operational thresholds
 wr_loss_threshold <- 0.01        # 1% of JPE for natural winter-run
-wr_hatch_loss_threshold <- 0.01  # 1% of JPE for hatchery winter-run
+wr_hatch_loss_threshold <- 0.01  # 1% of JPE for hatchery winter-run (Sac River only)
 sh_hatch_loss_threshold <- 0.01  # 1% of JPE for hatchery steelhead
 sr_surrogate_threshold <- 0.01   # 1% of JPE for spring-run surrogates
 
@@ -24,8 +26,10 @@ sr_surrogate_threshold <- 0.01   # 1% of JPE for spring-run surrogates
 # These are the maximum anticipated annual amount and extent of take
 itl_wr_natural_single <- 0.0056      # 0.56% of JPE single year
 itl_wr_natural_3yr <- 0.0036         # 0.36% of JPE 3-year rolling
-itl_wr_hatch_single <- 0.01          # 1.0% of JPE single year
-itl_wr_hatch_3yr <- 0.008            # 0.8% of JPE 3-year rolling
+itl_wr_hatch_single <- 0.01          # 1.0% of hatchery JPE single year (Sac River)
+itl_wr_hatch_3yr <- 0.008            # 0.8% of hatchery JPE 3-year rolling (Sac River)
+itl_wr_batt_single <- 0.01           # 1.0% of hatchery JPE single year (Battle Creek)
+itl_wr_batt_3yr <- 0.008             # 0.8% of hatchery JPE 3-year rolling (Battle Creek)
 itl_sr_surrogate <- 0.005            # 0.5% of each surrogate release group
 itl_sh_natural_single <- 5294        # 5,294 juveniles single year
 itl_sh_natural_3yr <- 2319           # 2,319 juveniles 3-year rolling
@@ -114,19 +118,26 @@ wr_hatch <- read_csv('https://www.cbr.washington.edu/sacramento/workgroups/inclu
   mutate(wYear = get_fy(as.Date(release_start), opt_fy_start = '10-01')) %>%
   filter(wYear == wy) %>%
   mutate(loss = ifelse(is.na(loss), 0, loss))
-# 
-# liv_loss <- wr_hatch %>%
-#   filter(grepl('livingston', hatchery, ignore.case = TRUE)) %>%
-#   summarize(loss = sum(loss)) %>%
-#   pull()
 
-# batt_loss <- wr_hatch %>%
-#   filter(grepl('coleman', hatchery, ignore.case = TRUE)) %>%
-#   summarize(loss = sum(loss)) %>%
-#   pull()
+# Separate Battle Creek releases from Sac River releases
+# Battle Creek releases are identified by release_site containing "Battle"
+wr_hatch_battle <- wr_hatch %>%
+  filter(grepl('battle', release_site, ignore.case = TRUE))
+
+wr_hatch_sacriver <- wr_hatch %>%
+  filter(!grepl('battle', release_site, ignore.case = TRUE))
+
+# Battle Creek loss and JPE from CWT release data
+# JPE = fish surviving to the Delta from Battle Creek releases
+batt_released <- sum(wr_hatch_battle$cwt_number_released, na.rm = TRUE)
+batt_loss <- sum(wr_hatch_battle$loss, na.rm = TRUE)
+batt_n_groups <- nrow(wr_hatch_battle)
+
+# Battle Creek JPE from SacPAS JPE table (Jumpstart program)
+battle_jpe <- 5186
 
 #hatchery winter-run
-#just Livingston fish in Action 5
+#just Livingston fish released into Sac River (Action 5)
 wr_hatch_loss <- loss_summary_table %>%
   select(lsnfh_hatchery_cwt_winter_run_chinook) %>%
   slice(3) %>%
@@ -142,11 +153,40 @@ wr_hatch_7d <- loss_summary_table %>%
   slice(1) %>%
   pull()
 
-# batt_perc <- if(is.na(batt_loss/(battle_jpe * 0.0017))) {
-#   print('0%')
-# } else {
-#   paste0(round((batt_loss/(battle_jpe*0.0017))*100,2),'%')
-# }
+# Battle Creek hatchery winter-run loss
+# Check if loss_summary_table has a Battle Creek-specific column
+batt_loss_col <- grep("battle", names(loss_summary_table), ignore.case = TRUE, value = TRUE)
+
+if(length(batt_loss_col) > 0) {
+  # SacPAS has a dedicated Battle Creek column - use it
+  batt_loss_total <- loss_summary_table %>%
+    select(all_of(batt_loss_col[1])) %>%
+    slice(3) %>%
+    pull() %>%
+    as.numeric()
+  batt_loss_total <- if_else(is.na(batt_loss_total), 0, batt_loss_total)
+  
+  batt_7d <- loss_summary_table %>%
+    select(all_of(batt_loss_col[1])) %>%
+    slice(1) %>%
+    pull() %>%
+    as.numeric()
+  batt_7d <- if_else(is.na(batt_7d), 0, batt_7d)
+} else {
+  # No dedicated column - use CWT release table loss data
+  batt_loss_total <- batt_loss
+  batt_7d <- 0  # 7-day breakdown not available from CWT table
+}
+
+# Battle Creek loss percentage relative to ITL (no Action 5 operational threshold applies)
+# ITL = 1.0% of JPE single year (BiOp Table 184)
+if(battle_jpe > 0 & !is.na(battle_jpe)) {
+  batt_itl_val <- round(battle_jpe * itl_wr_batt_single, 0)  # 52 fish
+  batt_itl_perc <- paste0(sprintf("%.2f", (batt_loss_total / batt_itl_val) * 100), "%")
+} else {
+  batt_itl_val <- 0
+  batt_itl_perc <- "0.00%"
+}
 
 #natural steelhead
 sh_loss <- loss_summary_table %>%
@@ -894,10 +934,11 @@ get_loss_val <- function(pattern) {
 loss_dna_wr    <- get_loss_val("dna_winter_run_chinook")
 loss_lad_wr    <- get_loss_val("lad_winter_run_chinook")
 loss_hatch_wr  <- get_loss_val("lsnfh_hatchery_cwt_winter_run_chinook")
+loss_batt_wr   <- batt_loss_total  # Battle Creek loss from CWT data or loss_summary_table
 loss_nat_sh    <- get_loss_val("natural_steelhead")
 loss_hatch_sh  <- get_loss_val("hatchery_steelhead")
 
-total_loss <- sum(loss_dna_wr, loss_lad_wr, loss_hatch_wr, loss_nat_sh, loss_hatch_sh, na.rm = TRUE)
+total_loss <- sum(loss_dna_wr, loss_lad_wr, loss_hatch_wr, loss_batt_wr, loss_nat_sh, loss_hatch_sh, na.rm = TRUE)
 
 # --- 3. Presence Logic Helper Function ---
 # Delta entry: based on historical cumulative catch at Sac Trawl (Sherwood Harbor)
@@ -930,6 +971,7 @@ get_presence_status <- function(species_name, entry_pct, exit_pct, catch_keyword
 if(exists("loss_dna_wr")) loss_dna_wr <- round(as.numeric(loss_dna_wr), 0)
 if(exists("loss_lad_wr")) loss_lad_wr <- round(as.numeric(loss_lad_wr), 0)
 if(exists("loss_hatch_wr")) loss_hatch_wr <- round(as.numeric(loss_hatch_wr), 0)
+if(exists("loss_batt_wr")) loss_batt_wr <- round(as.numeric(loss_batt_wr), 0)
 if(exists("loss_nat_sh")) loss_nat_sh <- round(as.numeric(loss_nat_sh), 0)
 if(exists("loss_hatch_sh")) loss_hatch_sh <- round(as.numeric(loss_hatch_sh), 0)
 if(exists("total_loss")) total_loss <- round(as.numeric(total_loss), 0)
@@ -937,11 +979,13 @@ if(exists("total_loss")) total_loss <- round(as.numeric(total_loss), 0)
 # Round cumulative loss values shown in document
 if(exists("wr_loss")) wr_loss <- round(as.numeric(wr_loss), 0)
 if(exists("wr_hatch_loss")) wr_hatch_loss <- round(as.numeric(wr_hatch_loss), 0)
+if(exists("batt_loss_total")) batt_loss_total <- round(as.numeric(batt_loss_total), 0)
 if(exists("sh_loss")) sh_loss <- round(as.numeric(sh_loss), 0)
 
 # Round 7-day loss values
 if(exists("wr_7d")) wr_7d <- round(as.numeric(wr_7d), 0)
 if(exists("wr_hatch_7d")) wr_hatch_7d <- round(as.numeric(wr_hatch_7d), 0)
+if(exists("batt_7d")) batt_7d <- round(as.numeric(batt_7d), 0)
 if(exists("sh_7d")) sh_7d <- round(as.numeric(sh_7d), 0)
 
 # Round hatchery loss totals
@@ -981,11 +1025,17 @@ if(exists("coleman_jpe")) {
 # Round JPE values
 if(exists("jpe")) jpe <- round(jpe, 0)
 if(exists("livingston_jpe")) livingston_jpe <- round(livingston_jpe, 0)
+if(exists("battle_jpe")) battle_jpe <- round(battle_jpe, 0)
 
 # Round threshold values
 if(exists("sr_threshold_val")) {
   sr_threshold_val <- round(sr_threshold_val, 0)
   sr_threshold_fmt <- prettyNum(sr_threshold_val, big.mark = ",")
+}
+
+if(exists("batt_itl_val")) {
+  batt_itl_val <- round(batt_itl_val, 0)
+  batt_itl_val_fmt <- prettyNum(batt_itl_val, big.mark = ",")
 }
 
 # Round passage estimates (keep at 2 decimals for millions)

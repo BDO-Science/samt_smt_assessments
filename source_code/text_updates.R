@@ -15,22 +15,24 @@ entrainment_status <- if(is_season_date_range | (pct_wr_in_delta > 5 | pct_sh_in
   "Entrainment management season is not active at this time."
 }
 
-# Status of the salmonid loss relative to annual loss thresholds
+# Status of the salmonid loss relative to Action 5 annual loss thresholds
+# Battle Creek is excluded - no Action 5 threshold, only ITL (tracked in itl_status)
 salvage_status <- if(total_loss > 0) {
   paste0("Annual Loss: ", round(as.numeric(loss_dna_wr), 0), " (", wr_perc, " of annual loss threshold) natural winter-run, ", 
-         round(as.numeric(loss_hatch_wr), 0), " (", wr_hatch_perc, " of annual loss threshold) hatchery winter-run, ", 
-         round(as.numeric(loss_nat_sh), 0), " natural steelhead, ",  # Changed 2 to 0
-         round(as.numeric(loss_hatch_sh), 0), " (", sh_clipped_perc_threshold, " of annual loss threshold) hatchery steelhead, and ", # Changed 2 to 0
-         round(as.numeric(sr_loss_total), 0), " (", sr_loss_perc, " of annual loss threshold) spring-run surrogates.") # Changed 2 to 0
+         round(as.numeric(loss_hatch_wr), 0), " (", wr_hatch_perc, " of annual loss threshold) hatchery winter-run (Sac River), ",
+         round(as.numeric(loss_nat_sh), 0), " natural steelhead, ",
+         round(as.numeric(loss_hatch_sh), 0), " (", sh_clipped_perc_threshold, " of annual loss threshold) hatchery steelhead, and ", 
+         round(as.numeric(sr_loss_total), 0), " (", sr_loss_perc, " of annual loss threshold) spring-run surrogates.")
 } else {
   "No salmonid loss has been recorded this season."
 }
 
 # Calculate ITL percentages
-# Single-year ITLs: WR DNA 5,922; WR Hatchery Sac River 1,301; Steelhead 5,294
+# Single-year ITLs: WR DNA 5,922; WR Hatchery Sac River 1,301; WR Battle Creek (1% of battle_jpe); Steelhead 5,294
 # Spring-run surrogate yearlings: 0.5% of each experimental release group
 itl_wr_dna_val <- round(jpe * itl_wr_natural_single, 0)  # 5,922
 itl_wr_hatch_sac_val <- round(livingston_jpe * itl_wr_hatch_single, 0)  # 1,301
+itl_wr_batt_val <- round(battle_jpe * itl_wr_batt_single, 0)  # 1% of Battle Creek JPE
 
 wr_dna_itl_perc <- if(itl_wr_dna_val > 0) {
   paste0(sprintf("%.2f", (as.numeric(loss_dna_wr) / itl_wr_dna_val) * 100), "%")
@@ -38,6 +40,10 @@ wr_dna_itl_perc <- if(itl_wr_dna_val > 0) {
 
 wr_hatch_itl_perc <- if(itl_wr_hatch_sac_val > 0) {
   paste0(sprintf("%.2f", (as.numeric(loss_hatch_wr) / itl_wr_hatch_sac_val) * 100), "%")
+} else { "0.00%" }
+
+wr_batt_itl_perc <- if(itl_wr_batt_val > 0) {
+  paste0(sprintf("%.2f", (as.numeric(loss_batt_wr) / itl_wr_batt_val) * 100), "%")
 } else { "0.00%" }
 
 sh_nat_itl_perc <- if(itl_sh_natural_single > 0) {
@@ -63,8 +69,10 @@ itl_status <- paste0("Single-year Incidental Take Limit (ITL) Status: ",
                      round(as.numeric(loss_dna_wr), 0), " (", wr_dna_itl_perc, " of ", 
                      prettyNum(itl_wr_dna_val, big.mark = ","), " ITL) natural winter-run; ",
                      round(as.numeric(loss_hatch_wr), 0), " (", wr_hatch_itl_perc, " of ",
-                     prettyNum(itl_wr_hatch_sac_val, big.mark = ","), " ITL) hatchery winter-run; ",
-                     round(as.numeric(loss_nat_sh), 0), " (", sh_nat_itl_perc, " of ", # Changed 2 to 0
+                     prettyNum(itl_wr_hatch_sac_val, big.mark = ","), " ITL) hatchery winter-run (Sac River); ",
+                     round(as.numeric(loss_batt_wr), 0), " (", wr_batt_itl_perc, " of ",
+                     prettyNum(itl_wr_batt_val, big.mark = ","), " ITL) hatchery winter-run (Battle Creek); ",
+                     round(as.numeric(loss_nat_sh), 0), " (", sh_nat_itl_perc, " of ",
                      prettyNum(itl_sh_natural_single, big.mark = ","), " ITL) natural steelhead.")
 
 # Generate Delta status for each run
@@ -95,18 +103,24 @@ wr_jpe <- if(is.na(jpe)) {
                ' for the current water year.'))
 }
 
+# Regulatory releases: Livingston Stone NFH Sac River only (excludes Battle Creek and Coleman jumpstart/experimental)
+# Defined here before wr_hatch_jpe which depends on it
+wr_hatch_lsnfh <- wr_hatch %>%
+  filter(grepl('livingston', hatchery, ignore.case = TRUE)) %>%
+  filter(!grepl('battle', release_site, ignore.case = TRUE))
+
 wr_hatch_jpe <- if(is.na(livingston_jpe)) {
-  print('The Juvenile Production Estimate for Livingstone Stone hatchery winter-run has not been established for the current water year.')
-} else if(nrow(wr_hatch) == 0) {
-  # JPE exists but no releases yet - based on current hatchery production
-  print(paste0('The Juvenile Production Estimate for hatchery winter-run is ', 
+  print('The Juvenile Production Estimate for Livingstone Stone hatchery winter-run (Sacramento River releases) has not been established for the current water year.')
+} else if(nrow(wr_hatch_lsnfh) == 0) {
+  # JPE exists but no Sac River releases yet - based on current hatchery production
+  print(paste0('The Juvenile Production Estimate for hatchery winter-run (Sacramento River releases) is ', 
                prettyNum(livingston_jpe, big.mark = ","), 
                ' based on current Livingston Stone production estimates. The annual loss threshold is 1% of the JPE (',
                prettyNum(round(livingston_jpe * wr_hatch_loss_threshold, 0), big.mark = ","),
                ' fish), which is the same as the single-year ITL (BiOp Table 184).'))
 } else {
   # Added prettyNum here
-  print(paste0('The Juvenile Production Estimate for hatchery winter-run is ', 
+  print(paste0('The Juvenile Production Estimate for hatchery winter-run (Sacramento River releases) is ', 
                prettyNum(livingston_jpe, big.mark = ","), 
                ' for Livingston Stone releases. The annual loss threshold is 1% of the JPE (',
                prettyNum(round(livingston_jpe * wr_hatch_loss_threshold, 0), big.mark = ","),
@@ -123,12 +137,8 @@ wr_threshold <- if(is.na(jpe)) {
                ' fish) or 0.36% on a 3-year rolling average (BiOp Table 184).'))
 }
 
-# Regulatory releases: Livingston Stone NFH only (excludes Coleman jumpstart/experimental)
-wr_hatch_lsnfh <- wr_hatch %>%
-  filter(grepl('livingston', hatchery, ignore.case = TRUE))
-
 wr_hatchery_releases <- if(nrow(wr_hatch_lsnfh) == 0) {
-  print(paste0('To date, no winter-run Livingston Stone hatchery releases have occurred in WY ', wy, '.'))
+  print(paste0('To date, no winter-run Livingston Stone hatchery releases into the Sacramento River have occurred in WY ', wy, '.'))
 } else {
   total_wr_hatch_released <- prettyNum(sum(wr_hatch_lsnfh$cwt_number_released, na.rm = TRUE), big.mark = ",")
   date_range <- if(min(as.Date(wr_hatch_lsnfh$release_start), na.rm = TRUE) == max(as.Date(wr_hatch_lsnfh$release_end), na.rm = TRUE)) {
@@ -144,7 +154,7 @@ wr_hatchery_releases <- if(nrow(wr_hatch_lsnfh) == 0) {
                '<a href="https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2026/hatch_winter.html">SacPAS</a>.'))
 }
 
-# Build a clean display table for use in the QMD (Livingston Stone only)
+# Build a clean display table for use in the QMD (Livingston Stone Sac River only)
 wr_hatch_release_table <- if(nrow(wr_hatch_lsnfh) == 0) {
   NULL
 } else {
@@ -162,12 +172,74 @@ wr_hatch_release_table <- if(nrow(wr_hatch_lsnfh) == 0) {
            `Fish Released`, `% CWT Marked`, `CWT Tagcodes`)
 }
 
-wr_hatchery_loss <- if(nrow(wr_hatch) == 0) {
-  print('To date, no loss has occurred as no hatchery winter-run have been released.')
+wr_hatchery_loss <- if(nrow(wr_hatch_sacriver) == 0) {
+  print('To date, no loss has occurred as no hatchery winter-run have been released into the Sacramento River.')
 } else {
-  print(paste0('As of ',format(Sys.Date(), '%B %d'), ', cumulative loss of Livingston Stone hatchery fish is ', 
+  print(paste0('As of ',format(Sys.Date(), '%B %d'), ', cumulative loss of Livingston Stone hatchery fish (Sacramento River releases) is ', 
                wr_hatch_loss, ' or ', wr_hatch_perc, 
                ' of the annual loss threshold (which equals the single-year ITL). Cumulative loss in the past 7 days has been ', wr_hatch_7d, '.'))
+}
+
+#####################################################
+##setting language for Battle Creek hatchery winter-run
+#####################################################
+
+wr_batt_jpe_text <- if(battle_jpe == 0 | batt_n_groups == 0) {
+  print(paste0('No winter-run from Livingston Stone NFH have been released into Battle Creek in WY ', wy, 
+               '. The incidental take limit (ITL) for Battle Creek releases is 1.0% of the hatchery JPE (fish surviving to the Delta) ',
+               'in a single year or 0.8% on a 3-year rolling average (BiOp Table 184). ',
+               'Battle Creek releases are not subject to Action 5 operational loss thresholds.'))
+} else {
+  print(paste0('The Juvenile Production Estimate for hatchery winter-run released into Battle Creek is ',
+               prettyNum(battle_jpe, big.mark = ","),
+               ' based on ', prettyNum(batt_released, big.mark = ","), ' fish released. ',
+               'The single-year incidental take limit (ITL) is 1.0% of the JPE (',
+               prettyNum(batt_itl_val, big.mark = ","),
+               ' fish) or 0.8% on a 3-year rolling average (BiOp Table 184). ',
+               'Battle Creek releases are not subject to Action 5 operational loss thresholds.'))
+}
+
+wr_batt_releases_text <- if(batt_n_groups == 0) {
+  print(paste0('To date, no winter-run Livingston Stone hatchery releases into Battle Creek have occurred in WY ', wy, '.'))
+} else {
+  total_batt_released <- prettyNum(batt_released, big.mark = ",")
+  batt_date_range <- if(min(as.Date(wr_hatch_battle$release_start), na.rm = TRUE) == max(as.Date(wr_hatch_battle$release_end), na.rm = TRUE)) {
+    format(min(as.Date(wr_hatch_battle$release_start), na.rm = TRUE), '%B %d')
+  } else {
+    paste0(format(min(as.Date(wr_hatch_battle$release_start), na.rm = TRUE), '%B %d'), ' \u2013 ',
+           format(max(as.Date(wr_hatch_battle$release_end),   na.rm = TRUE), '%B %d'))
+  }
+  print(paste0('Livingston Stone National Fish Hatchery released a total of ', total_batt_released,
+               ' winter-run Chinook salmon into Battle Creek (', batt_date_range, '). ',
+               'Release details are available on ',
+               '<a href="https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2026/hatch_winter.html">SacPAS</a>.'))
+}
+
+# Build a clean display table for Battle Creek releases
+wr_batt_release_table <- if(batt_n_groups == 0) {
+  NULL
+} else {
+  wr_hatch_battle %>%
+    mutate(
+      `Release Date`  = format(as.Date(release_start), '%B %d, %Y'),
+      `Hatchery`      = hatchery,
+      `Release Site`  = release_site,
+      `Release Type`  = release_type,
+      `Fish Released` = prettyNum(cwt_number_released, big.mark = ","),
+      `% CWT Marked`  = paste0(round(percent_cwt_marked_of_total_number_released, 1), "%"),
+      `CWT Tagcodes`  = cwt_tagcodes
+    ) %>%
+    select(`Release Date`, `Hatchery`, `Release Site`, `Release Type`,
+           `Fish Released`, `% CWT Marked`, `CWT Tagcodes`)
+}
+
+wr_batt_loss_text <- if(batt_n_groups == 0) {
+  print('To date, no loss has occurred as no hatchery winter-run have been released into Battle Creek.')
+} else {
+  print(paste0('As of ', format(Sys.Date(), '%B %d'), ', cumulative loss of Livingston Stone hatchery fish (Battle Creek releases) is ',
+               batt_loss_total, ' or ', batt_itl_perc,
+               ' of the single-year ITL (', prettyNum(batt_itl_val, big.mark = ","), ' fish). ',
+               'Cumulative loss in the past 7 days has been ', batt_7d, '.'))
 }
 
 
@@ -343,8 +415,9 @@ get_risk_level_with_projection <- function(cum_loss, recent_7d_loss, threshold, 
 # 3. Generate Evaluation Texts
 # Use the same loss/threshold values already computed for the summary and body text
 
-# Question 1: Natural AND Hatchery Winter-run
-# Focused on 1% JPE management thresholds
+# Question 1: Natural AND Hatchery Winter-run (Sac River AND Battle Creek)
+# Natural and Sac River hatchery: assessed against 1% JPE Action 5 operational thresholds
+# Battle Creek: assessed against ITL only (not subject to Action 5)
 wr_nat_loss <- as.numeric(loss_dna_wr)
 wr_nat_thresh <- round(jpe * wr_loss_threshold, 0)
 wr_nat_7d <- as.numeric(wr_7d)
@@ -355,9 +428,39 @@ wr_hatch_thresh <- round(livingston_jpe * wr_hatch_loss_threshold, 0)
 wr_hatch_7d_val <- as.numeric(wr_hatch_7d)
 if(is.na(wr_hatch_7d_val)) wr_hatch_7d_val <- 0
 
+wr_batt_loss_val <- as.numeric(loss_batt_wr)
+wr_batt_7d_val <- as.numeric(batt_7d)
+if(is.na(wr_batt_7d_val)) wr_batt_7d_val <- 0
+
 risk_q1_nat <- get_risk_level_with_projection(wr_nat_loss, wr_nat_7d, wr_nat_thresh, "Natural winter-run", display_pct = wr_perc)
-risk_q1_hatch <- get_risk_level_with_projection(wr_hatch_loss_val, wr_hatch_7d_val, wr_hatch_thresh, "Hatchery winter-run", display_pct = wr_hatch_perc)
-risk_q1 <- paste0(risk_q1_nat, " ", risk_q1_hatch)
+risk_q1_hatch <- get_risk_level_with_projection(wr_hatch_loss_val, wr_hatch_7d_val, wr_hatch_thresh, "Hatchery winter-run (Sac River)", display_pct = wr_hatch_perc)
+
+# Battle Creek: report against ITL (not Action 5 threshold)
+risk_q1_batt <- if(battle_jpe > 0 & batt_itl_val > 0) {
+  batt_itl_pct_num <- round((wr_batt_loss_val / batt_itl_val) * 100, 2)
+  projected_batt <- wr_batt_loss_val + wr_batt_7d_val
+  if(wr_batt_loss_val >= batt_itl_val) {
+    paste0("CRITICAL: Hatchery winter-run (Battle Creek) cumulative loss has exceeded the single-year ITL (",
+           prettyNum(batt_itl_val, big.mark = ","), " fish). Battle Creek is not subject to Action 5 operational thresholds.")
+  } else if(projected_batt >= batt_itl_val) {
+    paste0("ELEVATED RISK: Hatchery winter-run (Battle Creek) cumulative loss is at ", batt_itl_pct_num,
+           "% of the single-year ITL (", prettyNum(batt_itl_val, big.mark = ","), 
+           " fish). If recent 7-day loss (", round(wr_batt_7d_val, 0),
+           ") continues, the ITL may be exceeded. Note: Battle Creek is not subject to Action 5 operational thresholds.")
+  } else if(batt_itl_pct_num > 75) {
+    paste0("ELEVATED RISK: Hatchery winter-run (Battle Creek) cumulative loss is at ", batt_itl_pct_num,
+           "% of the single-year ITL (", prettyNum(batt_itl_val, big.mark = ","), 
+           " fish). Battle Creek is not subject to Action 5 operational thresholds.")
+  } else {
+    paste0("Hatchery winter-run (Battle Creek) cumulative loss is at ", batt_itl_pct_num,
+           "% of the single-year ITL (", prettyNum(batt_itl_val, big.mark = ","), 
+           " fish). Battle Creek is not subject to Action 5 operational thresholds.")
+  }
+} else {
+  "Hatchery winter-run (Battle Creek): No releases to date; ITL not established."
+}
+
+risk_q1 <- paste0(risk_q1_nat, " ", risk_q1_hatch, " ", risk_q1_batt)
 
 # Question 2: Spring-run Surrogates
 # Focused on 1% of surrogate JPE management threshold
