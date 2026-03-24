@@ -71,23 +71,21 @@ where supplemental fish were released in the fall."
 #12-station average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 dayst
-ds_eval_3 <- "Although spawning may be occurring, JPF is above 0 cfs. SLS 6 was on the 
-water last week, and the most recent 12 station average turbidity in the south 
-delta was 11.2 FNU on 3/9/26. Due to JPF > 0 this week, the conditions required to trigger larval and 
-juvenile Delta smelt entrainment management will not be met. 
+ds_eval_3 <- "Although JPF is below 0 cfs, 20-mm Survey 1 was on the water last week, and the most recent 11-station average turbidity in the 
+South Delta was 5.0 FNU on March 16, 2026.Station 918 could not be sampled due to bridge clearance issues.These turbidity conditions remain below
+the ≥12 FNU threshold; therefore, the conditions required to initiate the larval and juvenile Delta smelt entrainment action are not met.
 
-  No Delta smelt larvae have been captured in SLS surveys in WY26 to date. PTM results 
-for this week for neutrally buoyant particles injected at Chipps Island (most recent adult detections used as a proxy
-for potential larval locations) showed 0% particle entrainment at both facilities for all OMRI levels 
-(−6,500, −5,000, −3,500, and −2,000 cfs). These results indicate that if Delta 
-smelt larvae were present, the risk of entrainment is low."
+Additionally, PTM modeling does not meet the criteria for initiating the action. No Delta smelt larvae have been captured in SLS or 20-mm surveys to date in
+WY2026. PTM results for this week for neutrally buoyant particles injected at Chipps Island (using the most recent adult detections as a proxy 
+for potential larval locations) showed 0% particle entrainment at both facilities for all OMRI levels (−6,500, −5,000, −3,500, and −2,000 cfs).
+These results indicate that, if Delta smelt larvae were present, the risk of entrainment would be low."
 
 # Longfin smelt
 
 # 1. If JPF < 0, what is the trajectory of annual loss of adult longfin smelt 
 #and is it likely to exceed 5% of the adult population estimate? 
 #Is South Delta entrainment expected to decrease due to a reduction in export pumping?
-lfs_eval_1 <- "JPF is > 0 cfs and no adult longfin smelt have been detected in 
+lfs_eval_1 <- "Although JPF is < 0 cfs,  no adult longfin smelt have been detected in 
 salvage, indicating annual loss has not begun to approach the 5% regulatory threshold."
 
 # 2. For larval and juvenile longfin smelt, if JPF < 0 cfs, do particle tracking 
@@ -95,11 +93,14 @@ salvage, indicating annual loss has not begun to approach the 5% regulatory thre
 #OMRI scenarios? Does Zone of Influence modeling show moderate to high changes 
 #in hydrodynamic footprint across different OMRI scenarios? Are these effects 
 #anticipated to cause a population decline?
-lfs_eval_2 <-  "JPF is currently not less than 0 cfs and is not predicted to drop below 0 cfs this week. Zone of Influence modeling indicates 
-moderate differences in the hydrodynamic footprint across OMRI scenarios, with no change between current and forecasted conditions. 
-Population-based PTM results, summarized in Appendix A, project low larval entrainment relative to estimated abundance
-the week ending 03/23/2026. Projected larval entrainment is 0.1%  for OMRI of -6,500, and <0.1% for all other
-modeled OMRI levels. These projected losses remain below levels suggesting significant population decline."
+lfs_eval_2 <-  "Although JPF is below 0 cfs this week, PTM modeling and Zone of Influence modeling indicate a low risk of entrainment for the
+larval and juvenile Longfin Smelt population. The Longfin smelt larval population and PTM analysis projects low entrainment relative to estimated
+abundance for this week.Estimated entrainment is less than or equal to 0.1% of the population at OMRI levels of −6,500,−5,000, and −3,500 cfs,
+and 0% at −2,000 cfs.
+
+Zone of Influence modeling indicates high differences in the hydrodynamic footprint across OMRI scenarios; however, the Zone of Influence does
+not extend into the western or far western regions where Longfin Smelt larvae and juveniles have been detected. Therefore, these effects are 
+not anticipated to result in a population decline, and the criteria for initiating this action are not met."
 
 # DONT NEED TO CHANGE UNLESS YOU WANT TO
 # 3. Is there additional information or other analyses that should be considered in this evaluation?
@@ -144,8 +145,8 @@ ds_recent_display <- ds_recent %>%
 ## EDIT: South Delta conditions (turbidity and secchi depth-currently by email)-------------------------
 sd_secchi_depth <- 0.76
 sd_secchi_date <- ymd("2026-01-13")
-sd_turb <- 11.2
-sd_turb_date <- ymd("2026-03-9")
+sd_turb <- 5.0
+sd_turb_date <- ymd("2026-03-16")
 
 ## Abundance ------------------------------
 # pull abundance estimate
