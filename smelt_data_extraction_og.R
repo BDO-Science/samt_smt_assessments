@@ -347,29 +347,22 @@ sls_lfs <- sls_data %>% filter(species == "Longfin Smelt")
 
 ## 20mm ---------
 # directly add file in - will read most recently modified file
-twmm_data_raw <- read_excel_by_pattern("20-mm", data_raw, TRUE) %>% 
-  mutate(`SLS Station` = readr::parse_number(`SLS Station`))
-
-twmm_data <- twmm_data_raw %>% 
-  filter(!is.na(Species))
-
-twmm_data$Date <- as.Date(twmm_data$Date)
-
+twmm_data_raw <- read_excel_by_pattern("20-mm", data_raw, TRUE)
+colnames(twmm_data_raw) <- as.character(twmm_data_raw[1, ])  # Set first row as column names
+twmm_data <- twmm_data_raw[-1, ] # remove first row
+twmm_data$Date <- as.Date(as.numeric(twmm_data$Date), origin = "1899-12-30")
 twmm_data <- twmm_data[, !is.na(names(twmm_data)) & names(twmm_data) != ""]
-
 twmm_data <- twmm_data %>% 
-  filter(!is.na(Date)) %>%
+  filter(!is.na(Date),
+         !is.na(Survey))%>%
   clean_names() %>%
-  rename(station = sls_station) %>% 
-  mutate(station = as.character(station)) %>%
   left_join(station_region, by = "station") %>%
-  left_join(station_stratum, by = "station") %>%
-  mutate(source = "20mm",
+  mutate(source = "twenty_mm",
          total_catch = as.numeric(total_catch),
          avg_length = as.numeric(avg_length)) %>%
-  select(source, station, survey, date, catch = total_catch, species, fork_length = avg_length, latitude, longitude, region, stratum)
+  select(source, station, survey, date, catch = total_catch, species, fork_length = avg_length, latitude, longitude, region)
 
-twmm_ds <- twmm_data %>% filter(species == "Delta Smelt")
+twmm_ds <- twmm_data %>% filter(species == "Delta Smelt") 
 twmm_lfs <- twmm_data %>% filter(species == "Longfin Smelt")
 
 ## EDSM abundance estimates --------------------------
