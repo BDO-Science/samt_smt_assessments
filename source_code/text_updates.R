@@ -21,8 +21,9 @@ salvage_status <- if(total_loss > 0) {
   paste0("Annual Loss: ", round(as.numeric(loss_dna_wr), 0), " (", wr_perc, " of annual loss threshold) natural winter-run, ", 
          round(as.numeric(loss_hatch_wr), 0), " (", wr_hatch_perc, " of annual loss threshold) hatchery winter-run (Sac River), ",
          round(as.numeric(loss_nat_sh), 0), " natural steelhead, ",
-         round(as.numeric(loss_hatch_sh), 0), " (", sh_clipped_perc_threshold, " of annual loss threshold) hatchery steelhead, and ", 
-         round(as.numeric(sr_loss_total), 0), " (", sr_loss_perc, " of annual loss threshold) spring-run surrogates.")
+         round(as.numeric(loss_hatch_sh), 0), " (", sh_clipped_perc_threshold, " of annual loss threshold) hatchery steelhead, ",
+         round(as.numeric(sr_yearling_loss), 0), " (", sr_yearling_loss_perc, " of annual loss threshold) spring-run surrogate yearlings (Coleman Late-Fall), and ",
+         round(as.numeric(sr_yoy_loss), 0), " (", sr_yoy_loss_perc, " of annual loss threshold) spring-run surrogate YOY (Feather River Spring-Run).")
 } else {
   "No salmonid loss has been recorded this season."
 }
@@ -50,19 +51,22 @@ sh_nat_itl_perc <- if(itl_sh_natural_single > 0) {
   paste0(sprintf("%.2f", (as.numeric(loss_nat_sh) / itl_sh_natural_single) * 100), "%")
 } else { "0.00%" }
 
-# Create spring-run surrogate yearling ITL summary for executive summary
-# These are the experimental late-fall releases with 0.5% ITL per release group
-sr_yearling_itl_summary <- if(exists("sr_experimental_itl") && nrow(sr_experimental_itl) > 0) {
-  itl_lines <- sr_experimental_itl %>%
-    mutate(text = paste0("Group ", row_number(), ": ", 
-                         round(confirmed_loss, 0), " (", itl_perc, "% of ",  # Changed 1 to 0
+# Create spring-run surrogate ITL summary for executive summary
+# ITL is 0.5% of each surrogate release group (all groups, both yearling and YOY)
+sr_surrogate_itl_summary <- if(exists("sr_all_itl") && nrow(sr_all_itl) > 0) {
+  itl_lines <- sr_all_itl %>%
+    mutate(text = paste0(`Life Stage`, " - ", `Hatchery`, " (", `Release Date`, "): ", 
+                         round(confirmed_loss, 0), " (", itl_perc, "% of ",
                          prettyNum(itl, big.mark = ","), " ITL)")) %>%
     pull(text)
-  paste0("Spring-run surrogate yearlings (0.5% ITL per experimental release group): ", 
+  paste0("Spring-run surrogate ITL status (0.5% per release group, BiOp Table 184): ", 
          paste(itl_lines, collapse = "; "), ".")
 } else {
-  "Spring-run surrogate yearlings: No experimental releases to date."
+  "Spring-run surrogates: No releases to date."
 }
+
+# Legacy variable name for backward compatibility
+sr_yearling_itl_summary <- sr_surrogate_itl_summary
 
 # ITL status as separate bullet
 itl_status <- paste0("Single-year Incidental Take Limit (ITL) Status: ", 
@@ -434,13 +438,22 @@ risk_q1_batt <- get_risk_level_with_projection(wr_batt_loss_val, wr_batt_7d_val,
 
 risk_q1 <- paste0(risk_q1_nat, " ", risk_q1_hatch, " ", risk_q1_batt)
 
-# Question 2: Spring-run Surrogates
-# Focused on 1% of surrogate JPE management threshold
-sr_thresh_safe <- if(exists("sr_threshold_val") && !is.na(sr_threshold_val)) sr_threshold_val else 0
-sr_loss_safe   <- if(exists("sr_loss_total") && !is.na(sr_loss_total)) as.numeric(sr_loss_total) else 0
+# Question 2: Spring-run Surrogates (Yearling and YOY tracked separately for Action 5)
+# Yearling = Coleman Late-Fall, YOY = Feather River Spring-Run
+sr_yearling_thresh_safe <- if(exists("sr_yearling_threshold") && !is.na(sr_yearling_threshold)) sr_yearling_threshold else 0
+sr_yearling_loss_safe   <- if(exists("sr_yearling_loss") && !is.na(sr_yearling_loss)) as.numeric(sr_yearling_loss) else 0
+sr_yoy_thresh_safe <- if(exists("sr_yoy_threshold") && !is.na(sr_yoy_threshold)) sr_yoy_threshold else 0
+sr_yoy_loss_safe   <- if(exists("sr_yoy_loss") && !is.na(sr_yoy_loss)) as.numeric(sr_yoy_loss) else 0
 sr_7d_safe <- 0  # No 7-day tracking for spring-run surrogates
 
-risk_q2 <- get_risk_level_with_projection(sr_loss_safe, sr_7d_safe, sr_thresh_safe, "Spring-run surrogates", display_pct = sr_loss_perc)
+risk_q2_yearling <- get_risk_level_with_projection(sr_yearling_loss_safe, sr_7d_safe, sr_yearling_thresh_safe, 
+                                                   "Spring-run surrogate yearlings (Coleman Late-Fall)", 
+                                                   display_pct = sr_yearling_loss_perc)
+risk_q2_yoy <- get_risk_level_with_projection(sr_yoy_loss_safe, sr_7d_safe, sr_yoy_thresh_safe, 
+                                              "Spring-run surrogate YOY (Feather River Spring-Run)", 
+                                              display_pct = sr_yoy_loss_perc)
+
+risk_q2 <- paste0(risk_q2_yearling, " ", risk_q2_yoy)
 
 # Question 3: Natural AND Hatchery Steelhead
 # ------------------------------------------
