@@ -619,6 +619,7 @@ lfr_data_clean <- data.frame(
   `Tag Code`=character(), 
   `Hatchery`=character(), 
   `Stock`=character(), 
+  `Life Stage`=character(),
   `Release Date`=character(), 
   `Type`=character(), 
   `# of CWT Fish Released`=numeric(), 
@@ -689,13 +690,22 @@ lfr_data_clean <- tryCatch({
     mutate(
       `Tag Code` = tag_codes_str,
       `Hatchery` = hatch,
-      `Stock` = "Late-Fall",
+      `Stock` = case_when(
+        grepl("Coleman", hatch, ignore.case = TRUE) ~ "Late-Fall",
+        grepl("Feather", hatch, ignore.case = TRUE) ~ "Spring-Run",
+        TRUE ~ "Unknown"
+      ),
+      `Life Stage` = case_when(
+        grepl("Coleman", hatch, ignore.case = TRUE) ~ "Yearling",
+        grepl("Feather", hatch, ignore.case = TRUE) ~ "YOY",
+        TRUE ~ "Unknown"
+      ),
       `Release Date` = release_date,
       `Type` = if_else(grepl("Experimental", rel_type, ignore.case = TRUE), "Experimental", "Production"),
       `# of CWT Fish Released` = num_per_tag,
       `Confirmed Loss` = loss_per_tag
     ) %>%
-    select(`Tag Code`, `Hatchery`, `Stock`, `Release Date`, `Type`, 
+    select(`Tag Code`, `Hatchery`, `Stock`, `Life Stage`, `Release Date`, `Type`, 
            `# of CWT Fish Released`, `Confirmed Loss`) %>%
     distinct()
   
@@ -772,6 +782,29 @@ total_sr_jpe <- sum(sr_all_releases_jpe$jpe, na.rm = TRUE)
 sr_threshold_val <- total_sr_jpe * 0.01  # 1% of JPE (operational threshold)
 sr_loss_total <- sum(sr_all_releases$`Confirmed Loss`, na.rm = TRUE)
 
+# Action 5: Separate cumulative tracking for Yearling and YOY
+# Yearling = Coleman Late-Fall Production releases
+sr_yearling_releases <- sr_all_releases_jpe %>%
+  filter(`Life Stage` == "Yearling")
+sr_yearling_released <- sum(sr_yearling_releases$`# of CWT Fish Released`, na.rm = TRUE)
+sr_yearling_jpe <- sum(sr_yearling_releases$jpe, na.rm = TRUE)
+sr_yearling_loss <- sum(sr_yearling_releases$`Confirmed Loss`, na.rm = TRUE)
+sr_yearling_threshold <- sr_yearling_jpe * 0.01  # 1% of yearling JPE
+sr_yearling_loss_perc <- if(sr_yearling_threshold > 0) {
+  paste0(sprintf("%.2f", (sr_yearling_loss / sr_yearling_threshold) * 100), "%")
+} else { "0.00%" }
+
+# YOY = Feather River Spring-Run Production releases
+sr_yoy_releases <- sr_all_releases_jpe %>%
+  filter(`Life Stage` == "YOY")
+sr_yoy_released <- sum(sr_yoy_releases$`# of CWT Fish Released`, na.rm = TRUE)
+sr_yoy_jpe <- sum(sr_yoy_releases$jpe, na.rm = TRUE)
+sr_yoy_loss <- sum(sr_yoy_releases$`Confirmed Loss`, na.rm = TRUE)
+sr_yoy_threshold <- sr_yoy_jpe * 0.01  # 1% of YOY JPE
+sr_yoy_loss_perc <- if(sr_yoy_threshold > 0) {
+  paste0(sprintf("%.2f", (sr_yoy_loss / sr_yoy_threshold) * 100), "%")
+} else { "0.00%" }
+
 # Calculate ITL comparison (0.5% per BiOp Table 184)
 sr_itl_val <- total_sr_jpe * 0.005  # 0.5% ITL per BiOp Table 184
 
@@ -812,37 +845,60 @@ coleman_total_fmt <- prettyNum(coleman_total, big.mark = ",")
 coleman_loss_fmt <- prettyNum(coleman_loss, big.mark = ",")
 coleman_jpe_fmt <- prettyNum(coleman_jpe_total, big.mark = ",")
 
-# 7. Calculate ITLs by experimental release group (0.5% of each group per BiOp Table 184)
-# ITL applies to experimental releases: groups released on 2025-11-17, 2025-12-22, 2026-01-08
-sr_experimental_itl <- if(nrow(sr_all_releases_jpe) > 0) {
+# Action 5 formatted values for yearling and YOY
+sr_yearling_released_fmt <- prettyNum(round(sr_yearling_released, 0), big.mark = ",")
+sr_yearling_jpe_fmt <- prettyNum(round(sr_yearling_jpe, 0), big.mark = ",")
+sr_yearling_loss_fmt <- prettyNum(round(sr_yearling_loss, 0), big.mark = ",")
+sr_yearling_threshold_fmt <- prettyNum(round(sr_yearling_threshold, 0), big.mark = ",")
+sr_yoy_released_fmt <- prettyNum(round(sr_yoy_released, 0), big.mark = ",")
+sr_yoy_jpe_fmt <- prettyNum(round(sr_yoy_jpe, 0), big.mark = ",")
+sr_yoy_loss_fmt <- prettyNum(round(sr_yoy_loss, 0), big.mark = ",")
+sr_yoy_threshold_fmt <- prettyNum(round(sr_yoy_threshold, 0), big.mark = ",")
+
+# Feather River summary
+fr_total <- sum(fr_releases$`# of CWT Fish Released`, na.rm = TRUE)
+fr_loss <- sum(fr_releases$`Confirmed Loss`, na.rm = TRUE)
+fr_n_groups <- nrow(fr_releases)
+fr_total_fmt <- prettyNum(round(fr_total, 0), big.mark = ",")
+fr_loss_fmt <- prettyNum(round(fr_loss, 0), big.mark = ",")
+fr_jpe_fmt <- prettyNum(round(fr_jpe_total, 0), big.mark = ",")
+
+# 7. Calculate ITLs by individual release group (0.5% of each group per BiOp Table 184)
+# ITL applies to ALL surrogate release groups (both production and experimental)
+sr_all_itl <- if(nrow(sr_all_releases_jpe) > 0) {
   sr_all_releases_jpe %>%
-    filter(Type == "Experimental") %>%
-    group_by(`Release Date`) %>%
+    group_by(`Hatchery`, `Release Date`, `Life Stage`, `Type`) %>%
     summarize(
       fish_released = sum(`# of CWT Fish Released`, na.rm = TRUE),
       confirmed_loss = sum(`Confirmed Loss`, na.rm = TRUE),
       .groups = "drop"
     ) %>%
     mutate(
-      itl = round(fish_released * 0.005, 0),  # 0.5% ITL
-      itl_perc = round((confirmed_loss / itl) * 100, 2)
+      itl = round(fish_released * 0.005, 0),  # 0.5% ITL per release group
+      itl_perc = if_else(itl > 0, round((confirmed_loss / itl) * 100, 2), 0)
     ) %>%
-    arrange(`Release Date`)
+    arrange(`Life Stage`, `Release Date`)
 } else {
-  data.frame(`Release Date` = character(), fish_released = numeric(), 
-             confirmed_loss = numeric(), itl = numeric(), itl_perc = numeric())
+  data.frame(`Hatchery` = character(), `Release Date` = character(),
+             `Life Stage` = character(), `Type` = character(),
+             fish_released = numeric(), confirmed_loss = numeric(), 
+             itl = numeric(), itl_perc = numeric(), check.names = FALSE)
 }
 
-# Create ITL summary text for experimental groups
-sr_itl_text <- if(nrow(sr_experimental_itl) > 0) {
-  itl_lines <- sr_experimental_itl %>%
-    mutate(text = paste0("Release Group ", row_number(), " (", `Release Date`, "): ",
-                         round(confirmed_loss, 0), " loss of ", prettyNum(itl, big.mark = ","), # Changed 1 to 0
+# Legacy: keep experimental-only subset for backward compatibility
+sr_experimental_itl <- sr_all_itl %>%
+  filter(Type == "Experimental")
+
+# Create ITL summary text for ALL release groups
+sr_itl_text <- if(nrow(sr_all_itl) > 0) {
+  itl_lines <- sr_all_itl %>%
+    mutate(text = paste0(`Life Stage`, " - ", `Hatchery`, " (", `Release Date`, ", ", `Type`, "): ",
+                         round(confirmed_loss, 0), " loss of ", prettyNum(itl, big.mark = ","),
                          " ITL (", itl_perc, "%)")) %>%
     pull(text)
   paste(itl_lines, collapse = "; ")
 } else {
-  "No experimental release groups available."
+  "No surrogate release groups available."
 }
 
 # 8. Clean Table for Report Display
@@ -856,8 +912,8 @@ sr_surrogate_table_clean <- if(nrow(sr_all_releases_jpe) > 0) {
       !is.na(`# of CWT Fish Released`),
       `# of CWT Fish Released` > 0
     ) %>%
-    # Group by release event (date + hatchery + type)
-    group_by(`Hatchery`, `Release Date`, `Stock`, `Type`) %>%
+    # Group by release event (date + hatchery + type + life stage)
+    group_by(`Hatchery`, `Release Date`, `Stock`, `Life Stage`, `Type`) %>%
     summarize(
       fish_released_raw = sum(`# of CWT Fish Released`, na.rm = TRUE),
       `JPE` = sum(jpe, na.rm = TRUE),
@@ -865,22 +921,24 @@ sr_surrogate_table_clean <- if(nrow(sr_all_releases_jpe) > 0) {
       `CWT Codes` = paste(sort(unique(`Tag Code`)), collapse = ", "),
       .groups = "drop"
     ) %>%
-    # Add ITL column (0.5% for experimental groups)
+    # Add ITL column (0.5% per release group per BiOp Table 184)
     mutate(
-      `ITL (0.5%)` = if_else(Type == "Experimental", round(fish_released_raw * 0.005, 0), NA_real_),
+      `ITL (0.5%)` = round(fish_released_raw * 0.005, 0),
       `# of CWT Fish Released` = prettyNum(round(fish_released_raw, 0), big.mark = ","),
       `JPE` = prettyNum(round(JPE, 0), big.mark = ","),
-      `Confirmed Loss` = round(`Confirmed Loss`, 0) # Changed 1 to 0
+      `Confirmed Loss` = round(`Confirmed Loss`, 0)
     ) %>%
     # Select and order columns
-    select(`Hatchery`, `Release Date`, `Type`, `# of CWT Fish Released`, `JPE`, `ITL (0.5%)`, `Confirmed Loss`, `CWT Codes`) %>%
-    # Sort by release date
-    arrange(`Release Date`)
+    select(`Hatchery`, `Release Date`, `Stock`, `Life Stage`, `Type`, `# of CWT Fish Released`, `JPE`, `ITL (0.5%)`, `Confirmed Loss`, `CWT Codes`) %>%
+    # Sort by life stage then release date
+    arrange(`Life Stage`, `Release Date`)
 } else {
   # Return empty data frame with correct structure
   data.frame(
     `Hatchery` = character(),
     `Release Date` = character(),
+    `Stock` = character(),
+    `Life Stage` = character(),
     `Type` = character(),
     `# of CWT Fish Released` = character(),
     `JPE` = character(),
@@ -1010,6 +1068,41 @@ if(exists("coleman_total")) {
 if(exists("coleman_loss")) {
   coleman_loss <- round(coleman_loss, 0)
   coleman_loss_fmt <- prettyNum(coleman_loss, big.mark = ",")
+}
+
+if(exists("fr_loss")) {
+  fr_loss <- round(fr_loss, 0)
+  fr_loss_fmt <- prettyNum(fr_loss, big.mark = ",")
+}
+
+if(exists("sr_yearling_loss")) {
+  sr_yearling_loss <- round(sr_yearling_loss, 0)
+  sr_yearling_loss_fmt <- prettyNum(sr_yearling_loss, big.mark = ",")
+}
+
+if(exists("sr_yoy_loss")) {
+  sr_yoy_loss <- round(sr_yoy_loss, 0)
+  sr_yoy_loss_fmt <- prettyNum(sr_yoy_loss, big.mark = ",")
+}
+
+if(exists("sr_yearling_jpe")) {
+  sr_yearling_jpe <- round(sr_yearling_jpe, 0)
+  sr_yearling_jpe_fmt <- prettyNum(sr_yearling_jpe, big.mark = ",")
+}
+
+if(exists("sr_yoy_jpe")) {
+  sr_yoy_jpe <- round(sr_yoy_jpe, 0)
+  sr_yoy_jpe_fmt <- prettyNum(sr_yoy_jpe, big.mark = ",")
+}
+
+if(exists("sr_yearling_threshold")) {
+  sr_yearling_threshold <- round(sr_yearling_threshold, 0)
+  sr_yearling_threshold_fmt <- prettyNum(sr_yearling_threshold, big.mark = ",")
+}
+
+if(exists("sr_yoy_threshold")) {
+  sr_yoy_threshold <- round(sr_yoy_threshold, 0)
+  sr_yoy_threshold_fmt <- prettyNum(sr_yoy_threshold, big.mark = ",")
 }
 
 if(exists("total_sr_jpe")) {

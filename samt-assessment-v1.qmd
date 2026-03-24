@@ -312,11 +312,11 @@ flextable(sr_natural_timing) %>%
 
 #### Spring-run Surrogate Releases
 
-A total of `r total_sr_released_fmt` spring-run surrogate fish have been released in Water Year 2026, with an estimated Juvenile Production Estimate (JPE) of `r total_sr_jpe_fmt` fish entering the Delta. This includes `r coleman_total_fmt` Coleman Late-Fall Run Chinook (JPE: `r coleman_jpe_fmt`) released from Coleman National Fish Hatchery across `r coleman_n_groups` coded-wire tag groups. See details in table below.
+A total of `r total_sr_released_fmt` spring-run surrogate fish have been released in Water Year 2026, with an estimated Juvenile Production Estimate (JPE) of `r total_sr_jpe_fmt` fish entering the Delta. This includes `r sr_yearling_released_fmt` Coleman Late-Fall Run Chinook yearlings (JPE: `r sr_yearling_jpe_fmt`) released from Coleman National Fish Hatchery across `r coleman_n_groups` coded-wire tag groups, and `r sr_yoy_released_fmt` Feather River Hatchery Spring-Run young-of-year (JPE: `r sr_yoy_jpe_fmt`) across `r fr_n_groups` coded-wire tag groups. See details in table below.
 
 ```{r}
 #| label: tbl-sr_surrogate_table
-#| tbl-cap: 'Spring-run Chinook salmon surrogate releases (all Coleman Late-Fall releases, both production and experimental).'
+#| tbl-cap: 'Spring-run Chinook salmon surrogate releases: Coleman Late-Fall yearlings and Feather River Spring-Run young-of-year (production and experimental). ITL is 0.5% of each release group (BiOp Table 184).'
 #| echo: false
 #| warning: false
 
@@ -329,7 +329,7 @@ flextable(sr_surrogate_table_clean) %>%
 
 #### Annual Loss
 
-The annual loss threshold is 1% of the JPE entering the Delta, which equals `r sr_threshold_fmt` fish. As of `r format(Sys.Date()-1, '%B %d')`, cumulative loss is `r sr_loss_total_fmt` fish or `r sr_loss_perc` of the annual loss threshold. The single-year incidental take limit (ITL) is 0.5% of the estimated number of each surrogate release group (BiOp Table 184). ITL status by experimental release group: `r sr_itl_text`
+The annual loss threshold (Action 5) is 1% of the JPE entering the Delta, tracked cumulatively but separately for yearlings and young-of-year. Yearling surrogates (Coleman Late-Fall): the threshold is `r sr_yearling_threshold_fmt` fish; as of `r format(Sys.Date()-1, '%B %d')`, cumulative loss is `r sr_yearling_loss_fmt` fish or `r sr_yearling_loss_perc` of the threshold. YOY surrogates (Feather River Spring-Run): the threshold is `r sr_yoy_threshold_fmt` fish; as of `r format(Sys.Date()-1, '%B %d')`, cumulative loss is `r sr_yoy_loss_fmt` fish or `r sr_yoy_loss_perc` of the threshold. The single-year incidental take limit (ITL) is 0.5% of the estimated number of each surrogate release group (BiOp Table 184). ITL status by release group: `r sr_itl_text`
 
 ### Loss Prediction and Trajectories
 
@@ -366,7 +366,7 @@ knitr::include_graphics(paste0(base_url, 'samt_lsp_stlhd.png'))
     
     `r risk_q1`
 
-2. **What is the probability of exceeding spring-run Chinook salmon surrogate yearling loss thresholds in the upcoming week?**
+2. **What is the probability of exceeding spring-run Chinook salmon surrogate loss thresholds (yearling and YOY) in the upcoming week?**
     
     `r risk_q2`
 
