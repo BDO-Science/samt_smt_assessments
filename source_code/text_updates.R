@@ -68,6 +68,15 @@ sr_surrogate_itl_summary <- if(exists("sr_all_itl") && nrow(sr_all_itl) > 0) {
 # Legacy variable name for backward compatibility
 sr_yearling_itl_summary <- sr_surrogate_itl_summary
 
+# Spring-run surrogate cumulative loss vs 1% of JPE thresholds (all yearling / all YOY)
+sr_threshold_status <- paste0(
+  "Spring-run surrogate annual loss threshold status (1% of JPE): ",
+  "Yearlings: ", round(sr_yearling_loss, 0), " of ", sr_yearling_threshold_fmt, 
+  " (", sr_yearling_loss_perc, "); ",
+  "YOY: ", round(sr_yoy_loss, 0), " of ", sr_yoy_threshold_fmt, 
+  " (", sr_yoy_loss_perc, ")."
+)
+
 # ITL status as separate bullet
 itl_status <- paste0("Single-year Incidental Take Limit (ITL) Status: ", 
                      round(as.numeric(loss_dna_wr), 0), " (", wr_dna_itl_perc, " of ", 

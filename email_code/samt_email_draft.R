@@ -85,11 +85,11 @@ img_tag <- function(b64, alt, caption = "") {
 
 #########################################################
 # PRE-COMPUTE THRESHOLD AND ITL VALUES FOR EMAIL
-# Natural WR: threshold (1% JPE) != ITL (0.56% / 0.36%) -> report both
-# Hatchery WR: threshold = ITL = 1% JPE                 -> report once
-# Natural SH:  no threshold; ITL only (5,294 / 2,319)   -> report ITL only
-# Hatchery SH: threshold = ITL = 1% JPE                 -> report once
-# Spring-run:  threshold = 1% JPE; ITL = 0.5% per group -> report both
+# Natural WR: Action 5 threshold (1% JPE) != ITL (0.56% / 0.36%) -> report both
+# Hatchery WR: Action 5 threshold = ITL = 1% JPE                 -> report once
+# Natural SH:  no Action 5 threshold; ITL only (5,294 / 2,319)   -> report ITL only
+# Hatchery SH: Action 5 threshold = 1% JPE                       -> report once
+# Spring-run:  Action 5 = 1% JPE per life stage (yearling, YOY); ITL = 0.5% per release group
 #########################################################
 
 wr_nat_threshold_val  <- prettyNum(round(jpe * wr_loss_threshold,     0), big.mark = ",")
@@ -119,6 +119,7 @@ email_body <- paste0(
   "<li>", entrainment_status, "</li>",
   "<li>", salvage_status, "</li>",
   "<li>", itl_status, "</li>",
+  "<li>", sr_threshold_status, "</li>",
   "<li>", sr_yearling_itl_summary, "</li>",
   "<li>", wr_presence_status, "</li>",
   "<li>", sh_presence_status, "</li>",
@@ -139,10 +140,16 @@ email_body <- paste0(
   # ---- LOSS SUMMARY TABLE ----
   "<h3 style='font-family:Arial; font-size:11pt; margin-bottom:4px;'>Loss Summary</h3>",
   "<p style='font-family:Arial; font-size:9pt; margin-top:0;'>",
-  "Thresholds: Natural WR = 1% of JPE (", prettyNum(round(jpe * wr_loss_threshold, 0), big.mark = ","), " fish); ",
-  "Hatchery WR = 1% of JPE (", wr_hatch_threshold_val, " fish); ",
-  "Natural SH ITL = ", prettyNum(itl_sh_natural_single, big.mark = ","), " fish (single-yr); ",
-  "Spring-run = 1% of JPE (", sr_threshold_fmt, " fish).",
+  "<strong>Action 5 Thresholds (1% of JPE):</strong> ",
+  "Natural WR = ", prettyNum(round(jpe * wr_loss_threshold, 0), big.mark = ","), " fish; ",
+  "Hatchery WR (Sac River) = ", wr_hatch_threshold_val, " fish; ",
+  "Hatchery SH = ", prettyNum(sh_clipped_threshold, big.mark = ","), " fish; ",
+  "SR surrogate yearlings = ", sr_yearling_threshold_fmt, " fish; ",
+  "SR surrogate YOY = ", sr_yoy_threshold_fmt, " fish.<br>",
+  "<strong>Incidental Take Limits (BiOp Table 184):</strong> ",
+  "Natural WR = ", prettyNum(round(jpe * itl_wr_natural_single, 0), big.mark = ","), " fish (0.56% JPE single-yr); ",
+  "Natural SH = ", prettyNum(itl_sh_natural_single, big.mark = ","), " fish (single-yr); ",
+  "SR surrogates = 0.5% per release group.",
   "</p>",
   weekly_html,
   
@@ -181,7 +188,7 @@ email[["To"]] <- paste(
   "lejohnson@usbr.gov",
   "ashamilton@usbr.gov",
   "tyang@usbr.gov",
-  "dmmooney@usbr.gov",
+  "lmccormick@usbr.gov",
   "ebuttermore@usbr.gov",
   "jfenolio@usbr.gov",
   sep = "; "
