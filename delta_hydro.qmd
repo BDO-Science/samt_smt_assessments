@@ -75,8 +75,8 @@ ann_start_VNS <- flow_clean %>% filter(station == "VNS", date == date(start)) %>
 
 flow_plot <- flow_clean %>%
   ggplot(aes(x = date)) +
-  annotate("label", x = date(start)+2, y = ann_start_FPT-3000, label = "FPT", color = "#388715")+
-  annotate("label", x = date(start)+2, y = ann_start_VNS+3000, label = "VNS", color = "gray20")+
+  annotate("label", x = date(start)+2, y = ann_start_FPT+6000, label = "FPT", color = "#388715")+
+  annotate("label", x = date(start)+2, y = ann_start_VNS+6000, label = "VNS", color = "gray20")+
   labs(y = 'Flow (cfs)') +
   geom_line(aes(y = flow, color = station), linewidth = 1) +
   scale_color_manual(values = c("#43a419", "gray15")) +
