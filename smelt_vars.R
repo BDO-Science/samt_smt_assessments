@@ -37,7 +37,7 @@ narrative_text <-
 "- Delta smelt were most recently detected at Suisun Marsh. 
 - One Delta smelt was salvaged on 3/6/26, expanded salvage is 4 for this water year.
 - No longfin smelt salvage has been observed this water year.
-- Turbidity in the central/south Delta is low to moderate.
+- Turbidity in the central/south Delta is low.
 "
 
 # Evaluation question responses ---------------------
@@ -65,14 +65,15 @@ the majority of Delta Smelt spawning occurs at 11-15˚C (but can occur from 8-18
 Based on [historical monitoring data](https://github.com/Delta-Stewardship-Council/deltafish) from the past few years, 
 first detection of larvae in the Central and South Delta has typically occurred by mid to late March. 
 The large majority of Delta smelt recaptures continue to be from Suisun Marsh, close to
-where supplemental fish were released in the fall."
+where supplemental fish were released in the fall. Spawning is likely completed due to higher 
+than average water temperatures."
 
 # 3. After the onset of spawning, have the following conditions occurred: JPF < 0, 
 #12-station average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 dayst
-ds_eval_3 <- "Although JPF is below 0 cfs, 20-mm Survey 1 was on the water last week, and the most recent 11-station average turbidity in the 
-South Delta was 5.0 FNU on March 16, 2026.Station 918 could not be sampled due to bridge clearance issues.These turbidity conditions remain below
+ds_eval_3 <- "Although JPF is below 0 cfs, the most recent 11-station average turbidity in the 
+South Delta was 5.0 FNU on March 16, 2026. Station 918 could not be sampled due to bridge clearance issues.These turbidity conditions remain below
 the ≥12 FNU threshold; therefore, the conditions required to initiate the larval and juvenile Delta smelt entrainment action are not met.
 
 Additionally, PTM modeling does not meet the criteria for initiating the action. No Delta smelt larvae have been captured in SLS or 20-mm surveys to date in
@@ -98,9 +99,11 @@ larval and juvenile Longfin Smelt population. The Longfin smelt larval populatio
 abundance for this week.Estimated entrainment is less than or equal to 0.1% of the population at OMRI levels of −6,500,−5,000, and −3,500 cfs,
 and 0% at −2,000 cfs.
 
-Zone of Influence modeling indicates high differences in the hydrodynamic footprint across OMRI scenarios; however, the Zone of Influence does
-not extend into the western or far western regions where Longfin Smelt larvae and juveniles have been detected. Therefore, these effects are 
-not anticipated to result in a population decline, and the criteria for initiating this action are not met."
+Zone of Influence modeling indicates high differences in the hydrodynamic footprint 
+across OMRI scenarios; however, the Zone of Influence does not extend into the 
+western or far western regions where Longfin Smelt larvae and juveniles have been 
+detected. Therefore, these effects are not anticipated to result in a population 
+decline, and the criteria for initiating this action are not met."
 
 # DONT NEED TO CHANGE UNLESS YOU WANT TO
 # 3. Is there additional information or other analyses that should be considered in this evaluation?
