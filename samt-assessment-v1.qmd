@@ -320,11 +320,26 @@ A total of `r total_sr_released_fmt` spring-run surrogate fish have been release
 #| echo: false
 #| warning: false
 
-flextable(sr_surrogate_table_clean) %>%
-  #font(fontname = "Carlito", part = "all") %>%
+sr_surrogate_table_clean <- sr_surrogate_table_clean %>%
+  mutate(`CWT Codes` = gsub("(([^,]+,){3})", "\\1\n", `CWT Codes`))
+
+ft <- flextable(sr_surrogate_table_clean) %>%
   fontsize(size = 11, part = "all") %>%
   theme_booktabs() %>%
-  fit_to_width(max_width = 6.5)
+  set_header_labels(
+    `# of CWT Fish Released` = "CWT Released",
+    `Confirmed Loss` = "Loss"
+  )
+
+if (knitr::is_html_output()) {
+  ft <- ft %>% set_table_properties(layout = "autofit", width = 1)
+} else {
+  ft <- ft %>% 
+    width(j = "CWT Codes", width = 1.8) %>%
+    fit_to_width(max_width = 7.5)
+}
+
+ft
 ```
 
 #### Annual Loss
