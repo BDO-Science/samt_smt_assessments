@@ -85,7 +85,7 @@ week and next week. These results indicate that, if Delta smelt larvae were pres
 # 1. If JPF < 0, what is the trajectory of annual loss of adult longfin smelt 
 #and is it likely to exceed 5% of the adult population estimate? 
 #Is South Delta entrainment expected to decrease due to a reduction in export pumping?
-lfs_eval_1 <- "Although JPF is < 0 cfs for some of this week,  no adult longfin smelt have been detected in 
+lfs_eval_1 <- "Although JPF is < 0 cfs for some of this week, no adult longfin smelt have been detected in 
 salvage, indicating annual loss has not begun to approach the 5% regulatory threshold."
 
 # 2. For larval and juvenile longfin smelt, if JPF < 0 cfs, do particle tracking 
@@ -95,8 +95,8 @@ salvage, indicating annual loss has not begun to approach the 5% regulatory thre
 #anticipated to cause a population decline?
 lfs_eval_2 <-  "Although JPF is below 0 cfs for some of this week, PTM modeling and Zone of Influence modeling indicate a low risk of entrainment for the
 larval and juvenile Longfin Smelt population. The Longfin smelt larval population and PTM analysis projects low entrainment relative to estimated
-abundance for this week. Estimated entrainment is less than or equal to 0.1% of the population at OMRI levels of −6,500 and −5,000 cfs 
-and 0% at -3,500 and −2,000 cfs.
+abundance for this week. The model shows the estimated entrainment for this week is estimated to be 0.6% for -6,500 cfs, 0.3% for -5,000 cfs, 0.1% for -3,500 cfs,
+and less than or equal to 0.1% of the population at OMRI of −2,000 cfs.
 
     Zone of Influence modeling indicates high differences in the hydrodynamic footprint 
 across OMRI scenarios; however, the Zone of Influence does not extend into the 
