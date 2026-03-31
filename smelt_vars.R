@@ -78,7 +78,7 @@ survey 2 is on the water this week and we will get an updated turbidity average,
     Additionally, PTM modeling does not meet the criteria for initiating the action. No Delta smelt larvae have been captured in SLS or 20-mm surveys to date in
 WY2026. PTM results for this week for neutrally buoyant particles injected at Chipps Island (using the most recent adult detections as a proxy 
 for potential larval locations) showed 0% particle entrainment at both facilities for all OMRI levels (−6,500, −5,000, −3,500, and −2,000 cfs) this 
-week and next week. These results indicate that, if Delta smelt larvae were present, the risk of entrainment would be low."
+week. These results indicate that, if Delta smelt larvae were present, the risk of entrainment would be low."
 
 # Longfin smelt
 
