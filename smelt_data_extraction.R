@@ -316,7 +316,8 @@ sfbs_data <- sfbs_data_raw %>%
 # directly add file in - will read most recently modified file
 # BEFORE reading in, make sure you remove any symbols in the station col (added to read_excel_by_pattern fcn)
 #updated code for this:
-sls_data_raw <- read_excel_by_pattern("SLS", data_raw, TRUE) %>% 
+sls_data_raw <- read_excel_by_pattern("SLS", data_raw, TRUE) 
+sls_data_raw <- sls_data_raw %>% 
   mutate(`SLS Station` = readr::parse_number(`SLS Station`))
 # sls_data_raw <- read_excel_by_pattern("SLS", data_raw, TRUE) %>% 
 #   mutate(`SLS Station` = parse_number(`SLS Station`))
