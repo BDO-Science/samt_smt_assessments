@@ -35,8 +35,7 @@ end_of_season = "not relevant"
 
 narrative_text <- 
 "- Delta smelt were most recently detected at Suisun Marsh. 
-- One Delta smelt was salvaged on 3/6/26, expanded salvage is 4 for this water year.
-- No longfin smelt salvage has been observed this water year.
+- No longfin smelt salvage have been observed this water year.
 - Turbidity in the central/south Delta is low.
 "
 
@@ -71,9 +70,9 @@ where supplemental fish were released in the fall. Spawning is likely completed 
 #12-station average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 dayst
-ds_eval_3 <- "Although JPF is below 0 cfs for some of this week, the most recent 11-station average turbidity in the 
-South Delta was 5.0 FNU on March 16, 2026. Station 918 could not be sampled due to bridge clearance issues. Twenty-mm
-survey 2 is on the water this week and we will get an updated turbidity average, but turbidity is expected to stay about the same. These turbidity conditions remain below the ≥12 FNU threshold; therefore, the conditions required to initiate the larval and juvenile Delta smelt entrainment action are not met.
+ds_eval_3 <- "JPF is projected to remain positive for the week and the most recent 11-station average turbidity in the 
+South Delta was 4.6 FNU on April 1, 2026 (station 918 could not be sampled due to bridge clearance issues). Because JPF is positive and turbidity conditions remain 
+below the ≥12 FNU threshold, the conditions required to initiate the larval and juvenile Delta smelt entrainment action are not met.
 
     Additionally, PTM modeling does not meet the criteria for initiating the action. No Delta smelt larvae have been captured in SLS or 20-mm surveys to date in
 WY2026. PTM results for this week for neutrally buoyant particles injected at Chipps Island (using the most recent adult detections as a proxy 
@@ -85,18 +84,18 @@ week. These results indicate that, if Delta smelt larvae were present, the risk 
 # 1. If JPF < 0, what is the trajectory of annual loss of adult longfin smelt 
 #and is it likely to exceed 5% of the adult population estimate? 
 #Is South Delta entrainment expected to decrease due to a reduction in export pumping?
-lfs_eval_1 <- "Although JPF is < 0 cfs for some of this week, no adult longfin smelt have been detected in 
-salvage, indicating annual loss has not begun to approach the 5% regulatory threshold."
+lfs_eval_1 <- "JPF is projected to remain positive throughout the week and no adult 
+longfin smelt have been detected in salvage this water year."
 
 # 2. For larval and juvenile longfin smelt, if JPF < 0 cfs, do particle tracking 
 #models show a moderate to high difference in particle fates across different 
 #OMRI scenarios? Does Zone of Influence modeling show moderate to high changes 
 #in hydrodynamic footprint across different OMRI scenarios? Are these effects 
 #anticipated to cause a population decline?
-lfs_eval_2 <-  "Although JPF is below 0 cfs for some of this week, PTM modeling and Zone of Influence modeling indicate a low risk of entrainment for the
-larval and juvenile Longfin Smelt population. The Longfin smelt larval population and PTM analysis projects low entrainment relative to estimated
-abundance for this week. The model shows the estimated entrainment for this week is estimated to be 0.6% for -6,500 cfs, 0.3% for -5,000 cfs, 0.1% for -3,500 cfs,
-and less than or equal to 0.1% of the population at OMRI of −2,000 cfs.
+lfs_eval_2 <-  "JPF is projected to remain positive throughout the week, so the condition of JPF < 0 cfs is not met. Additionally, PTM 
+and Zone of Influence modeling indicate a low risk of entrainment for the larval and juvenile Longfin Smelt population. The Longfin smelt 
+larval population and PTM analysis projects low entrainment relative to estimatedabundance for this week. The model shows the estimated 
+entrainment for this week is estimated to be <0.1%% for -6,500 cfs,and 0% for all other levels of OMRI. 
 
     Zone of Influence modeling indicates high differences in the hydrodynamic footprint 
 across OMRI scenarios; however, the Zone of Influence does not extend into the 
