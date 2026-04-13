@@ -67,7 +67,7 @@ cat(narrative_text)
 
 #### Biological
 
-- **Delta smelt life stages:** `r ds_lifestages`
+- **Delta smelt life stages detected in surveys:** `r ds_lifestages`
 
 - **Abundance estimate:** `r paste0(abundance, " (95% CL: ", format(abundance_lcl,big.mark = ","), " to ", format(abundance_ucl,big.mark = ","), ")")` as of the week of `r abundance_date`
 - **Releases:** A total of `r format(total_released, scientific = FALSE, big.mark = ",")` cultured Delta smelt have been released for WY 2026. The most recent release of `r format(last_release_count, scientific = FALSE, big.mark = ",")` fish occurred in `r format(last_release_location, scientific = FALSE, big.mark = ",")` on `r format(last_release_date, "%b %d, %Y")`. 
@@ -244,7 +244,7 @@ if (larval_ent_status != "relevant") {
 ### Longfin smelt
 #### Biological
 
-- **Longfin smelt life stages:** `r lfs_lifestages`
+- **Longfin smelt life stages detected in surveys:** `r lfs_lifestages`
 
 - **Longfin smelt count:** `r lfs_adults_count_wy` adult, `r lfs_juveniles_count_wy` juvenile, and `r lfs_larvae_count_wy` larval longfin smelt have been detected this water year. See @tbl-lfs-recent-catch for recent detections, @fig-lfs-map for spatial distribution, and @fig-lfs-catch for temporal distribution.
 - **Longfin smelt salvage:** `r lfs_salvage_count` longfin smelt have been salvaged, and the cumulative seasonal salvage is `r lfs_cumsalvage`. 
