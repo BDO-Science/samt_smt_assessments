@@ -35,7 +35,7 @@ end_of_season = "not relevant"
 
 narrative_text <- 
 "- Delta smelt were most recently detected at Suisun Marsh. 
-- No longfin smelt salvage have been observed this water year.
+- No longfin smelt salvage has been observed this water year.
 - Turbidity in the central/south Delta is low.
 "
 
