@@ -196,8 +196,14 @@ edsm_data <- edsm_data_raw %>%
   select(-source) %>% 
   select(source= program, date, region, stratum, latitude=latitude_start, longitude=longitude_start, life_stage, 
           mark_code, fork_length, catch= nfish, species)
-edsm_ds <- edsm_data %>% filter(species == "Delta Smelt") %>% select(-species)
-edsm_lfs <- edsm_data %>% filter(species == "Longfin Smelt") %>% select(-species)
+edsm_ds <- edsm_data %>% filter(species == "Delta Smelt") %>% select(-species)%>% 
+  mutate(source = if_else(condition = source == "EDSM EDI Final USFWS Lodi",
+                          true = "EDSM",
+                          false= source))
+edsm_lfs <- edsm_data %>% filter(species == "Longfin Smelt") %>% select(-species) %>% 
+  mutate(source = if_else(condition = source == "EDSM EDI Final USFWS Lodi",
+                          true = "EDSM",
+                          false= source))
 
 #Chipps island trawl catch
 chipps_data_raw <- read_csv("https://www.cbr.washington.edu/sacramento/data/generated/WY2026_smeltcatch_chipps.csv")
