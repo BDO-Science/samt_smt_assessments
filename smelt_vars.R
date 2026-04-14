@@ -77,7 +77,7 @@ below the ≥12 FNU threshold, the conditions required to initiate the larval an
     Additionally, PTM modeling does not meet the criteria for initiating the action. No Delta smelt larvae have been captured in SLS or 20-mm surveys to date in
 WY2026. PTM results for this week for neutrally buoyant particles injected at Chipps Island (using the most recent adult detections as a proxy 
 for potential larval locations) showed 0% particle entrainment at both facilities for all OMRI levels (−6,500, −5,000, −3,500, and −2,000 cfs) this 
-week. These results indicate that, if Delta smelt larvae were present, the risk of entrainment would be low."
+week and next week. These results indicate that, if Delta smelt larvae were present, the risk of entrainment would be low."
 
 # Longfin smelt
 
@@ -94,10 +94,10 @@ longfin smelt have been detected in salvage this water year."
 #anticipated to cause a population decline?
 lfs_eval_2 <-  "JPF is projected to remain positive throughout the week, so the condition of JPF < 0 cfs is not met. Additionally, PTM 
 and Zone of Influence modeling indicate a low risk of entrainment for the larval and juvenile Longfin Smelt population. The Longfin smelt 
-larval population and PTM analysis projects low entrainment relative to estimatedabundance for this week. The model shows the estimated 
-entrainment for this week is estimated to be <0.1%% for -6,500 cfs,and 0% for all other levels of OMRI. 
+larval population and PTM analysis projects low entrainment relative to estimated abundance for this week. The model shows the estimated 
+entrainment for this week is estimated to be <0.1%% for -6,500 cfs, and 0% for all other levels of OMRI. 
 
-    Zone of Influence modeling indicates high differences in the hydrodynamic footprint 
+    Zone of Influence modeling indicates moderate differences in the hydrodynamic footprint 
 across OMRI scenarios; however, the Zone of Influence does not extend into the 
 western or far western regions where most Longfin Smelt larvae and juveniles have been 
 detected. Therefore, these effects are not anticipated to result in a population 

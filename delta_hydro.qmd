@@ -43,7 +43,7 @@ mapList <- list.files(here(project, 'zoi_maps/'), full.names = TRUE)
 
 ### Operational and Regulatory Conditions
 
-The current controlling factor is OMRI restrictions to no more negative than -5,000 cfs. See most recent weekly outlook for more information.
+The current controlling factor is San Joaquin River I/E. See most recent weekly outlook for more information.
 
 ### Current Conditions
 
