@@ -289,8 +289,8 @@ sfbs_data_raw <- read_sfbs_files(data_raw)
 sfbs_data <- sfbs_data_raw %>%
   clean_names() %>%
   mutate(station = as.character(station)) %>%
-  mutate(date = ymd_hms(date),
-         date = date(date)) %>%
+  mutate(date = ymd_hms(date)) %>% 
+         #date = date(date)) %>%
   #mutate(catch = coalesce(frequency, plus_count)) %>% 
   # mutate(frequency = frequency %>% # some catch # are in plus count. Use frequency unless NA, then use plus count
   #     str_remove_all("[^0-9.-]") %>%
