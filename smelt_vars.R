@@ -71,12 +71,12 @@ where supplemental fish were released in the fall. Spawning is likely completed 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 dayst
 ds_eval_3 <- "JPF is projected to remain positive for the week and the most recent 11-station average turbidity in the 
-South Delta was 4.6 FNU on April 1, 2026 (station 918 could not be sampled due to bridge clearance issues). Because JPF is positive and turbidity conditions remain 
+South Delta was 3.4 FNU on April 14, 2026 (station 918 could not be sampled due to bridge clearance issues). Because JPF is positive and turbidity conditions remain 
 below the ≥12 FNU threshold, the conditions required to initiate the larval and juvenile Delta smelt entrainment action are not met.
 
     Additionally, PTM modeling does not meet the criteria for initiating the action. No Delta smelt larvae have been captured in SLS or 20-mm surveys to date in
 WY2026. PTM results for this week for neutrally buoyant particles injected at Chipps Island (using the most recent adult detections as a proxy 
-for potential larval locations) showed 0% particle entrainment at both facilities for all OMRI levels (−6,500, −5,000, −3,500, and −2,000 cfs) this 
+for potential larval locations) showed 0% particle entrainment at both facilities for OMRI of -2,000 this 
 week and next week. These results indicate that, if Delta smelt larvae were present, the risk of entrainment would be low."
 
 # Longfin smelt
@@ -95,7 +95,7 @@ longfin smelt have been detected in salvage this water year."
 lfs_eval_2 <-  "JPF is projected to remain positive throughout the week, so the condition of JPF < 0 cfs is not met. Additionally, PTM 
 and Zone of Influence modeling indicate a low risk of entrainment for the larval and juvenile Longfin Smelt population. The Longfin smelt 
 larval population and PTM analysis projects low entrainment relative to estimated abundance for this week. The model shows the estimated 
-entrainment for this week is estimated to be <0.1%% for -6,500 cfs, and 0% for all other levels of OMRI. 
+entrainment for this week is estimated to be 0% for the -2,000 cfs  OMRI scenario. 
 
     Zone of Influence modeling indicates moderate differences in the hydrodynamic footprint 
 across OMRI scenarios; however, the Zone of Influence does not extend into the 
@@ -145,9 +145,9 @@ ds_recent_display <- ds_recent %>%
 
 ## EDIT: South Delta conditions (turbidity and secchi depth-currently by email)-------------------------
 sd_secchi_depth <- 1.56
-sd_secchi_date <- ymd("2026-04-15")
+sd_secchi_date <- ymd("2026-04-14")
 sd_turb <- 3.4
-sd_turb_date <- ymd("2026-04-15")
+sd_turb_date <- ymd("2026-04-14")
 
 ## Abundance ------------------------------
 # pull abundance estimate
