@@ -71,11 +71,11 @@ where supplemental fish were released in the fall. Spawning is likely completed 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 dayst
 ds_eval_3 <- "JPF is projected to remain positive for the week and the most recent 11-station average turbidity in the 
-South Delta was 3.4 FNU on April 14, 2026 (station 918 could not be sampled due to bridge clearance issues). Because JPF is positive and turbidity conditions remain 
+South Delta was 4.2 FNU on April 29, 2026 (station 918 could not be sampled due to bridge clearance issues). Because JPF is positive and turbidity conditions remain 
 below the ≥12 FNU threshold, the conditions required to initiate the larval and juvenile Delta smelt entrainment action are not met.
 
     Additionally, PTM modeling does not meet the criteria for initiating the action. No Delta smelt larvae have been captured in SLS or 20-mm surveys to date in
-WY2026. PTM results for this week for neutrally buoyant particles injected at Chipps Island (using the most recent adult detections as a proxy 
+WY2026 (pending genetic results from EDSM 20mm survey). PTM results for this week for neutrally buoyant particles injected at Chipps Island (using the most recent adult detections as a proxy 
 for potential larval locations) showed 0% particle entrainment at both facilities for OMRI of -2,000 this 
 week and next week. These results indicate that, if Delta smelt larvae were present, the risk of entrainment would be low."
 
@@ -92,16 +92,22 @@ longfin smelt have been detected in salvage this water year."
 #OMRI scenarios? Does Zone of Influence modeling show moderate to high changes 
 #in hydrodynamic footprint across different OMRI scenarios? Are these effects 
 #anticipated to cause a population decline?
-lfs_eval_2 <-  "JPF is projected to remain positive throughout the week, so the condition of JPF < 0 cfs is not met. Additionally, PTM 
-and Zone of Influence modeling indicate a low risk of entrainment for the larval and juvenile Longfin Smelt population. The Longfin smelt 
-larval population and PTM analysis projects low entrainment relative to estimated abundance for this week. The model shows the estimated 
-entrainment for this week is estimated to be 0% for the -2,000 cfs  OMRI scenario. 
+lfs_eval_2 <-  "JPF is projected to remain positive throughout the week, so the condition 
+of JPF < 0 cfs is not met. Additionally, PTM and Zone of Influence modeling indicate 
+a low risk of entrainment for the larval and juvenile Longfin Smelt population. The Longfin smelt 
+larval population and PTM analysis projects low entrainment relative to estimated 
+abundance* for this week. The model shows the estimated entrainment for this week 
+is estimated to be <0.1% for the -2,000 cfs  OMRI scenario. 
+    
+    *Please note that due to processing/posting time for 20-mm survey data results, larval longfin smelt
+abundance for this model is being calculated from completed SLS survey data, and has not yet been 
+updated to use 20-mm data. As a result, data from this model should be interpreted with caution.
 
-    Zone of Influence modeling indicates moderate differences in the hydrodynamic footprint 
+    Zone of Influence modeling indicates high differences in the hydrodynamic footprint 
 across OMRI scenarios; however, the Zone of Influence does not extend into the 
-western or far western regions where most Longfin Smelt larvae and juveniles have been 
+western or far western regions where the majority of Longfin Smelt larvae and juveniles have been 
 detected. Therefore, these effects are not anticipated to result in a population 
-decline, and the criteria for initiating this action are not met."
+decline."
 
 # DONT NEED TO CHANGE UNLESS YOU WANT TO
 # 3. Is there additional information or other analyses that should be considered in this evaluation?
@@ -179,7 +185,7 @@ ds_larvae_count_wy <- ds_detail %>% filter(date > ymd("2025-10-01")) %>%
 
 ## Salvage ----------------------
 # Once 2026 starts updating go back to this code
-ds_salvage_count <- ds_recent %>% filter(source == "salvage") %>% pull(catch)%>% sum()
+ds_salvage_count <- ds_wy %>% filter(source == "salvage") %>% pull(total_catch)%>% sum()
 ds_cumsalvage <- salvage_ds_data %>% pull(salvage) %>% sum()
 #Before salvage for WY starts, use this code
 #ds_salvage_count <- 0

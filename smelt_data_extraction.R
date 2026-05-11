@@ -199,10 +199,16 @@ edsm_data <- edsm_data_raw %>%
 edsm_ds <- edsm_data %>% filter(species == "Delta Smelt") %>% select(-species)%>% 
   mutate(source = if_else(condition = source == "EDSM EDI Final USFWS Lodi",
                           true = "EDSM",
+                          false= source),
+         source = if_else(condition = source == "20-mm",
+                          true = "EDSM 20-mm",
                           false= source))
 edsm_lfs <- edsm_data %>% filter(species == "Longfin Smelt") %>% select(-species) %>% 
   mutate(source = if_else(condition = source == "EDSM EDI Final USFWS Lodi",
                           true = "EDSM",
+                          false= source),
+         source = if_else(condition = source == "20-mm",
+                          true = "EDSM 20-mm",
                           false= source))
 
 #Chipps island trawl catch

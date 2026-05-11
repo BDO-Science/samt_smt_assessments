@@ -77,6 +77,7 @@ cat(narrative_text)
 
 **Notes**
 
+- EDSM is currently in phase 2 (20-mm); detections are marked as *Hypomesus sp.* until genetic verification is returned, which may be 4-6 weeks delay. As a result, 'recent catch' in this assessment may be low until genetic verification has occurred.  
 - Since there are few recent detections of Delta smelt, estimation of distribution within the Delta is limited. 
 - As mentioned in EDSM reporting, fork length ranges reported for Delta smelt and longfin smelt life stages are defined by permit reporting purposes and are not intended to delineate cohorts or distinguish from hatchery or wild origin. See @tbl-ds-recent-catch caption for fork-length ranges for age groups of Delta smelt. 
 - See [SacPAS SMT Page](https://www.cbr.washington.edu/sacramento/workgroups/delta_smelt.html) for additional details on releases and detection in surveys and salvage.
