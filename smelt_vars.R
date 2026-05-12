@@ -37,6 +37,7 @@ narrative_text <-
 "- Delta smelt were most recently detected at Suisun Marsh.
 - No longfin smelt salvage has been observed this water year.
 - Turbidity in the central/south Delta is low.
+- Temperature in the south Delta is increasing.
 "
 
 # Evaluation question responses ---------------------
@@ -99,7 +100,10 @@ lfs_eval_2 <-  "JPF may decrease to < 0 cfs this week. However, PTM and Zone of 
 a low risk of entrainment for the larval and juvenile Longfin Smelt population. The Longfin smelt 
 larval population and PTM analysis projects low entrainment relative to estimated 
 abundance* for this week. The model shows the estimated entrainment for this week 
-is estimated to be <0.1% for the -2,000, -3,500, and -5,000 cfs OMRI scenarios. 
+is estimated to be <0.1% for the -2,000, -3,500, and -5,000 cfs OMRI scenarios. In addition, 
+PTM for surface-oriented particles injected at both Chipps Island and Jersey Point 
+show 0-0.1% entrainment at the projects for this week for OMRI of –2,000, -3,500, 
+and –5,000 cfs.
     
     *Please note that due to processing/posting time for 20-mm survey data results, larval longfin smelt
 abundance for this model is being calculated from completed SLS survey data, and has not yet been 
