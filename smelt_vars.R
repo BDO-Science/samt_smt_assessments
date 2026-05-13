@@ -156,10 +156,10 @@ ds_recent_display <- ds_recent %>%
   select(Survey = source, Date=date, Region = region, Stratum = stratum, `Life Stage` = life_stage, Catch = sum)
 
 ## EDIT: South Delta conditions (turbidity and secchi depth-currently by email)-------------------------
-sd_secchi_depth <- 1.65
-sd_secchi_date <- ymd("2026-04-29")
-sd_turb <- 4.2
-sd_turb_date <- ymd("2026-04-29")
+sd_secchi_depth <- 1.43
+sd_secchi_date <- ymd("2026-05-13")
+sd_turb <- 3.6
+sd_turb_date <- ymd("2026-05-13")
 
 ## Abundance ------------------------------
 # pull abundance estimate
