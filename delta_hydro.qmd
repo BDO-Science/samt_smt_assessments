@@ -43,7 +43,7 @@ mapList <- list.files(here(project, 'zoi_maps/'), full.names = TRUE)
 
 ### Operational and Regulatory Conditions
 
-The current controlling factor is D-1641, 100% of Vernalis flows until May 13 and OMRI no more negative than –5,000 cfs (after May 13).
+The current controlling factor is OMR(-5000) with SWP exports restricted to SJR I/E.
 
 ### Current Conditions
 
