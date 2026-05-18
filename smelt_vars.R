@@ -26,7 +26,7 @@ adult_ent_status = "not relevant"
 larval_ent_status = "relevant"
 lfs_adult_ent_status = "relevant"
 lfs_larval_ent_status = "relevant"
-end_of_season = "not relevant"
+end_of_season = "relevant"
 
 # Narrative ----------------------
 # - Text about what actions have recently started, ended, or predicted to start
@@ -34,9 +34,10 @@ end_of_season = "not relevant"
 # - Summary of salvage and expectations of salvage
 
 narrative_text <- 
-"- Delta smelt were most recently detected at Suisun Marsh. 
+"- Delta smelt were most recently detected at Suisun Marsh.
 - No longfin smelt salvage has been observed this water year.
 - Turbidity in the central/south Delta is low.
+- Temperature in the south Delta is increasing.
 "
 
 # Evaluation question responses ---------------------
@@ -64,40 +65,45 @@ the majority of Delta Smelt spawning occurs at 11-15˚C (but can occur from 8-18
 Based on [historical monitoring data](https://github.com/Delta-Stewardship-Council/deltafish) from the past few years, 
 first detection of larvae in the Central and South Delta has typically occurred by mid to late March. 
 The large majority of Delta smelt recaptures continue to be from Suisun Marsh, close to
-where supplemental fish were released in the fall. Spawning is likely completed due to increased water temperatures."
+where supplemental fish were released in the fall. Spawning is most likely completed due to increased water temperatures."
 
 # 3. After the onset of spawning, have the following conditions occurred: JPF < 0, 
 #12-station average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 dayst
-ds_eval_3 <- "JPF is projected to remain positive for the week and the most recent 11-station average turbidity in the 
-South Delta was 4.2 FNU on April 29, 2026 (station 918 could not be sampled due to bridge clearance issues). Because JPF is positive and turbidity conditions remain 
-below the ≥12 FNU threshold, the conditions required to initiate the larval and juvenile Delta smelt entrainment action are not met.
-
-    Additionally, PTM modeling does not meet the criteria for initiating the action. No Delta smelt larvae have been captured in SLS or 20-mm surveys to date in
-WY2026 (pending genetic results from EDSM 20mm survey). PTM results for this week for neutrally buoyant particles injected at Chipps Island (using the most recent adult detections as a proxy 
-for potential larval locations) showed 0% particle entrainment at both facilities for OMRI of -2,000 this 
-week and next week. These results indicate that, if Delta smelt larvae were present, the risk of entrainment would be low."
+ds_eval_3 <- "The most recent 11-station average turbidity in the South Delta was 4.2 FNU on 
+April 29, 2026 (station 918 could not be sampled due to bridge clearance issues). JPF may be < 0 cfs
+for part of this week. However, PTM results for this week for neutrally buoyant particles \
+injected at Chipps Island (using the most recent adult detections as a proxy 
+for potential larval locations) showed 0% particle entrainment at both facilities for OMRI of -2,000, -3,500, and 
+-5,000 cfs this week and next week. These results indicate that, if Delta smelt larvae were present, 
+the risk of entrainment would be low. No Delta smelt larvae have been captured in SLS or 20-mm surveys to date in WY2026 
+(pending genetic results from EDSM 20mm survey). Because turbidity conditions remain 
+below the ≥12 FNU threshold and modeling shows a low risk of entrainment, the conditions 
+required to initiate the larval and juvenile Delta smelt entrainment action are not met."
 
 # Longfin smelt
 
 # 1. If JPF < 0, what is the trajectory of annual loss of adult longfin smelt 
 #and is it likely to exceed 5% of the adult population estimate? 
 #Is South Delta entrainment expected to decrease due to a reduction in export pumping?
-lfs_eval_1 <- "JPF is projected to remain positive throughout the week and no adult 
-longfin smelt have been detected in salvage this water year."
+lfs_eval_1 <- "While JPF may decrease to < 0 cfs during this week, no adult 
+longfin smelt have been detected in salvage this water year and so conditions are not 
+met for the adult longfin smelt entrainment protection action."
 
 # 2. For larval and juvenile longfin smelt, if JPF < 0 cfs, do particle tracking 
 #models show a moderate to high difference in particle fates across different 
 #OMRI scenarios? Does Zone of Influence modeling show moderate to high changes 
 #in hydrodynamic footprint across different OMRI scenarios? Are these effects 
 #anticipated to cause a population decline?
-lfs_eval_2 <-  "JPF is projected to remain positive throughout the week, so the condition 
-of JPF < 0 cfs is not met. Additionally, PTM and Zone of Influence modeling indicate 
+lfs_eval_2 <-  "JPF may decrease to < 0 cfs this week. However, PTM and Zone of Influence modeling indicate 
 a low risk of entrainment for the larval and juvenile Longfin Smelt population. The Longfin smelt 
 larval population and PTM analysis projects low entrainment relative to estimated 
 abundance* for this week. The model shows the estimated entrainment for this week 
-is estimated to be <0.1% for the -2,000 cfs  OMRI scenario. 
+is estimated to be <0.1% for the -2,000, -3,500, and -5,000 cfs OMRI scenarios. In addition, 
+PTM for surface-oriented particles injected at both Chipps Island and Jersey Point 
+show 0-0.1% entrainment at the projects for this week for OMRI of –2,000, -3,500, 
+and –5,000 cfs.
     
     *Please note that due to processing/posting time for 20-mm survey data results, larval longfin smelt
 abundance for this model is being calculated from completed SLS survey data, and has not yet been 
@@ -150,10 +156,10 @@ ds_recent_display <- ds_recent %>%
   select(Survey = source, Date=date, Region = region, Stratum = stratum, `Life Stage` = life_stage, Catch = sum)
 
 ## EDIT: South Delta conditions (turbidity and secchi depth-currently by email)-------------------------
-sd_secchi_depth <- 1.65
-sd_secchi_date <- ymd("2026-04-29")
-sd_turb <- 4.2
-sd_turb_date <- ymd("2026-04-29")
+sd_secchi_depth <- 1.43
+sd_secchi_date <- ymd("2026-05-13")
+sd_turb <- 3.6
+sd_turb_date <- ymd("2026-05-13")
 
 ## Abundance ------------------------------
 # pull abundance estimate
