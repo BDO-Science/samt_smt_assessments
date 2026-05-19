@@ -36,7 +36,7 @@ end_of_season = "relevant"
 narrative_text <- 
 "- Delta smelt were most recently detected at Suisun Marsh.
 - No longfin smelt salvage has been observed this water year.
-- Turbidity in the central/south Delta is low.
+- Turbidity in the central/south Delta is moderate.
 - Temperature in the south Delta is increasing.
 "
 
@@ -71,9 +71,10 @@ where supplemental fish were released in the fall. Spawning is most likely compl
 #12-station average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 dayst
-ds_eval_3 <- "The most recent 11-station average turbidity in the South Delta was 4.2 FNU on 
-April 29, 2026 (station 918 could not be sampled due to bridge clearance issues). JPF may be < 0 cfs
-for part of this week. However, PTM results for this week for neutrally buoyant particles \
+ds_eval_3 <- "Moderate to high turbidity observed at some South Delta stations most likely associated with temporary
+wind-driven turbidity. The most recent 11-station average turbidity in the South Delta was 3.6 FNU on 
+May 12, 2026 (station 918 could not be sampled due to bridge clearance issues). JPF may be < 0 cfs
+for part of this week. However, PTM results for this week for neutrally buoyant particles 
 injected at Chipps Island (using the most recent adult detections as a proxy 
 for potential larval locations) showed 0% particle entrainment at both facilities for OMRI of -2,000, -3,500, and 
 -5,000 cfs this week and next week. These results indicate that, if Delta smelt larvae were present, 
@@ -102,14 +103,14 @@ larval population and PTM analysis projects low entrainment relative to estimate
 abundance* for this week. The model shows the estimated entrainment for this week 
 is estimated to be <0.1% for the -2,000, -3,500, and -5,000 cfs OMRI scenarios. In addition, 
 PTM for surface-oriented particles injected at both Chipps Island and Jersey Point 
-show 0-0.1% entrainment at the projects for this week for OMRI of –2,000, -3,500, 
+show 0-1.4% entrainment at the projects for this week for OMRI of –2,000, -3,500, 
 and –5,000 cfs.
     
     *Please note that due to processing/posting time for 20-mm survey data results, larval longfin smelt
 abundance for this model is being calculated from completed SLS survey data, and has not yet been 
 updated to use 20-mm data. As a result, data from this model should be interpreted with caution.
 
-    Zone of Influence modeling indicates high differences in the hydrodynamic footprint 
+    Zone of Influence modeling indicates moderate differences in the hydrodynamic footprint 
 across OMRI scenarios; however, the Zone of Influence does not extend into the 
 western or far western regions where the majority of Longfin Smelt larvae and juveniles have been 
 detected. Therefore, these effects are not anticipated to result in a population 
