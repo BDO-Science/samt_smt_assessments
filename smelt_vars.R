@@ -36,7 +36,7 @@ end_of_season = "relevant"
 narrative_text <- 
 "- Delta smelt were most recently detected at Suisun Marsh.
 - No longfin smelt salvage has been observed this water year.
-- Turbidity in the central/south Delta is moderate.
+- Turbidity in the central/south Delta is low.
 - Temperature in the south Delta is increasing.
 "
 
@@ -71,8 +71,7 @@ where supplemental fish were released in the fall. Spawning is most likely compl
 #12-station average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 dayst
-ds_eval_3 <- "Moderate to high turbidity observed at some South Delta stations most likely associated with temporary
-wind-driven turbidity. The most recent 11-station average turbidity in the South Delta was 3.6 FNU on 
+ds_eval_3 <- "The most recent 11-station average turbidity in the South Delta was 3.6 FNU on 
 May 12, 2026 (station 918 could not be sampled due to bridge clearance issues). JPF may be < 0 cfs
 for part of this week. However, PTM results for this week for neutrally buoyant particles 
 injected at Chipps Island (using the most recent adult detections as a proxy 
