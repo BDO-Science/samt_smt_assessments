@@ -97,17 +97,11 @@ met for the adult longfin smelt entrainment protection action."
 #in hydrodynamic footprint across different OMRI scenarios? Are these effects 
 #anticipated to cause a population decline?
 lfs_eval_2 <-  "JPF may decrease to < 0 cfs this week. However, PTM and Zone of Influence modeling indicate 
-a low risk of entrainment for the larval and juvenile Longfin Smelt population. The Longfin smelt 
-larval population and PTM analysis projects low entrainment relative to estimated 
-abundance* for this week. The model shows the estimated entrainment for this week 
-is estimated to be <0.1% for the -2,000, -3,500, and -5,000 cfs OMRI scenarios. In addition, 
-PTM for surface-oriented particles injected at both Chipps Island and Jersey Point 
-show 0-1.4% entrainment at the projects for this week for OMRI of –2,000, -3,500, 
-and –5,000 cfs.
-    
-    *Please note that due to processing/posting time for 20-mm survey data results, larval longfin smelt
-abundance for this model is being calculated from completed SLS survey data, and has not yet been 
-updated to use 20-mm data. As a result, data from this model should be interpreted with caution.
+a low risk of entrainment for the larval and juvenile Longfin smelt population. PTM results
+for surface-oriented particles injected at Chipps Island show 0% entrainment for OMRI of -2,000,
+-3,500, and -5,000 cfs. PTM results from particles injected at Jersey Point 
+show 0-0.1% entrainment at the projects for this week for OMRI of –2,000, 0.1-0.9% for OMRI of -3,500, 
+and 0.1-1.9% entrainment at OMRI of –5,000 cfs.
 
     Zone of Influence modeling indicates moderate differences in the hydrodynamic footprint 
 across OMRI scenarios; however, the Zone of Influence does not extend into the 
