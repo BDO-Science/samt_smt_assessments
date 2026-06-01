@@ -43,7 +43,7 @@ mapList <- list.files(here(project, 'zoi_maps/'), full.names = TRUE)
 
 ### Operational and Regulatory Conditions
 
-The current controlling factor is OMR(-5000) with SWP exports restricted to SJR I/E.
+The current controlling factor is Delta water quality.
 
 ### Current Conditions
 
