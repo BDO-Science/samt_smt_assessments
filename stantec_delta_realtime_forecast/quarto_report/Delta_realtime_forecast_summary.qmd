@@ -63,6 +63,19 @@ Forecast Week 3: `r fmt_date(week3_start)` – `r fmt_date(week3_end)`
 ## Common Assumptions
 
 ## Reclamation Forecast Flow and Export Data
+```{r}
+#| label: fig-flow-export
+#| echo: false
+#| out-width: "100%"
+
+knitr::include_graphics(
+file.path(latest_results_folder, "flow_export.png")
+)
+```
+
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+
+**Figure 1. Daily Average Flow for Measured and Forecasted Delta Inflow, CVP Exports, and SWP Exports**
 
 ## Delta Export Zone of Influence
 
