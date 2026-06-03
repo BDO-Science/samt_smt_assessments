@@ -20,13 +20,45 @@ editor: visual
 #| include: false
 
 library(knitr)
+
+source("helper_functions.R")
+
+latest_results_folder <- get_latest_results_folder("..")
+latest_results_name <- basename(latest_results_folder)
+
+# Extract forecast start date from folder name, e.g., 20260526_results
+forecast_start_date <- as.Date(
+gsub("_results", "", latest_results_name),
+format = "%Y%m%d"
+)
+
+forecast_end_date <- forecast_start_date + 20
+
+week1_start <- forecast_start_date
+week1_end <- forecast_start_date + 6
+
+week2_start <- forecast_start_date + 7
+week2_end <- forecast_start_date + 13
+
+week3_start <- forecast_start_date + 14
+week3_end <- forecast_start_date + 20
+
+fmt_date <- function(x) {
+format(x, "%m/%d/%Y")
+}
 ```
 
+# Delta Real-Time Forecast Summary
 
-# Delta Real-Time Forecast Summary 
 Date Published: *`r format(Sys.Date(), "%B %d, %Y")`*
 
+Forecast Period: `r fmt_date(forecast_start_date)` – `r fmt_date(forecast_end_date)`
 
+Forecast Week 1: `r fmt_date(week1_start)` – `r fmt_date(week1_end)`
+
+Forecast Week 2: `r fmt_date(week2_start)` – `r fmt_date(week2_end)`
+
+Forecast Week 3: `r fmt_date(week3_start)` – `r fmt_date(week3_end)`
 
 ## Common Assumptions
 
@@ -44,6 +76,6 @@ Date Published: *`r format(Sys.Date(), "%B %d, %Y")`*
 
 ## Longfin Smelt Larval Population and PTM Analysis
 
----
+------------------------------------------------------------------------
 
 ## 
