@@ -1,0 +1,49 @@
+---
+execute:
+  echo: false
+  warning: false
+  error: false
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-expand: true
+    toc-location: left
+    number-sections: false
+    theme: cosmo
+    smooth-scroll: true
+editor: visual
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(knitr)
+```
+
+
+# Delta Real-Time Forecast Summary 
+Date Published: *`r format(Sys.Date(), "%B %d, %Y")`*
+
+
+
+## Common Assumptions
+
+## Reclamation Forecast Flow and Export Data
+
+## Delta Export Zone of Influence
+
+## PTM (Particle Tracking Model) Results
+
+### Neutrally Buoyant Particles (NP)
+
+### Surface Oriented Particles (PP)
+
+## ECO-PTM (Ecological Particle Tracking Model)
+
+## Longfin Smelt Larval Population and PTM Analysis
+
+---
+
+## 
