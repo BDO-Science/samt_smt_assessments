@@ -20,15 +20,17 @@ editor: visual
 #| include: false
 
 library(knitr)
-
+library(readr)
+library(dplyr)
+library(kableExtra)
 source("helper_functions.R")
 
-latest_results_folder <- get_latest_results_folder("..")
-latest_results_name <- basename(latest_results_folder)
+selected_results_folder <- get_selected_results_folder("..", "report_config.yml")
+selected_results_name <- basename(selected_results_folder)
 
 # Extract forecast start date from folder name, e.g., 20260526_results
 forecast_start_date <- as.Date(
-gsub("_results", "", latest_results_name),
+gsub("_results", "", selected_results_name),
 format = "%Y%m%d"
 )
 
@@ -46,6 +48,9 @@ week3_end <- forecast_start_date + 20
 fmt_date <- function(x) {
 format(x, "%m/%d/%Y")
 }
+fmt_long_date <-function(x){
+  format(x, "%B %d, %Y")
+}
 ```
 
 # Delta Real-Time Forecast Summary
@@ -62,20 +67,38 @@ Forecast Week 3: `r fmt_date(week3_start)` – `r fmt_date(week3_end)`
 
 ## Common Assumptions
 
-## Reclamation Forecast Flow and Export Data
-```{r}
-#| label: fig-flow-export
-#| echo: false
-#| out-width: "100%"
+{{< include common_assumptions.md >}}
 
-knitr::include_graphics(
-file.path(latest_results_folder, "flow_export.png")
-)
+## Reclamation Forecast Flow and Export Data
+
+**Table 1. Weekly Averaged Forecasted Flow Data and Flow Bins**
+
+```{r}
+#| echo: false
+
+create_zoi_table(selected_results_folder)
 ```
 
-*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+*Key: cfs = cubic feet per second, Sac = Sacramento River, SJR = San Joaquin River*
 
-**Figure 1. Daily Average Flow for Measured and Forecasted Delta Inflow, CVP Exports, and SWP Exports**
+**Table 2. Weekly Averaged CVP and SWP Exports by OMR Bin**
+
+```{r}
+#| label: table-average-exports
+#| echo: false
+
+create_average_exports_table(selected_results_folder)
+```
+
+**Notes:**
+
+¹ One pumping unit is currently out of service at Jones Pumping Plant until August 2026. The current maximum
+
+² Per the State Water Project (SWP) Incidental Take Permit (ITP) 8.12.1, the State is required to curtail exports April 1 through May 31. This change in exports is expected to persist for the two-month period unless Vernalis flows change. This is reflected in the forecast SWP exports starting on April 1.
+
+³ There is still a low probability an OMR of -6,500 cfs would be realized, so that scenario is omitted from this assessment.
+
+*Key: cfs = cubic feet per second, CVP = Central Valley Project, OMR = Old and Middle River*
 
 ## Delta Export Zone of Influence
 
