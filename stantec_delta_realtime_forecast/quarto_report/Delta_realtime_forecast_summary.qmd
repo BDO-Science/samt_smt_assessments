@@ -12,6 +12,7 @@ format:
     number-sections: false
     theme: cosmo
     smooth-scroll: true
+    css: styles.css
 editor: visual
 ---
 
@@ -71,34 +72,51 @@ Forecast Week 3: `r fmt_date(week3_start)` – `r fmt_date(week3_end)`
 
 ## Reclamation Forecast Flow and Export Data
 
-**Table 1. Weekly Averaged Forecasted Flow Data and Flow Bins**
 
-```{r}
-#| echo: false
+
+```{r, echo = FALSE}
+#| label: tbl-zoi
+#| tbl-cap: "Weekly Averaged Forecasted Flow Data and Flow Bins"
 
 create_zoi_table(selected_results_folder)
 ```
+::: {.key}
+Key: cfs = cubic feet per second, Sac = Sacramento River, SJR = San Joaquin River
+:::
 
-*Key: cfs = cubic feet per second, Sac = Sacramento River, SJR = San Joaquin River*
-
-**Table 2. Weekly Averaged CVP and SWP Exports by OMR Bin**
 
 ```{r}
-#| label: table-average-exports
-#| echo: false
+#| label: tbl-average-exports
+#| tbl-cap: "Weekly Averaged CVP and SWP Exports by OMR Bin"
 
 create_average_exports_table(selected_results_folder)
 ```
-
-**Notes:**
+::: {.notes}
+Notes:
 
 ¹ One pumping unit is currently out of service at Jones Pumping Plant until August 2026. The current maximum
 
 ² Per the State Water Project (SWP) Incidental Take Permit (ITP) 8.12.1, the State is required to curtail exports April 1 through May 31. This change in exports is expected to persist for the two-month period unless Vernalis flows change. This is reflected in the forecast SWP exports starting on April 1.
 
 ³ There is still a low probability an OMR of -6,500 cfs would be realized, so that scenario is omitted from this assessment.
+:::
 
-*Key: cfs = cubic feet per second, CVP = Central Valley Project, OMR = Old and Middle River*
+::: {.key}
+Key: cfs = cubic feet per second, CVP = Central Valley Project, OMR = Old and Middle River
+:::
+
+```{r}
+#| label: fig-flow-export
+#| fig-cap: "Daily Average Flow for Measured and Forecasted Delta Inflow, CVP Exports, and SWP Exports"
+#| out-width: "100%"
+
+insert_flow_export_figure(selected_results_folder)
+```
+
+::: {.key}
+Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project
+:::
+
 
 ## Delta Export Zone of Influence
 
