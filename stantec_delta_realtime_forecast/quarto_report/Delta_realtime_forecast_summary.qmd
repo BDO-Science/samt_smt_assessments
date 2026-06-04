@@ -196,9 +196,179 @@ insert_proportional_channel_length_figure(selected_results_folder, 3)
 ::: {.key}
 Key: cfs = cubic feet per second, OMR = Old and Middle River
 :::
+
 ## PTM (Particle Tracking Model) Results
 
+**PTM Flux Evaluation Period:** `r fmt_date(forecast_start_date)` – `r fmt_date(forecast_end_date)`
+
+**Particles Injected:** `r fmt_date(week1_start)`
+```{r}
+#| label: fig-ptm-injection-flux-locations
+#| fig-cap: "Map of PTM Injection and Flux Locations"
+#| out-width: "85%"
+
+insert_static_figure("ptm_injection_flux_locations.png")
+```
+
 ### Neutrally Buoyant Particles (NP)
+```{r}
+#| label: tbl-np-chipps
+#| tbl-cap: "Neutral Particle Fate (percent flux across boundary) for Particles Injected at Chipps (DSM2 Node 465)"
+
+create_ptm_fate_table(selected_results_folder, "NP_465(Chipps).csv")
+```
+
+::: {.notes}
+**Note:** Values between 0.0 and 0.1 are indicated with <0.1.
+:::
+
+::: {.key}
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+:::
+
+```{r}
+#| label: tbl-np-cache-slough
+#| tbl-cap: "Neutral Particle Fate (percent flux across boundary) for Particles Injected at Cache Slough (DSM2 Node 350)"
+
+create_ptm_fate_table(selected_results_folder, "NP_350(Cache Slough).csv")
+```
+
+::: {.notes}
+**Note:** Values between 0.0 and 0.1 are indicated with <0.1.
+:::
+
+::: {.key}
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+:::
+
+```{r}
+#| label: tbl-np-jersey-point
+#| tbl-cap: "Neutral Particle Fate (percent flux across boundary) for Particles Injected at Jersey Point (DSM2 Node 469)"
+
+create_ptm_fate_table(selected_results_folder, "NP_469(Jersey Point).csv")
+```
+
+::: {.notes}
+**Note:** Values between 0.0 and 0.1 are indicated with <0.1.
+:::
+
+::: {.key}
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+:::
+
+```{r}
+#| label: tbl-np-old-river
+#| tbl-cap: "Neutral Particle Fate (percent flux across boundary) for Particles Injected at Old River (DSM2 Node 99)"
+
+create_ptm_fate_table(selected_results_folder, "NP_99(Old River).csv")
+```
+
+::: {.notes}
+**Note:** Values between 0.0 and 0.1 are indicated with <0.1.
+:::
+
+::: {.key}
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+:::
+```{r}
+#| label: fig-np-465-a
+#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected at DSM2 Node 465 (Chipps)"
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_02_465A.png")
+```
+
+```{r}
+#| label: fig-np-465-b
+#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected at DSM2 Node 465 (Chipps)"
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_03_465B.png")
+```
+
+```{r}
+#| label: fig-np-465-c
+#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -2,000 cfs. Particles Injected at DSM2 Node 465 (Chipps)"
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_04_465C.png")
+```
+
+```{r}
+#| label: fig-np-350-a
+#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected at DSM2 Node 350 (Cache Slough)"
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_06_350A.png")
+```
+
+```{r}
+#| label: fig-np-350-b
+#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected at DSM2 Node 350 (Cache Slough)"
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_07_350B.png")
+```
+
+```{r}
+#| label: fig-np-350-c
+#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -2,000 cfs. Particles Injected at DSM2 Node 350 (Cache Slough)"
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_08_350C.png")
+```
+
+```{r}
+#| label: fig-np-469-a
+#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected at DSM2 Node 469 (Jersey Point)"
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_10_469A.png")
+```
+
+```{r}
+#| label: fig-np-469-b
+#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected at DSM2 Node 469 (Jersey Point)"
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_11_469B.png")
+```
+
+```{r}
+#| label: fig-np-469-c
+#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -2,000 cfs. Particles Injected at DSM2 Node 469 (Jersey Point)"
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_12_469C.png")
+```
+
+```{r}
+#| label: fig-np-99-a
+#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected at DSM2 Node 99 (Old River)"
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_14_99A.png")
+```
+
+```{r}
+#| label: fig-np-99-b
+#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected at DSM2 Node 99 (Old River)"
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_15_99B.png")
+```
+
+```{r}
+#| label: fig-np-99-c
+#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -2,000 cfs. Particles Injected at DSM2 Node 99 (Old River)"
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_16_99C.png")
+```
+
+
+
+
 
 ### Surface Oriented Particles (PP)
 
