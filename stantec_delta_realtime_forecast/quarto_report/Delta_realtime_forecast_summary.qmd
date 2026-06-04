@@ -54,7 +54,44 @@ format(x, "%m/%d/%Y")
 fmt_long_date <-function(x){
   format(x, "%B %d, %Y")
 }
+
+injection_date <- fmt_date(forecast_start_date)
+
+cap_np_465_a <- paste0("PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
+cap_np_465_b <- paste0("PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
+cap_np_465_c <- paste0("PTM Results for Neutral Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
+
+cap_np_350_a <- paste0("PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 350 (Cache Slough)")
+cap_np_350_b <- paste0("PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 350 (Cache Slough)")
+cap_np_350_c <- paste0("PTM Results for Neutral Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 350 (Cache Slough)")
+
+cap_np_469_a <- paste0("PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 469 (Jersey Point)")
+cap_np_469_b <- paste0("PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 469 (Jersey Point)")
+cap_np_469_c <- paste0("PTM Results for Neutral Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 469 (Jersey Point)")
+
+cap_np_99_a <- paste0("PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
+cap_np_99_b <- paste0("PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
+cap_np_99_c <- paste0("PTM Results for Neutral Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
+
+cap_pp_465_a <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
+cap_pp_465_b <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
+cap_pp_465_c <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
+
+cap_pp_350_a <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 350 (Cache Slough)")
+cap_pp_350_b <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 350 (Cache Slough)")
+cap_pp_350_c <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 350 (Cache Slough)")
+
+cap_pp_469_a <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 469 (Jersey Point)")
+cap_pp_469_b <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 469 (Jersey Point)")
+cap_pp_469_c <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 469 (Jersey Point)")
+
+cap_pp_99_a <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
+cap_pp_99_b <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
+cap_pp_99_c <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
 ```
+
+
+
 
 # Delta Real-Time Forecast Summary
 
@@ -270,9 +307,11 @@ create_ptm_fate_table(selected_results_folder, "NP_99(Old River).csv")
 ::: {.key}
 *Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
 :::
+
+
 ```{r}
 #| label: fig-np-465-a
-#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected at DSM2 Node 465 (Chipps)"
+#| fig-cap: !expr cap_np_465_a
 #| out-width: "85%"
 
 insert_ptm_figure(selected_results_folder, "NP_02_465A.png")
@@ -280,7 +319,7 @@ insert_ptm_figure(selected_results_folder, "NP_02_465A.png")
 
 ```{r}
 #| label: fig-np-465-b
-#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected at DSM2 Node 465 (Chipps)"
+#| fig-cap: !expr cap_np_465_b
 #| out-width: "85%"
 
 insert_ptm_figure(selected_results_folder, "NP_03_465B.png")
@@ -288,7 +327,7 @@ insert_ptm_figure(selected_results_folder, "NP_03_465B.png")
 
 ```{r}
 #| label: fig-np-465-c
-#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -2,000 cfs. Particles Injected at DSM2 Node 465 (Chipps)"
+#| fig-cap: !expr cap_np_465_c
 #| out-width: "85%"
 
 insert_ptm_figure(selected_results_folder, "NP_04_465C.png")
@@ -296,7 +335,7 @@ insert_ptm_figure(selected_results_folder, "NP_04_465C.png")
 
 ```{r}
 #| label: fig-np-350-a
-#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected at DSM2 Node 350 (Cache Slough)"
+#| fig-cap: !expr cap_np_350_a
 #| out-width: "85%"
 
 insert_ptm_figure(selected_results_folder, "NP_06_350A.png")
@@ -304,7 +343,7 @@ insert_ptm_figure(selected_results_folder, "NP_06_350A.png")
 
 ```{r}
 #| label: fig-np-350-b
-#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected at DSM2 Node 350 (Cache Slough)"
+#| fig-cap: !expr cap_np_350_b
 #| out-width: "85%"
 
 insert_ptm_figure(selected_results_folder, "NP_07_350B.png")
@@ -312,7 +351,7 @@ insert_ptm_figure(selected_results_folder, "NP_07_350B.png")
 
 ```{r}
 #| label: fig-np-350-c
-#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -2,000 cfs. Particles Injected at DSM2 Node 350 (Cache Slough)"
+#| fig-cap: !expr cap_np_350_c
 #| out-width: "85%"
 
 insert_ptm_figure(selected_results_folder, "NP_08_350C.png")
@@ -320,7 +359,7 @@ insert_ptm_figure(selected_results_folder, "NP_08_350C.png")
 
 ```{r}
 #| label: fig-np-469-a
-#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected at DSM2 Node 469 (Jersey Point)"
+#| fig-cap: !expr cap_np_469_a
 #| out-width: "85%"
 
 insert_ptm_figure(selected_results_folder, "NP_10_469A.png")
@@ -328,7 +367,7 @@ insert_ptm_figure(selected_results_folder, "NP_10_469A.png")
 
 ```{r}
 #| label: fig-np-469-b
-#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected at DSM2 Node 469 (Jersey Point)"
+#| fig-cap: !expr cap_np_469_b
 #| out-width: "85%"
 
 insert_ptm_figure(selected_results_folder, "NP_11_469B.png")
@@ -336,7 +375,7 @@ insert_ptm_figure(selected_results_folder, "NP_11_469B.png")
 
 ```{r}
 #| label: fig-np-469-c
-#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -2,000 cfs. Particles Injected at DSM2 Node 469 (Jersey Point)"
+#| fig-cap: !expr cap_np_469_c
 #| out-width: "85%"
 
 insert_ptm_figure(selected_results_folder, "NP_12_469C.png")
@@ -344,7 +383,7 @@ insert_ptm_figure(selected_results_folder, "NP_12_469C.png")
 
 ```{r}
 #| label: fig-np-99-a
-#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected at DSM2 Node 99 (Old River)"
+#| fig-cap: !expr cap_np_99_a
 #| out-width: "85%"
 
 insert_ptm_figure(selected_results_folder, "NP_14_99A.png")
@@ -352,7 +391,7 @@ insert_ptm_figure(selected_results_folder, "NP_14_99A.png")
 
 ```{r}
 #| label: fig-np-99-b
-#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected at DSM2 Node 99 (Old River)"
+#| fig-cap: !expr cap_np_99_b
 #| out-width: "85%"
 
 insert_ptm_figure(selected_results_folder, "NP_15_99B.png")
@@ -360,17 +399,169 @@ insert_ptm_figure(selected_results_folder, "NP_15_99B.png")
 
 ```{r}
 #| label: fig-np-99-c
-#| fig-cap: "PTM Results for Neutral Particles. OMR Scenario -2,000 cfs. Particles Injected at DSM2 Node 99 (Old River)"
+#| fig-cap: !expr cap_np_99_c
 #| out-width: "85%"
 
 insert_ptm_figure(selected_results_folder, "NP_16_99C.png")
 ```
 
-
-
-
-
 ### Surface Oriented Particles (PP)
+
+```{r}
+#| label: tbl-pp-chipps
+#| tbl-cap: "Surface Oriented Particle Fate (percent flux across boundary) for Particles Injected at Chipps (DSM2 Node 465)"
+
+create_ptm_fate_table(selected_results_folder, "PP_465(Chipps).csv")
+```
+
+::: {.notes}
+**Note:** Values between 0.0 and 0.1 are indicated with &lt;0.1.
+:::
+
+::: {.key}
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+:::
+
+```{r}
+#| label: tbl-pp-cache-slough
+#| tbl-cap: "Surface Oriented Particle Fate (percent flux across boundary) for Particles Injected at Cache Slough (DSM2 Node 350)"
+
+create_ptm_fate_table(selected_results_folder, "PP_350(Cache Slough).csv")
+```
+
+::: {.notes}
+**Note:** Values between 0.0 and 0.1 are indicated with &lt;0.1.
+:::
+
+::: {.key}
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+:::
+
+```{r}
+#| label: tbl-pp-jersey-point
+#| tbl-cap: "Surface Oriented Particle Fate (percent flux across boundary) for Particles Injected at Jersey Point (DSM2 Node 469)"
+
+create_ptm_fate_table(selected_results_folder, "PP_469(Jersey Point).csv")
+```
+
+::: {.notes}
+**Note:** Values between 0.0 and 0.1 are indicated with &lt;0.1.
+:::
+
+::: {.key}
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+:::
+
+```{r}
+#| label: tbl-pp-old-river
+#| tbl-cap: "Surface Oriented Particle Fate (percent flux across boundary) for Particles Injected at Old River (DSM2 Node 99)"
+
+create_ptm_fate_table(selected_results_folder, "PP_99(Old River).csv")
+```
+
+::: {.notes}
+**Note:** Values between 0.0 and 0.1 are indicated with &lt;0.1.
+:::
+
+::: {.key}
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+:::
+
+```{r}
+#| label: fig-pp-465-a
+#| fig-cap: !expr cap_pp_465_a
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_02_465A.png")
+```
+
+```{r}
+#| label: fig-pp-465-b
+#| fig-cap: !expr cap_pp_465_b
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_03_465B.png")
+```
+
+```{r}
+#| label: fig-pp-465-c
+#| fig-cap: !expr cap_pp_465_c
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_04_465C.png")
+```
+
+```{r}
+#| label: fig-pp-350-a
+#| fig-cap: !expr cap_pp_350_a
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_06_350A.png")
+```
+
+```{r}
+#| label: fig-pp-350-b
+#| fig-cap: !expr cap_pp_350_b
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_07_350B.png")
+```
+
+```{r}
+#| label: fig-pp-350-c
+#| fig-cap: !expr cap_pp_350_c
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_08_350C.png")
+```
+
+```{r}
+#| label: fig-pp-469-a
+#| fig-cap: !expr cap_pp_469_a
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_10_469A.png")
+```
+
+```{r}
+#| label: fig-pp-469-b
+#| fig-cap: !expr cap_pp_469_b
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_11_469B.png")
+```
+
+```{r}
+#| label: fig-pp-469-c
+#| fig-cap: !expr cap_pp_469_c
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_12_469C.png")
+```
+
+```{r}
+#| label: fig-pp-99-a
+#| fig-cap: !expr cap_pp_99_a
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_14_99A.png")
+```
+
+```{r}
+#| label: fig-pp-99-b
+#| fig-cap: !expr cap_pp_99_b
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_15_99B.png")
+```
+
+```{r}
+#| label: fig-pp-99-c
+#| fig-cap: !expr cap_pp_99_c
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_16_99C.png")
+```
 
 ## ECO-PTM (Ecological Particle Tracking Model)
 
