@@ -480,3 +480,187 @@ insert_proportional_channel_length_figure <- function(results_folder, week_numbe
   
   knitr::include_graphics(output_fig)
 }
+
+
+
+############################################################
+# Function: insert_static_figure
+#
+# Description:
+# Inserts a static figure that does not change between
+# weekly forecasts.
+#
+# Static figures are stored in the Quarto report
+# directory and are not associated with a specific
+# results folder.
+#
+# Example Use:
+# PTM injection and flux location maps
+# Conceptual diagrams
+# Reference figures
+#
+# Inputs:
+# file_name - name of the image file located in the
+# Quarto report directory
+#
+# Returns:
+# Figure object for inclusion in the Quarto report
+############################################################
+
+insert_static_figure <- function(file_name) {
+  
+  if (!file.exists(file_name)) {
+    stop(paste("Static figure not found:", file_name))
+  }
+  
+  knitr::include_graphics(file_name)
+}
+
+
+
+
+
+############################################################
+# Function: create_ptm_fate_table
+#
+# Description:
+# Reads a PTM particle fate CSV file and creates a
+# formatted table with weekly grouping and OMR bins.
+#
+# Source Files:
+# NP_465(Chipps).csv
+# NP_350(Cache Slough).csv
+# NP_469(Jersey Point).csv
+# NP_99(Old River).csv
+#
+# Inputs:
+# results_folder - selected results folder
+# file_name - CSV file name
+#
+# Returns:
+# Formatted HTML table for Quarto report
+############################################################
+
+create_ptm_fate_table <- function(results_folder, file_name) {
+  
+  ptm <- readr::read_csv(
+    file.path(results_folder, file_name),
+    skip = 3,
+    col_names = FALSE,
+    col_types = readr::cols(.default = "c"),
+    show_col_types = FALSE
+  )
+  
+  ptm <- ptm[, 1:7]
+  
+  names(ptm) <- c(
+    "OMR Bin",
+    "Past Chipps",
+    "Upstream of Decker",
+    "Unresolved in Central Delta",
+    "Unresolved in OMR corridor",
+    "CVP Entrainment",
+    "SWP Entrainment"
+  )
+  
+  ptm <- ptm[!is.na(ptm$`OMR Bin`) & ptm$`OMR Bin` != "", ]
+  
+  ptm$Week <- rep(
+    c(
+      paste0("<b>Week 1:</b><br>", fmt_date(week1_start), " -<br>", fmt_date(week1_end)),
+      paste0("<b>Week 2:</b><br>", fmt_date(week2_start), " -<br>", fmt_date(week2_end)),
+      paste0("<b>Week 3:</b><br>", fmt_date(week3_start), " -<br>", fmt_date(week3_end))
+    ),
+    each = 4
+  )
+  
+  omr_numeric <- suppressWarnings(
+    as.numeric(gsub(",", "", ptm$`OMR Bin`))
+  )
+  
+  omit_rows <- omr_numeric %in% c(-6500, -6250)
+  
+  value_cols <- c(
+    "Past Chipps",
+    "Upstream of Decker",
+    "Unresolved in Central Delta",
+    "Unresolved in OMR corridor",
+    "CVP Entrainment",
+    "SWP Entrainment"
+  )
+  
+  for (col in value_cols) {
+    ptm[[col]] <- ifelse(omit_rows, "-", ptm[[col]])
+  }
+  
+  ptm$`OMR Bin` <- format_cfs(ptm$`OMR Bin`)
+  
+  ptm <- ptm[, c(
+    "Week",
+    "OMR Bin",
+    "Past Chipps",
+    "Upstream of Decker",
+    "Unresolved in Central Delta",
+    "Unresolved in OMR corridor",
+    "CVP Entrainment",
+    "SWP Entrainment"
+  )]
+  
+  knitr::kable(
+    ptm,
+    format = "html",
+    escape = FALSE,
+    col.names = c(
+      "Forecast Week",
+      "OMR Flow Bin",
+      "Past Chipps",
+      "Upstream of Decker",
+      "Unresolved in Central Delta",
+      "Unresolved in OMR corridor",
+      "CVP Entrainment",
+      "SWP Entrainment"
+    ),
+    align = "c"
+  ) |>
+    kableExtra::kable_styling(full_width = FALSE) |>
+    kableExtra::collapse_rows(columns = 1, valign = "middle")
+}
+
+
+
+############################################################
+# Function: insert_ptm_figure
+#
+# Description:
+# Inserts a single PTM result figure from the selected
+# results folder into the Quarto report.
+#
+# The function copies the figure into the local
+# report_figures folder so the rendered HTML can find
+# and display the image correctly.
+#
+# Inputs:
+# results_folder - path to selected results folder
+# figure_name - name of the PNG figure file
+#
+# Returns:
+# Figure object for inclusion in the Quarto report
+############################################################
+
+insert_ptm_figure <- function(results_folder, figure_name) {
+  
+  source_fig <- file.path(results_folder, figure_name)
+  
+  if (!file.exists(source_fig)) {
+    stop(paste("Figure not found:", source_fig))
+  }
+  
+  dir.create("report_figures", showWarnings = FALSE)
+  
+  output_fig <- file.path("report_figures", figure_name)
+  
+  file.copy(source_fig, output_fig, overwrite = TRUE)
+  
+  knitr::include_graphics(output_fig)
+}
+
