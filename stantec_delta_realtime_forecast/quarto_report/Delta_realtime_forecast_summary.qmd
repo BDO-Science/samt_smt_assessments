@@ -24,6 +24,8 @@ library(knitr)
 library(readr)
 library(dplyr)
 library(kableExtra)
+library(readxl)
+library(tidyr)
 source("helper_functions.R")
 
 selected_results_folder <- get_selected_results_folder("..", "report_config.yml")
@@ -71,9 +73,6 @@ Forecast Week 3: `r fmt_date(week3_start)` – `r fmt_date(week3_end)`
 {{< include common_assumptions.md >}}
 
 ## Reclamation Forecast Flow and Export Data
-
-
-
 ```{r, echo = FALSE}
 #| label: tbl-zoi
 #| tbl-cap: "Weekly Averaged Forecasted Flow Data and Flow Bins"
@@ -83,8 +82,6 @@ create_zoi_table(selected_results_folder)
 ::: {.key}
 Key: cfs = cubic feet per second, Sac = Sacramento River, SJR = San Joaquin River
 :::
-
-
 ```{r}
 #| label: tbl-average-exports
 #| tbl-cap: "Weekly Averaged CVP and SWP Exports by OMR Bin"
@@ -104,7 +101,6 @@ Notes:
 ::: {.key}
 Key: cfs = cubic feet per second, CVP = Central Valley Project, OMR = Old and Middle River
 :::
-
 ```{r}
 #| label: fig-flow-export
 #| fig-cap: "Daily Average Flow for Measured and Forecasted Delta Inflow, CVP Exports, and SWP Exports"
@@ -112,14 +108,94 @@ Key: cfs = cubic feet per second, CVP = Central Valley Project, OMR = Old and Mi
 
 insert_flow_export_figure(selected_results_folder)
 ```
-
 ::: {.key}
 Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project
 :::
-
-
 ## Delta Export Zone of Influence
+```{r}
+#| label: fig-zoi-week1
+#| fig-cap: "**Delta Zone of Influence for Week 1**"
+#| out-width: "80%"
 
+insert_zoi_figure(selected_results_folder, 1)
+```
+::: {.notes}
+Notes: Contours indicate the proportional overlap of hourly average velocity Gaussian KDEs for a 1-week period from DSM2 hydro simulations with and without Delta exports active. DSM2 nodes that were sufficiently different from neighboring nodes to create isolated contours at several OMR flows were removed (nodes 146, 147, 148, 206, 242, 246, 432, 433, 434).
+:::
+
+::: {.key}
+Key: cfs = cubic feet per second, OMR = Old and Middle River
+:::
+```{r}
+#| label: fig-zoi-week2
+#| fig-cap: "**Delta Zone of Influence for Week 2**"
+#| out-width: "80%"
+
+insert_zoi_figure(selected_results_folder, 2)
+```
+::: {.notes}
+Notes: Contours indicate the proportional overlap of hourly average velocity Gaussian KDEs for a 1-week period from DSM2 hydro simulations with and without Delta exports active. DSM2 nodes that were sufficiently different from neighboring nodes to create isolated contours at several OMR flows were removed (nodes 146, 147, 148, 206, 242, 246, 432, 433, 434).
+:::
+
+::: {.key}
+Key: cfs = cubic feet per second, OMR = Old and Middle River
+:::
+
+```{r}
+#| label: fig-zoi-week3
+#| fig-cap: "**Delta Zone of Influence for Week 3**"
+#| out-width: "80%"
+
+insert_zoi_figure(selected_results_folder, 3)
+```
+::: {.notes}
+Notes: Contours indicate the proportional overlap of hourly average velocity Gaussian KDEs for a 1-week period from DSM2 hydro simulations with and without Delta exports active. DSM2 nodes that were sufficiently different from neighboring nodes to create isolated contours at several OMR flows were removed (nodes 146, 147, 148, 206, 242, 246, 432, 433, 434).
+:::
+
+::: {.key}
+Key: cfs = cubic feet per second, OMR = Old and Middle River
+:::
+
+```{r}
+#| label: tbl-channel-length
+#| tbl-cap: "Proportion of DSM2 Channel Length with Hydrologic Alteration from Pumping"
+
+create_channel_length_table(selected_results_folder)
+```
+::: {.notes}
+Notes: Sum channel length includes the length of channels within the Delta that have a calculated hydrologic alteration level falling within each category.
+:::
+
+::: {.key}
+Key: HA = hydrologic alteration, OMR = Old and Middle River
+:::
+
+```{r}
+#| label: fig-channel-length-week1
+#| fig-cap: "Proportional Channel Length for Week 1"
+#| out-width: "100%"
+
+insert_proportional_channel_length_figure(selected_results_folder, 1)
+```
+
+```{r}
+#| label: fig-channel-length-week2
+#| fig-cap: "Proportional Channel Length for Week 2"
+#| out-width: "100%"
+
+insert_proportional_channel_length_figure(selected_results_folder, 2)
+```
+
+```{r}
+#| label: fig-channel-length-week3
+#| fig-cap: "Proportional Channel Length for Week 3"
+#| out-width: "100%"
+
+insert_proportional_channel_length_figure(selected_results_folder, 3)
+```
+::: {.key}
+Key: cfs = cubic feet per second, OMR = Old and Middle River
+:::
 ## PTM (Particle Tracking Model) Results
 
 ### Neutrally Buoyant Particles (NP)
