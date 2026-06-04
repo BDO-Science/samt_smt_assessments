@@ -1,0 +1,16 @@
+caption,
+.figure-caption,
+.table-caption {
+font-size: 18px;
+font-weight: bold;
+color: #222222;
+}
+
+table {
+font-size: 16px;
+}
+
+.notes,
+.key {
+font-size: 16px;
+}
