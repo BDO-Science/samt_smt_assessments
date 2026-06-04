@@ -164,7 +164,7 @@ create_zoi_table <- function(results_folder) {
     kableExtra::kable_styling(
       full_width = FALSE
     ) |>
-    kableExtra::column_spec(1, width = "6cm")
+    kableExtra::column_spec(1, width = "8cm")
 }
 
 
@@ -265,4 +265,30 @@ create_average_exports_table <- function(results_folder) {
       columns = 1,
       valign = "middle"
     )
+}
+
+
+############################################################
+# Function: insert_flow_export_figure
+#
+# Description:
+# Inserts flow_export.png from the selected
+# results folder.
+############################################################
+
+insert_flow_export_figure <- function(results_folder) {
+  
+  source_fig <- file.path(results_folder, "flow_export.png")
+  
+  if (!file.exists(source_fig)) {
+    stop(paste("Figure not found:", source_fig))
+  }
+  
+  dir.create("report_figures", showWarnings = FALSE)
+  
+  output_fig <- file.path("report_figures", "flow_export.png")
+  
+  file.copy(source_fig, output_fig, overwrite = TRUE)
+  
+  knitr::include_graphics(output_fig)
 }
