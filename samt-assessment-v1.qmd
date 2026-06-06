@@ -33,6 +33,12 @@ library(magick)
 project <- here()
 source(here(project, 'source_code/salmon_code.R'), echo = FALSE)
 source(here(project, 'source_code/text_updates.R'), echo = FALSE)
+
+# Setting up shortcuts to use for less than/equal to, greater than/equal to, and degree symbol that can be used inside
+# R strings/glue()
+GE  <- "$\\ge$"
+LE  <- "$\\le$"
+DEG <- "$^{\\circ}$"
 ```
 
 ### Executive Summary
@@ -374,6 +380,24 @@ knitr::include_graphics(paste0(base_url, 'samt_lsp_winter.png'))
 
 knitr::include_graphics(paste0(base_url, 'samt_lsp_stlhd.png'))
 ```
+
+### End of Entrainment Management for Salmonids
+
+The end of entrainment management for salmonids occurs on June 30, or after 7 days of daily mean water temperature in June ≥ 72 $^{\circ}$F (22 $^{\circ}$C) at Mossdale and at Prisoner's Point (does not have to be consecutive), whichever occurs first.
+
+```{r}
+#| label: fig-end-entr-mgmt
+#| echo: false
+#| message: false
+#| fig-cap: "Daily average temperature at Mossdale and Prisoner's Point. Horizontal dashed line indicates temperature threshold for entrainment management for salmonids. Number of days exceeding the threshold at each location are shown (n= )."
+#| fig-alt: "Two line charts showing the average daily temperature at Mossdale (top plot) and Prisoner's Point (bottom plot) in degrees Celcius, with a horizontal dashed line indicating the temperature threshold for salmonids."
+#| fig-width: 8
+#| fig-height: 6
+#| out-width: "100%"
+
+knitr::include_graphics("samt-assessment-v1_files/figure-html/temp_offramp.png")
+```
+
 
 ### Evaluation
 
