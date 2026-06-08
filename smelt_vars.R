@@ -72,7 +72,7 @@ where supplemental fish were released in the fall. Spawning is most likely compl
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 dayst
 ds_eval_3 <- "The most recent 11-station average turbidity in the South Delta was 2.7 FNU on 
-May 28, 2026 (station 918 could not be sampled due to bridge clearance issues). JPF may go < 0 cfs
+May 28, 2026 (station 918 could not be sampled due to bridge clearance issues). JPF may decrease to below 0 cfs
 for some of this week. PTM results for this week for neutrally buoyant particles 
 injected at Chipps Island (using the most recent adult detections as a proxy 
 for potential larval locations) showed 0% particle entrainment at both facilities for OMRI of -2,000, -3,500, and 
