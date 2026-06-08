@@ -1,6 +1,6 @@
 # smelt_data_extraction.R
 # Script for extracting data for smelt assessments- e.g. from files, SacPAS, online sources
-# Last updated 12/14/2025- lm adding A5 data
+# Last major update 12/14/2025- LRM adding A5 data
 
 # Libraries 
 library(here)

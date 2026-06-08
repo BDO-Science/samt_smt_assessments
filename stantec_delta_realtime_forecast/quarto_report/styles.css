@@ -1,0 +1,25 @@
+/* Table captions from Quarto / kable */
+caption,
+table caption,
+.quarto-float-caption,
+.quarto-table-caption,
+.figure-caption,
+figcaption {
+caption-side: top !important;
+text-align: center !important;
+font-size: 20px !important;
+font-weight: 700 !important;
+color: grey !important;
+margin-bottom: 10px !important;
+}
+
+/* Table font size */
+table {
+font-size: 16px !important;
+}
+
+/* Notes and keys */
+.notes,
+.key {
+font-size: 16px !important;
+}

@@ -1,0 +1,572 @@
+---
+execute:
+  echo: false
+  warning: false
+  error: false
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-expand: true
+    toc-location: left
+    number-sections: false
+    theme: cosmo
+    smooth-scroll: true
+    css: styles.css
+editor: visual
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(knitr)
+library(readr)
+library(dplyr)
+library(kableExtra)
+library(readxl)
+library(tidyr)
+source("helper_functions.R")
+
+selected_results_folder <- get_selected_results_folder("..", "report_config.yml")
+selected_results_name <- basename(selected_results_folder)
+
+# Extract forecast start date from folder name, e.g., 20260526_results
+forecast_start_date <- as.Date(
+gsub("_results", "", selected_results_name),
+format = "%Y%m%d"
+)
+
+forecast_end_date <- forecast_start_date + 20
+
+week1_start <- forecast_start_date
+week1_end <- forecast_start_date + 6
+
+week2_start <- forecast_start_date + 7
+week2_end <- forecast_start_date + 13
+
+week3_start <- forecast_start_date + 14
+week3_end <- forecast_start_date + 20
+
+fmt_date <- function(x) {
+format(x, "%m/%d/%Y")
+}
+fmt_long_date <-function(x){
+  format(x, "%B %d, %Y")
+}
+
+injection_date <- fmt_date(forecast_start_date)
+
+cap_np_465_a <- paste0("PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
+cap_np_465_b <- paste0("PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
+cap_np_465_c <- paste0("PTM Results for Neutral Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
+
+cap_np_350_a <- paste0("PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 350 (Cache Slough)")
+cap_np_350_b <- paste0("PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 350 (Cache Slough)")
+cap_np_350_c <- paste0("PTM Results for Neutral Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 350 (Cache Slough)")
+
+cap_np_469_a <- paste0("PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 469 (Jersey Point)")
+cap_np_469_b <- paste0("PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 469 (Jersey Point)")
+cap_np_469_c <- paste0("PTM Results for Neutral Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 469 (Jersey Point)")
+
+cap_np_99_a <- paste0("PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
+cap_np_99_b <- paste0("PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
+cap_np_99_c <- paste0("PTM Results for Neutral Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
+
+cap_pp_465_a <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
+cap_pp_465_b <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
+cap_pp_465_c <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
+
+cap_pp_350_a <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 350 (Cache Slough)")
+cap_pp_350_b <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 350 (Cache Slough)")
+cap_pp_350_c <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 350 (Cache Slough)")
+
+cap_pp_469_a <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 469 (Jersey Point)")
+cap_pp_469_b <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 469 (Jersey Point)")
+cap_pp_469_c <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 469 (Jersey Point)")
+
+cap_pp_99_a <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
+cap_pp_99_b <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
+cap_pp_99_c <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
+```
+
+
+
+
+# Delta Real-Time Forecast Summary
+
+Date Published: *`r format(Sys.Date(), "%B %d, %Y")`*
+
+Forecast Period: `r fmt_date(forecast_start_date)` – `r fmt_date(forecast_end_date)`
+
+Forecast Week 1: `r fmt_date(week1_start)` – `r fmt_date(week1_end)`
+
+Forecast Week 2: `r fmt_date(week2_start)` – `r fmt_date(week2_end)`
+
+Forecast Week 3: `r fmt_date(week3_start)` – `r fmt_date(week3_end)`
+
+## Common Assumptions
+
+{{< include common_assumptions.md >}}
+
+## Reclamation Forecast Flow and Export Data
+```{r, echo = FALSE}
+#| label: tbl-zoi
+#| tbl-cap: "Weekly Averaged Forecasted Flow Data and Flow Bins"
+
+create_zoi_table(selected_results_folder)
+```
+::: {.key}
+Key: cfs = cubic feet per second, Sac = Sacramento River, SJR = San Joaquin River
+:::
+```{r}
+#| label: tbl-average-exports
+#| tbl-cap: "Weekly Averaged CVP and SWP Exports by OMR Bin"
+
+create_average_exports_table(selected_results_folder)
+```
+::: {.notes}
+Notes:
+
+¹ One pumping unit is currently out of service at Jones Pumping Plant until August 2026. The current maximum
+
+² Per the State Water Project (SWP) Incidental Take Permit (ITP) 8.12.1, the State is required to curtail exports April 1 through May 31. This change in exports is expected to persist for the two-month period unless Vernalis flows change. This is reflected in the forecast SWP exports starting on April 1.
+
+³ There is still a low probability an OMR of -6,500 cfs would be realized, so that scenario is omitted from this assessment.
+:::
+
+::: {.key}
+Key: cfs = cubic feet per second, CVP = Central Valley Project, OMR = Old and Middle River
+:::
+```{r}
+#| label: fig-flow-export
+#| fig-cap: "Daily Average Flow for Measured and Forecasted Delta Inflow, CVP Exports, and SWP Exports"
+#| out-width: "100%"
+
+insert_flow_export_figure(selected_results_folder)
+```
+::: {.key}
+Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project
+:::
+## Delta Export Zone of Influence
+```{r}
+#| label: fig-zoi-week1
+#| fig-cap: "**Delta Zone of Influence for Week 1**"
+#| out-width: "80%"
+
+insert_zoi_figure(selected_results_folder, 1)
+```
+::: {.notes}
+Notes: Contours indicate the proportional overlap of hourly average velocity Gaussian KDEs for a 1-week period from DSM2 hydro simulations with and without Delta exports active. DSM2 nodes that were sufficiently different from neighboring nodes to create isolated contours at several OMR flows were removed (nodes 146, 147, 148, 206, 242, 246, 432, 433, 434).
+:::
+
+::: {.key}
+Key: cfs = cubic feet per second, OMR = Old and Middle River
+:::
+```{r}
+#| label: fig-zoi-week2
+#| fig-cap: "**Delta Zone of Influence for Week 2**"
+#| out-width: "80%"
+
+insert_zoi_figure(selected_results_folder, 2)
+```
+::: {.notes}
+Notes: Contours indicate the proportional overlap of hourly average velocity Gaussian KDEs for a 1-week period from DSM2 hydro simulations with and without Delta exports active. DSM2 nodes that were sufficiently different from neighboring nodes to create isolated contours at several OMR flows were removed (nodes 146, 147, 148, 206, 242, 246, 432, 433, 434).
+:::
+
+::: {.key}
+Key: cfs = cubic feet per second, OMR = Old and Middle River
+:::
+
+```{r}
+#| label: fig-zoi-week3
+#| fig-cap: "**Delta Zone of Influence for Week 3**"
+#| out-width: "80%"
+
+insert_zoi_figure(selected_results_folder, 3)
+```
+::: {.notes}
+Notes: Contours indicate the proportional overlap of hourly average velocity Gaussian KDEs for a 1-week period from DSM2 hydro simulations with and without Delta exports active. DSM2 nodes that were sufficiently different from neighboring nodes to create isolated contours at several OMR flows were removed (nodes 146, 147, 148, 206, 242, 246, 432, 433, 434).
+:::
+
+::: {.key}
+Key: cfs = cubic feet per second, OMR = Old and Middle River
+:::
+
+```{r}
+#| label: tbl-channel-length
+#| tbl-cap: "Proportion of DSM2 Channel Length with Hydrologic Alteration from Pumping"
+
+create_channel_length_table(selected_results_folder)
+```
+::: {.notes}
+Notes: Sum channel length includes the length of channels within the Delta that have a calculated hydrologic alteration level falling within each category.
+:::
+
+::: {.key}
+Key: HA = hydrologic alteration, OMR = Old and Middle River
+:::
+
+```{r}
+#| label: fig-channel-length-week1
+#| fig-cap: "Proportional Channel Length for Week 1"
+#| out-width: "100%"
+
+insert_proportional_channel_length_figure(selected_results_folder, 1)
+```
+
+```{r}
+#| label: fig-channel-length-week2
+#| fig-cap: "Proportional Channel Length for Week 2"
+#| out-width: "100%"
+
+insert_proportional_channel_length_figure(selected_results_folder, 2)
+```
+
+```{r}
+#| label: fig-channel-length-week3
+#| fig-cap: "Proportional Channel Length for Week 3"
+#| out-width: "100%"
+
+insert_proportional_channel_length_figure(selected_results_folder, 3)
+```
+::: {.key}
+Key: cfs = cubic feet per second, OMR = Old and Middle River
+:::
+
+## PTM (Particle Tracking Model) Results
+
+**PTM Flux Evaluation Period:** `r fmt_date(forecast_start_date)` – `r fmt_date(forecast_end_date)`
+
+**Particles Injected:** `r fmt_date(week1_start)`
+```{r}
+#| label: fig-ptm-injection-flux-locations
+#| fig-cap: "Map of PTM Injection and Flux Locations"
+#| out-width: "85%"
+
+insert_static_figure("ptm_injection_flux_locations.png")
+```
+
+### Neutrally Buoyant Particles (NP)
+```{r}
+#| label: tbl-np-chipps
+#| tbl-cap: "Neutral Particle Fate (percent flux across boundary) for Particles Injected at Chipps (DSM2 Node 465)"
+
+create_ptm_fate_table(selected_results_folder, "NP_465(Chipps).csv")
+```
+
+::: {.notes}
+**Note:** Values between 0.0 and 0.1 are indicated with <0.1.
+:::
+
+::: {.key}
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+:::
+
+```{r}
+#| label: tbl-np-cache-slough
+#| tbl-cap: "Neutral Particle Fate (percent flux across boundary) for Particles Injected at Cache Slough (DSM2 Node 350)"
+
+create_ptm_fate_table(selected_results_folder, "NP_350(Cache Slough).csv")
+```
+
+::: {.notes}
+**Note:** Values between 0.0 and 0.1 are indicated with <0.1.
+:::
+
+::: {.key}
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+:::
+
+```{r}
+#| label: tbl-np-jersey-point
+#| tbl-cap: "Neutral Particle Fate (percent flux across boundary) for Particles Injected at Jersey Point (DSM2 Node 469)"
+
+create_ptm_fate_table(selected_results_folder, "NP_469(Jersey Point).csv")
+```
+
+::: {.notes}
+**Note:** Values between 0.0 and 0.1 are indicated with <0.1.
+:::
+
+::: {.key}
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+:::
+
+```{r}
+#| label: tbl-np-old-river
+#| tbl-cap: "Neutral Particle Fate (percent flux across boundary) for Particles Injected at Old River (DSM2 Node 99)"
+
+create_ptm_fate_table(selected_results_folder, "NP_99(Old River).csv")
+```
+
+::: {.notes}
+**Note:** Values between 0.0 and 0.1 are indicated with <0.1.
+:::
+
+::: {.key}
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+:::
+
+
+```{r}
+#| label: fig-np-465-a
+#| fig-cap: !expr cap_np_465_a
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_02_465A.png")
+```
+
+```{r}
+#| label: fig-np-465-b
+#| fig-cap: !expr cap_np_465_b
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_03_465B.png")
+```
+
+```{r}
+#| label: fig-np-465-c
+#| fig-cap: !expr cap_np_465_c
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_04_465C.png")
+```
+
+```{r}
+#| label: fig-np-350-a
+#| fig-cap: !expr cap_np_350_a
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_06_350A.png")
+```
+
+```{r}
+#| label: fig-np-350-b
+#| fig-cap: !expr cap_np_350_b
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_07_350B.png")
+```
+
+```{r}
+#| label: fig-np-350-c
+#| fig-cap: !expr cap_np_350_c
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_08_350C.png")
+```
+
+```{r}
+#| label: fig-np-469-a
+#| fig-cap: !expr cap_np_469_a
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_10_469A.png")
+```
+
+```{r}
+#| label: fig-np-469-b
+#| fig-cap: !expr cap_np_469_b
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_11_469B.png")
+```
+
+```{r}
+#| label: fig-np-469-c
+#| fig-cap: !expr cap_np_469_c
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_12_469C.png")
+```
+
+```{r}
+#| label: fig-np-99-a
+#| fig-cap: !expr cap_np_99_a
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_14_99A.png")
+```
+
+```{r}
+#| label: fig-np-99-b
+#| fig-cap: !expr cap_np_99_b
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_15_99B.png")
+```
+
+```{r}
+#| label: fig-np-99-c
+#| fig-cap: !expr cap_np_99_c
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "NP_16_99C.png")
+```
+
+### Surface Oriented Particles (PP)
+
+```{r}
+#| label: tbl-pp-chipps
+#| tbl-cap: "Surface Oriented Particle Fate (percent flux across boundary) for Particles Injected at Chipps (DSM2 Node 465)"
+
+create_ptm_fate_table(selected_results_folder, "PP_465(Chipps).csv")
+```
+
+::: {.notes}
+**Note:** Values between 0.0 and 0.1 are indicated with &lt;0.1.
+:::
+
+::: {.key}
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+:::
+
+```{r}
+#| label: tbl-pp-cache-slough
+#| tbl-cap: "Surface Oriented Particle Fate (percent flux across boundary) for Particles Injected at Cache Slough (DSM2 Node 350)"
+
+create_ptm_fate_table(selected_results_folder, "PP_350(Cache Slough).csv")
+```
+
+::: {.notes}
+**Note:** Values between 0.0 and 0.1 are indicated with &lt;0.1.
+:::
+
+::: {.key}
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+:::
+
+```{r}
+#| label: tbl-pp-jersey-point
+#| tbl-cap: "Surface Oriented Particle Fate (percent flux across boundary) for Particles Injected at Jersey Point (DSM2 Node 469)"
+
+create_ptm_fate_table(selected_results_folder, "PP_469(Jersey Point).csv")
+```
+
+::: {.notes}
+**Note:** Values between 0.0 and 0.1 are indicated with &lt;0.1.
+:::
+
+::: {.key}
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+:::
+
+```{r}
+#| label: tbl-pp-old-river
+#| tbl-cap: "Surface Oriented Particle Fate (percent flux across boundary) for Particles Injected at Old River (DSM2 Node 99)"
+
+create_ptm_fate_table(selected_results_folder, "PP_99(Old River).csv")
+```
+
+::: {.notes}
+**Note:** Values between 0.0 and 0.1 are indicated with &lt;0.1.
+:::
+
+::: {.key}
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
+:::
+
+```{r}
+#| label: fig-pp-465-a
+#| fig-cap: !expr cap_pp_465_a
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_02_465A.png")
+```
+
+```{r}
+#| label: fig-pp-465-b
+#| fig-cap: !expr cap_pp_465_b
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_03_465B.png")
+```
+
+```{r}
+#| label: fig-pp-465-c
+#| fig-cap: !expr cap_pp_465_c
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_04_465C.png")
+```
+
+```{r}
+#| label: fig-pp-350-a
+#| fig-cap: !expr cap_pp_350_a
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_06_350A.png")
+```
+
+```{r}
+#| label: fig-pp-350-b
+#| fig-cap: !expr cap_pp_350_b
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_07_350B.png")
+```
+
+```{r}
+#| label: fig-pp-350-c
+#| fig-cap: !expr cap_pp_350_c
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_08_350C.png")
+```
+
+```{r}
+#| label: fig-pp-469-a
+#| fig-cap: !expr cap_pp_469_a
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_10_469A.png")
+```
+
+```{r}
+#| label: fig-pp-469-b
+#| fig-cap: !expr cap_pp_469_b
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_11_469B.png")
+```
+
+```{r}
+#| label: fig-pp-469-c
+#| fig-cap: !expr cap_pp_469_c
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_12_469C.png")
+```
+
+```{r}
+#| label: fig-pp-99-a
+#| fig-cap: !expr cap_pp_99_a
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_14_99A.png")
+```
+
+```{r}
+#| label: fig-pp-99-b
+#| fig-cap: !expr cap_pp_99_b
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_15_99B.png")
+```
+
+```{r}
+#| label: fig-pp-99-c
+#| fig-cap: !expr cap_pp_99_c
+#| out-width: "85%"
+
+insert_ptm_figure(selected_results_folder, "PP_16_99C.png")
+```
+
+## ECO-PTM (Ecological Particle Tracking Model)
+
+## Longfin Smelt Larval Population and PTM Analysis
+
+------------------------------------------------------------------------
+
+## 

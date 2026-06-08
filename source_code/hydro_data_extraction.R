@@ -158,7 +158,8 @@ hydro_table <- hydro_table_raw %>% clean_names()
 #jpf_daily <- as.numeric(tail(hydro_table$jpf_cfs_dwr,1))
 
 jpf_daily <- hydro_table %>% 
-  filter(!is.na(jpf_cfs_dwr)) %>%
-  slice_tail() %>%
+  slice_max(order_by = date) %>%
+  #filter(!is.na(jpf_cfs_dwr)) %>%
+  #slice_tail() %>%
   pull(jpf_cfs_dwr) %>%
   prettyNum(big.mark = ",")
