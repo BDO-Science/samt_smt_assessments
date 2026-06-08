@@ -64,4 +64,4 @@ temp_offramp <- ggplot(all_temps, mapping = aes(x = date, y = temp)) +
         axis.text.x = element_text(size = 13),
         axis.text.y = element_text(size = 13))
 temp_offramp
-ggsave(temp_offramp, file = 'samt-assessment-v1_files/figure-html/temp_offramp.png', height = 7, width = 9)
+ggsave(temp_offramp, file = 'temp_offramp.png', height = 7, width = 9)
