@@ -383,7 +383,7 @@ knitr::include_graphics(paste0(base_url, 'samt_lsp_stlhd.png'))
 
 ### End of Entrainment Management for Salmonids
 
-The end of entrainment management for salmonids occurs on June 30, or after 7 days of daily mean water temperature in June ≥ 72 $^{\circ}$F (22 $^{\circ}$C) at Mossdale and at Prisoner's Point (does not have to be consecutive), whichever occurs first.
+The end of entrainment management for salmonids occurs on June 30, or after 7 days of daily mean water temperature in June ≥ 72°F (22°C) at Mossdale and at Prisoner's Point (does not have to be consecutive), whichever occurs first.
 
 ```{r}
 #| label: fig-end-entr-mgmt
