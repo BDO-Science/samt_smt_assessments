@@ -189,18 +189,19 @@ sta_salvage <- data.frame(station = c("CVP", "SWP"),
 # edsm_lfs <- edsm_data %>% filter(organism_code == "LFS")%>% select(-organism_code)
 
 #test code edsm
+# If comma issue, use this code
+# url.edsm <- "https://www.cbr.washington.edu/sacramento/data/generated/WY2026_smeltcatch_edsm.csv"
+# 
+# txt <- readLines(url.edsm)
+# 
+# # remove trailing comma from header line
+# txt[1] <- sub(",\\s*$", "", txt[1])
+# 
+# edsm_data_raw <- readr::read_csv(
+#   I(paste(txt, collapse = "\n")))
+
 # read in full csv from SacPAS
-#Issue from 6/8, commenting out main code until fixed and using a workaround
-#edsm_data_raw <- readr::read_csv("https://www.cbr.washington.edu/sacramento/data/generated/WY2026_smeltcatch_edsm.csv")
-url.edsm <- "https://www.cbr.washington.edu/sacramento/data/generated/WY2026_smeltcatch_edsm.csv"
-
-txt <- readLines(url.edsm)
-
-# remove trailing comma from header line
-txt[1] <- sub(",\\s*$", "", txt[1])
-
-edsm_data_raw <- readr::read_csv(
-  I(paste(txt, collapse = "\n")))
+edsm_data_raw <- readr::read_csv("https://www.cbr.washington.edu/sacramento/data/generated/WY2026_smeltcatch_edsm.csv")
 
 #reg code
 edsm_data <- edsm_data_raw %>%
