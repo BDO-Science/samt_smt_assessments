@@ -56,6 +56,7 @@ fmt_long_date <-function(x){
 }
 
 injection_date <- fmt_date(forecast_start_date)
+ending_date <- fmt_date(forecast_end_date)
 
 cap_np_465_a <- paste0("PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
 cap_np_465_b <- paste0("PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
@@ -88,6 +89,9 @@ cap_pp_469_c <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario
 cap_pp_99_a <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
 cap_pp_99_b <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
 cap_pp_99_c <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
+
+cap_salmon_Ratio <- paste0("Salmon Particle Route Ratio After 3 Weeks Ending ",ending_date)
+cap_salmon_survival <- paste0("Salmon Particle Route-Specific Survival After 3 Weeks Ending ",ending_date)
 ```
 
 
@@ -564,6 +568,47 @@ insert_ptm_figure(selected_results_folder, "PP_16_99C.png")
 ```
 
 ## ECO-PTM (Ecological Particle Tracking Model)
+
+**ECO-PTM Results Evaluation Period:** `r fmt_date(forecast_start_date)` – `r fmt_date(forecast_end_date)`
+
+**Particles Injected:** `r fmt_date(forecast_start_date)` 
+
+**Injection Location:** Sacramento River at Freeport
+
+```{r}
+#| label: tbl-eco-route-ratio
+#| tbl-cap: !expr cap_salmon_Ratio 
+
+create_eco_ptm_table(
+selected_results_folder,
+"survival_combined.csv",
+"ratio"
+)
+```
+
+::: {.notes}
+**Note:** Salmon particle route ratio for the Sacramento River (SS) Route reflects particles inserted at Freeport that are not routed through either Sutter Slough or Steamboat Slough. Salmon particle route ratio for the Sacramento River (GEO) Route reflects particles inserted at Freeport that are not routed through either Sutter Slough, Steamboat Slough, Georgiana Slough, or the Delta Cross Channel (when operational).
+:::
+
+::: {.key}
+*Key: cfs = cubic feet per second, OMR = Old and Middle River*
+:::
+
+
+```{r}
+#| label: tbl-eco-survival
+#| tbl-cap: !expr cap_salmon_survival 
+
+create_eco_ptm_table(
+selected_results_folder,
+"survival_combined.csv",
+"survival"
+)
+```
+
+::: {.key}
+*Key: cfs = cubic feet per second, OMR = Old and Middle River*
+:::
 
 ## Longfin Smelt Larval Population and PTM Analysis
 
