@@ -56,6 +56,7 @@ fmt_long_date <-function(x){
 }
 
 injection_date <- fmt_date(forecast_start_date)
+ending_date <- fmt_date(forecast_end_date)
 
 cap_np_465_a <- paste0("PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
 cap_np_465_b <- paste0("PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
@@ -88,6 +89,9 @@ cap_pp_469_c <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario
 cap_pp_99_a <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
 cap_pp_99_b <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
 cap_pp_99_c <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
+
+cap_salmon_Ratio <- paste0("Salmon Particle Route Ratio After 3 Weeks Ending ",ending_date)
+cap_salmon_survival <- paste0("Salmon Particle Route-Specific Survival After 3 Weeks Ending ",ending_date)
 ```
 
 
@@ -565,8 +569,99 @@ insert_ptm_figure(selected_results_folder, "PP_16_99C.png")
 
 ## ECO-PTM (Ecological Particle Tracking Model)
 
-## Longfin Smelt Larval Population and PTM Analysis
+**ECO-PTM Results Evaluation Period:** `r fmt_date(forecast_start_date)` – `r fmt_date(forecast_end_date)`
 
+**Particles Injected:** `r fmt_date(forecast_start_date)` 
+
+**Injection Location:** Sacramento River at Freeport
+
+```{r}
+#| label: tbl-eco-route-ratio
+#| tbl-cap: !expr cap_salmon_Ratio 
+
+create_eco_ptm_table(
+selected_results_folder,
+"survival_combined.csv",
+"ratio"
+)
+```
+
+::: {.notes}
+**Note:** Salmon particle route ratio for the Sacramento River (SS) Route reflects particles inserted at Freeport that are not routed through either Sutter Slough or Steamboat Slough. Salmon particle route ratio for the Sacramento River (GEO) Route reflects particles inserted at Freeport that are not routed through either Sutter Slough, Steamboat Slough, Georgiana Slough, or the Delta Cross Channel (when operational).
+:::
+
+::: {.key}
+*Key: cfs = cubic feet per second, OMR = Old and Middle River*
+:::
+
+
+```{r}
+#| label: tbl-eco-survival
+#| tbl-cap: !expr cap_salmon_survival 
+
+create_eco_ptm_table(
+selected_results_folder,
+"survival_combined.csv",
+"survival"
+)
+```
+
+::: {.key}
+*Key: cfs = cubic feet per second, OMR = Old and Middle River*
+:::
+
+## Longfin Smelt Larval Population and PTM Analysis
+**PTM Results Evaluation Period:** `r fmt_date(forecast_start_date)` – `r fmt_date(forecast_end_date)`
+
+**Particles Injected:** `r fmt_date(forecast_start_date)` 
+
+**PTM Injection Location:** node(s) within each Delta Region identified in map below
+
+**PTM Analysis Method:** LFS larva abundance is estimated in each Enhanced Delta Smelt Monitoring (EDSM) program subregion. Cumulative particle flux into CVP and SWP facilities is represented in PTM by one injection location per subregion (Figure 33). LFS larva entrainment is estimated by multiplying the LFS subregion abundance by cumulative particle flux into CVP and SWP facilities from the corresponding subregion injection point. LFS entrainment from each subregion is added together and reported at the LFS Region scale (Figure 34).
+
+
+
+
+
+```{r}
+#| label: fig-longfin-subregions
+#| fig-cap: "Map of Delta Showing Longfin Smelt Subregions and DSM2 Nodes"
+#| out-width: "90%"
+
+insert_static_figure("map_delta_longfinsmelt.png")
+```
+
+::: {.notes}
+**Note:** No DSM2 nodes are west of the West Suisun Bay subregion, so the furthest west node in the DSM2 domain is used to represent particle entrainment for all subregions west of West Suisun Bay.
+:::
+
+```{r}
+#| label: fig-longfin-regions
+#| fig-cap: "Map of Delta Showing Longfin Smelt Regions and DSM2 Nodes"
+#| out-width: "90%"
+
+insert_static_figure("map_delta_longfinsmelt_region.png")
+```
+
+Regional and Delta-wide longfin smelt (LFS) larval population is estimated using SLS survey data from Survey 6 (3/9/2026 – 3/11/2026) and volumetric expansion methods developed by the Six-Agency Monitoring Survey Design Team. As of 04/21/2026, all SLS survey catch data has been processed (Table 14). CDFW has transitioned from the SLS to the 20-mm survey to collect distribution data for post larval-juvenile Longfin Smelt. As of 05/12/2026, processing of the 20mm Survey 1 data is at 51% complete, heavily biased to the eastern and southern Delta. Due to the lack of processed 20mm data from any of the more westerly regions, any proportional entrainment estimates would be strongly biased upward, and SLS Survey 6 data is used to estimate proportional entrainment risk for this assessment.
+
+```{r}
+#| label: tbl-sls-processing
+#| tbl-cap: "Percent of Smelt Larva Survey Sample Results Processed as of 04/21/2026"
+
+create_static_csv_table("static_sls_processing.csv")
+```
+::: {.key}
+Key: SLS = Smelt Larva Survey
+:::
+
+The DSM2 node used as an injection point, EDSM subregion, and LFS Region for reporting are shown in Table 15.
+
+```{r}
+#| label: tbl-longfin-nodes
+#| tbl-cap: "DSM2 Injection Node, EDSM Subregion, and LFS Region"
+
+create_static_csv_table("static_longfin_nodes.csv")
+```
 ------------------------------------------------------------------------
 
-## 

@@ -664,3 +664,142 @@ insert_ptm_figure <- function(results_folder, figure_name) {
   knitr::include_graphics(output_fig)
 }
 
+
+############################################################
+# Function: create_eco_ptm_table
+#
+# Description:
+# Reads survival_combined.csv from the selected results
+# folder and generates ECO-PTM tables.
+#
+# The function can generate:
+#
+# 1. Route ratio table
+# - Uses route ratio columns from survival_combined.csv
+# - Displays values as decimals rounded to two digits
+# - Example: 0.09
+#
+# 2. Route-specific survival table
+# - Uses survival columns from survival_combined.csv
+# - Displays values as percentages rounded to whole numbers
+# - Example: 40%
+#
+# For both tables, the -6,500 OMR Flow Bin row is added
+# manually and values are shown as "-".
+#
+# Inputs:
+# results_folder - path to selected results folder
+# csv_file - name of ECO-PTM CSV file
+# table_type - "ratio" or "survival"
+#
+# Source File:
+# survival_combined.csv
+#
+# Returns:
+# Formatted HTML table for inclusion in the Quarto report
+############################################################
+
+create_eco_ptm_table <- function(results_folder,
+                                 csv_file = "survival_combined.csv",
+                                 table_type = c("ratio", "survival")) {
+  
+  table_type <- match.arg(table_type)
+  
+  df <- readr::read_csv(
+    file.path(results_folder, csv_file),
+    show_col_types = FALSE
+  )
+  
+  # Use only scenario rows B, C, and D:
+  # B = -5,000, C = -3,500, D = -2,000
+  df <- df |>
+    dplyr::filter(Model_Run %in% c("B", "C", "D"))
+  
+  omr_bins <- c("-6,500", "-5,000", "-3,500", "-2,000")
+  
+  fmt_ratio <- function(x) {
+    sprintf("%.2f", as.numeric(x))
+  }
+  
+  fmt_percent <- function(x) {
+    paste0(round(as.numeric(x) * 100), "%")
+  }
+  
+  if (table_type == "ratio") {
+    
+    out <- data.frame(
+      `OMR Flow Bin (cfs)` = omr_bins,
+      `Sutter Slough Route` = c("-", fmt_ratio(df$SUT_RATIO)),
+      `Steamboat Slough Route` = c("-", fmt_ratio(df$STM_RATIO)),
+      `Sacramento River (SS) Route` = c("-", fmt_ratio(df$SACR_SS_RATIO)),
+      `Sacramento River (GEO) Route` = c("-", fmt_ratio(df$SACR_GEO_RATIO)),
+      `Georgiana Slough Route` = c("-", fmt_ratio(df$GEO_RATIO)),
+      check.names = FALSE
+    )
+    
+  } else {
+    
+    out <- data.frame(
+      `OMR Flow Bin (cfs)` = omr_bins,
+      `Sutter Slough Route` = c("-", fmt_percent(df$SUT_SUV)),
+      `Steamboat Slough Route` = c("-", fmt_percent(df$STM_SUV)),
+      `Sacramento River Route` = c("-", fmt_percent(df$SAC_SUV)),
+      `Georgiana Slough Route` = c("-", fmt_percent(df$GEO_SUV)),
+      `All Routes Combined` = c("-", fmt_percent(df$Combined_suv)),
+      check.names = FALSE
+    )
+  }
+  
+  out |>
+    knitr::kable(
+      format = "html",
+      escape = FALSE,
+      align = "c"
+    ) |>
+    kableExtra::kable_styling(
+      full_width = FALSE
+    )
+}
+
+
+
+############################################################
+# Function: create_static_csv_table
+#
+# Description:
+# Reads a static CSV file stored in the Quarto report
+# folder and creates a formatted HTML table.
+#
+# Static tables are used for content that does not change
+# between weekly reports.
+#
+# Inputs:
+# file_name - name of static CSV file
+#
+# Returns:
+# Formatted HTML table for Quarto report
+############################################################
+
+create_static_csv_table <- function(file_name) {
+  
+  table_data <- readr::read_csv(
+    file_name,
+    show_col_types = FALSE
+  )
+  
+  table_data |>
+    knitr::kable(
+      format = "html",
+      escape = FALSE,
+      align = "c"
+    ) |>
+    kableExtra::kable_styling(
+      full_width = FALSE
+    )
+}
+
+
+
+
+
+
