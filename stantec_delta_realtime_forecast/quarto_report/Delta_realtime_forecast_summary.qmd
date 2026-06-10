@@ -645,9 +645,23 @@ insert_static_figure("map_delta_longfinsmelt_region.png")
 
 Regional and Delta-wide longfin smelt (LFS) larval population is estimated using SLS survey data from Survey 6 (3/9/2026 – 3/11/2026) and volumetric expansion methods developed by the Six-Agency Monitoring Survey Design Team. As of 04/21/2026, all SLS survey catch data has been processed (Table 14). CDFW has transitioned from the SLS to the 20-mm survey to collect distribution data for post larval-juvenile Longfin Smelt. As of 05/12/2026, processing of the 20mm Survey 1 data is at 51% complete, heavily biased to the eastern and southern Delta. Due to the lack of processed 20mm data from any of the more westerly regions, any proportional entrainment estimates would be strongly biased upward, and SLS Survey 6 data is used to estimate proportional entrainment risk for this assessment.
 
+```{r}
+#| label: tbl-sls-processing
+#| tbl-cap: "Percent of Smelt Larva Survey Sample Results Processed as of 04/21/2026"
 
+create_static_csv_table("static_sls_processing.csv")
+```
+::: {.key}
+Key: SLS = Smelt Larva Survey
+:::
 
+The DSM2 node used as an injection point, EDSM subregion, and LFS Region for reporting are shown in Table 15.
 
+```{r}
+#| label: tbl-longfin-nodes
+#| tbl-cap: "DSM2 Injection Node, EDSM Subregion, and LFS Region"
 
+create_static_csv_table("static_longfin_nodes.csv")
+```
 ------------------------------------------------------------------------
 

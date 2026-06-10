@@ -760,3 +760,46 @@ create_eco_ptm_table <- function(results_folder,
       full_width = FALSE
     )
 }
+
+
+
+############################################################
+# Function: create_static_csv_table
+#
+# Description:
+# Reads a static CSV file stored in the Quarto report
+# folder and creates a formatted HTML table.
+#
+# Static tables are used for content that does not change
+# between weekly reports.
+#
+# Inputs:
+# file_name - name of static CSV file
+#
+# Returns:
+# Formatted HTML table for Quarto report
+############################################################
+
+create_static_csv_table <- function(file_name) {
+  
+  table_data <- readr::read_csv(
+    file_name,
+    show_col_types = FALSE
+  )
+  
+  table_data |>
+    knitr::kable(
+      format = "html",
+      escape = FALSE,
+      align = "c"
+    ) |>
+    kableExtra::kable_styling(
+      full_width = FALSE
+    )
+}
+
+
+
+
+
+
