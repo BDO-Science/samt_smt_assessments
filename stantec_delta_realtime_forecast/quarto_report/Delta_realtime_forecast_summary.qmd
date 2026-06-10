@@ -611,7 +611,43 @@ selected_results_folder,
 :::
 
 ## Longfin Smelt Larval Population and PTM Analysis
+**PTM Results Evaluation Period:** `r fmt_date(forecast_start_date)` – `r fmt_date(forecast_end_date)`
+
+**Particles Injected:** `r fmt_date(forecast_start_date)` 
+
+**PTM Injection Location:** node(s) within each Delta Region identified in map below
+
+**PTM Analysis Method:** LFS larva abundance is estimated in each Enhanced Delta Smelt Monitoring (EDSM) program subregion. Cumulative particle flux into CVP and SWP facilities is represented in PTM by one injection location per subregion (Figure 33). LFS larva entrainment is estimated by multiplying the LFS subregion abundance by cumulative particle flux into CVP and SWP facilities from the corresponding subregion injection point. LFS entrainment from each subregion is added together and reported at the LFS Region scale (Figure 34).
+
+
+
+
+
+```{r}
+#| label: fig-longfin-subregions
+#| fig-cap: "Map of Delta Showing Longfin Smelt Subregions and DSM2 Nodes"
+#| out-width: "90%"
+
+insert_static_figure("map_delta_longfinsmelt.png")
+```
+
+::: {.notes}
+**Note:** No DSM2 nodes are west of the West Suisun Bay subregion, so the furthest west node in the DSM2 domain is used to represent particle entrainment for all subregions west of West Suisun Bay.
+:::
+
+```{r}
+#| label: fig-longfin-regions
+#| fig-cap: "Map of Delta Showing Longfin Smelt Regions and DSM2 Nodes"
+#| out-width: "90%"
+
+insert_static_figure("map_delta_longfinsmelt_region.png")
+```
+
+Regional and Delta-wide longfin smelt (LFS) larval population is estimated using SLS survey data from Survey 6 (3/9/2026 – 3/11/2026) and volumetric expansion methods developed by the Six-Agency Monitoring Survey Design Team. As of 04/21/2026, all SLS survey catch data has been processed (Table 14). CDFW has transitioned from the SLS to the 20-mm survey to collect distribution data for post larval-juvenile Longfin Smelt. As of 05/12/2026, processing of the 20mm Survey 1 data is at 51% complete, heavily biased to the eastern and southern Delta. Due to the lack of processed 20mm data from any of the more westerly regions, any proportional entrainment estimates would be strongly biased upward, and SLS Survey 6 data is used to estimate proportional entrainment risk for this assessment.
+
+
+
+
 
 ------------------------------------------------------------------------
 
-## 
