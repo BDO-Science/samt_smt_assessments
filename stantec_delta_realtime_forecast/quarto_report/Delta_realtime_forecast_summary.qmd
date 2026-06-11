@@ -16,6 +16,8 @@ format:
 editor: visual
 ---
 
+
+
 ```{r}
 #| label: setup
 #| include: false
@@ -136,7 +138,7 @@ Forecast Week 3: `r fmt_date(week3_start)` – `r fmt_date(week3_end)`
 create_zoi_table(selected_results_folder)
 ```
 ::: {.key}
-Key: cfs = cubic feet per second, Sac = Sacramento River, SJR = San Joaquin River
+*Key: cfs = cubic feet per second, Sac = Sacramento River, SJR = San Joaquin River*
 :::
 ```{r}
 #| label: tbl-average-exports
@@ -145,7 +147,7 @@ Key: cfs = cubic feet per second, Sac = Sacramento River, SJR = San Joaquin Rive
 create_average_exports_table(selected_results_folder)
 ```
 ::: {.notes}
-Notes:
+**Notes:**
 
 ¹ One pumping unit is currently out of service at Jones Pumping Plant until August 2026. The current maximum
 
@@ -155,7 +157,7 @@ Notes:
 :::
 
 ::: {.key}
-Key: cfs = cubic feet per second, CVP = Central Valley Project, OMR = Old and Middle River
+*Key: cfs = cubic feet per second, CVP = Central Valley Project, OMR = Old and Middle River*
 :::
 ```{r}
 #| label: fig-flow-export
@@ -165,7 +167,7 @@ Key: cfs = cubic feet per second, CVP = Central Valley Project, OMR = Old and Mi
 insert_flow_export_figure(selected_results_folder)
 ```
 ::: {.key}
-Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project
+*Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water Project*
 :::
 ## Delta Export Zone of Influence
 ```{r}
@@ -176,11 +178,11 @@ Key: CVP = Central Valley Project, OMR = Old and Middle River, SWP = State Water
 insert_zoi_figure(selected_results_folder, 1)
 ```
 ::: {.notes}
-Notes: Contours indicate the proportional overlap of hourly average velocity Gaussian KDEs for a 1-week period from DSM2 hydro simulations with and without Delta exports active. DSM2 nodes that were sufficiently different from neighboring nodes to create isolated contours at several OMR flows were removed (nodes 146, 147, 148, 206, 242, 246, 432, 433, 434).
+**Notes:** Contours indicate the proportional overlap of hourly average velocity Gaussian KDEs for a 1-week period from DSM2 hydro simulations with and without Delta exports active. DSM2 nodes that were sufficiently different from neighboring nodes to create isolated contours at several OMR flows were removed (nodes 146, 147, 148, 206, 242, 246, 432, 433, 434).
 :::
 
 ::: {.key}
-Key: cfs = cubic feet per second, OMR = Old and Middle River
+*Key: cfs = cubic feet per second, OMR = Old and Middle River*
 :::
 ```{r}
 #| label: fig-zoi-week2
@@ -190,11 +192,11 @@ Key: cfs = cubic feet per second, OMR = Old and Middle River
 insert_zoi_figure(selected_results_folder, 2)
 ```
 ::: {.notes}
-Notes: Contours indicate the proportional overlap of hourly average velocity Gaussian KDEs for a 1-week period from DSM2 hydro simulations with and without Delta exports active. DSM2 nodes that were sufficiently different from neighboring nodes to create isolated contours at several OMR flows were removed (nodes 146, 147, 148, 206, 242, 246, 432, 433, 434).
+**Notes:** Contours indicate the proportional overlap of hourly average velocity Gaussian KDEs for a 1-week period from DSM2 hydro simulations with and without Delta exports active. DSM2 nodes that were sufficiently different from neighboring nodes to create isolated contours at several OMR flows were removed (nodes 146, 147, 148, 206, 242, 246, 432, 433, 434).
 :::
 
 ::: {.key}
-Key: cfs = cubic feet per second, OMR = Old and Middle River
+*Key: cfs = cubic feet per second, OMR = Old and Middle River*
 :::
 
 ```{r}
@@ -205,11 +207,11 @@ Key: cfs = cubic feet per second, OMR = Old and Middle River
 insert_zoi_figure(selected_results_folder, 3)
 ```
 ::: {.notes}
-Notes: Contours indicate the proportional overlap of hourly average velocity Gaussian KDEs for a 1-week period from DSM2 hydro simulations with and without Delta exports active. DSM2 nodes that were sufficiently different from neighboring nodes to create isolated contours at several OMR flows were removed (nodes 146, 147, 148, 206, 242, 246, 432, 433, 434).
+**Notes:** Contours indicate the proportional overlap of hourly average velocity Gaussian KDEs for a 1-week period from DSM2 hydro simulations with and without Delta exports active. DSM2 nodes that were sufficiently different from neighboring nodes to create isolated contours at several OMR flows were removed (nodes 146, 147, 148, 206, 242, 246, 432, 433, 434).
 :::
 
 ::: {.key}
-Key: cfs = cubic feet per second, OMR = Old and Middle River
+*Key: cfs = cubic feet per second, OMR = Old and Middle River*
 :::
 
 ```{r}
@@ -219,11 +221,11 @@ Key: cfs = cubic feet per second, OMR = Old and Middle River
 create_channel_length_table(selected_results_folder)
 ```
 ::: {.notes}
-Notes: Sum channel length includes the length of channels within the Delta that have a calculated hydrologic alteration level falling within each category.
+**Notes:** Sum channel length includes the length of channels within the Delta that have a calculated hydrologic alteration level falling within each category.
 :::
 
 ::: {.key}
-Key: HA = hydrologic alteration, OMR = Old and Middle River
+*Key: HA = hydrologic alteration, OMR = Old and Middle River*
 :::
 
 ```{r}
@@ -250,7 +252,7 @@ insert_proportional_channel_length_figure(selected_results_folder, 2)
 insert_proportional_channel_length_figure(selected_results_folder, 3)
 ```
 ::: {.key}
-Key: cfs = cubic feet per second, OMR = Old and Middle River
+*Key: cfs = cubic feet per second, OMR = Old and Middle River*
 :::
 
 ## PTM (Particle Tracking Model) Results
@@ -667,7 +669,7 @@ Regional and Delta-wide longfin smelt (LFS) larval population is estimated using
 create_static_csv_table("static_sls_processing.csv")
 ```
 ::: {.key}
-Key: SLS = Smelt Larva Survey
+*Key: SLS = Smelt Larva Survey*
 :::
 
 The DSM2 node used as an injection point, EDSM subregion, and LFS Region for reporting are shown in Table 15.
