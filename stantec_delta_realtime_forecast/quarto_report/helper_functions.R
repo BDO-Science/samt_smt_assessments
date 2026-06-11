@@ -800,6 +800,121 @@ create_static_csv_table <- function(file_name) {
 
 
 
+############################################################
+# Function: create_lfs_entrainment_table
+#
+# Description:
+# Reads one weekly LFS PP entrainment CSV file and creates
+# the LFS entrainment estimate table for Section A.6.
+#
+# The function also reads average_exports_by_week.csv to add
+# OMR Flow Bin and Combined Exports columns.
+#
+# Source Files:
+# LFS_PP_Week_1_Entrainment.csv
+# LFS_PP_Week_2_Entrainment.csv
+# LFS_PP_Week_3_Entrainment.csv
+# average_exports_by_week.csv
+#
+# Inputs:
+# results_folder - selected results folder
+# week_number - 1, 2, or 3
+#
+# Returns:
+# Formatted HTML table for Quarto report
+############################################################
 
-
-
+create_lfs_entrainment_table <- function(results_folder, week_number) {
+  
+  lfs_file <- file.path(
+    results_folder,
+    paste0("LFS_PP_Week_", week_number, "_Entrainment.csv")
+  )
+  
+  lfs <- readr::read_csv(
+    lfs_file,
+    col_types = readr::cols(.default = "c"),
+    show_col_types = FALSE
+  )
+  
+  lfs <- lfs[, 1:10]
+  
+  names(lfs) <- c(
+    "Metric",
+    "West",
+    "Suisun",
+    "Sacramento/North Delta",
+    "Lower San Joaquin",
+    "Lower Sacramento",
+    "South Delta",
+    "East",
+    "Delta-wide Total (#)",
+    "Delta-wide Total (%)"
+  )
+  
+  exports <- readr::read_csv(
+    file.path(results_folder, "average_exports_by_week.csv"),
+    show_col_types = FALSE
+  )
+  
+  week_label <- paste0("Week ", week_number)
+  
+  exports_week <- exports |>
+    dplyr::filter(Week == week_label) |>
+    dplyr::mutate(
+      `OMR Bins` = format_cfs(`OMR Bins`),
+      `Total Exports (cfs)` = format_cfs(`Total Exports (cfs)`)
+    )
+  
+  omr_bins <- exports_week$`OMR Bins`
+  total_exports <- exports_week$`Total Exports (cfs)`
+  
+  total_exports[omr_bins %in% c("-6,500", "-6,250")] <- "-"
+  
+  output <- data.frame(
+    `OMR<br>(cfs)` = c("&nbsp;", omr_bins, omr_bins),
+    `Combined<br>Exports<br>(cfs)` = c("&nbsp;", total_exports, total_exports),
+    Metric = lfs$Metric,
+    West = lfs$West,
+    Suisun = lfs$Suisun,
+    `Sacramento/<br>North Delta` = lfs$`Sacramento/North Delta`,
+    `Lower<br>San Joaquin` = lfs$`Lower San Joaquin`,
+    `Lower<br>Sacramento` = lfs$`Lower Sacramento`,
+    `South<br>Delta` = lfs$`South Delta`,
+    East = lfs$East,
+    `Delta-wide<br>Total (#)` = lfs$`Delta-wide Total (#)`,
+    `Delta-wide<br>Total (%)` = lfs$`Delta-wide Total (%)`,
+    check.names = FALSE
+  )
+  
+  omit_rows <- output$`OMR<br>(cfs)` %in% c("-6,500", "-6,250")
+  
+  value_cols <- setdiff(
+    names(output),
+    c("OMR<br>(cfs)", "Combined<br>Exports<br>(cfs)", "Metric")
+  )
+  
+  output[omit_rows, value_cols] <- "-"
+  
+  output |>
+    knitr::kable(
+      format = "html",
+      escape = FALSE,
+      align = "c"
+    ) |>
+    kableExtra::add_header_above(
+      c(
+        " " = 3,
+        "Region" = 7,
+        " " = 2
+      ),
+      bold = TRUE
+    ) |>
+    kableExtra::kable_styling(
+      full_width = FALSE
+    ) |>
+    kableExtra::collapse_rows(
+      columns = 1:2,
+      valign = "middle"
+    )
+}

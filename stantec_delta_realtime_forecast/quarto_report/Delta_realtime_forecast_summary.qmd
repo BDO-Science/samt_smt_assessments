@@ -57,6 +57,11 @@ fmt_long_date <-function(x){
 
 injection_date <- fmt_date(forecast_start_date)
 ending_date <- fmt_date(forecast_end_date)
+week1_endingdate <- fmt_date(week1_end)
+week2_endingdate <- fmt_date(week2_end)
+week3_endingdate <- fmt_date(week3_end)
+
+
 
 cap_np_465_a <- paste0("PTM Results for Neutral Particles. OMR Scenario -5,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
 cap_np_465_b <- paste0("PTM Results for Neutral Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 465 (Chipps)")
@@ -90,8 +95,18 @@ cap_pp_99_a <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario 
 cap_pp_99_b <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
 cap_pp_99_c <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
 
+cap_lf_pp_a <- paste0("Average PTM Results by Injection Region for Position Oriented Particles Entrained at CVP and SWP. OMR Scenario -5,000 cfs. Particles Injected ", injection_date)
+
+cap_lf_pp_b <- paste0("Average PTM Results by Injection Region for Position Oriented Particles Entrained at CVP and SWP. OMR Scenario -3,500 cfs. Particles Injected ", injection_date)
+cap_lf_pp_c <- paste0("Average PTM Results by Injection Region for Position Oriented Particles Entrained at CVP and SWP. OMR Scenario -2,000 cfs. Particles Injected ", injection_date)
+
 cap_salmon_Ratio <- paste0("Salmon Particle Route Ratio After 3 Weeks Ending ",ending_date)
 cap_salmon_survival <- paste0("Salmon Particle Route-Specific Survival After 3 Weeks Ending ",ending_date)
+cap_lfsentr_week1 <- paste0("LFS Entrainment Estimate Using PTM with Surface Oriented Particles: Week 1 Ending ",week1_endingdate)
+
+cap_lfsentr_week2 <- paste0("LFS Entrainment Estimate Using PTM with Surface Oriented Particles: Week 2 Ending ",week2_endingdate)
+
+cap_lfsentr_week3 <- paste0("LFS Entrainment Estimate Using PTM with Surface Oriented Particles: Week 3 Ending ",week3_endingdate)
 ```
 
 
@@ -662,6 +677,76 @@ The DSM2 node used as an injection point, EDSM subregion, and LFS Region for rep
 #| tbl-cap: "DSM2 Injection Node, EDSM Subregion, and LFS Region"
 
 create_static_csv_table("static_longfin_nodes.csv")
+```
+
+```{r}
+#| label: tbl-lfs-week1
+#| tbl-cap: !expr cap_lfsentr_week1
+
+create_lfs_entrainment_table(selected_results_folder, 1)
+```
+::: {.notes}
+**Notes:** Values between 0.0 and 0.1 are indicated with <0.1. 
+The PTM entrained (%) value reflects the total entrained particles from all subregions within an LFS Region divided by the estimated LFS Region abundance.
+:::
+
+::: {.key}
+*Key: cfs = cubic feet per second, LFS = Longfin Smelt, OMR = Old and Middle River*
+:::
+
+```{r}
+#| label: tbl-lfs-week2
+#| tbl-cap: !expr cap_lfsentr_week2
+
+create_lfs_entrainment_table(selected_results_folder, 2)
+```
+::: {.notes}
+**Notes:** Values between 0.0 and 0.1 are indicated with <0.1. 
+The PTM entrained (%) value reflects the total entrained particles from all subregions within an LFS Region divided by the estimated LFS Region abundance.
+:::
+
+::: {.key}
+*Key: cfs = cubic feet per second, LFS = Longfin Smelt, OMR = Old and Middle River*
+:::
+
+```{r}
+#| label: tbl-lfs-week3
+#| tbl-cap: !expr cap_lfsentr_week3
+
+create_lfs_entrainment_table(selected_results_folder, 3)
+```
+::: {.notes}
+**Notes:** Values between 0.0 and 0.1 are indicated with <0.1. 
+The PTM entrained (%) value reflects the total entrained particles from all subregions within an LFS Region divided by the estimated LFS Region abundance.
+:::
+
+::: {.key}
+*Key: cfs = cubic feet per second, LFS = Longfin Smelt, OMR = Old and Middle River*
+:::
+
+
+```{r}
+#| label: fig-lf-pp-a
+#| fig-cap: !expr cap_lf_pp_a
+#| out-width: "95%"
+
+insert_ptm_figure(selected_results_folder, "LFS_PP_02_ALL_A.png")
+```
+
+```{r}
+#| label: fig-lf-pp-b
+#| fig-cap: !expr cap_lf_pp_b
+#| out-width: "95%"
+
+insert_ptm_figure(selected_results_folder, "LFS_PP_03_ALL_B.png")
+```
+
+```{r}
+#| label: fig-lf-pp-c
+#| fig-cap: !expr cap_lf_pp_c
+#| out-width: "95%"
+
+insert_ptm_figure(selected_results_folder, "LFS_PP_04_ALL_C.png")
 ```
 ------------------------------------------------------------------------
 
