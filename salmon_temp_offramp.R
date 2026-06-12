@@ -53,10 +53,15 @@ exceedance_dates <- all_temps %>%
   filter(trigger == "YES") %>%
   group_by(station) %>%
   summarize(
-    dates_exceeding = paste(format(date, "%b %d"), collapse = ", "),
+    dates_exceeding = {
+      dates <- format(date, "%b %d")
+      # Split into chunks of 4 dates per line
+      chunks <- split(dates, ceiling(seq_along(dates) / 4))
+      paste(sapply(chunks, paste, collapse = ", "), collapse = "\n")
+    },
     .groups = "drop"
   ) %>%
-  complete(station = unique(all_temps$station), 
+  complete(station = unique(all_temps$station),
            fill = list(dates_exceeding = "—"))
 
 exceedance_table <- yes_triggers %>%
@@ -79,13 +84,14 @@ table_grob <- tableGrob(
   rows = NULL,
   theme = ttheme_minimal(
     core = list(
-      fg_params = list(hjust = 0, x = 0.05, fontsize = 11),
-      bg_params = list(fill = c("white", "#fff0f0"), col = NA)  # alternating row fill; red tint for exceeded row
+      fg_params = list(hjust = 0, x = 0.05, fontsize = 11, lineheight = 1.4),
+      bg_params = list(fill = c("white", "#fff0f0"), col = NA)
     ),
     colhead = list(
       fg_params = list(hjust = 0, x = 0.05, fontsize = 11, fontface = "bold"),
       bg_params = list(fill = "grey92", col = NA)
-    )
+    ),
+    rowhead = list(fg_params = list(fontsize = 11))
   )
 )
 
