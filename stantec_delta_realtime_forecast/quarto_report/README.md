@@ -1,32 +1,36 @@
-Delta Real-Time Forecast Summary
-Overview
-This repository generates the weekly Delta Real-Time Forecast Summary using Quarto and R.
+# Delta Real-Time Forecast Summary
+
+## Overview
+
+This repository generates the weekly **Delta Real-Time Forecast Summary** using Quarto and R.
 
 The report automatically reads model output files from weekly results folders and generates a formatted report containing:
 
-Forecast flow and export summaries
-Zone of Influence (ZOI) analysis
-PTM analysis
-ECO-PTM analysis
-Longfin Smelt larval population analysis
-Tables, figures, and supporting documentation
-Repository Structure
+- Forecast flow and export summaries
+- Zone of Influence (ZOI) analysis
+- PTM analysis
+- ECO-PTM analysis
+- Longfin Smelt larval population analysis
+- Tables, figures, and supporting documentation
+
+## Repository Structure
+
+```text
 .
 ├── Delta_realtime_forecast_summary.qmd
 ├── helper_functions.R
 ├── report_config.yml
 ├── styles.css
-│
 ├── static_longfin_nodes.csv
 ├── static_larva_processing.csv
-│
 ├── map_delta_longfinsmelt.png
 ├── map_delta_longfinsmelt_region.png
-│
 ├── 20260526_results/
 ├── 20260602_results/
 ├── 20260609_results/
 └── ...
+
+
 Main Files
 Delta_realtime_forecast_summary.qmd
 Main Quarto report containing:
