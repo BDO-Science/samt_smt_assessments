@@ -18,7 +18,7 @@ The report automatically reads model output files from weekly results folders an
 ## Repository Structure
 
 ```text
-.
+
 ├── Delta_realtime_forecast_summary.qmd
 ├── helper_functions.R
 ├── report_config.yml
@@ -87,7 +87,7 @@ Controls which weekly results folder is used when rendering the report.
 Example:
 
 ```yaml
-results_date: "20260609"
+results_date: "20260331"
 ```
 
 The report will automatically use:
