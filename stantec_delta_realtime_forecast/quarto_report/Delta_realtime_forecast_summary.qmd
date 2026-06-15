@@ -128,7 +128,21 @@ Forecast Week 3: `r fmt_date(week3_start)` – `r fmt_date(week3_end)`
 
 ## Common Assumptions
 
-{{< include common_assumptions.md >}}
+```{r}
+#| label: common-assumptions
+#| echo: false
+#| results: asis
+
+common_file <- file.path(selected_results_folder, "common_assumptions.txt")
+
+if (!file.exists(common_file)) {
+stop(paste("Common assumptions file not found:", common_file))
+}
+
+common_lines <- readLines(common_file, warn = FALSE)
+
+cat(paste(common_lines, collapse = "\n\n"))
+```
 
 ## Reclamation Forecast Flow and Export Data
 ```{r, echo = FALSE}
@@ -149,9 +163,9 @@ create_average_exports_table(selected_results_folder)
 ::: {.notes}
 **Notes:**
 
-¹ One pumping unit is currently out of service at Jones Pumping Plant until August 2026. The current maximum
+¹ One pumping unit is currently out of service at Jones Pumping Plant until August 2026. The current maximum pumping rate at Jones Pumping Plant (CVP Exports) is 4,200 cfs.
 
-² Per the State Water Project (SWP) Incidental Take Permit (ITP) 8.12.1, the State is required to curtail exports April 1 through May 31. This change in exports is expected to persist for the two-month period unless Vernalis flows change. This is reflected in the forecast SWP exports starting on April 1.
+² Per the State Water Project Incidental Take Permit 8.12.1, the State is required to curtail exports April 1 through May 31. This change in exports is expected to persist for the two month period unless Vernalis flows change. This is reflected in the forecast SWP exports starting on April 1. 
 
 ³ There is still a low probability an OMR of -6,500 cfs would be realized, so that scenario is omitted from this assessment.
 :::
