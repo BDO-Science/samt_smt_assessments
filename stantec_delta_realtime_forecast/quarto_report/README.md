@@ -119,51 +119,15 @@ Contains report styling including:
 
 ### Step 1
 
-Add a new weekly results folder:
-
-```text
-YYYYMMDD_results
-```
-
-Example:
-
-```text
-20260616_results
-```
-
-### Step 2
-
-Place all weekly model outputs inside the results folder.
-
-Required files include:
-
-```text
-zoi_bins.csv
-average_exports_by_week.csv
-ChannelLength_Data.xlsx
-
-survival_combined.csv
-
-LFS_PP_Week_1_Entrainment.csv
-LFS_PP_Week_2_Entrainment.csv
-LFS_PP_Week_3_Entrainment.csv
-
-common_assumptions.txt
-```
-
-along with all required PNG figures.
-
-### Step 3
-
 Update `report_config.yml`
 
 Example:
 
 ```yaml
-results_date: "20260616"
+results_date: "20260331"
 ```
 
-### Step 4
+### Step 2
 
 Render the report.
 
@@ -194,7 +158,7 @@ located inside the selected results folder.
 Example:
 
 ```text
-20260616_results/
+20260331_results/
 └── common_assumptions.txt
 ```
 
@@ -217,7 +181,7 @@ map_delta_longfinsmelt_region.png
 
 ```text
 static_longfin_nodes.csv
-static_larva_processing.csv
+static_sls_processing.csv
 ```
 
 ---
@@ -270,7 +234,6 @@ Rendering generates:
 Delta_realtime_forecast_summary.html
 ```
 
-Additional formats such as PDF and Word can be enabled in the Quarto YAML configuration if desired.
 
 ---
 
