@@ -18,18 +18,25 @@ The report automatically reads model output files from weekly results folders an
 ## Repository Structure
 
 ```text
-
-├── Delta_realtime_forecast_summary.qmd
-├── helper_functions.R
-├── report_config.yml
-├── styles.css
+stantec_delta_realtime_forecast/
 │
-├── static_longfin_nodes.csv
-├── static_sls_processing.csv
+├── YYYYMMDD_results/
+│ ├── zoi_bins.csv
+│ ├── average_exports_by_week.csv
+│ ├── common_assumptions.txt
+│ ├── flow_export.png
+│ ├── ...
 │
-├── map_delta_longfinsmelt.png
-├── map_delta_longfinsmelt_region.png
-
+├── quarto_report/
+│ ├── Delta_realtime_forecast_summary.qmd
+│ ├── helper_functions.R
+│ ├── report_config.yml
+│ ├── styles.css
+│ ├── static_longfin_nodes.csv
+│ ├── static_larva_processing.csv
+│ ├── map_delta_longfinsmelt.png
+│ └── map_delta_longfinsmelt_region.png
+│ └── README.mdg
 ```
 
 ---
