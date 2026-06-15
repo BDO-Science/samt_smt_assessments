@@ -33,7 +33,7 @@ stantec_delta_realtime_forecast/
 │ ├── report_config.yml
 │ ├── styles.css
 │ ├── static_longfin_nodes.csv
-│ ├── static_larva_processing.csv
+│ ├── static_sls_processing.csv
 │ ├── map_delta_longfinsmelt.png
 │ └── map_delta_longfinsmelt_region.png
 │ └── README.mdg
