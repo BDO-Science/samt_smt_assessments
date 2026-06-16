@@ -100,7 +100,7 @@ results_date: "20260331"
 The report will automatically use:
 
 ```text
-20260609_results
+20260331_results
 ```
 
 If left blank:
