@@ -36,7 +36,7 @@ stantec_delta_realtime_forecast/
 │ ├── static_sls_processing.csv
 │ ├── map_delta_longfinsmelt.png
 │ └── map_delta_longfinsmelt_region.png
-│ └── README.mdg
+│ └── README.md
 ```
 
 ---
