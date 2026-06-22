@@ -97,6 +97,8 @@ cap_pp_99_a <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario 
 cap_pp_99_b <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -3,500 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
 cap_pp_99_c <- paste0("PTM Results for Surface Oriented Particles. OMR Scenario -2,000 cfs. Particles Injected ", injection_date, " at DSM2 Node 99 (Old River)")
 
+cap_lf_pp_d <- paste0("Average PTM Results by Injection Region for Position Oriented Particles Entrained at CVP and SWP. OMR Scenario -6,500 cfs. Particles Injected ", injection_date)
+
 cap_lf_pp_a <- paste0("Average PTM Results by Injection Region for Position Oriented Particles Entrained at CVP and SWP. OMR Scenario -5,000 cfs. Particles Injected ", injection_date)
 
 cap_lf_pp_b <- paste0("Average PTM Results by Injection Region for Position Oriented Particles Entrained at CVP and SWP. OMR Scenario -3,500 cfs. Particles Injected ", injection_date)
@@ -128,7 +130,21 @@ Forecast Week 3: `r fmt_date(week3_start)` – `r fmt_date(week3_end)`
 
 ## Common Assumptions
 
-{{< include common_assumptions.md >}}
+```{r}
+#| label: common-assumptions
+#| echo: false
+#| results: asis
+
+common_file <- file.path(selected_results_folder, "common_assumptions.txt")
+
+if (!file.exists(common_file)) {
+stop(paste("Common assumptions file not found:", common_file))
+}
+
+common_lines <- readLines(common_file, warn = FALSE)
+
+cat(paste(common_lines, collapse = "\n\n"))
+```
 
 ## Reclamation Forecast Flow and Export Data
 ```{r, echo = FALSE}
@@ -149,11 +165,13 @@ create_average_exports_table(selected_results_folder)
 ::: {.notes}
 **Notes:**
 
-¹ One pumping unit is currently out of service at Jones Pumping Plant until August 2026. The current maximum
+¹ One pumping unit is currently out of service at Jones Pumping Plant until August 2026. The current maximum pumping rate at Jones Pumping Plant (CVP Exports) is 4,200 cfs.
 
-² Per the State Water Project (SWP) Incidental Take Permit (ITP) 8.12.1, the State is required to curtail exports April 1 through May 31. This change in exports is expected to persist for the two-month period unless Vernalis flows change. This is reflected in the forecast SWP exports starting on April 1.
+From April 11 to mid-May CVP exports will be reduced to roughly 900 cfs due to D-1641. 
 
-³ There is still a low probability an OMR of -6,500 cfs would be realized, so that scenario is omitted from this assessment.
+² Per the State Water Project Incidental Take Permit 8.12.1, the State is required to curtail exports April 1 through May 31. This change in exports is expected to persist for the two month period unless Vernalis flows change. This is reflected in the forecast SWP exports starting on April 1. 
+
+³ The OMR bin for all three weeks reflects the OMR levels at the beginning of Week 1. However, OMR levels during and after Week 1 are reduced due to the various reductions in exports required by regulatory controls. 
 :::
 
 ::: {.key}
@@ -725,6 +743,14 @@ The PTM entrained (%) value reflects the total entrained particles from all subr
 ::: {.key}
 *Key: cfs = cubic feet per second, LFS = Longfin Smelt, OMR = Old and Middle River*
 :::
+
+```{r}
+#| label: fig-lf-pp-d
+#| fig-cap: !expr cap_lf_pp_d
+#| out-width: "95%"
+
+insert_ptm_figure(selected_results_folder, "LFS_PP_01_ALL_D.png")
+```
 
 
 ```{r}

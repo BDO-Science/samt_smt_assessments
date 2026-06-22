@@ -119,12 +119,12 @@ omr_plot <-
   geom_line(data = omr_clean, aes(x = date, y = value, color = measure), linewidth = 1) +
   #geom_vline(data = triggers_clean, aes(xintercept = date), linewidth = 1.5, linetype = 'dashed', color = '#888888')+
   geom_vline(data = triggers_clean, aes(xintercept = date, linewidth = type, linetype = type), color = '#888888')+
-  geom_text(data = triggers_clean, aes(x = date-2, y = -9500, label = plot_label), size = 4, fontface = 'bold')+
+  geom_text(data = triggers_clean, aes(x = date-2, y = -9500, label = plot_label), size = 3, fontface = 'bold')+
   labs(y = 'Daily OMRI (cfs)') +
   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
   scale_color_manual(values = c("#0173B2", "#DE8F05", "#CC78BC"))+
   scale_linetype_manual(values = c("trigger"= "dashed", "threshold"= "dotted"))+
-  scale_linewidth_manual(values = c("trigger"= 1.5, "threshold"= 1))+
+  scale_linewidth_manual(values = c("trigger"= 1, "threshold"= 1))+
   scale_y_reverse() +
   theme_bw() +
   theme(legend.position = "bottom",

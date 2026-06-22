@@ -200,51 +200,19 @@ create_average_exports_table <- function(results_folder) {
     show_col_types = FALSE
   )
   
-  # Replace values with "-" for OMR = -6500
   exports <- exports |>
     dplyr::mutate(
-      `CVP Exports (cfs)` =
-        ifelse(`OMR Bins` == -6500, "-", format_cfs(`CVP Exports (cfs)`)),
-      
-      `SWP Exports (cfs)` =
-        ifelse(`OMR Bins` == -6500, "-", format_cfs(`SWP Exports (cfs)`)),
-      
-      `Total Exports (cfs)` =
-        ifelse(`OMR Bins` == -6500, "-", format_cfs(`Total Exports (cfs)`)),
-      
-      `CVP Exports (%)` =
-        ifelse(`OMR Bins` == -6500, "-", `CVP Exports (%)`),
-      
-      `SWP Exports (%)` =
-        ifelse(`OMR Bins` == -6500, "-", `SWP Exports (%)`)
+      `CVP Exports (cfs)` = format_cfs(`CVP Exports (cfs)`),
+      `SWP Exports (cfs)` = format_cfs(`SWP Exports (cfs)`),
+      `Total Exports (cfs)` = format_cfs(`Total Exports (cfs)`)
     )
   
-  # Format OMR Bin values
   exports$`OMR Bins` <- format_cfs(exports$`OMR Bins`)
   
-  # Create Week labels
   exports$Week <- dplyr::case_when(
-    exports$Week == "Week 1" ~ paste0(
-      "<b>Week 1:</b><br>",
-      fmt_date(week1_start),
-      " -<br>",
-      fmt_date(week1_end)
-    ),
-    
-    exports$Week == "Week 2" ~ paste0(
-      "<b>Week 2:</b><br>",
-      fmt_date(week2_start),
-      " -<br>",
-      fmt_date(week2_end)
-    ),
-    
-    exports$Week == "Week 3" ~ paste0(
-      "<b>Week 3:</b><br>",
-      fmt_date(week3_start),
-      " -<br>",
-      fmt_date(week3_end)
-    ),
-    
+    exports$Week == "Week 1" ~ paste0("<b>Week 1:</b><br>", fmt_date(week1_start), " -<br>", fmt_date(week1_end)),
+    exports$Week == "Week 2" ~ paste0("<b>Week 2:</b><br>", fmt_date(week2_start), " -<br>", fmt_date(week2_end)),
+    exports$Week == "Week 3" ~ paste0("<b>Week 3:</b><br>", fmt_date(week3_start), " -<br>", fmt_date(week3_end)),
     TRUE ~ exports$Week
   )
   
@@ -263,15 +231,9 @@ create_average_exports_table <- function(results_folder) {
       ),
       align = "c"
     ) |>
-    kableExtra::kable_styling(
-      full_width = FALSE
-    ) |>
-    kableExtra::collapse_rows(
-      columns = 1,
-      valign = "middle"
-    )
+    kableExtra::kable_styling(full_width = FALSE) |>
+    kableExtra::collapse_rows(columns = 1, valign = "middle")
 }
-
 
 ############################################################
 # Function: insert_flow_export_figure
@@ -356,8 +318,6 @@ insert_zoi_figure <- function(results_folder, week_number) {
 # - Formats channel lengths in miles
 # - Converts hydrologic alteration fractions
 # to percentages
-# - Replaces values for OMR Bin = -6250
-# with "-" to match report conventions
 # - Merges Week 1, Week 2, and Week 3
 # labels into single cells
 #
@@ -393,34 +353,19 @@ create_channel_length_table <- function(results_folder) {
   )
   
   channel$`OMR Bin` <- format_cfs(channel$`OMR Bin`)
+  
   channel <- channel |>
     tidyr::fill(Week, .direction = "down") |>
     dplyr::mutate(
-      omit_row = `OMR Bin` %in% c("-6,250", "-6,500", "-6250", "-6500"),
-      
-      dplyr::across(
-        c(
-          `Low HA Miles`,
-          `Low HA Percent`,
-          `Medium HA Miles`,
-          `Medium HA Percent`,
-          `High HA Miles`,
-          `High HA Percent`
-        ),
-        ~ ifelse(omit_row, "-", .)
-      ),
-      
       dplyr::across(
         c(`Low HA Miles`, `Medium HA Miles`, `High HA Miles`),
-        ~ ifelse(. == "-", "-", sprintf("%.2f", as.numeric(.)))
+        ~ sprintf("%.2f", as.numeric(.))
       ),
-      
       dplyr::across(
         c(`Low HA Percent`, `Medium HA Percent`, `High HA Percent`),
-        ~ ifelse(. == "-", "-", paste0(round(as.numeric(.) * 100, 1), "%"))
+        ~ paste0(round(as.numeric(.) * 100, 1), "%")
       )
-    ) |>
-    dplyr::select(-omit_row)
+    )
   
   channel |>
     knitr::kable(
@@ -441,7 +386,6 @@ create_channel_length_table <- function(results_folder) {
     kableExtra::kable_styling(full_width = FALSE) |>
     kableExtra::collapse_rows(columns = 1, valign = "middle")
 }
-
 
 
 
@@ -574,25 +518,6 @@ create_ptm_fate_table <- function(results_folder, file_name) {
     each = 4
   )
   
-  omr_numeric <- suppressWarnings(
-    as.numeric(gsub(",", "", ptm$`OMR Bin`))
-  )
-  
-  omit_rows <- omr_numeric %in% c(-6500, -6250)
-  
-  value_cols <- c(
-    "Past Chipps",
-    "Upstream of Decker",
-    "Unresolved in Central Delta",
-    "Unresolved in OMR corridor",
-    "CVP Entrainment",
-    "SWP Entrainment"
-  )
-  
-  for (col in value_cols) {
-    ptm[[col]] <- ifelse(omit_rows, "-", ptm[[col]])
-  }
-  
   ptm$`OMR Bin` <- format_cfs(ptm$`OMR Bin`)
   
   ptm <- ptm[, c(
@@ -625,8 +550,6 @@ create_ptm_fate_table <- function(results_folder, file_name) {
     kableExtra::kable_styling(full_width = FALSE) |>
     kableExtra::collapse_rows(columns = 1, valign = "middle")
 }
-
-
 
 ############################################################
 # Function: insert_ptm_figure
@@ -710,10 +633,8 @@ create_eco_ptm_table <- function(results_folder,
     show_col_types = FALSE
   )
   
-  # Use only scenario rows B, C, and D:
-  # B = -5,000, C = -3,500, D = -2,000
   df <- df |>
-    dplyr::filter(Model_Run %in% c("B", "C", "D"))
+    dplyr::filter(Model_Run %in% c("A", "B", "C", "D"))
   
   omr_bins <- c("-6,500", "-5,000", "-3,500", "-2,000")
   
@@ -729,11 +650,11 @@ create_eco_ptm_table <- function(results_folder,
     
     out <- data.frame(
       `OMR Flow Bin (cfs)` = omr_bins,
-      `Sutter Slough Route` = c("-", fmt_ratio(df$SUT_RATIO)),
-      `Steamboat Slough Route` = c("-", fmt_ratio(df$STM_RATIO)),
-      `Sacramento River (SS) Route` = c("-", fmt_ratio(df$SACR_SS_RATIO)),
-      `Sacramento River (GEO) Route` = c("-", fmt_ratio(df$SACR_GEO_RATIO)),
-      `Georgiana Slough Route` = c("-", fmt_ratio(df$GEO_RATIO)),
+      `Sutter Slough Route` = fmt_ratio(df$SUT_RATIO),
+      `Steamboat Slough Route` = fmt_ratio(df$STM_RATIO),
+      `Sacramento River (SS) Route` = fmt_ratio(df$SACR_SS_RATIO),
+      `Sacramento River (GEO) Route` = fmt_ratio(df$SACR_GEO_RATIO),
+      `Georgiana Slough Route` = fmt_ratio(df$GEO_RATIO),
       check.names = FALSE
     )
     
@@ -741,11 +662,11 @@ create_eco_ptm_table <- function(results_folder,
     
     out <- data.frame(
       `OMR Flow Bin (cfs)` = omr_bins,
-      `Sutter Slough Route` = c("-", fmt_percent(df$SUT_SUV)),
-      `Steamboat Slough Route` = c("-", fmt_percent(df$STM_SUV)),
-      `Sacramento River Route` = c("-", fmt_percent(df$SAC_SUV)),
-      `Georgiana Slough Route` = c("-", fmt_percent(df$GEO_SUV)),
-      `All Routes Combined` = c("-", fmt_percent(df$Combined_suv)),
+      `Sutter Slough Route` = fmt_percent(df$SUT_SUV),
+      `Steamboat Slough Route` = fmt_percent(df$STM_SUV),
+      `Sacramento River Route` = fmt_percent(df$SAC_SUV),
+      `Georgiana Slough Route` = fmt_percent(df$GEO_SUV),
+      `All Routes Combined` = fmt_percent(df$Combined_suv),
       check.names = FALSE
     )
   }
@@ -756,11 +677,8 @@ create_eco_ptm_table <- function(results_folder,
       escape = FALSE,
       align = "c"
     ) |>
-    kableExtra::kable_styling(
-      full_width = FALSE
-    )
+    kableExtra::kable_styling(full_width = FALSE)
 }
-
 
 
 ############################################################
@@ -869,8 +787,6 @@ create_lfs_entrainment_table <- function(results_folder, week_number) {
   omr_bins <- exports_week$`OMR Bins`
   total_exports <- exports_week$`Total Exports (cfs)`
   
-  total_exports[omr_bins %in% c("-6,500", "-6,250")] <- "-"
-  
   output <- data.frame(
     `OMR<br>(cfs)` = c("&nbsp;", omr_bins, omr_bins),
     `Combined<br>Exports<br>(cfs)` = c("&nbsp;", total_exports, total_exports),
@@ -887,15 +803,6 @@ create_lfs_entrainment_table <- function(results_folder, week_number) {
     check.names = FALSE
   )
   
-  omit_rows <- output$`OMR<br>(cfs)` %in% c("-6,500", "-6,250")
-  
-  value_cols <- setdiff(
-    names(output),
-    c("OMR<br>(cfs)", "Combined<br>Exports<br>(cfs)", "Metric")
-  )
-  
-  output[omit_rows, value_cols] <- "-"
-  
   output |>
     knitr::kable(
       format = "html",
@@ -910,11 +817,6 @@ create_lfs_entrainment_table <- function(results_folder, week_number) {
       ),
       bold = TRUE
     ) |>
-    kableExtra::kable_styling(
-      full_width = FALSE
-    ) |>
-    kableExtra::collapse_rows(
-      columns = 1:2,
-      valign = "middle"
-    )
+    kableExtra::kable_styling(full_width = FALSE) |>
+    kableExtra::collapse_rows(columns = 1:2, valign = "middle")
 }
