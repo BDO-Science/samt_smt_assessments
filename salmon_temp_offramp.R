@@ -12,7 +12,7 @@ startDate <- paste0(year(Sys.Date()),'-06-01')
 
 mossdale <- cdec_query('MSD',
                        '25',
-                       'H',
+                       'D',
                        startDate,
                        Sys.Date()) %>%
   select(station = location_id, 
@@ -20,12 +20,12 @@ mossdale <- cdec_query('MSD',
          temp = parameter_value) %>%
   mutate(date = as.Date(date)) %>%
   group_by(station, date) %>%
-  summarize(temp = mean(temp, na.rm = TRUE)) %>%
+  #summarize(temp = mean(temp, na.rm = TRUE)) %>%
   mutate(temp = (temp -32)/1.8)
 
 prisoners <- cdec_query('PPT',
                         '25',
-                        'H',
+                        'D',
                         startDate,
                         Sys.Date()) %>%
   select(station = location_id, 
@@ -33,7 +33,7 @@ prisoners <- cdec_query('PPT',
          temp = parameter_value) %>%
   mutate(date = as.Date(date)) %>%
   group_by(station, date) %>%
-  summarize(temp = mean(temp, na.rm = TRUE)) %>%
+  #summarize(temp = mean(temp, na.rm = TRUE)) %>%
   mutate(temp = (temp -32)/1.8)
 
 all_temps <- bind_rows(mossdale, prisoners) %>%
@@ -77,7 +77,7 @@ exceedance_dates <- all_temps %>%
 exceedance_table <- yes_triggers %>%
   left_join(exceedance_dates, by = "station") %>%
   mutate(
-    threshold = "72°F / 22°C",
+    threshold = "72°F / 22.2°C",
     status = if_else(n_yes > 0, "Threshold Exceeded", "Below Threshold")
   ) %>%
   select(
