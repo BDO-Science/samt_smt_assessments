@@ -134,7 +134,7 @@ combined <- table_patch / temp_offramp +
   plot_layout(heights = c(1, 3)) +
   plot_annotation(
     #title   = "2.8 End of Entrainment Management for Salmonids",
-    #caption = "Dashed line indicates 22°C threshold. Red points indicate exceedance days.",
+    #caption = "Dashed line indicates 22.2°C threshold. Red points indicate exceedance days.",
     theme   = theme(
       plot.title   = element_text(size = 14, face = "bold", margin = margin(b = 10)),
       plot.caption = element_text(size = 10, color = "grey40", margin = margin(t = 10))
