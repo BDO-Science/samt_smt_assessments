@@ -34,10 +34,7 @@ end_of_season = "relevant"
 # - Summary of salvage and expectations of salvage
 
 narrative_text <- 
-"- Delta smelt were most recently detected at Suisun Marsh.
-- No longfin smelt salvage has been observed this water year.
-- Turbidity in the central/south Delta is low.
-- Temperature in the south Delta is variable, but increasing.
+"- Entrainment management for smelts offramped on 6/15/2026 for WY2026.
 "
 
 # Evaluation question responses ---------------------
@@ -52,65 +49,70 @@ narrative_text <-
 # 1. After the start of entrainment management, is JPF < 0, is daily average turbidity ≥ 12 FNU 
 #in the OMR corridor (stations OBI, HOL, and OSJ)? Has the average water temperature at Jersey Point or Rio Vista not exceeded 
 #53.6\(^{\circ}\)F (12\(^{\circ}\)C) for 3 consecutive days and/or has this action already been taken during WY 2026?
-ds_eval_1 <- "The adult Delta smelt entrainment action is not active and no action was taken in WY26. 
-Temperature at Jersey Point exceeded the threshold on February 12th, 2025. Jersey
-Point 3-day average temperature was 12.05°C on February 10th, 12.09°C on February 11th,
-and 12.13°C on February 12th."
+ds_eval_1 <- "Entrainment management for smelts for WY 2026 offramped on 6/15/2026."
+# "The adult Delta smelt entrainment action is not active and no action was taken in WY26. 
+# Temperature at Jersey Point exceeded the threshold on February 12th, 2025. Jersey
+# Point 3-day average temperature was 12.05°C on February 10th, 12.09°C on February 11th,
+# and 12.13°C on February 12th."
 
 # 2. What is the evidence for the onset of Delta smelt spawning?
-ds_eval_2 <- "Upstream migration for Delta smelt occurs between December and March and in response 
-to “first flush” conditions (Sommer et al., 2011; Grimaldo et al. 2009; 2021). Historically, detections 
-of ripe Delta smelt began in January and peaked in February and March and 
-the majority of Delta Smelt spawning occurs at 11-15˚C (but can occur from 8-18˚C) (Damon et al. 2016). 
-Based on [historical monitoring data](https://github.com/Delta-Stewardship-Council/deltafish) from the past few years, 
-first detection of larvae in the Central and South Delta has typically occurred by mid to late March. 
-The large majority of Delta smelt recaptures continue to be from Suisun Marsh, close to
-where supplemental fish were released in the fall. Spawning is most likely completed due to increased water temperatures."
+ds_eval_2 <- "Entrainment management for smelts for WY 2026 offramped on 6/15/2026."
+# "Upstream migration for Delta smelt occurs between December and March and in response 
+# to “first flush” conditions (Sommer et al., 2011; Grimaldo et al. 2009; 2021). Historically, detections 
+# of ripe Delta smelt began in January and peaked in February and March and 
+# the majority of Delta Smelt spawning occurs at 11-15˚C (but can occur from 8-18˚C) (Damon et al. 2016). 
+# Based on [historical monitoring data](https://github.com/Delta-Stewardship-Council/deltafish) from the past few years, 
+# first detection of larvae in the Central and South Delta has typically occurred by mid to late March. 
+# The large majority of Delta smelt recaptures continue to be from Suisun Marsh, close to
+# where supplemental fish were released in the fall. Spawning is most likely completed due to increased water temperatures."
 
 # 3. After the onset of spawning, have the following conditions occurred: JPF < 0, 
 #12-station average turbidity is ≥12FNU in the South Delta, and PTM modeling indicates 
 #OMRI no more negative than -3500 cfs for at least 7 days would avoid ≥5% 
 #entrainment of the Delta smelt population at facilities after 30 dayst
-ds_eval_3 <- "The most recent 11-station average turbidity in the South Delta was 2.7 FNU on 
-May 28, 2026 (station 918 could not be sampled due to bridge clearance issues). JPF may decrease to below 0 cfs
-for some of this week. PTM results for this week for neutrally buoyant particles 
-injected at Chipps Island (using the most recent adult detections as a proxy 
-for potential larval locations) showed 0% particle entrainment at both facilities for OMRI of -2,000, -3,500, and 
--5,000 cfs this week and next week. Results for neutrally buoyant particles injected at Jersey Point (a conservative estimate 
-for 120dph released last week) show 0-0.1% entrainment at -2,000 cfs, 0.3-0.5% entrainment at -3,500 cfs, and 0.2-1.4% entrainment 
-at -5,000 cfs. These results indicate that, if Delta smelt larvae were present, 
-the risk of entrainment would be low. No Delta smelt larvae have been captured in SLS or 20-mm surveys to date in WY2026 
-(pending genetic results from EDSM 20mm survey). Because turbidity conditions remain 
-below the ≥ 12 FNU threshold and modeling shows a low risk of entrainment, the conditions 
-required to initiate the larval and juvenile Delta smelt entrainment action are not met."
+ds_eval_3 <- "Entrainment management for smelts for WY 2026 offramped on 6/15/2026."
+# "The most recent 11-station average turbidity in the South Delta was 2.7 FNU on 
+# May 28, 2026 (station 918 could not be sampled due to bridge clearance issues). JPF may decrease to below 0 cfs
+# for some of this week. PTM results for this week for neutrally buoyant particles 
+# injected at Chipps Island (using the most recent adult detections as a proxy 
+# for potential larval locations) showed 0% particle entrainment at both facilities for OMRI of -2,000, -3,500, and 
+# -5,000 cfs this week and next week. Results for neutrally buoyant particles injected at Jersey Point (a conservative estimate 
+# for 120dph released last week) show 0-0.1% entrainment at -2,000 cfs, 0.3-0.5% entrainment at -3,500 cfs, and 0.2-1.4% entrainment 
+# at -5,000 cfs. These results indicate that, if Delta smelt larvae were present, 
+# the risk of entrainment would be low. No Delta smelt larvae have been captured in SLS or 20-mm surveys to date in WY2026 
+# (pending genetic results from EDSM 20mm survey). Because turbidity conditions remain 
+# below the ≥ 12 FNU threshold and modeling shows a low risk of entrainment, the conditions 
+# required to initiate the larval and juvenile Delta smelt entrainment action are not met."
 
 # Longfin smelt
 
 # 1. If JPF < 0, what is the trajectory of annual loss of adult longfin smelt 
 #and is it likely to exceed 5% of the adult population estimate? 
 #Is South Delta entrainment expected to decrease due to a reduction in export pumping?
-lfs_eval_1 <- "JPF may decrease to < 0 cfs this week. No adult 
-longfin smelt have been detected in salvage this water year and so conditions are not 
-met for the adult longfin smelt entrainment protection action."
+lfs_eval_1 <- "Entrainment management for smelts for WY 2026 offramped on 6/15/2026."
+# "JPF may decrease to < 0 cfs this week. No adult 
+# longfin smelt have been detected in salvage this water year and so conditions are not 
+# met for the adult longfin smelt entrainment protection action."
 
 # 2. For larval and juvenile longfin smelt, if JPF < 0 cfs, do particle tracking 
 #models show a moderate to high difference in particle fates across different 
 #OMRI scenarios? Does Zone of Influence modeling show moderate to high changes 
 #in hydrodynamic footprint across different OMRI scenarios? Are these effects 
 #anticipated to cause a population decline?
-lfs_eval_2 <-  "JPF may decrease below 0 cfs this week. PTM and Zone of Influence modeling indicate 
-a low risk of entrainment for the larval and juvenile Longfin smelt population. PTM results
-for surface-oriented particles injected at Chipps Island show 0% entrainment for OMRI of -2,000,
--3,500, and -5,000 cfs. PTM results from particles injected at Jersey Point 
-show 0.1% entrainment at the projects for this week for OMRI of –2,000, 0.2-0.9% for OMRI of -3,500, 
-and 0.2-1.3% entrainment at OMRI of –5,000 cfs.
-
-    Zone of Influence modeling indicates high differences in the hydrodynamic footprint 
-across OMRI scenarios for current and forecasted conditions; 
-however, the Zone of Influence does not extend into the western or far western regions 
-where the majority of Longfin Smelt larvae and juveniles have been 
-detected. Therefore, these effects are not anticipated to result in a population 
-decline."
+lfs_eval_2 <- "Entrainment management for smelts for WY 2026 offramped on 6/15/2026."
+# "JPF may decrease below 0 cfs this week. PTM and Zone of Influence modeling indicate 
+# a low risk of entrainment for the larval and juvenile Longfin smelt population. PTM results
+# for surface-oriented particles injected at Chipps Island show 0% entrainment for OMRI of -2,000,
+# -3,500, and -5,000 cfs. PTM results from particles injected at Jersey Point 
+# show 0.1% entrainment at the projects for this week for OMRI of –2,000, 0.2-0.9% for OMRI of -3,500, 
+# and 0.2-1.3% entrainment at OMRI of –5,000 cfs.
+# 
+#     Zone of Influence modeling indicates high differences in the hydrodynamic footprint 
+# across OMRI scenarios for current and forecasted conditions; 
+# however, the Zone of Influence does not extend into the western or far western regions 
+# where the majority of Longfin Smelt larvae and juveniles have been 
+# detected. Therefore, these effects are not anticipated to result in a population 
+# decline."
 
 # DONT NEED TO CHANGE UNLESS YOU WANT TO
 # 3. Is there additional information or other analyses that should be considered in this evaluation?
