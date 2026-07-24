@@ -198,7 +198,7 @@ JPF_hist <- hydro_rec[,c(1,7)]
 write_csv(JPF_hist, "JPF_historic_WY26.csv")
 
 ##################################################################################
-# CALCULATE HISTORIC JPF (use for data prior to 12/)
+# CALCULATE HISTORIC JPF (use for data prior to 12/14)
 
 # once you have data pulled into R (see above)
 
@@ -226,26 +226,6 @@ hydro_calc <- hydro_calc %>%
            pumps) # same day
 
 
-# Old don't use
-
-# hydro_test <- hydro_test %>%
-#   mutate(JPF_calc =
-#            SJR_a_Vernalis + # need to switch to day lagged
-#            E_side_streams + # need to switch to day lagged
-#            QXGEO - # day lagged
-#            (0.65* (Delta_div - Delta_prec5d)) - #Delta div needs to be day lagged
-#            pumps) # same day
-
-
-
-# hydro_test <- hydro_test %>%
-#   mutate(JPF_calc =
-#       SJR_a_Vernalis +
-#       E_side_streams +
-#       QXGEO +
-#       Delta_precip -
-#       Delta_div -
-#       pumps)
 
 
 # Practice figure
