@@ -4,8 +4,21 @@
 
 library(pdftools)
 library(slider)
+library(dplyr)
+library(stringr)
+library(here)
 
 ## Jersey Point Flow ---------------------------------
+
+## Pull historic data (this covers messy period before JPF calc was included for WY26)
+hydro_rec <- load(here("JPF_historic_WY26.csv"))
+
+# code to pull data for JPF_historic_WY26.csv
+#############################################
+### If you need to manually pull data:
+#    - this code will read pdfs from DWR, may need to download all data first
+#      or request from DWR
+
 
 # ---- download the PDF Delta Hydrology Conditions (DWR)----
 url1 <- "https://water.ca.gov/-/media/DWR-Website/Web-Pages/Programs/State-Water-Project/Operations-And-Maintenance/Files/Operations-Control-Office/Delta-Status-And-Operations/Delta-Hydrologic-Conditions-Daily-Summary.pdf"
@@ -98,10 +111,11 @@ hydroNov2 <- hydro_comb %>%
          Delta_GCD_cfs, JPF_cfs, Banks_PP_cfs, CCF_cfs, Tracy_cfs)
 
 ##############################################
-pdf4_path <- "data_raw/smelt/20260101rptHydro.pdf"
+# ---- For PDF WITH JPF
+#pdf4_path <- "data_raw/smelt/20260101rptHydro.pdf"
 pdf5_path <- "data_raw/smelt/20260129rptHydro.pdf"
 
-# For PDF WITH JPF
+
 # ---- extract raw text ---- 
 txt <- pdf_text(pdf5_path)
 
@@ -183,12 +197,13 @@ JPF_hist <- hydro_rec[,c(1,7)]
 #Save for SacPas
 write_csv(JPF_hist, "JPF_historic_WY26.csv")
 
+##################################################################################
+# CALCULATE HISTORIC JPF (use for data prior to 12/)
 
-#Trying to calculate JPF- see whether they match [they don't]
-# Will ask Bogdon
+# once you have data pulled into R (see above)
 
 #set up variables
-hydro_test <- hydro_rec %>%
+hydro_calc <- hydro_rec %>%
   mutate(
     QXGEO = ((0.133 * SR_at_Freeport_SRWTP) + 829),
     #Delta_precip = Stockton_rain_in / 12/ 5 * 682230 * 0.5041666604 *0.65,
@@ -201,13 +216,25 @@ hydro_test <- hydro_rec %>%
 
 #calc JPF
 
-hydro_test <- hydro_test %>%
+hydro_calc <- hydro_calc %>%
+  arrange(Date) %>% 
   mutate(JPF_calc =
-           SJR_a_Vernalis + # need to switch to day lagged
-           E_side_streams + # need to switch to day lagged
-           QXGEO - # day lagged
-           (0.65* (Delta_div - Delta_prec5d)) - #Delta div needs to be day lagged
-           pumps) # day of
+           lag(SJR_a_Vernalis) + # one day lagged
+           lag(E_side_streams) + # one day lagged
+           lag(QXGEO) - # one day lagged
+           (0.65* (lag(Delta_div) - Delta_prec5d)) - #Delta div one day lagged
+           pumps) # same day
+
+
+# Old don't use
+
+# hydro_test <- hydro_test %>%
+#   mutate(JPF_calc =
+#            SJR_a_Vernalis + # need to switch to day lagged
+#            E_side_streams + # need to switch to day lagged
+#            QXGEO - # day lagged
+#            (0.65* (Delta_div - Delta_prec5d)) - #Delta div needs to be day lagged
+#            pumps) # same day
 
 
 
