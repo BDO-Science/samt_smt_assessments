@@ -6,12 +6,13 @@ library(pdftools)
 library(slider)
 library(dplyr)
 library(stringr)
+library(readr)
 library(here)
 
 ## Jersey Point Flow ---------------------------------
 
 ## Pull historic data (this covers messy period before JPF calc was included for WY26)
-hydro_rec <- load(here("JPF_historic_WY26.csv"))
+#hydro_rec <- load(here("JPF_historic_WY26.csv"))
 
 # code to pull data for JPF_historic_WY26.csv
 #############################################
@@ -191,6 +192,8 @@ hydroJan <- hydro_comb %>%
 # Combination of files
 
 hydro_rec <- rbind.data.frame(hydroOct, hydroNov[27:28,], hydroNov2, hydroDec[1:27,], hydroJan)
+#Save 
+write_csv(hydro_rec, "hydro_cond_early_WY26.csv")
 
 JPF_hist <- hydro_rec[,c(1,7)]
 
