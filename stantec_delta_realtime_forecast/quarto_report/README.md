@@ -172,7 +172,7 @@ Example:
 20260623_results
 ```
 
-This folder should contain all required CSV, PNG, HTML, and text files produced during the weekly assessment.
+This folder should contain all required CSV, PNG, HTML, and text files (**common_assumptions.txt** and **table2_notes.txt**) produced during the weekly assessment.
 
 ---
 
