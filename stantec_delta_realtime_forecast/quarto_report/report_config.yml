@@ -2,7 +2,7 @@
 # Use YYYYMMDD format.
 # Example: 20260526 means use ../20260526_results
 
-results_date: "20260331"
+results_date: ""
 
 # Leave blank to use today's date when rendering
 date_published: ""

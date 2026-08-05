@@ -1,0 +1,12 @@
+1.	CCFB Gates are operating to Priority 2 until June 30, after which they will switch to Priority 3.
+2.	The Delta Cross Channel gates are closed and will be open on June 26.
+3.	Suisun Marsh Salinity Control flashboards are in. All three gates are open and will be in tidal operation starting July 1.
+4.	San Joaquin River flow at Vernalis is at 1142 cfs at the beginning of the forecast period and is estimated to decrease to 500 cfs by the end of the forecast period.
+5.	San Joaquin River EC at Vernalis is at 321 umhos/cm at the beginning of the forecast period and is estimated to increase to 428 umhos/cm at the end of the forecast period.
+6.	Sacramento River flow at Freeport is at 15475 cfs at the beginning of the forecast period and is expected to increase to 20900 cfs by the end of the forecast period.
+7.	CCFB inflow is at 291 cfs at the beginning of the forecast period and is expected to increase to 6500 cfs by the end of the forecast period. 
+8.	Export at Jones Pumping Plant is at 921 cfs at the beginning of the forecast period and is expected to increase to 2800 cfs to the end the forecast period. 
+9.	The Middle River barrier gates are in intermediate tidal operation starting June 2, and will move to full operation starting June 30.
+10.	The Old River near Tracy barrier gates are in intermediate tidal operation starting June 1, and will move to full operation starting June 30.
+11.	The Grant Line Canal barrier gates will be in intermediate tidal operation starting June 9, and will move to full operation starting June 30.
+As shown in the next section, assumptions 4 and 6 are updated based on Reclamation forecast data, and assumption 8 and exports at Banks Pumping Plant have been modified to include four different forecast scenarios at an Old and Middle River (OMR) index of -6,500 cfs, -5,000 cfs, -3,500 cfs, and -2,000 cfs.  
