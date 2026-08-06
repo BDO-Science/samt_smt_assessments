@@ -4,48 +4,62 @@
 
 This repository generates the weekly **Delta Real-Time Forecast Summary Report** using **Quarto** and **R**.
 
-The report automatically reads model output files from weekly results folders and generates a formatted report containing:
+The report automatically reads model outputs from a selected weekly results folder and generates a formatted HTML report containing:
 
-- Forecast flow and export summaries
+- Forecast Flow and Export summaries
 - Zone of Influence (ZOI) analysis
 - PTM analysis
 - ECO-PTM analysis
-- Longfin Smelt larval population analysis
+- Longfin Smelt Larval Population and PTM analysis
+- Interactive HTML visualizations
 - Tables, figures, and supporting documentation
+
+The workflow is designed so that routine weekly updates require **no modifications to the Quarto or R source code**. Users only need to update the weekly results folder and render the report.
 
 ---
 
-## Repository Structure
+# Repository Structure
 
 ```text
 stantec_delta_realtime_forecast/
 │
 ├── YYYYMMDD_results/
-│ ├── zoi_bins.csv
 │ ├── average_exports_by_week.csv
+│ ├── zoi_bins.csv
 │ ├── common_assumptions.txt
-│ ├── flow_export.png
-│ ├── ...
+│ ├── table2_notes.txt
+│ ├── survival_combined.csv
+│ ├── FlowExportReviewPlots.html
+│ ├── ZOI_Proportional_ChannelLength_week1.html
+│ ├── ZOI_Proportional_ChannelLength_week2.html
+│ ├── ZOI_Proportional_ChannelLength_week3.html
+│ ├── PTM_*.html
+│ ├── LFS_Scenario_*.html
+│ ├── *_entrainment_OMR_*.html
+│ ├── *.csv
+│ ├── *.png
+│ └── ...
 │
-├── quarto_report/
-│ ├── Delta_realtime_forecast_summary.qmd
-│ ├── helper_functions.R
-│ ├── report_config.yml
-│ ├── styles.css
-│ ├── static_longfin_nodes.csv
-│ ├── static_sls_processing.csv
-│ ├── map_delta_longfinsmelt.png
-│ └── map_delta_longfinsmelt_region.png
-│ └── README.md
+└── quarto_report/
+  ├── Delta_realtime_forecast_summary.qmd
+  ├── helper_functions.R
+  ├── report_config.yml
+  ├── styles.css
+  ├── static_longfin_nodes.csv
+  ├── static_sls_processing.csv
+  ├── map_delta_longfinsmelt.png
+  ├── map_delta_longfinsmelt_region.png
+  ├── ptm_injection_flux_locations.png
+  └── README.md
 ```
 
 ---
 
-## Main Files
+# Main Files
 
-### Delta_realtime_forecast_summary.qmd
+## Delta_realtime_forecast_summary.qmd
 
-Main Quarto report containing:
+The main Quarto report containing:
 
 - Report structure
 - Narrative text
@@ -54,53 +68,70 @@ Main Quarto report containing:
 - Table captions
 - Calls to helper functions
 
-### helper_functions.R
+The report automatically determines the available OMR scenarios from the weekly input files. No scenario-specific code modifications are required.
 
-Contains all report generation functions including:
+---
 
-#### Forecast Tables
+## helper_functions.R
 
-- Weekly Averaged Forecasted Flow Data and Flow Bins
-- Weekly Averaged CVP and SWP Exports by OMR Bin
+Contains all functions used to generate the report.
 
-#### PTM Analysis
+### Forecast Section
 
-- Particle fate tables
-- PTM result figures
+- Weekly Averaged Forecasted Flow Data
+- Weekly Averaged Export Tables
+- Interactive Flow Export visualization
 
-#### ECO-PTM Analysis
+### Zone of Influence (ZOI)
 
-- Route ratio tables
-- Route survival tables
+- Weekly ZOI summary tables
+- Interactive proportional channel length figures
 
-#### Longfin Smelt Analysis
+### PTM Analysis
 
-- Larval processing tables
+- Particle fate summary tables
+- Interactive Neutral Particle figures
+- Interactive Surface-Oriented Particle figures
+
+### ECO-PTM Analysis
+
+- Route ratio summary tables
+- Route survival summary tables
+- Automatic detection of all model runs from `survival_combined.csv`
+
+### Longfin Smelt Analysis
+
+- Static processing tables
 - Injection node tables
-- Entrainment estimate tables
-- Longfin Smelt figures
+- Weekly entrainment estimate tables
+- Interactive LFS scenario figures
+- Interactive cumulative entrainment maps
 
-#### Utility Functions
+### Utility Functions
 
-- Results folder selection
-- Figure insertion
+- Automatic results folder selection
+- Automatic OMR scenario detection
+- Interactive HTML figure insertion
+- Static CSV table generation
+- Caption formatting
 - Number formatting
-- Static figure and table handling
 
-### report_config.yml
+---
+
+## report_config.yml
 
 Controls which weekly results folder is used when rendering the report.
 
 Example:
 
 ```yaml
-results_date: "20260331"
+results_date: "20260623"
 ```
 
-The report will automatically use:
+The report automatically uses:
 
 ```text
-20260331_results
+20260623_results
 ```
 
 If left blank:
@@ -111,32 +142,61 @@ results_date: ""
 
 the report automatically selects the most recent available results folder.
 
-### styles.css
+---
+
+## styles.css
 
 Contains report styling including:
 
 - Fonts
 - Table formatting
-- Caption formatting
+- Figure and caption formatting
+- Interactive HTML figure sizing
 - Layout adjustments
 
 ---
 
-## Weekly Update Workflow
+# Weekly Update Workflow
 
-### Step 1
+## Step 1
 
-Update `report_config.yml`
+Copy the new weekly outputs into a folder named:
+
+```text
+YYYYMMDD_results
+```
+
+Example:
+
+```text
+20260623_results
+```
+
+This folder should contain all required CSV, PNG, HTML, and text files (**common_assumptions.txt** and **table2_notes.txt**) produced during the weekly assessment.
+
+---
+
+## Step 2
+
+Update `report_config.yml`.
 
 Example:
 
 ```yaml
-results_date: "20260331"
+results_date: "20260623"
 ```
 
-### Step 2
+Or leave blank:
 
-Render the report.
+```yaml
+results_date: ""
+```
+
+to automatically select the newest available results folder.
+
+---
+
+## Step 3
 
 Open:
 
@@ -144,47 +204,25 @@ Open:
 Delta_realtime_forecast_summary.qmd
 ```
 
-and click:
+and click **Render**.
 
-```text
-Render
-```
+No additional code modifications are required.
 
 ---
 
-## Common Assumptions
+# Static Files
 
-The Common Assumptions section is populated automatically from:
+The following files remain in the repository and typically do not change between weekly reports.
 
-```text
-common_assumptions.txt
-```
-
-located inside the selected results folder.
-
-Example:
-
-```text
-20260331_results/
-└── common_assumptions.txt
-```
-
-This allows assumptions to be updated each week without modifying the Quarto report.
-
----
-
-## Static Files
-
-The following files are stored in the repository and do not change between weekly forecasts.
-
-### Static Figures
+## Static Figures
 
 ```text
 map_delta_longfinsmelt.png
 map_delta_longfinsmelt_region.png
+ptm_injection_flux_locations.png
 ```
 
-### Static Tables
+## Static Tables
 
 ```text
 static_longfin_nodes.csv
@@ -193,9 +231,9 @@ static_sls_processing.csv
 
 ---
 
-## Rendering the Report
+# Rendering the Report
 
-### Using RStudio
+## Using RStudio
 
 Open:
 
@@ -203,13 +241,9 @@ Open:
 Delta_realtime_forecast_summary.qmd
 ```
 
-Click:
+Click **Render**.
 
-```text
-Render
-```
-
-### Using Terminal
+## Using the Terminal
 
 ```bash
 quarto render Delta_realtime_forecast_summary.qmd
@@ -217,7 +251,7 @@ quarto render Delta_realtime_forecast_summary.qmd
 
 ---
 
-## Required R Packages
+# Required R Packages
 
 ```r
 install.packages(c(
@@ -227,13 +261,16 @@ install.packages(c(
 "readxl",
 "yaml",
 "knitr",
-"kableExtra"
+"kableExtra",
+"htmltools",
+"xml2",
+"stringr"
 ))
 ```
 
 ---
 
-## Output
+# Output
 
 Rendering generates:
 
@@ -241,14 +278,15 @@ Rendering generates:
 Delta_realtime_forecast_summary.html
 ```
 
-
 ---
 
-## Notes
+# Notes
 
-- All weekly figures are loaded automatically from the selected results folder.
-- Static figures and tables are maintained within the repository.
-- Weekly assumptions are controlled through `common_assumptions.txt`.
-- No code modifications should be required for routine weekly updates.
+- All weekly report content is automatically loaded from the selected results folder.
+- OMR scenarios are detected dynamically from the available input files.
+- Interactive HTML figures are embedded throughout the report for Forecast Flow & Export, ZOI, PTM, Longfin Smelt scenarios, and cumulative entrainment maps.
+- ECO-PTM route survival tables are generated automatically from `survival_combined.csv`.
+- Weekly assumptions and Forecast Table notes are populated directly from text files within the results folder.
+- Static maps and lookup tables remain in the repository.
+- Routine weekly updates should only require replacing the contents of the weekly results folder, updating `report_config.yml` (if desired), and rendering the report.
 
----
