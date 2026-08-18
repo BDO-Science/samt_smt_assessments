@@ -673,6 +673,155 @@ make_scrollable_table <- function(table_html) {
 # length figures
 ############################################################
 
+############################################################
+# Function: add_leaflet_reset_control
+#
+# Description:
+# Adds a Reset Map button to embedded Leaflet HTML maps.
+#
+# Clicking the button reloads only the embedded map HTML,
+# returning the Leaflet map to its original center, zoom,
+# and layer configuration.
+#
+# The function only modifies HTML files that contain
+# Leaflet content. Plotly and other HTML figures are left
+# unchanged.
+############################################################
+
+add_leaflet_reset_control <- function(html_content) {
+  
+  ##########################################################
+  # Only modify Leaflet HTML files
+  ##########################################################
+  
+  is_leaflet <- grepl(
+    "leaflet",
+    html_content,
+    ignore.case = TRUE
+  )
+  
+  if (!is_leaflet) {
+    return(html_content)
+  }
+  
+  ##########################################################
+  # CSS for Reset Map button
+  ##########################################################
+  
+  reset_css <- paste0(
+    "<style>",
+    
+    ".leaflet-reset-map-button {",
+    " position: fixed !important;",
+    " top: 78px !important;",
+    " left: 10px !important;",
+    " z-index: 999999 !important;",
+    " width: 34px !important;",
+    " height: 34px !important;",
+    " padding: 0 !important;",
+    " margin: 0 !important;",
+    " border: 2px solid rgba(0,0,0,0.2) !important;",
+    " border-radius: 4px !important;",
+    " background: #ffffff !important;",
+    " color: #333333 !important;",
+    " font-family: Arial, sans-serif !important;",
+    " font-size: 20px !important;",
+    " font-weight: bold !important;",
+    " line-height: 30px !important;",
+    " text-align: center !important;",
+    " cursor: pointer !important;",
+    " box-sizing: border-box !important;",
+    " box-shadow: none !important;",
+    "}",
+    
+    ".leaflet-reset-map-button:hover {",
+    " background: #f4f4f4 !important;",
+    "}",
+    
+    "</style>"
+  )
+  
+  ##########################################################
+  # Reset button
+  #
+  # Reloading the embedded HTML returns the map to the
+  # original state stored in the source Leaflet file.
+  ##########################################################
+  
+  reset_button <- paste0(
+    "<button ",
+    "class='leaflet-reset-map-button' ",
+    "type='button' ",
+    "title='Reset Map' ",
+    "aria-label='Reset Map' ",
+    "onclick='window.location.reload(); return false;'>",
+    "&#8634;",
+    "</button>"
+  )
+  
+  ##########################################################
+  # Insert CSS into <head>
+  ##########################################################
+  
+  if (grepl(
+    "</head>",
+    html_content,
+    ignore.case = TRUE
+  )) {
+    
+    html_content <- sub(
+      "</head>",
+      paste0(
+        reset_css,
+        "</head>"
+      ),
+      html_content,
+      ignore.case = TRUE
+    )
+    
+  } else {
+    
+    html_content <- paste0(
+      reset_css,
+      html_content
+    )
+  }
+  
+  ##########################################################
+  # Insert Reset Map button before </body>
+  ##########################################################
+  
+  if (grepl(
+    "</body>",
+    html_content,
+    ignore.case = TRUE
+  )) {
+    
+    html_content <- sub(
+      "</body>",
+      paste0(
+        reset_button,
+        "</body>"
+      ),
+      html_content,
+      ignore.case = TRUE
+    )
+    
+  } else {
+    
+    html_content <- paste0(
+      html_content,
+      reset_button
+    )
+  }
+  
+  html_content
+}
+
+
+
+
+
 insert_interactive_figure <- function(
     results_folder,
     file_name,
@@ -719,6 +868,9 @@ insert_interactive_figure <- function(
     ),
     collapse = "\n"
   )
+  
+  # Add Reset Map control when this HTML contains a Leaflet map.
+  html_content <- add_leaflet_reset_control(html_content)
   
   ##########################################################
   # CSS inserted into the interactive HTML
@@ -3071,6 +3223,9 @@ insert_date_entrainment_html_figures <- function(
       ),
       collapse = "\n"
     )
+    
+    # Add Reset Map control to the dated Leaflet entrainment map.
+    html_content <- add_leaflet_reset_control(html_content)
     
     figure_title <- extract_map_title(
       html_content,
