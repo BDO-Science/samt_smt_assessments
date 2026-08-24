@@ -444,7 +444,8 @@ ds_detail <- bind_rows(
   mutate(life_stage = ifelse(fork_length>58,"Adult",ifelse(fork_length>=20,"Juvenile","Larva"))) %>%
   arrange(date)
 
-
+# For OMR seasonal report- summarizing yearly data
+#write.csv(ds_detail, file = "ds_detail_wy26.csv", row.names = FALSE) 
 
 ### LFS ------------------
 # this one has lat/lon (for map)
