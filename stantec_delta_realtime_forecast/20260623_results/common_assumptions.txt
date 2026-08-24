@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 The model run results cover the period June 23, 2026 through July 13, 2026 and are based on the following assumptions established by DWR: 
+=======
+>>>>>>> 6816adb1e6a2d4bf84df2059dfae51bcff7f77aa
 1.	CCFB Gates are operating to Priority 2 until June 30, after which they will switch to Priority 3.
 2.	The Delta Cross Channel gates are closed and will be open on June 26.
 3.	Suisun Marsh Salinity Control flashboards are in. All three gates are open and will be in tidal operation starting July 1.
