@@ -62,6 +62,9 @@ stantec_delta_realtime_forecast/
 │
 └── quarto_report_new/
     ├── Delta_realtime_forecast_summary.qmd
+    ├── Delta_realtime_forecast_summary.docx
+    ├── Delta_realtime_forecast_summary.html
+    ├── Delta_realtime_forecast_summary.pdf
     ├── helper_functions.R
     ├── report_config.yml
     ├── styles.css
