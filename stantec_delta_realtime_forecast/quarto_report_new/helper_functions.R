@@ -225,6 +225,178 @@ format_percent_auto <- function(x) {
 }
 
 
+
+############################################################
+# Function: strip_html_for_non_html
+############################################################
+strip_html_for_non_html <- function(x) {
+  x <- as.character(x)
+  x <- gsub("<br\\s*/?>", " ", x, ignore.case = TRUE)
+  x <- gsub("<[^>]+>", "", x)
+  x <- gsub("&nbsp;", "", x, fixed = TRUE)
+  x <- gsub("&lt;", "<", x, fixed = TRUE)
+  x <- gsub("&gt;", ">", x, fixed = TRUE)
+  x <- gsub("&amp;", "&", x, fixed = TRUE)
+  x <- gsub("[[:space:]]+", " ", x)
+  trimws(x)
+}
+
+clean_table_for_non_html <- function(table_data) {
+  out <- as.data.frame(table_data, stringsAsFactors = FALSE, check.names = FALSE)
+  for (column_name in names(out)) {
+    out[[column_name]] <- strip_html_for_non_html(out[[column_name]])
+  }
+  names(out) <- strip_html_for_non_html(names(out))
+  out
+}
+
+render_non_html_table <- function(table_data, col_names = NULL, align = "c") {
+  table_data <- clean_table_for_non_html(table_data)
+
+  if (!is.null(col_names)) {
+    col_names <- strip_html_for_non_html(col_names)
+  }
+
+  # Use a plain Markdown pipe table for BOTH Word and PDF.
+  # Pandoc/Quarto converts this table to the target format.
+  #
+  # Important:
+  # We intentionally avoid kableExtra LaTeX styling here so
+  # PDF rendering does not require extra TeX packages such as
+  # multirow.sty, wrapfig.sty, float.sty, etc.
+  knitr::kable(
+    table_data,
+    format = "pipe",
+    escape = TRUE,
+    align = align,
+    col.names = col_names
+  )
+}
+
+
+############################################################
+# Function: get_static_png_match
+#
+# Description:
+# Maps interactive HTML figure filenames to existing static
+# PNG equivalents for Word/PDF output.
+############################################################
+
+get_static_png_match <- function(html_file, results_folder) {
+
+  html_name <- basename(html_file)
+
+  png_map <- c(
+    "FlowExportReviewPlots.html" = "flow_export.png",
+
+    "LFS_Scenario_A.html" = "LFS_PP_02_ALL_A.png",
+    "LFS_Scenario_B.html" = "LFS_PP_03_ALL_B.png",
+    "LFS_Scenario_C.html" = "LFS_PP_04_ALL_C.png",
+
+    "PTM_NP_Node350_ScenarioA.html" = "NP_06_350A.png",
+    "PTM_NP_Node350_ScenarioB.html" = "NP_07_350B.png",
+    "PTM_NP_Node350_ScenarioC.html" = "NP_08_350C.png",
+
+    "PTM_NP_Node465_ScenarioA.html" = "NP_02_465A.png",
+    "PTM_NP_Node465_ScenarioB.html" = "NP_03_465B.png",
+    "PTM_NP_Node465_ScenarioC.html" = "NP_04_465C.png",
+
+    "PTM_NP_Node469_ScenarioA.html" = "NP_10_469A.png",
+    "PTM_NP_Node469_ScenarioB.html" = "NP_11_469B.png",
+    "PTM_NP_Node469_ScenarioC.html" = "NP_12_469C.png",
+
+    "PTM_NP_Node99_ScenarioA.html" = "NP_14_99A.png",
+    "PTM_NP_Node99_ScenarioB.html" = "NP_15_99B.png",
+    "PTM_NP_Node99_ScenarioC.html" = "NP_16_99C.png",
+
+    "PTM_PP_Node350_ScenarioA.html" = "PP_06_350A.png",
+    "PTM_PP_Node350_ScenarioB.html" = "PP_07_350B.png",
+    "PTM_PP_Node350_ScenarioC.html" = "PP_08_350C.png",
+
+    "PTM_PP_Node465_ScenarioA.html" = "PP_02_465A.png",
+    "PTM_PP_Node465_ScenarioB.html" = "PP_03_465B.png",
+    "PTM_PP_Node465_ScenarioC.html" = "PP_04_465C.png",
+
+    "PTM_PP_Node469_ScenarioA.html" = "PP_10_469A.png",
+    "PTM_PP_Node469_ScenarioB.html" = "PP_11_469B.png",
+    "PTM_PP_Node469_ScenarioC.html" = "PP_12_469C.png",
+
+    "PTM_PP_Node99_ScenarioA.html" = "PP_14_99A.png",
+    "PTM_PP_Node99_ScenarioB.html" = "PP_15_99B.png",
+    "PTM_PP_Node99_ScenarioC.html" = "PP_16_99C.png",
+
+    "ZOI_Map_week1.html" = "ZOI_0.75Contour_week1.png",
+    "ZOI_Map_week2.html" = "ZOI_0.75Contour_week2.png",
+    "ZOI_Map_week3.html" = "ZOI_0.75Contour_week3.png",
+
+    "ZOI_Proportional_ChannelLength_week1.html" = "ZOI_Proportional_ChannelLength_week1.png",
+    "ZOI_Proportional_ChannelLength_week2.html" = "ZOI_Proportional_ChannelLength_week2.png",
+    "ZOI_Proportional_ChannelLength_week3.html" = "ZOI_Proportional_ChannelLength_week3.png"
+  )
+
+  if (html_name %in% names(png_map)) {
+    mapped_png <- file.path(results_folder, unname(png_map[[html_name]]))
+    if (file.exists(mapped_png)) {
+      return(mapped_png)
+    }
+  }
+
+  same_name_png <- file.path(
+    results_folder,
+    sub("\\.html$", ".png", html_name, ignore.case = TRUE)
+  )
+
+  if (file.exists(same_name_png)) {
+    return(same_name_png)
+  }
+
+  NULL
+}
+
+insert_html_snapshot_figure <- function(
+    results_folder, file_name, figure_id, figure_title,
+    vwidth = 1400, vheight = 900, delay = 1
+) {
+  html_path <- file.path(results_folder, file_name)
+
+  if (!file.exists(html_path)) {
+    stop(paste("Interactive HTML file not found:", html_path))
+  }
+
+  static_file <- get_static_png_match(
+    html_file = file_name,
+    results_folder = results_folder
+  )
+
+  if (!is.null(static_file) && file.exists(static_file)) {
+
+    static_file_md <- gsub("\\\\", "/", static_file)
+
+    caption_text <- gsub("\\[", "\\\\[", figure_title)
+    caption_text <- gsub("\\]", "\\\\]", caption_text)
+
+    cat(
+      paste0(
+        "\n![", caption_text, "](",
+        static_file_md,
+        "){#", figure_id, " width=100%}\n\n"
+      )
+    )
+
+  } else {
+
+    cat(
+      paste0(
+        "\n*Interactive figure omitted in this Word/PDF version: ",
+        figure_title,
+        ". No mapped static PNG was available.*\n\n"
+      )
+    )
+  }
+
+  invisible(NULL)
+}
+
 ############################################################
 # Function: make_scrollable_table
 #
@@ -339,30 +511,24 @@ create_zoi_table <- function(results_folder) {
         )
     )
   
+  table_col_names <- c(
+    "Forecast Week",
+    "Sacramento River at Freeport<br>(cfs)",
+    "Sac Flow Bin",
+    "San Joaquin River at Vernalis<br>(cfs)",
+    "SJR Flow Bin",
+    "Delta Inflow Bin"
+  )
+  if (!knitr::is_html_output()) {
+    return(render_non_html_table(zoi_bins, table_col_names, "c"))
+  }
   table_html <- zoi_bins |>
-    knitr::kable(
-      format = "html",
-      escape = FALSE,
-      align = "c",
-      col.names = c(
-        "Forecast Week",
-        "Sacramento River at Freeport<br>(cfs)",
-        "Sac Flow Bin",
-        "San Joaquin River at Vernalis<br>(cfs)",
-        "SJR Flow Bin",
-        "Delta Inflow Bin"
-      )
-    ) |>
+    knitr::kable(format = "html", escape = FALSE, align = "c",
+                 col.names = table_col_names) |>
     kableExtra::kable_styling(
-      full_width = FALSE,
-      position = "center",
-      bootstrap_options = c(
-        "striped",
-        "hover",
-        "condensed"
-      )
+      full_width = FALSE, position = "center",
+      bootstrap_options = c("striped", "hover", "condensed")
     )
-  
   make_scrollable_table(table_html)
 }
 
@@ -499,35 +665,26 @@ create_average_exports_table <- function(results_folder) {
     TRUE ~ exports$Week
   )
   
+  table_col_names <- c(
+    "Forecast Week",
+    "OMR Bin<br>(cfs)",
+    "CVP Exports<br>(cfs)",
+    "SWP Exports<br>(cfs)",
+    "Total Exports<br>(cfs)",
+    "CVP Exports<br>(% of total)",
+    "SWP Exports<br>(% of total)"
+  )
+  if (!knitr::is_html_output()) {
+    return(render_non_html_table(exports, table_col_names, "c"))
+  }
   table_html <- exports |>
-    knitr::kable(
-      format = "html",
-      escape = FALSE,
-      align = "c",
-      col.names = c(
-        "Forecast Week",
-        "OMR Bin<br>(cfs)",
-        "CVP Exports<br>(cfs)",
-        "SWP Exports<br>(cfs)",
-        "Total Exports<br>(cfs)",
-        "CVP Exports<br>(% of total)",
-        "SWP Exports<br>(% of total)"
-      )
-    ) |>
+    knitr::kable(format = "html", escape = FALSE, align = "c",
+                 col.names = table_col_names) |>
     kableExtra::kable_styling(
-      full_width = FALSE,
-      position = "center",
-      bootstrap_options = c(
-        "striped",
-        "hover",
-        "condensed"
-      )
+      full_width = FALSE, position = "center",
+      bootstrap_options = c("striped", "hover", "condensed")
     ) |>
-    kableExtra::collapse_rows(
-      columns = 1,
-      valign = "middle"
-    )
-  
+    kableExtra::collapse_rows(columns = 1, valign = "middle")
   make_scrollable_table(table_html)
 }
 
@@ -822,6 +979,161 @@ add_leaflet_reset_control <- function(html_content) {
 
 
 
+
+############################################################
+# Function: patch_embedded_leaflet_html
+#
+# Description:
+# HTML-only Leaflet fixes:
+# - adds Reset Map
+# - replaces CARTO basemap tiles with OpenStreetMap tiles
+# - makes the basemap grayscale
+# - adds exact ZOI line colors to the visible Leaflet legend
+#
+# Exact ZOI colors are taken from the source Folium HTML:
+# OMR -2000 = #440154
+# OMR -3500 = #31688e
+# OMR -5000 = #35b779
+############################################################
+
+patch_embedded_leaflet_html <- function(html_content) {
+
+  html_content <- add_leaflet_reset_control(html_content)
+
+  if (!grepl("leaflet", html_content, ignore.case = TRUE)) {
+    return(html_content)
+  }
+
+  ##########################################################
+  # Replace CARTO tiles with OpenStreetMap
+  ##########################################################
+
+  html_content <- gsub(
+    "https://\\{s\\}\\.basemaps\\.cartocdn\\.com/[^\"']+",
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    html_content,
+    perl = TRUE
+  )
+
+  html_content <- gsub(
+    "http://\\{s\\}\\.basemaps\\.cartocdn\\.com/[^\"']+",
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    html_content,
+    perl = TRUE
+  )
+
+  html_content <- gsub(
+    "https:\\\\/\\\\/\\{s\\}\\.basemaps\\.cartocdn\\.com\\/[^\"']+",
+    "https:\\/\\/{s}.tile.openstreetmap.org\\/{z}\\/{x}\\/{y}.png",
+    html_content,
+    perl = TRUE
+  )
+
+  html_content <- gsub(
+    "http:\\\\/\\\\/\\{s\\}\\.basemaps\\.cartocdn\\.com\\/[^\"']+",
+    "https:\\/\\/{s}.tile.openstreetmap.org\\/{z}\\/{x}\\/{y}.png",
+    html_content,
+    perl = TRUE
+  )
+
+  ##########################################################
+  # Remove CARTO attribution text / URL
+  ##########################################################
+
+  html_content <- gsub(
+    "\\\\u0026copy; \\\\u003ca href=\\\\\"https://carto.com/attributions\\\\\"\\\\u003eCARTO\\\\u003c/a\\\\u003e",
+    "",
+    html_content,
+    perl = TRUE
+  )
+
+  html_content <- gsub(
+    "&copy;\\s*<a href=\"https://carto.com/attributions\">CARTO</a>",
+    "",
+    html_content,
+    ignore.case = TRUE,
+    perl = TRUE
+  )
+
+  ##########################################################
+  # Deterministically replace visible ZOI layer labels
+  # with HTML that contains the exact source line color.
+  #
+  # Folium/Leaflet L.control.layers renders overlay names
+  # as HTML, so this directly affects the visible legend.
+  ##########################################################
+
+  html_content <- gsub(
+    "\"Delta Boundary\"\\s*:",
+    paste0(
+      "\"<span style='display:inline-flex;align-items:center;'>",
+      "<span style='display:inline-block;width:22px;border-top:3px solid black;",
+      "margin-right:6px;'></span>Delta Boundary</span>\" :"
+    ),
+    html_content,
+    perl = TRUE
+  )
+
+  html_content <- gsub(
+    "\"OMR -2000\"\\s*:",
+    paste0(
+      "\"<span style='display:inline-flex;align-items:center;'>",
+      "<span style='display:inline-block;width:22px;border-top:3px solid #440154;",
+      "margin-right:6px;'></span>OMR -2000</span>\" :"
+    ),
+    html_content,
+    perl = TRUE
+  )
+
+  html_content <- gsub(
+    "\"OMR -3500\"\\s*:",
+    paste0(
+      "\"<span style='display:inline-flex;align-items:center;'>",
+      "<span style='display:inline-block;width:22px;border-top:3px solid #31688e;",
+      "margin-right:6px;'></span>OMR -3500</span>\" :"
+    ),
+    html_content,
+    perl = TRUE
+  )
+
+  html_content <- gsub(
+    "\"OMR -5000\"\\s*:",
+    paste0(
+      "\"<span style='display:inline-flex;align-items:center;'>",
+      "<span style='display:inline-block;width:22px;border-top:3px solid #35b779;",
+      "margin-right:6px;'></span>OMR -5000</span>\" :"
+    ),
+    html_content,
+    perl = TRUE
+  )
+
+  ##########################################################
+  # Grayscale basemap only; vector overlay colors stay intact
+  ##########################################################
+
+  gray_css <- paste0(
+    "<style>",
+    ".leaflet-tile-pane {",
+    "filter: grayscale(100%) brightness(1.08) contrast(0.90) !important;",
+    "}",
+    "</style>"
+  )
+
+  if (grepl("</head>", html_content, ignore.case = TRUE)) {
+    html_content <- sub(
+      "</head>",
+      paste0(gray_css, "</head>"),
+      html_content,
+      ignore.case = TRUE
+    )
+  } else {
+    html_content <- paste0(gray_css, html_content)
+  }
+
+  html_content
+}
+
+
 insert_interactive_figure <- function(
     results_folder,
     file_name,
@@ -832,6 +1144,7 @@ insert_interactive_figure <- function(
 ) {
   
   figure_type <- match.arg(figure_type)
+  is_ptm_figure <- grepl("^PTM_(NP|PP)_", file_name, ignore.case = TRUE)
   
   html_path <- file.path(
     results_folder,
@@ -860,6 +1173,21 @@ insert_interactive_figure <- function(
     )
   }
   
+  if (!knitr::is_html_output()) {
+    snapshot_width <- if (figure_type == "proportional") 1400 else 1200
+    snapshot_height <- max(as.integer(height), 700L)
+    return(
+      insert_html_snapshot_figure(
+        results_folder = results_folder,
+        file_name = file_name,
+        figure_id = figure_id,
+        figure_title = figure_title,
+        vwidth = snapshot_width,
+        vheight = snapshot_height
+      )
+    )
+  }
+
   html_content <- paste(
     readLines(
       html_path,
@@ -870,7 +1198,7 @@ insert_interactive_figure <- function(
   )
   
   # Add Reset Map control when this HTML contains a Leaflet map.
-  html_content <- add_leaflet_reset_control(html_content)
+  html_content <- patch_embedded_leaflet_html(html_content)
   
   ##########################################################
   # CSS inserted into the interactive HTML
@@ -929,7 +1257,9 @@ insert_interactive_figure <- function(
     " 'margin.l': 75,",
     " 'margin.r': 35,",
     " 'margin.t': 30,",
-    " 'margin.b': 110",
+    " 'margin.b': ",
+    if (is_ptm_figure) "55" else "110",
+    "",
     " });",
     
     " window.Plotly.Plots.resize(plot);",
@@ -980,11 +1310,14 @@ insert_interactive_figure <- function(
     " var updates = {",
     " autosize: true,",
     " width: availableWidth,",
-    " height: 520,",
+    " height: 500,",
+    " 'xaxis.title.text': 'OMR Flow (cfs)',",
+    " 'xaxis2.title.text': 'OMR Flow (cfs)',",
+    " 'xaxis3.title.text': 'OMR Flow (cfs)',",
     " 'margin.l': 80,",
     " 'margin.r': 30,",
-    " 'margin.t': 145,",
-    " 'margin.b': 65,",
+    " 'margin.t': 125,",
+    " 'margin.b': 60,",
     " 'font.size': 14,",
     " 'legend.font.size': 13",
     " };",
@@ -1348,36 +1681,27 @@ create_channel_length_table <- function(results_folder) {
       )
     )
   
+  table_col_names <- c(
+    "Weekly Model Run",
+    "OMR Bin<br>(cfs)",
+    "Sum Channel Length with Low HA<br>(miles)",
+    "Channel Length with Low HA<br>(%)",
+    "Sum Channel Length with Medium HA<br>(miles)",
+    "Channel Length with Medium HA<br>(%)",
+    "Sum Channel Length with High HA<br>(miles)",
+    "Channel Length with High HA<br>(%)"
+  )
+  if (!knitr::is_html_output()) {
+    return(render_non_html_table(channel, table_col_names, "c"))
+  }
   table_html <- channel |>
-    knitr::kable(
-      format = "html",
-      escape = FALSE,
-      align = "c",
-      col.names = c(
-        "Weekly Model Run",
-        "OMR Bin<br>(cfs)",
-        "Sum Channel Length with Low HA<br>(miles)",
-        "Channel Length with Low HA<br>(%)",
-        "Sum Channel Length with Medium HA<br>(miles)",
-        "Channel Length with Medium HA<br>(%)",
-        "Sum Channel Length with High HA<br>(miles)",
-        "Channel Length with High HA<br>(%)"
-      )
-    ) |>
+    knitr::kable(format = "html", escape = FALSE, align = "c",
+                 col.names = table_col_names) |>
     kableExtra::kable_styling(
-      full_width = FALSE,
-      position = "center",
-      bootstrap_options = c(
-        "striped",
-        "hover",
-        "condensed"
-      )
+      full_width = FALSE, position = "center",
+      bootstrap_options = c("striped", "hover", "condensed")
     ) |>
-    kableExtra::collapse_rows(
-      columns = 1,
-      valign = "middle"
-    )
-  
+    kableExtra::collapse_rows(columns = 1, valign = "middle")
   make_scrollable_table(table_html)
 }
 
@@ -1663,39 +1987,28 @@ create_ptm_fate_table <- function(results_folder, file_name) {
     "SWP Entrainment"
   )]
   
-  table_html <- ptm |>
-    knitr::kable(
-      format = "html",
-      escape = FALSE,
-      align = "c",
-      col.names = c(
-        "Forecast Week",
-        "OMR Flow Bin<br>(cfs)",
-        "Past Chipps",
-        "Upstream of Decker",
-        "Unresolved in Central Delta",
-        "Unresolved in OMR corridor",
-        "CVP Entrainment",
-        "SWP Entrainment"
-      )
-    ) |>
-    kableExtra::kable_styling(
-      full_width = FALSE,
-      position = "center",
-      bootstrap_options = c(
-        "striped",
-        "hover",
-        "condensed"
-      )
-    ) |>
-    kableExtra::collapse_rows(
-      columns = 1,
-      valign = "middle"
-    )
-  
-  make_scrollable_table(
-    table_html
+  table_col_names <- c(
+    "Forecast Week",
+    "OMR Flow Bin<br>(cfs)",
+    "Past Chipps",
+    "Upstream of Decker",
+    "Unresolved in Central Delta",
+    "Unresolved in OMR corridor",
+    "CVP Entrainment",
+    "SWP Entrainment"
   )
+  if (!knitr::is_html_output()) {
+    return(render_non_html_table(ptm, table_col_names, "c"))
+  }
+  table_html <- ptm |>
+    knitr::kable(format = "html", escape = FALSE, align = "c",
+                 col.names = table_col_names) |>
+    kableExtra::kable_styling(
+      full_width = FALSE, position = "center",
+      bootstrap_options = c("striped", "hover", "condensed")
+    ) |>
+    kableExtra::collapse_rows(columns = 1, valign = "middle")
+  make_scrollable_table(table_html)
 }
 
 
@@ -2239,25 +2552,16 @@ create_eco_ptm_table <- function(
     )
   }
   
+  if (!knitr::is_html_output()) {
+    return(render_non_html_table(output, align = "c"))
+  }
   table_html <- output |>
-    knitr::kable(
-      format = "html",
-      escape = FALSE,
-      align = "c"
-    ) |>
+    knitr::kable(format = "html", escape = FALSE, align = "c") |>
     kableExtra::kable_styling(
-      full_width = FALSE,
-      position = "center",
-      bootstrap_options = c(
-        "striped",
-        "hover",
-        "condensed"
-      )
+      full_width = FALSE, position = "center",
+      bootstrap_options = c("striped", "hover", "condensed")
     )
-  
-  make_scrollable_table(
-    table_html
-  )
+  make_scrollable_table(table_html)
 }
 
 ############################################################
@@ -2309,25 +2613,16 @@ create_static_csv_table <- function(file_name) {
     )
   }
   
+  if (!knitr::is_html_output()) {
+    return(render_non_html_table(table_data, align = "c"))
+  }
   table_html <- table_data |>
-    knitr::kable(
-      format = "html",
-      escape = FALSE,
-      align = "c"
-    ) |>
+    knitr::kable(format = "html", escape = FALSE, align = "c") |>
     kableExtra::kable_styling(
-      full_width = FALSE,
-      position = "center",
-      bootstrap_options = c(
-        "striped",
-        "hover",
-        "condensed"
-      )
+      full_width = FALSE, position = "center",
+      bootstrap_options = c("striped", "hover", "condensed")
     )
-  
-  make_scrollable_table(
-    table_html
-  )
+  make_scrollable_table(table_html)
 }
 
 
@@ -2739,37 +3034,20 @@ create_lfs_entrainment_table <- function(
   # Create table
   ##########################################################
   
+  if (!knitr::is_html_output()) {
+    return(render_non_html_table(output, align = "c"))
+  }
   table_html <- output |>
-    knitr::kable(
-      format = "html",
-      escape = FALSE,
-      align = "c"
-    ) |>
+    knitr::kable(format = "html", escape = FALSE, align = "c") |>
     kableExtra::add_header_above(
-      c(
-        " " = 3,
-        "Region" = 7,
-        " " = 2
-      ),
-      bold = TRUE
+      c(" " = 3, "Region" = 7, " " = 2), bold = TRUE
     ) |>
     kableExtra::kable_styling(
-      full_width = FALSE,
-      position = "center",
-      bootstrap_options = c(
-        "striped",
-        "hover",
-        "condensed"
-      )
+      full_width = FALSE, position = "center",
+      bootstrap_options = c("striped", "hover", "condensed")
     ) |>
-    kableExtra::collapse_rows(
-      columns = 1:2,
-      valign = "middle"
-    )
-  
-  make_scrollable_table(
-    table_html
-  )
+    kableExtra::collapse_rows(columns = 1:2, valign = "middle")
+  make_scrollable_table(table_html)
 }
 
 
@@ -3095,6 +3373,15 @@ insert_date_entrainment_html_figures <- function(
   
   matching_files <- matching_files[file_order]
   omr_values <- omr_values[file_order]
+
+  ##########################################################
+  # Figures 38-40 are HTML-only. Do not include the maps,
+  # captions, or placeholders in Word/PDF output.
+  ##########################################################
+
+  if (!knitr::is_html_output()) {
+    return(invisible(0L))
+  }
   
   ##########################################################
   # Extract the main title from each HTML
@@ -3224,8 +3511,9 @@ insert_date_entrainment_html_figures <- function(
       collapse = "\n"
     )
     
-    # Add Reset Map control to the dated Leaflet entrainment map.
-    html_content <- add_leaflet_reset_control(html_content)
+    # Apply the same Leaflet basemap/reset treatment used for the ZOI maps.
+    # This keeps the dated entrainment maps grayscale in HTML output.
+    html_content <- patch_embedded_leaflet_html(html_content)
     
     figure_title <- extract_map_title(
       html_content,
@@ -3363,7 +3651,9 @@ insert_date_entrainment_html_figures <- function(
         resize_script,
         "\n\n",
         figure_title,
-        "\n\n:::\n"
+        "\n\n:::\n\n",
+        "**Note:** The heatmap shows cumulative entrainment flux (%). Black circles show estimated LFS subregional abundance; hover over a marker to view the value. Red circles and dots indicate subregions where no LFS larvae were estimated. The Zone of Influence (ZOI) boundaries are shown in dark purple, blue, and green for Weeks 1, 2, and 3, respectively.",
+        "\n"
       )
     )
   }
