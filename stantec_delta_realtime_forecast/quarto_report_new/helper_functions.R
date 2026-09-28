@@ -986,7 +986,7 @@ add_leaflet_reset_control <- function(html_content) {
 # Description:
 # HTML-only Leaflet fixes:
 # - adds Reset Map
-# - replaces CARTO basemap tiles with OpenStreetMap tiles
+# - replaces CARTO/OpenStreetMap basemap tiles with Esri World Light Gray Canvas tiles
 # - makes the basemap grayscale
 # - adds exact ZOI line colors to the visible Leaflet legend
 #
@@ -1005,19 +1005,19 @@ patch_embedded_leaflet_html <- function(html_content) {
   }
 
   ##########################################################
-  # Replace CARTO tiles with OpenStreetMap
+  # Replace CARTO/OpenStreetMap tiles with Esri World Light Gray Canvas
   ##########################################################
 
   html_content <- gsub(
     "https://\\{s\\}\\.basemaps\\.cartocdn\\.com/[^\"']+",
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
     html_content,
     perl = TRUE
   )
 
   html_content <- gsub(
     "http://\\{s\\}\\.basemaps\\.cartocdn\\.com/[^\"']+",
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
     html_content,
     perl = TRUE
   )
@@ -1036,8 +1036,46 @@ patch_embedded_leaflet_html <- function(html_content) {
     perl = TRUE
   )
 
+  # Also replace OpenStreetMap standard tiles if an input HTML
+  # already references them directly.
+  html_content <- gsub(
+    "https://\\{s\\}\\.tile\\.openstreetmap\\.org/\\{z\\}/\\{x\\}/\\{y\\}\\.png",
+    "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+    html_content,
+    perl = TRUE
+  )
+
   ##########################################################
-  # Remove CARTO attribution text / URL
+  # Update basemap name and attribution
+  ##########################################################
+
+  # Rename the Leaflet base-layer label shown in the control.
+  html_content <- gsub(
+    "\"cartodbpositron\"\\s*:",
+    "\"Esri Light Gray\" :",
+    html_content,
+    perl = TRUE
+  )
+
+  # Replace the original encoded OSM + CARTO attribution with Esri attribution.
+  html_content <- gsub(
+    "\\\\u0026copy; \\\\u003ca href=\\\\\"https://www.openstreetmap.org/copyright\\\\\"\\\\u003eOpenStreetMap\\\\u003c/a\\\\u003e contributors \\\\u0026copy; \\\\u003ca href=\\\\\"https://carto.com/attributions\\\\\"\\\\u003eCARTO\\\\u003c/a\\\\u003e",
+    "\\\\u0026copy; Esri",
+    html_content,
+    perl = TRUE
+  )
+
+  # Handle ordinary HTML attribution if present.
+  html_content <- gsub(
+    "&copy;\\s*<a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors\\s*&copy;\\s*<a href=\"https://carto.com/attributions\">CARTO</a>",
+    "&copy; Esri",
+    html_content,
+    ignore.case = TRUE,
+    perl = TRUE
+  )
+
+  ##########################################################
+  # Remove any remaining CARTO attribution text / URL
   ##########################################################
 
   html_content <- gsub(
@@ -1108,7 +1146,7 @@ patch_embedded_leaflet_html <- function(html_content) {
   )
 
   ##########################################################
-  # Grayscale basemap only; vector overlay colors stay intact
+  # Keep basemap grayscale/light; vector overlay colors stay intact
   ##########################################################
 
   gray_css <- paste0(
