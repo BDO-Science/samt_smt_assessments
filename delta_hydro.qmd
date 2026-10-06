@@ -173,7 +173,7 @@ flextable(trigger_table) %>%
 
 ### Zone of Influence
 
-Zone of Influence (ZOI) analysis is discussed in detail in the December 22 assessment. Current conditions were queried from most recent Freeport flow data on the Sacramento River and Vernalis flow data on the San Joaquin river from [SacPAS](https://www.cbr.washington.edu/sacramento/data/query_river_table.html).  Forecasted flows were queried from short range deterministic flows provided by the [California Nevada River Forecast Center](https://www.cnrfc.noaa.gov/deterministicHourlyProductCSV.php).
+Zone of Influence (ZOI) analysis is discussed in detail in the December 22 assessment. Current conditions were queried from most recent Freeport flow data on the Sacramento River and Vernalis flow data on the San Joaquin river from [SacPAS](https://www.cbr.washington.edu/sacramento/data/query_river_table.html). Forecasted flows were queried from short range deterministic flows provided by the [California Nevada River Forecast Center](https://www.cnrfc.noaa.gov/deterministicHourlyProductCSV.php).
 
 Current conditions at Freeport and Vernalis indicate that delta hydrology falls within the `r paste0("'",hydrology_current, "'")` category.  Forecasted conditions averaged across the next 7 days falls within the `r paste0("'",hydrology_forecast, "'")` category.
 
