@@ -1,5 +1,6 @@
 library(here)
 library(tidyverse)
+library(lubridate)
 
 project <- here()
 source(here(project, 'source_code/salmon_code.R'), echo = FALSE)
@@ -223,7 +224,7 @@ wr_batt_releases_text <- if(batt_n_groups == 0) {
   print(paste0('Livingston Stone National Fish Hatchery released a total of ', total_batt_released,
                ' winter-run Chinook salmon into Battle Creek (', batt_date_range, '). ',
                'Release details are available on ',
-               '<a href="https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2026/hatch_winter.html">SacPAS</a>.'))
+               '<a href="https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2027/hatch_winter.html">SacPAS</a>.'))
 }
 
 # Build a clean display table for Battle Creek releases
@@ -274,10 +275,10 @@ wr_batt_loss_text <- if(batt_n_groups == 0) {
 stars_text <- print(paste0("As of ",format(as.Date(stars_date), '%B %d'), 
                            ', overall through delta STARS estimated survival probability (with 80% credible intervals) is ',overall_survival, 
                            ' placing it in the ', perc_surv, ' percentile of historical STARS survival estimates for the month of ', 
-                           month(Sys.Date(), label = TRUE, abbr = FALSE), ' (WYs 2018-2025)',
+                           month(Sys.Date(), label = TRUE, abbr = FALSE), ' (WYs 2018-2026)',
                            '. STARS estimated routing and survival probabilities (with 80% credible intervals) into the interior delta are ',
                            id_routing,' and ', id_survival, ', respectively, corresponding to the ', perc_id_route, ' and ', perc_id_surv, ' percentiles of historical ',
-                           month(Sys.Date(), label = TRUE, abbr = FALSE), ' estimates (WYs 2018-2025).'))
+                           month(Sys.Date(), label = TRUE, abbr = FALSE), ' estimates (WYs 2018-2026).'))
 
 
 #####################################################

@@ -6,13 +6,14 @@ library(here)
 library(lubridate)
 
 project <- here()
-wy <- 2026
+wy <- 2027
 by <- wy-1
 url <- 'https://filelib.wildlife.ca.gov/Public/salvage/Salmon%20Monitoring%20Team%20and%20Sturgeon/' #site with salvage files
 season_start <- ymd(paste0(wy-1,'-10-01'))
 season_end <- ymd(paste0(wy,'-06-30'))
 jpe <- 1057452
 livingston_jpe <- 130096
+
 
 # OPERATIONAL LOSS THRESHOLDS (trigger Action 5 management actions)
 # Note: Action 5 only tracks natural WR and Livingston Stone Sac River releases
@@ -113,7 +114,7 @@ wr_7d <- loss_summary_table %>%
   slice(1) %>%
   pull()
 
-wr_hatch <- read_csv('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2026/cwt_winter_releases.csv') %>%
+wr_hatch <- read_csv('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2027/cwt_winter_releases.csv') %>%
   clean_names() %>%
   mutate(wYear = get_fy(as.Date(release_start), opt_fy_start = '10-01')) %>%
   filter(wYear == wy) %>%
@@ -432,7 +433,8 @@ if (!is.null(steelhead_jpe_data)) {
     mutate(type = if_else(is.na(type), lead(type, 1), type)) %>%
     mutate(type = 'BN') %>%
     left_join(surv, by = c('hatchery', 'type' = 'wy_type')) %>%
-    mutate(jpe = round(stocked * survival,0))
+    mutate(jpe = round(stocked * survival,0),
+           date= date.x)
 }
 
 release_table <- releases %>%
@@ -591,10 +593,22 @@ wr_rbdd <- read_csv(paste0('https://www.cbr.washington.edu/sacramento/data/php/r
   clean_names() %>%
   mutate(date = as.Date(date))
 
-sr_rbdd <- read_csv(paste0('https://www.cbr.washington.edu/sacramento/data/php/rpt/redbluff_by.php?sc=1&outputFormat=csv&esttype=daily&year%5B%5D=',
-                           by,'&species%5B%5D=Chinook%3ASpring&stage%5B%5D=Total')) %>%
-  clean_names() %>%
-  mutate(date = as.Date(date))
+# for spring run, add a catch in case data doesn't show up early in the season:
+url <- paste0('https://www.cbr.washington.edu/sacramento/data/php/rpt/redbluff_by.php?sc=1&outputFormat=csv&esttype=daily&year%5B%5D=',
+              by, '&species%5B%5D=Chinook%3ASpring&stage%5B%5D=Total')
+
+sr_rbdd <- read_csv(url) %>%
+  clean_names()
+
+if ("date" %in% names(sr_rbdd)) {
+  sr_rbdd <- sr_rbdd %>% mutate(date = as.Date(date))
+} else {
+  sr_rbdd <- tibble(date = as.Date(NA), value = NA_real_)[0, ]  # empty tibble with expected columns
+}
+# sr_rbdd <- read_csv(paste0('https://www.cbr.washington.edu/sacramento/data/php/rpt/redbluff_by.php?sc=1&outputFormat=csv&esttype=daily&year%5B%5D=',
+#                            by,'&species%5B%5D=Chinook%3ASpring&stage%5B%5D=Total')) %>%
+#   clean_names() %>%
+#   mutate(date = as.Date(date))
 
 wr_passage <- round(sum(wr_rbdd$passage_estimate, na.rm = TRUE)/1000000,2)
 wr_rbdd_date <- max(wr_rbdd$date, na.rm = TRUE)
@@ -745,7 +759,7 @@ surv_lookup <- tibble(
 )
 
 # Calculate historical average survival rates
-# Use ALL years including current year (2026) per scenario 1
+# Use ALL years including current year (2027) per scenario 1
 cnfh_survival <- surv_lookup %>%
   filter(Hatchery == "Coleman NFH") %>%
   summarise(mean_survival = mean(survival_est, na.rm = TRUE)) %>%
@@ -762,7 +776,7 @@ cnfh_survival_prop <- cnfh_survival / 100
 frfh_survival_prop <- frfh_survival / 100
 
 message("Using survival rates: Coleman Late-Fall = ", round(cnfh_survival, 1), 
-        "% (all years 2019-2021, 2026 from sr_hatchery_survival.csv), Feather River Spring = ", 
+        "% (all years 2019-2021, 2027 from sr_hatchery_survival.csv), Feather River Spring = ", 
         round(frfh_survival, 1), "% (all years from sr_hatchery_survival.csv)")
 
 # Apply survival rates to surrogate releases

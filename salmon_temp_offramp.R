@@ -1,6 +1,27 @@
 #Stolen from BDO-Science/samt_summary_new/temp_off_ramp.R
 # Code to create the temperature offramp plot for the salmon assessment
 
+
+### If you are ready to add to assessment, add this to the samt-assessment-v1.qmd:
+
+### End of Entrainment Management for Salmonids
+# 
+# The end of entrainment management for salmonids occurs on June 30, or after 7 days of daily mean water temperature in June ≥ 72° F (22° C) at Mossdale and at Prisoner's Point (does not have to be consecutive), whichever occurs first.
+# 
+# ```{r}
+# #| label: fig-end-entr-mgmt
+# #| echo: false
+# #| message: false
+# #| fig-cap: "Dates of temperature threshold exceedance and daily average temperature at Mossdale and Prisoner's Point. Table indicates the number of days and dates exceeding temperature threshold at each location. In the figures, horizontal dashed line indicates temperature threshold for entrainment management for salmonids. Number of days exceeding the threshold at each location are shown (n= )."
+# #| fig-alt: "A table showing the number of days and dates of exceeding temperature thresholds at two locations, with exceeded locations highlighted in red. Figures show two line charts showing the average daily temperature at Mossdale (top plot) and Prisoner's Point (bottom plot) in degrees Celcius, with a horizontal dashed line indicating the temperature threshold for salmonids."
+# #| fig-width: 8
+# #| fig-height: 6
+# #| out-width: "100%"
+# 
+# #knitr::include_graphics(here("temp_offramp.png")) #outputs/temp_offramp_with_table.png
+# knitr::include_graphics(here("outputs/temp_offramp_with_table.png"))
+# ```
+
 library(tidyverse)
 library(CDECRetrieve)
 library(knitr)
