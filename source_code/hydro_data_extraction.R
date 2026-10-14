@@ -7,9 +7,9 @@ library(tidyverse)
 library(rvest)
 
 # Define start and end date
-start <- "2025-10-01"
+start <- "2026-10-01"
 end <- today()
-wy <- 2026
+wy <- 2027
 py <- wy-1
 
 pumping_clean <- bind_rows(read_csv(paste0('https://www.cbr.washington.edu/sacramento/data/php/rpt/mg.php?map=1&mgconfig=river&tempUnit=F&avgyear=0&consolidate=1&grid=1&y1min=&y1max=&y2min=&y2max=&size=large&outputFormat=csvSingle&data[]=PumpingDischarge&loc[]=TRP&loc[]=HRO&year[]=',wy)),
@@ -127,7 +127,7 @@ vns = flow_clean %>%
 
 # Read in triggers
 # The data_triggers file needs to be updated manually
-triggers <- read_csv("data_raw/data_triggers.csv")
+triggers <- read_csv("data_raw/data_triggers_wy27.csv")
 triggers_clean <- triggers %>%
   mutate(date = mdy(date_triggered),
          date_implemented= mdy(date_implemented),
