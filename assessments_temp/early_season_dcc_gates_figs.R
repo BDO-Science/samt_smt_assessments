@@ -122,7 +122,7 @@ ggsave(ec_plot, file = 'outputs/ec_14_day.png', height = 6, width = 7.5)
 # graph it - 14-day mean and daily
 
 ec_all_plot <- ggplot(all_ec, aes(x= date, y= value, color = avg_type))+
-  geom_line(size= 0.75)+
+  geom_line(linewidth = 0.75)+
   ylab("EC mean (µmhos/cm)")+
   xlab("Date")+
   #viridis::scale_color_viridis(option = "viridis", discrete = TRUE) +
