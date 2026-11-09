@@ -11,8 +11,8 @@ by <- wy-1
 url <- 'https://filelib.wildlife.ca.gov/Public/salvage/Salmon%20Monitoring%20Team%20and%20Sturgeon/' #site with salvage files
 season_start <- ymd(paste0(wy-1,'-10-01'))
 season_end <- ymd(paste0(wy,'-06-30'))
-jpe <- 1057452
-livingston_jpe <- 130096
+jpe <- NA#1057452
+livingston_jpe <- NA #130096
 
 
 # OPERATIONAL LOSS THRESHOLDS (trigger Action 5 management actions)
@@ -135,7 +135,7 @@ batt_loss <- sum(wr_hatch_battle$loss, na.rm = TRUE)
 batt_n_groups <- nrow(wr_hatch_battle)
 
 # Battle Creek JPE from SacPAS JPE table (Jumpstart program)
-battle_jpe <- 5186
+battle_jpe <- NA#5186
 
 #hatchery winter-run
 #just Livingston fish released into Sac River (Action 5)

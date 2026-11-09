@@ -32,21 +32,21 @@ salvage_status <- if(total_loss > 0) {
 # Calculate ITL percentages
 # Single-year ITLs: WR DNA 5,922; WR Hatchery Sac River 1,301; WR Battle Creek (1% of battle_jpe); Steelhead 5,294
 # Spring-run surrogate yearlings: 0.5% of each experimental release group
-itl_wr_dna_val <- round(jpe * itl_wr_natural_single, 0)  # 5,922
-itl_wr_hatch_sac_val <- round(livingston_jpe * itl_wr_hatch_single, 0)  # 1,301
-itl_wr_batt_val <- round(battle_jpe * itl_wr_batt_single, 0)  # 1% of Battle Creek JPE
+itl_wr_dna_val <- NA #round(jpe * itl_wr_natural_single, 0)  # 5,922
+itl_wr_hatch_sac_val <- NA #round(livingston_jpe * itl_wr_hatch_single, 0)  # 1,301
+itl_wr_batt_val <- NA #round(battle_jpe * itl_wr_batt_single, 0)  # 1% of Battle Creek JPE
 
-wr_dna_itl_perc <- if(itl_wr_dna_val > 0) {
-  paste0(sprintf("%.2f", (as.numeric(loss_dna_wr) / itl_wr_dna_val) * 100), "%")
-} else { "0.00%" }
+wr_dna_itl_perc <- NA #if(itl_wr_dna_val > 0) {
+#   paste0(sprintf("%.2f", (as.numeric(loss_dna_wr) / itl_wr_dna_val) * 100), "%")
+# } else { "0.00%" }
 
-wr_hatch_itl_perc <- if(itl_wr_hatch_sac_val > 0) {
-  paste0(sprintf("%.2f", (as.numeric(loss_hatch_wr) / itl_wr_hatch_sac_val) * 100), "%")
-} else { "0.00%" }
+wr_hatch_itl_perc <-NA#if(itl_wr_hatch_sac_val > 0) {
+#   paste0(sprintf("%.2f", (as.numeric(loss_hatch_wr) / itl_wr_hatch_sac_val) * 100), "%")
+# } else { "0.00%" }
 
-wr_batt_itl_perc <- if(itl_wr_batt_val > 0) {
-  paste0(sprintf("%.2f", (as.numeric(loss_batt_wr) / itl_wr_batt_val) * 100), "%")
-} else { "0.00%" }
+wr_batt_itl_perc <- NA #if(itl_wr_batt_val > 0) {
+#   paste0(sprintf("%.2f", (as.numeric(loss_batt_wr) / itl_wr_batt_val) * 100), "%")
+# } else { "0.00%" }
 
 sh_nat_itl_perc <- if(itl_sh_natural_single > 0) {
   paste0(sprintf("%.2f", (as.numeric(loss_nat_sh) / itl_sh_natural_single) * 100), "%")

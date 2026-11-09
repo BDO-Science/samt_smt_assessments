@@ -249,7 +249,7 @@ There have been a total of `r n_releases` releases totaling `r sh_stocked` steel
 
 ```{r}
 #| label: tbl-sh_clipped_table
-#| tbl-cap: 'Summary of steelhead hatchery releases in Water Year 2026. JPE calculated using hatchery-specific survival estimates to Delta entry from release location.'
+#| tbl-cap: 'Summary of steelhead hatchery releases in Water Year 2027. JPE calculated using hatchery-specific survival estimates to Delta entry from release location.'
 #| echo: false
 
 flextable(release_table_print) %>%
