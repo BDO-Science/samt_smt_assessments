@@ -269,7 +269,8 @@ ds_cumsalvage <- 0
 
 #prepping new code for release data
 releases <- read_tsv("https://www.cbr.washington.edu/sacramento/data/generated/WY2027_smeltreleases.txt") %>% 
-  filter(!is.na(Location)) %>% 
+  filter(!is.na(Location)) %>%
+  filter(Date > ymd("2026-10-01")) %>% 
   arrange(Date) %>% 
   clean_names()
 last_release <- releases %>%

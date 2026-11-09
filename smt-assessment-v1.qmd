@@ -60,7 +60,7 @@ cat(narrative_text)
 ### Operational and Regulatory Conditions
 
 - See current Weekly Fish and Water Operations Outlook document.
-- Additional information also available on the [SacPAS SMT page](https://www.cbr.washington.edu/sacramento/workgroups/delta_smelt.html).
+- Additional information also available on the [SacPAS Smelt page](https://www.cbr.washington.edu/sacramento/workgroups/delta_smelt.html).
 
 
 ### Delta smelt  
@@ -69,9 +69,8 @@ cat(narrative_text)
 
 - **Delta smelt life stages detected in surveys:** `r ds_lifestages`
 
-- **Abundance estimate:** `r paste0(abundance, " (95% CL: ", format(abundance_lcl,big.mark = ","), " to ", format(abundance_ucl,big.mark = ","), ")")` as of the week of `r abundance_date`
-- **Releases:** A total of `r format(total_released, scientific = FALSE, big.mark = ",")` cultured Delta smelt have been released for WY 2026. The most recent release of `r format(last_release_count, scientific = FALSE, big.mark = ",")` fish occurred in `r format(last_release_location, scientific = FALSE, big.mark = ",")` on `r format(last_release_date, "%b %d, %Y")`. 
-    - **Non-production release:** On June 2, USFWS released ~4,000 juvenile Delta smelt (120 dph; average fork length of 31 mm) at Sherman Island.
+- **Abundance estimate:** `r paste0(abundance, " (95% CL: ", format(abundance_lcl,big.mark = ","), " to ", format(abundance_ucl,big.mark = ","), ")")` as of the week of `r abundance_date`.
+- **Releases:** A total of `r format(total_released, scientific = FALSE, big.mark = ",")` cultured Delta smelt have been released for WY 2027. The most recent release of `r format(last_release_count, scientific = FALSE, big.mark = ",")` fish occurred in `r format(last_release_location, scientific = FALSE, big.mark = ",")` on `r format(last_release_date, "%b %d, %Y")`. 
 - **Delta smelt count:** `r ds_adults_count_wy` adult Delta smelt and `r ds_juveniles_count_wy` juvenile Delta smelt have been detected this water year. See @tbl-ds-recent-catch for recent detections, @fig-ds-map for spatial distribution, and @fig-ds-catch for temporal distribution.
 - **Delta smelt salvage:** `r ds_salvage_count` Delta smelt has been salvaged, and the cumulative seasonal salvage is `r ds_cumsalvage`. 
 
@@ -97,8 +96,8 @@ kable(ds_recent_display)
 #| fig-width: 8
 #| fig-height: 7
 #| label: "fig-ds-map"
-#| fig-alt: "Map showing catch location and relative count of Delta smelt captured across different regions in WY2026"
-#| fig-cap: "Delta smelt distribution for WY 2026"
+#| fig-alt: "Map showing catch location and relative count of Delta smelt captured across different regions in WY2027."
+#| fig-cap: "Delta smelt distribution for WY 2027"
 (map_detections_lj <- ggplot() + 
     geom_sf(data = WW_Delta, color = "darkslategray3") +
     geom_sf(data = R_EDSM_Strata_1718P1, aes(fill = Stratum), alpha = 0.4,inherit.aes = FALSE)+
@@ -132,7 +131,7 @@ kable(ds_recent_display)
 #| warning: false
 kable(
   ds_detail %>%
-    filter(date > ymd("2025-10-01")) %>% 
+    filter(date > ymd("2026-10-01")) %>% 
     group_by(source, region, life_stage) %>%
     summarize(total = sum(catch)) %>%
     ungroup() %>%
@@ -267,8 +266,8 @@ kable(lfs_recent_display)
 #| fig-width: 8
 #| fig-height: 7
 #| label: "fig-lfs-map"
-#| fig-alt: "Map showing catch location and relative count oflongfin smelt captured across different regions in WY2026"
-#| fig-cap: "Longfin Smelt Distribution for WY 2026"
+#| fig-alt: "Map showing catch location and relative count oflongfin smelt captured across different regions in WY2027."
+#| fig-cap: "Longfin Smelt Distribution for WY 2027."
 (map_detections_lj <- ggplot() + 
     geom_sf(data = WW_Delta, color = "darkslategray3") +
     geom_sf(data = R_EDSM_Strata_1718P1, aes(fill = Stratum), alpha = 0.4,inherit.aes = FALSE)+
@@ -298,7 +297,7 @@ kable(lfs_recent_display)
 
 ```{r, echo = FALSE, message = FALSE}
 #| label: "tbl-lfs-catch-all"
-#| tbl-cap: "Longfin smelt water year totals by life stage"
+#| tbl-cap: "Longfin smelt water year totals by life stage."
 #| warning: false
 kable(
   lfs_detail %>% #could also do lfs_recent, but this is for wy totals
@@ -314,7 +313,7 @@ kable(
 ```{r, echo = FALSE}
 #| label: "fig-lfs-catch"
 #| fig-alt: "Column chart showing total catch of longfin smelt between Oct 1 and current day for multiple surveys."
-#| fig-cap: "Time series of longfin smelt catch, WY 2026"
+#| fig-cap: "Time series of longfin smelt catch, WY 2027."
 ggplot(lfs_wy) +
   geom_col(aes(date, total_catch, fill = source)) +
   labs(x = "Date", y = "Total Catch", fill = "Survey") + 
