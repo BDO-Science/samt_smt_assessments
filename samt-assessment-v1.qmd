@@ -64,7 +64,7 @@ DEG <- "$^{\\circ}$"
 
 #### Current Status
 
-*Delta Entry Timing* - Historically, as of `r format(Sys.Date()-1, "%b %d")`, `r if_else(is.na(delta_entry_wr), '0%', delta_entry_wr)` of length-at-date (LAD) winter-run have entered the Delta based on Knights Landing RST catch, `r if_else(is.na(delta_exit_wr), '0%', delta_exit_wr)` have exited the Delta based on Chipps Island Trawl Catch, and `r if_else(is.na(salvage_wr), '0%', salvage_wr)` of DNA confirmed winter-run have been salvaged.
+*Delta Entry Timing* - Historically, as of `r format(Sys.Date()-1, "%b %d")`, `r if_else(is.na(delta_entry_wr), '0%', delta_entry_wr)` of length-at-date (LAD) winter-run have entered the Delta based on catch at Sacramento Trawl at Sherwood, `r if_else(is.na(delta_exit_wr), '0%', delta_exit_wr)` have exited the Delta based on Chipps Island Trawl Catch, and `r if_else(is.na(salvage_wr), '0%', salvage_wr)` of DNA confirmed winter-run have been salvaged.
 
 ```{r}
 #| label: tbl-wr_timing_table
