@@ -23,10 +23,10 @@ source("smelt_data_extraction.R")
 first_flush_status = "not relevant"
 first_flush_lfs_status = "not relevant"
 adult_ent_status = "not relevant"
-larval_ent_status = "relevant"
-lfs_adult_ent_status = "relevant"
-lfs_larval_ent_status = "relevant"
-end_of_season = "relevant"
+larval_ent_status = "not relevant"
+lfs_adult_ent_status = "not relevant"
+lfs_larval_ent_status = "not relevant"
+end_of_season = "not relevant"
 
 # Narrative ----------------------
 # - Text about what actions have recently started, ended, or predicted to start
@@ -34,12 +34,46 @@ end_of_season = "relevant"
 # - Summary of salvage and expectations of salvage
 
 narrative_text <- 
-"- Entrainment management for smelts offramped on 6/15/2026 for WY2026.
+"- Entrainment management for smelts has not yet begun for WY2027.
 "
 
 # Evaluation question responses ---------------------
 
 # Delta smelt
+
+
+# First Flush eval questions:
+# Full text for assessment page:
+# 1. If it is between December 1 and the last day of February, is the 3-day average flow at Freeport $\ge$ 25,000 cfs and the 3-day average turbidity at Freeport $\ge$ 50 FNU?
+#   
+#   `r ds_ff_1`
+# 
+# 2. Does real-time monitoring of abiotic and biotic factors and salvage prediction models indicate the conditions of First Flush are imminent (i.e., within two to three days) and/or increased entrainment of adult Delta smelt to the south Delta is likely (i.e. turbidity bridge)?
+#   
+#   `r ds_ff_2`
+# 
+# 3. Does real-time monitoring of abiotic and biotic factors and salvage prediction models indicate the First Flush Action is not warranted to avoid exceeding incidental take of listed species?
+#   
+#   `r ds_ff_3`
+
+ds_ff_1 <- "Calendar dates for first flush have not yet been met."
+ds_ff_2 <- "Not applicable."
+ds_ff_3 <- "Not applicable."
+
+
+
+# In season questions text for assessment.qmd
+# 1. After the start of entrainment management, is JPF < 0, is daily average turbidity ≥ 12 FNU in the OMR corridor (stations OBI, HOL, and OSJ)? Has the average water temperature at Jersey Point or Rio Vista not exceeded 53.6$^{\circ}$F (12$^{\circ}$C) for 3 consecutive days and/or has this action already been taken during WY 2026?
+#   
+#   `r ds_eval_1`
+# 
+# 2. What is the evidence for the onset of Delta smelt spawning?
+#   
+#   `r ds_eval_2`
+# 
+# 3. After the onset of spawning, have the following conditions occurred: JPF < 0 cfs, average turbidity is $\ge$ 12 FNU in the south Delta, and PTM modeling indicates the action would avoid $\ge$ 5% entrainment of the Delta smelt population at facilities after 30 days?
+#   
+#   `r ds_eval_3`
 
 # NOT IN USE After the start of entrainment management, is JPF < 0, is daily average turbidity ≥ 12 FNU 
 #in the OMR corridor (stations OBI, HOL, and OSJ), and has the average water temperature 
@@ -84,7 +118,33 @@ ds_eval_3 <- "Entrainment management for smelts for WY 2026 offramped on 6/15/20
 # below the ≥ 12 FNU threshold and modeling shows a low risk of entrainment, the conditions 
 # required to initiate the larval and juvenile Delta smelt entrainment action are not met."
 
+
+
+
+
 # Longfin smelt
+
+
+
+# LFS start of Entrainment mgmt
+#1. After December 1, is the cumulative water year salvage of age 1+ Longfin smelt approaching or exceeding 5% of the fall mid water trawl index plus one fish?
+
+
+# # Entrainment management season: text for assessment:
+# 1. If JPF < 0, what is the trajectory of annual loss of adult longfin smelt and is it likely to exceed 5% of the adult population estimate? Is South Delta entrainment expected to decrease due to a reduction in export pumping?
+#   
+#   `r lfs_eval_1`
+# 
+# 2. For larval and juvenile longfin smelt, if JPF < 0 cfs, do particle tracking models show a moderate to high difference in particle fates across different OMRI scenarios? Does Zone of Influence modeling show moderate to high changes in hydrodynamic footprint across different OMRI scenarios? Are these effects anticipated to cause a population decline?
+#   
+#   `r lfs_eval_2`
+# 
+# 3. Is there additional information or other analyses that should be considered in this evaluation?
+#   
+#   `r lfs_eval_3`
+
+lfs_start_1 <- "The Fall Midwater Trawl Index has not yet been determined for WY 2027."
+
 
 # 1. If JPF < 0, what is the trajectory of annual loss of adult longfin smelt 
 #and is it likely to exceed 5% of the adult population estimate? 
@@ -140,7 +200,7 @@ lfs_eval_3 <- "Please see Appendix A for additional information."
 past_days <- 14 # choose how far back to go
 
 ds_wy = ds_latlon %>%
-  filter(date > ymd("2025-10-01"))
+  filter(date > ymd("2026-10-01"))
 ds_recent <- ds_detail %>%
   filter(date > today()-past_days) 
 
@@ -181,20 +241,20 @@ ds_last_catch_location <- ds_recent %>% arrange(date) %>% tail(1) %>% pull(regio
 ds_last_catch_count <- ds_recent %>% arrange(date) %>% tail(1) %>% pull(catch)
 
 #wy counts
-ds_adults_count_wy <- ds_detail %>% filter(date > ymd("2025-10-01")) %>% 
+ds_adults_count_wy <- ds_detail %>% filter(date > ymd("2026-10-01")) %>% 
   filter(life_stage == "Adult") %>% pull(catch) %>% sum()
-ds_juveniles_count_wy <- ds_detail %>% filter(date > ymd("2025-10-01")) %>% 
+ds_juveniles_count_wy <- ds_detail %>% filter(date > ymd("2026-10-01")) %>% 
   filter(life_stage == "Juvenile") %>% pull(catch) %>% sum()
-ds_larvae_count_wy <- ds_detail %>% filter(date > ymd("2025-10-01")) %>% 
+ds_larvae_count_wy <- ds_detail %>% filter(date > ymd("2026-10-01")) %>% 
   filter(life_stage == "Larva") %>% pull(catch) %>% sum()
 
 ## Salvage ----------------------
 # Once 2026 starts updating go back to this code
-ds_salvage_count <- ds_wy %>% filter(source == "salvage") %>% pull(total_catch)%>% sum()
-ds_cumsalvage <- salvage_ds_data %>% pull(salvage) %>% sum()
+# ds_salvage_count <- ds_wy %>% filter(source == "salvage") %>% pull(total_catch)%>% sum()
+# ds_cumsalvage <- salvage_ds_data %>% pull(salvage) %>% sum()
 #Before salvage for WY starts, use this code
-#ds_salvage_count <- 0
-#ds_cumsalvage <- 0
+ds_salvage_count <- 0
+ds_cumsalvage <- 0
 
 ## Releases ----------------------- 
 # releases <- read_csv(here("data_raw/smelt/smelt_release_table_2026.csv")) 
@@ -208,7 +268,7 @@ ds_cumsalvage <- salvage_ds_data %>% pull(salvage) %>% sum()
 # last_release_count <- last_release %>% tail(2) %>% pull(total_released) %>% sum()
 
 #prepping new code for release data
-releases <- read_tsv("https://www.cbr.washington.edu/sacramento/data/generated/WY2026_smeltreleases.txt") %>% 
+releases <- read_tsv("https://www.cbr.washington.edu/sacramento/data/generated/WY2027_smeltreleases.txt") %>% 
   filter(!is.na(Location)) %>% 
   arrange(Date) %>% 
   clean_names()
@@ -235,7 +295,7 @@ last_release_count <- last_release %>% tail(1) %>% pull(total_released) %>% sum(
 past_days <- 14 # choose how far back to go
 
 lfs_wy = lfs_latlon %>%
-  filter(date > ymd("2025-10-01"))
+  filter(date > ymd("2026-10-01"))
 lfs_recent <- lfs_detail %>%
   filter(date > today()-past_days) 
 
@@ -261,11 +321,11 @@ lfs_last_catch_location <- lfs_recent %>% arrange(date) %>% tail(1) %>% pull(reg
 lfs_last_catch_count <- lfs_recent %>% arrange(date) %>% tail(1) %>% pull(catch)
 
 #wy counts
-lfs_adults_count_wy <- lfs_detail %>% filter(date > ymd("2025-10-01")) %>% 
+lfs_adults_count_wy <- lfs_detail %>% filter(date > ymd("2026-10-01")) %>% 
   filter(life_stage == "Adult") %>% pull(catch) %>% sum()
-lfs_juveniles_count_wy <- lfs_detail %>% filter(date > ymd("2025-10-01")) %>% 
+lfs_juveniles_count_wy <- lfs_detail %>% filter(date > ymd("2026-10-01")) %>% 
   filter(life_stage == "Juvenile") %>% pull(catch) %>% sum()
-lfs_larvae_count_wy <- lfs_detail %>% filter(date > ymd("2025-10-01")) %>% 
+lfs_larvae_count_wy <- lfs_detail %>% filter(date > ymd("2026-10-01")) %>% 
   filter(life_stage == "Larva") %>% pull(catch) %>% sum()
 
 ## Salvage ----------------------------

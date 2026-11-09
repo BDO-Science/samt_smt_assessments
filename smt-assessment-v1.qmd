@@ -78,7 +78,6 @@ cat(narrative_text)
 
 **Notes**
 
-- EDSM is currently in phase 2 (20-mm); detections are marked as *Hypomesus sp.* until genetic verification is returned, which may be 4-6 weeks delay. As a result, 'recent catch' in this assessment may be low until genetic verification has occurred.  
 - Since there are few recent detections of Delta smelt, estimation of distribution within the Delta is limited. 
 - As mentioned in EDSM reporting, fork length ranges reported for Delta smelt and longfin smelt life stages are defined by permit reporting purposes and are not intended to delineate cohorts or distinguish from hatchery or wild origin. See @tbl-ds-recent-catch caption for fork-length ranges for age groups of Delta smelt. 
 - See [SacPAS SMT Page](https://www.cbr.washington.edu/sacramento/workgroups/delta_smelt.html) for additional details on releases and detection in surveys and salvage.
@@ -230,17 +229,19 @@ if (larval_ent_status != "relevant") {
 
 **Delta smelt:**
 
-1. After the start of entrainment management, is JPF < 0, is daily average turbidity ≥ 12 FNU in the OMR corridor (stations OBI, HOL, and OSJ)? Has the average water temperature at Jersey Point or Rio Vista not exceeded 53.6$^{\circ}$F (12$^{\circ}$C) for 3 consecutive days and/or has this action already been taken during WY 2026?
+1. If it is between December 1 and the last day of February, is the 3-day average flow at Freeport $\ge$ 25,000 cfs and the 3-day average turbidity at Freeport $\ge$ 50 FNU?
 
-    `r ds_eval_1`
+      `r ds_ff_1`
 
-2. What is the evidence for the onset of Delta smelt spawning?
+2. Does real-time monitoring of abiotic and biotic factors and salvage prediction models indicate the conditions of First Flush are imminent (i.e., within two to three days) and/or increased entrainment of adult Delta smelt to the south Delta is likely (i.e. turbidity bridge)?
 
-    `r ds_eval_2`
+      `r ds_ff_2`
+      
+3. Does real-time monitoring of abiotic and biotic factors and salvage prediction models indicate the First Flush Action is not warranted to avoid exceeding incidental take of listed species?
 
-3. After the onset of spawning, have the following conditions occurred: JPF < 0 cfs, average turbidity is $\ge$ 12 FNU in the south Delta, and PTM modeling indicates the action would avoid $\ge$ 5% entrainment of the Delta smelt population at facilities after 30 days?
+      `r ds_ff_3`
 
-    `r ds_eval_3`
+
   
 
 ### Longfin smelt
@@ -346,8 +347,8 @@ if (first_flush_lfs_status != "relevant") {
 
 - **Threshold:** JPF < 0 cfs, annual loss is on a trajectory to exceed 5% of the adult population abundance, and reduced exports will reduce entrainment in the south Delta
   - Daily average JPF: `r formatC(JPF_1d, format = 'f', big.mark = ',', digits = 0)` cfs as of `r format(JPF_1d_lastdate, "%b %d, %Y")`
-  - Adult abundance (Age 1+ LFS index): 2479.2 fish
-      - 5% of abundance + 1: 125.0
+  - Adult abundance (Age 1+ LFS index): not established for WY 2027
+      - 5% of abundance + 1: NA
   - Water year total adult longfin smelt salvage = 0
   
 
@@ -360,17 +361,10 @@ if (first_flush_lfs_status != "relevant") {
 
 **Longfin smelt:**
 
-1. If JPF < 0, what is the trajectory of annual loss of adult longfin smelt and is it likely to exceed 5% of the adult population estimate? Is South Delta entrainment expected to decrease due to a reduction in export pumping?
 
-    `r lfs_eval_1`
-  
-2. For larval and juvenile longfin smelt, if JPF < 0 cfs, do particle tracking models show a moderate to high difference in particle fates across different OMRI scenarios? Does Zone of Influence modeling show moderate to high changes in hydrodynamic footprint across different OMRI scenarios? Are these effects anticipated to cause a population decline?
+1. After December 1, is the cumulative water year salvage of age 1+ Longfin smelt approaching or exceeding 5% of the fall mid water trawl index plus one fish?
 
-    `r lfs_eval_2`
-  
-3. Is there additional information or other analyses that should be considered in this evaluation?
-
-    `r lfs_eval_3`
+    `r lfs_start_1`
 
 
 ### End of smelt Entrainment Management

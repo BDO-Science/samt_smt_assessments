@@ -1,6 +1,7 @@
 # smelt_data_extraction.R
 # Script for extracting data for smelt assessments- e.g. from files, SacPAS, online sources
 # Last major update 12/14/2025- LRM adding A5 data
+# Updated for WY27 11/8/26- LRM
 
 # Libraries 
 library(here)
@@ -99,59 +100,59 @@ download.file(
 
 # Weather (Lilly) --------------------------------
 # include temp, precipitation, wind and summarize
-make_location_summary <- function(lat, lon, name = NULL) {
-  url <- glue("https://forecast.weather.gov/MapClick.php?lat={lat}&lon={lon}&FcstType=json")
-  dat <- fromJSON(url)
-  
-  temp_label <- if ("tempLabel" %in% names(dat$data)) dat$data$tempLabel else rep(NA, length(dat$data$temperature))
-  
-  forecast_df <- tibble(
-    period = dat$time$startPeriodName,
-    temp_label = temp_label,
-    temperature = as.numeric(dat$data$temperature),
-    weather = dat$data$weather,
-    text = dat$data$text
-  )
-  
-  precip <- forecast_df %>%
-    filter(str_detect(str_to_lower(weather), "rain|snow|shower|precip")) %>%
-    mutate(summary = glue("🌧 {period}: {text}")) %>%
-    pull(summary)
-  
-  wind <- forecast_df %>%
-    mutate(wind_speed = as.numeric(str_extract(text, "(?<=\\bwind\\s)(\\d{1,2})"))) %>%
-    filter(!is.na(wind_speed) & wind_speed > 15) %>%
-    mutate(summary = glue("💨 {period}: {text}")) %>%
-    pull(summary)
-  
-  extreme <- forecast_df %>%
-    filter((temp_label == "High" & temperature >= 90) |
-             (temp_label == "Low" & temperature <= 32)) %>%
-    mutate(summary = glue("🌡 {period}: {text}")) %>%
-    pull(summary)
-  
-  bullets <- c()
-  if (length(precip) > 0) bullets <- c(bullets, precip[1:min(2, length(precip))])
-  if (length(wind) > 0) bullets <- c(bullets, wind[1])
-  if (length(extreme) > 0) bullets <- c(bullets, extreme[1])
-  
-  
-  # Add weekly temperature range if quiet forecast
-  if (length(bullets) == 0) {
-    temp_min <- min(forecast_df$temperature, na.rm = TRUE)
-    temp_max <- max(forecast_df$temperature, na.rm = TRUE)
-    bullets <- glue("No precipitation, high winds, or extreme temps expected. Temperature range is {temp_min}–{temp_max}°F.")
-  }
-  
-  header <- if (!is.null(name)) glue("**{name}**:") else ""
-  bullet_lines <- paste("  -", bullets, collapse = "\n") #"-", 
-  paste(header, "\n", bullet_lines)
-}
-
-
-# Summaries for Stockton and Antioch (can add additional locations as well)
-weather_stockton <- make_location_summary(37.9537, -121.2905, "Stockton, CA")
-weather_antioch <- make_location_summary(38.0169, -121.8138, "Antioch, CA")
+# make_location_summary <- function(lat, lon, name = NULL) {
+#   url <- glue("https://forecast.weather.gov/MapClick.php?lat={lat}&lon={lon}&FcstType=json")
+#   dat <- fromJSON(url)
+#   
+#   temp_label <- if ("tempLabel" %in% names(dat$data)) dat$data$tempLabel else rep(NA, length(dat$data$temperature))
+#   
+#   forecast_df <- tibble(
+#     period = dat$time$startPeriodName,
+#     temp_label = temp_label,
+#     temperature = as.numeric(dat$data$temperature),
+#     weather = dat$data$weather,
+#     text = dat$data$text
+#   )
+#   
+#   precip <- forecast_df %>%
+#     filter(str_detect(str_to_lower(weather), "rain|snow|shower|precip")) %>%
+#     mutate(summary = glue("🌧 {period}: {text}")) %>%
+#     pull(summary)
+#   
+#   wind <- forecast_df %>%
+#     mutate(wind_speed = as.numeric(str_extract(text, "(?<=\\bwind\\s)(\\d{1,2})"))) %>%
+#     filter(!is.na(wind_speed) & wind_speed > 15) %>%
+#     mutate(summary = glue("💨 {period}: {text}")) %>%
+#     pull(summary)
+#   
+#   extreme <- forecast_df %>%
+#     filter((temp_label == "High" & temperature >= 90) |
+#              (temp_label == "Low" & temperature <= 32)) %>%
+#     mutate(summary = glue("🌡 {period}: {text}")) %>%
+#     pull(summary)
+#   
+#   bullets <- c()
+#   if (length(precip) > 0) bullets <- c(bullets, precip[1:min(2, length(precip))])
+#   if (length(wind) > 0) bullets <- c(bullets, wind[1])
+#   if (length(extreme) > 0) bullets <- c(bullets, extreme[1])
+#   
+#   
+#   # Add weekly temperature range if quiet forecast
+#   if (length(bullets) == 0) {
+#     temp_min <- min(forecast_df$temperature, na.rm = TRUE)
+#     temp_max <- max(forecast_df$temperature, na.rm = TRUE)
+#     bullets <- glue("No precipitation, high winds, or extreme temps expected. Temperature range is {temp_min}–{temp_max}°F.")
+#   }
+#   
+#   header <- if (!is.null(name)) glue("**{name}**:") else ""
+#   bullet_lines <- paste("  -", bullets, collapse = "\n") #"-", 
+#   paste(header, "\n", bullet_lines)
+# }
+# 
+# 
+# # Summaries for Stockton and Antioch (can add additional locations as well)
+# weather_stockton <- make_location_summary(37.9537, -121.2905, "Stockton, CA")
+# weather_antioch <- make_location_summary(38.0169, -121.8138, "Antioch, CA")
 
 
 # Smelt catch -------------------------
@@ -201,7 +202,7 @@ sta_salvage <- data.frame(station = c("CVP", "SWP"),
 #   I(paste(txt, collapse = "\n")))
 
 # read in full csv from SacPAS
-edsm_data_raw <- readr::read_csv("https://www.cbr.washington.edu/sacramento/data/generated/WY2026_smeltcatch_edsm.csv")
+edsm_data_raw <- readr::read_csv("https://www.cbr.washington.edu/sacramento/data/generated/WY2027_smeltcatch_edsm.csv")
 
 #reg code
 edsm_data <- edsm_data_raw %>%
@@ -225,7 +226,7 @@ edsm_lfs <- edsm_data %>% filter(species == "Longfin Smelt") %>% select(-species
                           false= source))
 
 #Chipps island trawl catch
-chipps_data_raw <- read_csv("https://www.cbr.washington.edu/sacramento/data/generated/WY2026_smeltcatch_chipps.csv")
+chipps_data_raw <- read_csv("https://www.cbr.washington.edu/sacramento/data/generated/WY2027_smeltcatch_chipps.csv")
 chipps_data <- chipps_data_raw %>%
   clean_names() %>%
   select(-source) %>% 
@@ -270,32 +271,32 @@ salvage_lfs_data <- salvage_lfs_data_raw %>%
 
 ## Other data ----------------------
 # DJFMP beach seines (manually update)
-beachsn <- read_csv(here("data_raw/smelt/Beach_seines_2026.csv")) %>%
-  clean_names() %>% 
-  mutate(date = mdy(date),
-         date = date(ymd(date))) %>% 
-  #filter(species == "DSM") %>% 
-  mutate(source = "DJFMP") %>% 
-  #mutate(region= "North") %>%  #fix this, obviously not true for all stations
-  select(region, station, source, date, latitude, longitude, species, mark, catch,
-         fork_length= fl, life_stage= stage, stratum)
-
-beachsn_ds <- beachsn %>% filter(species == "DSM") %>% mutate(species= "Delta Smelt") %>% select(-species)
-beachsn_lfs <- beachsn %>% filter(species == "LFS") %>% mutate(species= "Longfin Smelt")%>% select(-species)
+# beachsn <- read_csv(here("data_raw/smelt/Beach_seines_2026.csv")) %>%
+#   clean_names() %>% 
+#   mutate(date = mdy(date),
+#          date = date(ymd(date))) %>% 
+#   #filter(species == "DSM") %>% 
+#   mutate(source = "DJFMP") %>% 
+#   #mutate(region= "North") %>%  #fix this, obviously not true for all stations
+#   select(region, station, source, date, latitude, longitude, species, mark, catch,
+#          fork_length= fl, life_stage= stage, stratum)
+# 
+# beachsn_ds <- beachsn %>% filter(species == "DSM") %>% mutate(species= "Delta Smelt") %>% select(-species)
+# beachsn_lfs <- beachsn %>% filter(species == "LFS") %>% mutate(species= "Longfin Smelt")%>% select(-species)
 
 # FMWT (manually update)
-fmwt <- read_csv(here("data_raw/smelt/FMWT_LFS_Oct-Dec_2025.csv")) %>%
-  clean_names() %>% 
-  mutate(station = as.character(station)) %>% 
-  mutate(date = mdy(sample_date)) %>% 
-  mutate(species= "Longfin smelt") %>% 
-  mutate(source = "FMWT") %>% 
-  left_join(station_region, by = "station")%>%
-  left_join(station_stratum, by = "station")%>%
-  select(source, station, date, catch=length_frequency, fork_length, latitude, longitude, species, region, stratum)
-
-
-fmwt_lfs <- fmwt %>% filter(species == "Longfin smelt") %>% select(-species)
+# fmwt <- read_csv(here("data_raw/smelt/FMWT_LFS_Oct-Dec_2025.csv")) %>%
+#   clean_names() %>% 
+#   mutate(station = as.character(station)) %>% 
+#   mutate(date = mdy(sample_date)) %>% 
+#   mutate(species= "Longfin smelt") %>% 
+#   mutate(source = "FMWT") %>% 
+#   left_join(station_region, by = "station")%>%
+#   left_join(station_stratum, by = "station")%>%
+#   select(source, station, date, catch=length_frequency, fork_length, latitude, longitude, species, region, stratum)
+# 
+# 
+# fmwt_lfs <- fmwt %>% filter(species == "Longfin smelt") %>% select(-species)
 
 # manually update for other DS data (random Broodstock, FRP)
 other_ds_data <- read_csv(here("data_raw/smelt/smelt_catch_test.csv")) %>%
@@ -417,8 +418,8 @@ smelt_release_table <- tables[[3]] %>% clean_names()
 # could filter by date for life stage here
 ds_latlon <- bind_rows(
   edsm_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
-  beachsn_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
-  chipps_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
+  #beachsn_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
+  #chipps_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
   sls_ds %>% select(source, date, catch, latitude, longitude, region, life_stage),
   #twmm_ds %>% select(source, date, catch, latitude, longitude, region, life_state), 
   salvage_ds_data %>% select(source, date, catch, latitude, longitude, region)) %>%
@@ -434,10 +435,10 @@ ds_latlon <- bind_rows(
 # uncomment salvage once salvage is updated
 ds_detail <- bind_rows(
   edsm_ds %>% select(source, date, catch, mark_code, fork_length, latitude, longitude, region, stratum),
-  beachsn_ds %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
+  #beachsn_ds %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   twmm_ds %>% select(source, date, catch, fork_length, latitude, longitude, region),
   sls_ds %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
-  chipps_ds %>% select(source, date, catch, fork_length, latitude, longitude, region),
+  #chipps_ds %>% select(source, date, catch, fork_length, latitude, longitude, region),
   salvage_ds_data %>% select(source, date, catch, fork_length, latitude, longitude, region)
 ) %>%
   filter(!is.na(catch), !is.na(latitude)) %>%
@@ -452,11 +453,11 @@ ds_detail <- bind_rows(
 # could filter by date for life stage here
 lfs_latlon <- bind_rows(
   edsm_lfs %>% select(source, date, catch, latitude, longitude, region),
-  twmm_lfs %>% select(source, date, catch, latitude, longitude, region),
-  beachsn_lfs %>% select(source, date, catch, latitude, longitude, region),
-  fmwt_lfs %>% select(source, date, catch, latitude, longitude, region),
-  sls_lfs %>% select(source, date, catch, latitude, longitude, region),
-  chipps_lfs %>% select(source, date, catch, latitude, longitude, region),
+  #twmm_lfs %>% select(source, date, catch, latitude, longitude, region),
+  #beachsn_lfs %>% select(source, date, catch, latitude, longitude, region),
+  #fmwt_lfs %>% select(source, date, catch, latitude, longitude, region),
+  #sls_lfs %>% select(source, date, catch, latitude, longitude, region),
+  #chipps_lfs %>% select(source, date, catch, latitude, longitude, region),
   sfbs_data %>% select(source, date, catch, latitude, longitude, region), 
   salvage_lfs_data %>% select(source, date, catch, latitude, longitude, region)) %>%
   filter(!is.na(catch),
@@ -470,11 +471,11 @@ lfs_latlon <- bind_rows(
 # this one has forklength/lifestage (for summary across wy by lifestage)
 lfs_detail <- bind_rows(
   edsm_lfs %>% select(source, date, catch, mark_code, fork_length, latitude, longitude, region, stratum),
-  twmm_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region),
-  sls_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
-  beachsn_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
-  fmwt_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
-  chipps_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
+  #twmm_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region),
+  #sls_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
+  #beachsn_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
+  #fmwt_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
+  #chipps_lfs %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   sfbs_data %>% select(source, date, catch, fork_length, latitude, longitude, region, stratum),
   salvage_lfs_data %>% select(source, date, catch, fork_length, latitude, longitude, region)) %>%
   filter(!is.na(catch),
@@ -484,99 +485,114 @@ lfs_detail <- bind_rows(
 
 ## Jersey Point Flow ---------------------------------
 
+# Pull directly from SacPAS:
+# Read in JPF historical data
+jpf_all <- read_csv("https://www.cbr.washington.edu/sacramento/data/generated/WY2027_JPF.csv") %>% 
+  clean_names() %>%
+  mutate(date = ymd(date))
+
+JPF_1d_lastdate <- tail(jpf_all$date[which(!is.na(jpf_all$jpf_cfs))],1)
+JPF_1d <- tail(jpf_all$jpf_cfs[which(!is.na(jpf_all$jpf_cfs))],1)
+
+
+
 # ---- download the PDF Delta Hydrology Conditions (DWR)----
-url1 <- "https://water.ca.gov/-/media/DWR-Website/Web-Pages/Programs/State-Water-Project/Operations-And-Maintenance/Files/Operations-Control-Office/Delta-Status-And-Operations/Delta-Hydrologic-Conditions-Daily-Summary.pdf"
-tmp1 <- tempfile(fileext = ".pdf")
-download.file(url1, tmp1, mode="wb")
+# url1 <- "https://water.ca.gov/-/media/DWR-Website/Web-Pages/Programs/State-Water-Project/Operations-And-Maintenance/Files/Operations-Control-Office/Delta-Status-And-Operations/Delta-Hydrologic-Conditions-Daily-Summary.pdf"
+# tmp1 <- tempfile(fileext = ".pdf")
+# download.file(url1, tmp1, mode="wb")
+# 
+# # ---- extract raw text ---- 
+# txt <- pdf_text(tmp1)
+# 
+# # ---- parse page 1 table ----
+# page1 <- txt[1] %>% str_split("\n") %>% unlist()
+# 
+# # find lines with data (dates etc.)
+# data_lines1 <- page1[str_detect(page1, "\\d{1,2}/\\d{1,2}")]
+# 
+# # split each row by whitespace
+# hydro1 <- data_lines1 %>%
+#   str_squish() %>%
+#   str_replace_all("[^[:print:]]", "") %>%
+#   .[str_detect(., "^\\d{1,2}/\\d{1,2}/\\d{2,4}")] %>%
+#   str_split_fixed(" ", n = 11) %>%
+#   as.data.frame(stringsAsFactors = FALSE)
+# 
+# # add column names
+# colnames(hydro1) <- c(
+#   "Date","SR_at_Freeport_SRWTP","Yolo_Rumsey_FRE_FWB", "E_side_streams",
+#   "SJR_a_Vernalis", "Stockton_rain_in","CCF_cfs",
+#   "Tracy_cfs","CCWD_cfs","Barker_Slough_cfs",
+#   "Byron_Bethany_cfs"
+# )
+# 
+# numeric.col1 <- c("SR_at_Freeport_SRWTP","Yolo_Rumsey_FRE_FWB", "E_side_streams",
+#                   "SJR_a_Vernalis", "Stockton_rain_in","CCF_cfs",
+#                   "Tracy_cfs","CCWD_cfs","Barker_Slough_cfs",
+#                   "Byron_Bethany_cfs")
+# hydro1 <- hydro1 %>% 
+#   dplyr::filter(str_detect(Date, "\\d{1,2}/\\d{1,2}")) %>% 
+#   mutate(across(all_of(numeric.col1),
+#                 ~ str_remove_all(.x, "[^0-9.-]") %>% as.numeric())) %>% 
+#   mutate(Date = as.Date(Date, format = "%m/%d/%Y"))
+# 
+# 
+# 
+# # ---- parse page 2 table ----
+# page2 <- txt[2] %>% str_split("\n") %>% unlist()
+# data_lines2 <- page2[str_detect(page2, "\\d{1,2}/\\d{1,2}")]
+# hydro2 <- data_lines2 %>%
+#   str_squish() %>%
+#   str_replace_all("[^[:print:]]", "") %>%
+#   .[str_detect(., "^\\d{1,2}/\\d{1,2}/\\d{2,4}")] %>%
+#   str_split_fixed(" ", n = 10) %>%
+#   as.data.frame(stringsAsFactors = FALSE)
+# 
+# colnames(hydro2) <- c(
+#   "Date","Banks_PP_cfs","Delta_GCD_cfs","Rio_Vista_Flow_cfs",
+#   "QWEST_cfs", "JPF_cfs", "NDOI_cfs","EI_3day","EI_14day","Delta_Status"
+# )
+# 
+# numeric.col2 <- c("Banks_PP_cfs","Delta_GCD_cfs","Rio_Vista_Flow_cfs",
+#                   "QWEST_cfs","JPF_cfs", "NDOI_cfs","EI_3day","EI_14day","Delta_Status")
+# 
+# hydro2 <- hydro2 |>
+#   dplyr::filter(str_detect(Date, "\\d{1,2}/\\d{1,2}")) %>% 
+#   mutate(across(all_of(numeric.col2),
+#                 ~ str_remove_all(.x, "[^0-9.-]") %>% as.numeric())) %>% 
+#   mutate(Date = as.Date(Date, format = "%m/%d/%Y"))
+# 
+# 
+# # Define dates: (today and previous 14 days)
+# hydro1_14d <- hydro1 %>%
+#   arrange(desc(Date)) %>%  # newest date first
+#   slice(1:14) %>%           # take the last 14 rows
+#   arrange(Date)
+# 
+# hydro2_14d <- hydro2 %>%
+#   arrange(desc(Date)) %>%
+#   slice(1:14) %>%
+#   arrange(Date)
+# 
+# #join tables
+# hydro_14d <- hydro1_14d %>%
+#   left_join(hydro2_14d, by = "Date")
+# 
+# #select cols of interest
+# hydro_14d <- hydro_14d %>%
+#   select(Date, SJR_a_Vernalis, E_side_streams, SR_at_Freeport_SRWTP, Stockton_rain_in,
+#          Delta_GCD_cfs, JPF_cfs, Banks_PP_cfs, CCF_cfs, Tracy_cfs)
+# 
+# 
+# JPF_1d_lastdate <- hydro_14d %>% tail(1) %>% pull(Date)
+# JPF_1d <- hydro_14d %>% tail(1) %>% pull(JPF_cfs)
 
-# ---- extract raw text ---- 
-txt <- pdf_text(tmp1)
-
-# ---- parse page 1 table ----
-page1 <- txt[1] %>% str_split("\n") %>% unlist()
-
-# find lines with data (dates etc.)
-data_lines1 <- page1[str_detect(page1, "\\d{1,2}/\\d{1,2}")]
-
-# split each row by whitespace
-hydro1 <- data_lines1 %>%
-  str_squish() %>%
-  str_replace_all("[^[:print:]]", "") %>%
-  .[str_detect(., "^\\d{1,2}/\\d{1,2}/\\d{2,4}")] %>%
-  str_split_fixed(" ", n = 11) %>%
-  as.data.frame(stringsAsFactors = FALSE)
-
-# add column names
-colnames(hydro1) <- c(
-  "Date","SR_at_Freeport_SRWTP","Yolo_Rumsey_FRE_FWB", "E_side_streams",
-  "SJR_a_Vernalis", "Stockton_rain_in","CCF_cfs",
-  "Tracy_cfs","CCWD_cfs","Barker_Slough_cfs",
-  "Byron_Bethany_cfs"
-)
-
-numeric.col1 <- c("SR_at_Freeport_SRWTP","Yolo_Rumsey_FRE_FWB", "E_side_streams",
-                  "SJR_a_Vernalis", "Stockton_rain_in","CCF_cfs",
-                  "Tracy_cfs","CCWD_cfs","Barker_Slough_cfs",
-                  "Byron_Bethany_cfs")
-hydro1 <- hydro1 %>% 
-  dplyr::filter(str_detect(Date, "\\d{1,2}/\\d{1,2}")) %>% 
-  mutate(across(all_of(numeric.col1),
-                ~ str_remove_all(.x, "[^0-9.-]") %>% as.numeric())) %>% 
-  mutate(Date = as.Date(Date, format = "%m/%d/%Y"))
 
 
 
-# ---- parse page 2 table ----
-page2 <- txt[2] %>% str_split("\n") %>% unlist()
-data_lines2 <- page2[str_detect(page2, "\\d{1,2}/\\d{1,2}")]
-hydro2 <- data_lines2 %>%
-  str_squish() %>%
-  str_replace_all("[^[:print:]]", "") %>%
-  .[str_detect(., "^\\d{1,2}/\\d{1,2}/\\d{2,4}")] %>%
-  str_split_fixed(" ", n = 10) %>%
-  as.data.frame(stringsAsFactors = FALSE)
-
-colnames(hydro2) <- c(
-  "Date","Banks_PP_cfs","Delta_GCD_cfs","Rio_Vista_Flow_cfs",
-  "QWEST_cfs", "JPF_cfs", "NDOI_cfs","EI_3day","EI_14day","Delta_Status"
-)
-
-numeric.col2 <- c("Banks_PP_cfs","Delta_GCD_cfs","Rio_Vista_Flow_cfs",
-                  "QWEST_cfs","JPF_cfs", "NDOI_cfs","EI_3day","EI_14day","Delta_Status")
-
-hydro2 <- hydro2 |>
-  dplyr::filter(str_detect(Date, "\\d{1,2}/\\d{1,2}")) %>% 
-  mutate(across(all_of(numeric.col2),
-                ~ str_remove_all(.x, "[^0-9.-]") %>% as.numeric())) %>% 
-  mutate(Date = as.Date(Date, format = "%m/%d/%Y"))
 
 
-# Define dates: (today and previous 14 days)
-hydro1_14d <- hydro1 %>%
-  arrange(desc(Date)) %>%  # newest date first
-  slice(1:14) %>%           # take the last 14 rows
-  arrange(Date)
-
-hydro2_14d <- hydro2 %>%
-  arrange(desc(Date)) %>%
-  slice(1:14) %>%
-  arrange(Date)
-
-#join tables
-hydro_14d <- hydro1_14d %>%
-  left_join(hydro2_14d, by = "Date")
-
-#select cols of interest
-hydro_14d <- hydro_14d %>%
-  select(Date, SJR_a_Vernalis, E_side_streams, SR_at_Freeport_SRWTP, Stockton_rain_in,
-         Delta_GCD_cfs, JPF_cfs, Banks_PP_cfs, CCF_cfs, Tracy_cfs)
-
-
-JPF_1d_lastdate <- hydro_14d %>% tail(1) %>% pull(Date)
-JPF_1d <- hydro_14d %>% tail(1) %>% pull(JPF_cfs)
-
-
-
+############ STOP; OLD CODE!
 # Extract variables # this was code used before JPF was added to DWR hydrology report
 
 # # Define dates: (today and previous 7 days)
