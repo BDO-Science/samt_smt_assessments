@@ -75,12 +75,12 @@ ann_start_VNS <- flow_clean %>% filter(station == "VNS", date == date(start)) %>
 
 flow_plot <- flow_clean %>%
   ggplot(aes(x = date)) +
-  annotate("label", x = date(start)+2, y = ann_start_FPT+6000, label = "FPT", color = "#388715")+
-  annotate("label", x = date(start)+2, y = ann_start_VNS+6000, label = "VNS", color = "gray20")+
+  annotate("label", x = date(start)+2, y = ann_start_FPT-2000, label = "FPT", color = "#388715")+ #used to be +6000
+  annotate("label", x = date(start)+2, y = ann_start_VNS+2000, label = "VNS", color = "gray20")+ #used to be +6000
   labs(y = 'Flow (cfs)') +
   geom_line(aes(y = flow, color = station), linewidth = 1) +
   scale_color_manual(values = c("#43a419", "gray15")) +
-  scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
+  scale_x_date(date_breaks = '1 week', date_labels = '%b %d') + #change to 2 weeks
   theme_bw() +
   theme(legend.position = "none",
         axis.title.x = element_blank(),
@@ -95,11 +95,11 @@ flow_plot
 jpf_plot <- jpf_all %>%
   ggplot(aes(x = date)) +
   labs(y = 'Flow (cfs)') +
-  annotate("label", x = date(start)+10, y = 15000, label = "Jersey Point Flow", color = "darkturquoise")+
+  annotate("label", x = date(start)+2, y = 3000, label = "Jersey Point Flow", color = "darkturquoise")+
   geom_hline(yintercept = 0, linetype = 'dashed', color = '#888888', linewidth= 1)+
   geom_line(aes(y = jpf_cfs), color= "darkturquoise", linewidth = 1) +
   #scale_color_manual(values = c("#43a419", "gray15")) +
-  scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
+  scale_x_date(date_breaks = '1 week', date_labels = '%b %d') +
   theme_bw() +
   theme(legend.position = "none",
         axis.title.x = element_blank(),
@@ -114,17 +114,17 @@ jpf_plot
 #| include: false
 omr_plot <- 
   ggplot() +
-  geom_rect(data= triggers_shading, aes(xmin= date_implemented, xmax= implementation_end), ymin=-Inf, ymax= Inf, 
-            fill= "gray70", alpha= 0.5, inherit.aes = FALSE)+
+  #geom_rect(data= triggers_shading, aes(xmin= date_implemented, xmax= implementation_end), ymin=-Inf, ymax= Inf, 
+  #          fill= "gray70", alpha= 0.5, inherit.aes = FALSE)+
   geom_line(data = omr_clean, aes(x = date, y = value, color = measure), linewidth = 1) +
   #geom_vline(data = triggers_clean, aes(xintercept = date), linewidth = 1.5, linetype = 'dashed', color = '#888888')+
-  geom_vline(data = triggers_clean, aes(xintercept = date, linewidth = type, linetype = type), color = '#888888')+
-  geom_text(data = triggers_clean, aes(x = date-2, y = -9500, label = plot_label), size = 3, fontface = 'bold')+
+  #geom_vline(data = triggers_clean, aes(xintercept = date, linewidth = type, linetype = type), color = '#888888')+
+  #geom_text(data = triggers_clean, aes(x = date-2, y = -9500, label = plot_label), size = 3, fontface = 'bold')+
   labs(y = 'Daily OMRI (cfs)') +
-  scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
+  scale_x_date(date_breaks = '1 week', date_labels = '%b %d') +
   scale_color_manual(values = c("#0173B2", "#DE8F05", "#CC78BC"))+
-  scale_linetype_manual(values = c("trigger"= "dashed", "threshold"= "dotted"))+
-  scale_linewidth_manual(values = c("trigger"= 1, "threshold"= 1))+
+  #scale_linetype_manual(values = c("trigger"= "dashed", "threshold"= "dotted"))+
+  #scale_linewidth_manual(values = c("trigger"= 1, "threshold"= 1))+
   scale_y_reverse() +
   theme_bw() +
   theme(legend.position = "bottom",
@@ -139,7 +139,7 @@ omr_plot
 ```{r}
 #| label: fig-triggers
 #| warning: false
-#| fig-cap: "Operations and Action Summary, WY 2026. The numbers and lines in the OMRI plot indicate different triggers and thresholds (see Table 1), with shading representing specific action periods. Dashed and dotted vertical lines represent triggered actions and thresholds, respectively. OMRI data (colored lines) calculated by SacPAS, Freeport (FPT) and Vernalis (VNS) flow data from CDEC, Jersey Point Flow (JPF) from DWR, and CVP (TRP) and SWP (HRO) exports data from CDEC."
+#| fig-cap: "Operations and Action Summary, WY 2027. The numbers and lines in the OMRI plot indicate different triggers and thresholds (see Table 1), with shading representing specific action periods. Dashed and dotted vertical lines represent triggered actions and thresholds, respectively. OMRI data (colored lines) calculated by SacPAS, Freeport (FPT) and Vernalis (VNS) flow data from CDEC, Jersey Point Flow (JPF) from DWR, and CVP (TRP) and SWP (HRO) exports data from CDEC."
 #| fig-alt: "Four-part plot showing hydrologic conditions over time. Top plot shows a time series of flow at Vernalis and Freeport. The upper middle plot shows a time series of Jersey Point Flow, with a horizontal line at 0 cfs. The middle plot shows a time series of daily, weekly, and 14-day average OMRI, with vertical lines and shading to show when actions were taken or thresholds were reached. The lower plot is a column chart showing combined exports from both CVP and SWP."
 #| fig-width: 9
 #| fig-height: 7
@@ -152,7 +152,7 @@ flow_plot + jpf_plot + omr_plot + export_plot + plot_layout(nrow = 4)
 #| echo: false
 #| warning: false
 #| label: tbl-triggers
-#| tbl-cap: "Summary of Actions and Triggers, WY 2026"
+#| tbl-cap: "Summary of Actions and Triggers, WY 2027"
 
 trigger_table <- triggers_clean %>%
   select(Label = plot_label,
@@ -173,7 +173,7 @@ flextable(trigger_table) %>%
 
 ### Zone of Influence
 
-Zone of Influence (ZOI) analysis is discussed in detail in the December 22 assessment. Current conditions were queried from most recent Freeport flow data on the Sacramento River and Vernalis flow data on the San Joaquin river from [SacPAS](https://www.cbr.washington.edu/sacramento/data/query_river_table.html). Forecasted flows were queried from short range deterministic flows provided by the [California Nevada River Forecast Center](https://www.cnrfc.noaa.gov/deterministicHourlyProductCSV.php).
+Zone of Influence (ZOI) analysis shows the effect of various pumping scenarios on the hydrology in the Delta. Current conditions were queried from most recent Freeport flow data on the Sacramento River and Vernalis flow data on the San Joaquin river from [SacPAS](https://www.cbr.washington.edu/sacramento/data/query_river_table.html). Forecasted flows were queried from short range deterministic flows provided by the [California Nevada River Forecast Center](https://www.cnrfc.noaa.gov/deterministicHourlyProductCSV.php).
 
 Current conditions at Freeport and Vernalis indicate that delta hydrology falls within the `r paste0("'",hydrology_current, "'")` category.  Forecasted conditions averaged across the next 7 days falls within the `r paste0("'",hydrology_forecast, "'")` category.
 

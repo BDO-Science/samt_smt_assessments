@@ -17,7 +17,7 @@ pumping_clean <- bind_rows(read_csv(paste0('https://www.cbr.washington.edu/sacra
   clean_names() %>%
   mutate(date = ymd(paste0(year,'-',mm_dd))) %>%
   filter(!is.na(date)) %>%
-  select(date, station = 3, 7) %>%
+  select(date, station = 4, value) %>%
   mutate(parameter = 'exports',
          facility = if_else(station == 'HRO', 'SWP', 'CVP')) %>%
   select(1,2,4,3,5) %>%
@@ -95,7 +95,7 @@ flow_clean <- bind_rows(read_csv(paste0('https://www.cbr.washington.edu/sacramen
   clean_names() %>%
   mutate(date = ymd(paste0(year,'-',mm_dd))) %>%
   filter(!is.na(date)) %>%
-  select(date, station = 3, flow = 7) %>%
+  select(date, station = 4, flow = 8) %>%
   filter(date >= start)
 
 fpt = flow_clean %>%
@@ -139,7 +139,7 @@ triggers_shading <- triggers_clean %>%
   filter(!is.na(implementation_end))
 
 # Read in JPF historical data
-jpf_all <- read_csv("https://www.cbr.washington.edu/sacramento/data/generated/WY2026_JPF.csv") %>% 
+jpf_all <- read_csv("https://www.cbr.washington.edu/sacramento/data/generated/WY2027_JPF.csv") %>% 
   clean_names() %>%
   mutate(date = ymd(date))
 
