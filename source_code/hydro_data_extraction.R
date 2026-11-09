@@ -157,9 +157,10 @@ hydro_table <- hydro_table_raw %>% clean_names()
 # Get the most recent value in the column
 #jpf_daily <- as.numeric(tail(hydro_table$jpf_cfs_dwr,1))
 
-jpf_daily <- hydro_table %>% 
-  slice_max(order_by = date) %>%
+jpf_daily <- #hydro_table %>% 
+  #slice_max(order_by = date) %>%
   #filter(!is.na(jpf_cfs_dwr)) %>%
   #slice_tail() %>%
-  pull(jpf_cfs_dwr) %>%
+  tail(hydro_table$jpf_cfs_dwr[which(hydro_table$jpf_cfs_dwr != "")],1) %>% 
+  #pull(jpf_cfs_dwr) %>%
   prettyNum(big.mark = ",")

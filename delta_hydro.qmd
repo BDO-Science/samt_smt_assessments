@@ -55,7 +55,7 @@ export_plot <- pumping_clean %>%
   labs(y = 'Exports (cfs)') +
   geom_col(aes(y = value, fill = facility), color = "black") +
   scale_fill_manual(values = c('#0072B2', 'gray80')) +
-  scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
+  scale_x_date(date_breaks = '1 week', date_labels = '%b %d') +
   theme_bw() +
   theme(axis.title.x = element_blank(),
         axis.text = element_text(size = 12),
@@ -191,7 +191,7 @@ Change in altered channel length between OMR levels is `r channel_filter_current
 #| include: true
 #| out-width: "100%"
 #| results: asis
-#| fig-cap: "Modeled Zone of Influence at different OMRI scenarios based on current inflow hydrology (left) and forecasted inflow hydrology (right) from the Sacramento River and San Joaquin River"
+#| fig-cap: "Modeled Zone of Influence at different OMRI scenarios based on current inflow hydrology (left) and forecasted inflow hydrology (right) from the Sacramento River and San Joaquin River."
 #| fig-alt: "Two-part figure showing results for current hydrology (left) and forecasted hydrology (right). Each map of the Delta shows contour lines for the extent of the hydrologic footprint for different OMRI scenarios (colors)."
 
 map_file_current <- grep(hydrology_current, mapList, value = TRUE)
