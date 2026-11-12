@@ -56,7 +56,7 @@ narrative_text <-
 #   
 #   `r ds_ff_3`
 
-ds_ff_1 <- "Calendar dates for first flush have not yet been met."
+ds_ff_1 <- "Calendar dates for First Flush have not yet been met."
 ds_ff_2 <- "Not applicable."
 ds_ff_3 <- "Not applicable."
 
@@ -206,6 +206,8 @@ ds_recent <- ds_detail %>%
 
 # pull out lifestages present based off data
 ds_lifestages <- paste(unique(ds_recent$life_stage), collapse = ", ")
+# ds_lifestages <- if (nrow(ds_lifestages) == 0) { 
+#   (ds_lifestages <- NA)} else {ds_lifestages}
 
 # edit recent with simple info
 ds_recent_display <- ds_recent %>% 
