@@ -143,7 +143,7 @@ ds_eval_3 <- "Entrainment management for smelts for WY 2026 offramped on 6/15/20
 #   
 #   `r lfs_eval_3`
 
-lfs_start_1 <- "The Fall Midwater Trawl Index has not yet been determined for WY 2027."
+lfs_start_1 <- "The Bay Study Age 1+ LFS Index has not yet been determined for WY 2027."
 
 
 # 1. If JPF < 0, what is the trajectory of annual loss of adult longfin smelt 

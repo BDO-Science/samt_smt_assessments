@@ -139,9 +139,9 @@ kable(
 )
 ```
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, eval= nrow(ds_wy) != 0}
 #| label: "fig-ds-catch"
-#| fig-cap: "Time series of Delta smelt catch, WY 2026"
+#| fig-cap: "Time series of Delta smelt catch, WY 2027"
 #| fig-alt: "Column chart showing total catch of Delta smelt between Oct 1 and current day for multiple surveys."
 ggplot(ds_wy) +
   geom_col(aes(date, total_catch, fill = source)) +
@@ -360,7 +360,7 @@ if (first_flush_lfs_status != "relevant") {
 **Longfin smelt:**
 
 
-1. After December 1, is the cumulative water year salvage of age 1+ Longfin smelt approaching or exceeding 5% of the fall mid water trawl index plus one fish?
+1. After December 1, is the cumulative water year salvage of age 1+ Longfin smelt approaching or exceeding 5% of the August-December Bay Study index plus one fish?
 
     `r lfs_start_1`
 
