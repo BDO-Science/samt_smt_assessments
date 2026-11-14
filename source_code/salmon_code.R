@@ -425,13 +425,13 @@ if (!is.null(steelhead_jpe_data)) {
   message("Using manual CSV files for steelhead JPE calculation")
   surv <- read_csv(here(project, 'input_data/sh_hatchery_survival.csv'))
   
-  releases <- read_csv(here(project, 'input_data/wy_2026_sh_releases.csv')) %>%
+  releases <- read_csv(here(project, 'input_data/wy_2027_sh_releases.csv')) %>%
     mutate(date = mdy(date),
            basin = if_else(hatchery == 'MKFH', 'sj', 'sac'),
            month = month(date)) %>%
     left_join(wy_types_all, by = c('month', 'basin')) %>%
-    mutate(type = if_else(is.na(type), lead(type, 1), type)) %>%
-    mutate(type = 'BN') %>%
+    #mutate(type = if_else(is.na(type), lead(type, 1), type)) %>%
+    #mutate(type = 'BN') %>%
     left_join(surv, by = c('hatchery', 'type' = 'wy_type')) %>%
     mutate(jpe = round(stocked * survival,0),
            date= date.x)
@@ -463,7 +463,8 @@ sh_stocked <- sum(releases$stocked, na.rm = TRUE) %>% prettyNum(big.mark = ",")
 sh_jpe <- sum(releases$jpe, na.rm = TRUE) %>% prettyNum(big.mark = ",")
 sh_survival <- paste0(round(mean(releases$survival, na.rm = TRUE)*100,0),'%')
 sh_clipped_threshold <- round(sum(releases$jpe, na.rm = TRUE) * 0.01,0)
-n_releases <- nrow(releases)
+#n_releases <- nrow(releases)
+n_releases <- 0 # for now
 
 sh_clipped_loss_total <- loss_summary_table %>%
   select(hatchery_steelhead) %>%

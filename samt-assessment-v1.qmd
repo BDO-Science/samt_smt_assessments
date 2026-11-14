@@ -368,8 +368,13 @@ The following figures display the current loss predictor model outputs for winte
 #| out-width: "100%"
 ##| fig-pos: "H"
 
-base_url <- paste0('https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY', wy, '/')
-knitr::include_graphics(paste0(base_url, 'samt_lsp_winter.png'))
+# base_url <- paste0("https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY",wy,"/")
+# knitr::include_graphics(paste0(base_url,"samt_lsp_winter.png"))
+url_wr  <- "https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2027/samt_lsp_winter.png"
+dest_wr <- file.path(here("samt-assessment-v1_files", "samt_lsp_winter.png"))
+download.file(url_wr, dest_wr, mode = "wb", cacheOK = FALSE)
+knitr::include_graphics(dest_wr)
+
 ```
 
 ```{r}
@@ -381,7 +386,12 @@ knitr::include_graphics(paste0(base_url, 'samt_lsp_winter.png'))
 #| out-width: "100%"
 ##| fig-pos: "H"
 
-knitr::include_graphics(paste0(base_url, 'samt_lsp_stlhd.png'))
+url_sh  <- "https://www.cbr.washington.edu/sacramento/workgroups/include_gen/WY2027/samt_lsp_stlhd.png"
+dest_sh <- file.path(here("samt-assessment-v1_files", "samt_lsp_stlhd.png"))
+download.file(url_sh, dest_sh, mode = "wb", cacheOK = FALSE)
+knitr::include_graphics(dest_sh)
+#knitr::include_graphics(paste0(base_url,"samt_lsp_stlhd.png"))
+
 ```
 
 
