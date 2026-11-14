@@ -205,9 +205,7 @@ knitr::include_graphics(here("smelt_figures/freeport_turbidity.png"))
 ```
 
 - See [Bay-Delta Live](https://www.baydeltalive.com/current_conditions/constituent-tracker-turbidity) for recent Delta-wide turbidity conditions.
-<!--
-- Let's link to wind plot on the other SacPAS SMT page. [Wind plot](https://github.com/BDO-Science/smt/blob/main/WindRose_Grace.R)
--->
+<!--Let's link to wind plot on the other SacPAS SMT page. [Wind plot](https://github.com/BDO-Science/smt/blob/main/WindRose_Grace.R) -->
 
 ##### Larval/juvenile Delta smelt
 
