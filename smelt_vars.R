@@ -20,7 +20,7 @@ source("smelt_data_extraction.R")
 # 7. Need to render pdf separately from the html to get both to be updated (option in render in quarto doc)
 
 # Actions ---------------------
-first_flush_status = "not relevant"
+first_flush_status = "relevant"
 first_flush_lfs_status = "not relevant"
 adult_ent_status = "not relevant"
 larval_ent_status = "not relevant"
