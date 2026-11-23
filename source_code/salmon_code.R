@@ -751,12 +751,20 @@ sr_all_releases <- lfr_data_clean %>%
 # JPE = Number Released × Survival Rate
 # Per regulations: "The JPE shall be determined by the historical average survival"
 
-# Survival lookup table - ONLY values from sr_hatchery_survival.csv
+# # Survival lookup table - ONLY values from sr_hatchery_survival.csv OLD HAD SOME INCORRECT VALUES
+# surv_lookup <- tibble(
+#   Hatchery     = c(rep("Feather River Hatchery", 6), rep("Coleman NFH", 4)),
+#   run          = c(rep("Spring", 6), rep("Late-Fall", 4)),
+#   WY           = c(2025, 2024, 2023, 2021, 2020, 2019, 2026, 2021, 2020, 2019), # maybe remove 2026, 11.5
+#   survival_est = c(40.5, 30.8, 40.6, 49.4, 26.8, 28.6, 11.5, 14.3, 60.4, 23.0)
+# )
+
+# Survival lookup table - ONLY values from sr_hatchery_survival.csv OLD HAD SOME INCORRECT VALUES
 surv_lookup <- tibble(
-  Hatchery     = c(rep("Feather River Hatchery", 6), rep("Coleman NFH", 4)),
-  run          = c(rep("Spring", 6), rep("Late-Fall", 4)),
-  WY           = c(2025, 2024, 2023, 2021, 2020, 2019, 2026, 2021, 2020, 2019),
-  survival_est = c(40.5, 30.8, 40.6, 49.4, 26.8, 28.6, 11.5, 14.3, 60.4, 23.0)
+  Hatchery     = c(rep("Feather River Hatchery", 7), rep("Coleman NFH", 4)),
+  run          = c(rep("Spring", 7), rep("Late-Fall", 4)),
+  WY           = c(2026, 2025, 2024, 2023, 2021, 2020, 2019, 2026, 2021, 2020, 2019), # maybe remove 2026, 11.5
+  survival_est = c(9.4, 40.5, 30.8, 40.6, 28.6, 26.8, 26.2, 11.5, 14.3, 60.4, 23.0)
 )
 
 # Calculate historical average survival rates
