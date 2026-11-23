@@ -82,7 +82,7 @@ sac_forecast <- read_csv(max(forecast_files[grepl('Sacramento', forecast_files)]
 
 
 sj_forecast <- read_csv(max(forecast_files[grepl('Joaquin', forecast_files)])) %>%
-  select(1, VNS = 47) %>%
+  select(1, VNS = 41) %>% #was 47
   mutate(date = as.Date(GMT)) %>% 
   filter(!is.na(date)) %>%
   mutate(across(2, as.numeric)) %>%
