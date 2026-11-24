@@ -1,2 +1,2 @@
 ﻿date_triggered,date_implemented,days_implemented,action,regulation,plot_label,description,implementation_end,type
-2026-11-22,2026-11-23,3,Close DCC gates,KLCI > 3,1,DCC gates closed due to KLCI > 3,,trigger
+11/22/2026,11/23/2026,3,Close DCC gates,KLCI > 3,1,DCC gates closed due to KLCI > 3,,trigger
