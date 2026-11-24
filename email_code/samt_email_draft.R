@@ -186,11 +186,11 @@ email[["To"]] <- paste(
   "jvogel@usbr.gov",
   "JAIsrael@usbr.gov",
   "RField@usbr.gov",
-  "lejohnson@usbr.gov",
+  "bmaghiargarabet@usbr.gov",
   "ashamilton@usbr.gov",
   "tyang@usbr.gov",
   "lmccormick@usbr.gov",
-  "jfenolio@usbr.gov",
+  "TWashburn@usbr.gov,",
   sep = "; "
 )
 
